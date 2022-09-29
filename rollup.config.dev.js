@@ -4,18 +4,16 @@ import babel from 'rollup-plugin-babel';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 import json from '@rollup/plugin-json';
-import ignore from './rollup-plugins/ignore';
-import { ignoreTextfieldFiles } from './elements/ignore/textfield';
-import { ignoreSelectFiles } from './elements/ignore/select';
-import { ignoreSwitchFiles } from './elements/ignore/switch';
+import image from '@rollup/plugin-image';
 
 export default {
-  input: ['src/boilerplate-card.ts'],
+  input: ['src/clock-weather-card.ts'],
   output: {
     dir: './dist',
     format: 'es',
   },
   plugins: [
+    image(),
     resolve(),
     typescript(),
     json(),
@@ -31,9 +29,6 @@ export default {
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
-    }),
-    ignore({
-      files: [...ignoreTextfieldFiles, ...ignoreSelectFiles, ...ignoreSwitchFiles].map((file) => require.resolve(file)),
     }),
   ],
 };

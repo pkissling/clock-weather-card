@@ -1,21 +1,60 @@
-import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
+import { LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
+import { HassEntity } from 'home-assistant-js-websocket/dist/types';
 
 declare global {
   interface HTMLElementTagNameMap {
-    'boilerplate-card-editor': LovelaceCardEditor;
+    'clock-weather-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
   }
 }
 
-// TODO Add your configuration elements here for type-checking
-export interface BoilerplateCardConfig extends LovelaceCardConfig {
-  type: string;
-  name?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
-  test_gui?: boolean;
-  entity?: string;
-  tap_action?: ActionConfig;
-  hold_action?: ActionConfig;
-  double_tap_action?: ActionConfig;
+export interface ClockWeatherCardConfig extends LovelaceCardConfig {
+  entity: string;
+  sun_entity?: string;
+  weather_icon_type?: 'fill' | 'line';
+  animated_icon?: boolean;
+  forecast_days?: number;
+  locale?: string;
+}
+
+export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
+  entity: string;
+  sun_entity: string;
+  weather_icon_type: 'fill' | 'line';
+  animated_icon: boolean;
+  forecast_days: number;
+  locale?: string;
+}
+
+export interface Weather extends HassEntity {
+  state: string;
+  attributes: {
+    temperature: number;
+    temperature_unit: TemperatureUnit;
+    precipitation_unit: string;
+    forecast: WeatherForecast[];
+  };
+}
+
+export type TemperatureUnit = '°C' | '°F';
+
+export interface WeatherForecast {
+  temperature: number;
+  templow: number;
+  precipitation: number;
+  datetime: string;
+  condition: string;
+  precipitation_probability: number;
+}
+
+export class Rgb {
+  r: number;
+  g: number;
+  b: number;
+
+  constructor(r: number, g: number, b: number) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+  }
 }
