@@ -1,8 +1,35 @@
 {
   "common": {
     "version": "Version",
-    "invalid_configuration": "Invalid configuration",
-    "show_warning": "Show Warning",
-    "show_error": "Show Error"
+    "invalid_configuration": "Invalid configuration.",
+    "entity_missing": "Required weather entity missing.",
+    "invalid_forecast_days": "forecast_days must be greater than 0."
+  },
+  "weather": {
+    "clear-night": "Clear",
+    "cloudy": "Cloudy",
+    "fog": "Fog",
+    "hail": "Hail",
+    "lightning": "Thunderstorms",
+    "lightning-rainy": "Rainy thunderstroms",
+    "partlycloudy": "Partly cloudy",
+    "pouring": "Pouring",
+    "rainy": "Rainy",
+    "snowy": "Snow",
+    "snowy-rainy": "Sleet",
+    "sunny": "Sunny",
+    "windy": "Windy",
+    "windy-variant": "Strong wind",
+    "exceptional": "Chaos"
+  },
+  "day": {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat",
+    "today": "Today"
   }
 }
