@@ -9,16 +9,20 @@ jobs:
     name: Prepare release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
 
-      # Build
+      - name: Make slug values available
+        uses: gacts/github-slug@v1
+        id: slug
+
       - name: Build the file
         run: |
           cd /home/runner/work/clock-weather-card/clock-weather-card
-          npm install
-          npm run build
+          yarn install
+          yarn version --no-git-tag-version --new-version ${{ steps.slug.outputs.version }}
+          yarn build
 
-      # Upload build file to the releas as an asset.
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
 

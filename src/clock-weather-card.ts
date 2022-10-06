@@ -12,14 +12,14 @@ import {
 import { ClockWeatherCardConfig, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
-import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 import { HassEntityBase } from 'home-assistant-js-websocket';
 import { max, min, round } from './utils';
 import { svg, png } from './images';
+import { version } from '../package.json';
 
 console.info(
-  `%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${CARD_VERSION}    `,
+`%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${version}    `,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
@@ -251,8 +251,8 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private gradient(rgbs: Rgb[], fromPercent: number, toPercent: number): string {
-    const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent);
-    const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent);
+    const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent, 'left');
+    const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent, 'right');
     const between = rgbs.slice(fromIndex + 1, toIndex);
 
     return [fromRgb, ...between, toRgb]
@@ -260,7 +260,7 @@ export class ClockWeatherCard extends LitElement {
       .join(',');
   }
 
-  private calculateRgb(rgbs: Rgb[], percent: number): [rgb: Rgb, index: number] {
+  private calculateRgb(rgbs: Rgb[], percent: number, pickIndex: 'left' | 'right'): [rgb: Rgb, index: number] {
     function valueAtPosition(start: number, end: number, percent: number): number {
       const abs = Math.abs(start - end);
       const value = (abs / 100) * percent;
@@ -271,32 +271,28 @@ export class ClockWeatherCard extends LitElement {
       }
     }
 
-    function rgbAtPosition(start: Rgb, end: Rgb, percent: number): Rgb {
-      const r = valueAtPosition(start.r, end.r, percent);
-      const g = valueAtPosition(start.g, end.g, percent);
-      const b = valueAtPosition(start.b, end.b, percent);
+    function rgbAtPosition(startIndex: number, endIndex: number, percentToNextIndex: number, rgbs: Rgb[]): Rgb {
+      const start = rgbs[startIndex]
+      const end = rgbs[endIndex]
+      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex
+      const left = percentToNextIndex < 0 ? end : start
+      const right = percentToNextIndex < 0 ? start : end
+      const r = valueAtPosition(left.r, right.r, percent);
+      const g = valueAtPosition(left.g, right.g, percent);
+      const b = valueAtPosition(left.b, right.b, percent);
       return new Rgb(r, g, b);
     }
 
-    if (Math.round(percent) == 0) {
-      const index = 0;
-      return [rgbAtPosition(rgbs[index], rgbs[index], percent), index];
-    }
-
-    if (Math.round(percent) == 100) {
-      const index = rgbs.length - 1;
-      return [rgbAtPosition(rgbs[index], rgbs[index], percent), index];
-    }
-
     const steps = 100 / (rgbs.length - 1);
-    const startIndex = Math.floor(percent / steps);
-    const endIndex = startIndex + 1;
-    const start = rgbs[startIndex];
-    const end = rgbs[endIndex];
-    const percentInStep = (100 / steps) * (percent - startIndex * steps);
-    const rgb = rgbAtPosition(start, end, percentInStep);
-    return [rgb, endIndex];
+    const step = percent / steps
+    const startIndex = Math.round(step);
+    const percentToNextIndex = (100 / steps) * (percent - startIndex * steps);
+    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1
+    const rgb = rgbAtPosition(startIndex, endIndex, percentToNextIndex, rgbs);
+    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex)
+    return [rgb, index];
   }
+
   private handleAction(ev: ActionHandlerEvent): void {
     if (this.hass && this.config && ev.detail.action) {
       handleAction(this, this.hass, this.config, ev.detail.action);
@@ -327,7 +323,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getSun(): HassEntityBase | undefined {
-    return this.hass.states[this.config.sun_entity] as HassEntityBase | undefined;
+    return this.hass.states[this.config.sun_entity];
   }
 
   private getLocale(): string {
