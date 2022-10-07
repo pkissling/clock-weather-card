@@ -14,7 +14,7 @@ import styles from './styles';
 import { actionHandler } from './action-handler-directive';
 import { localize } from './localize/localize';
 import { HassEntityBase } from 'home-assistant-js-websocket';
-import { max, min, round } from './utils';
+import { max, min, round, roundDown, roundUp } from './utils';
 import { svg, png } from './images';
 import { version } from '../package.json';
 
@@ -100,7 +100,6 @@ export class ClockWeatherCard extends LitElement {
           hasDoubleClick: hasAction(this.config.double_tap_action),
         })}
         tabindex="0"
-        class="clock-weather-card"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
       >
         <clock-weather-card-today>
@@ -226,8 +225,8 @@ export class ClockWeatherCard extends LitElement {
 
     return html`
       <forecast-temperature-bar-current-indicator style="--position: ${indicatorPosition}%;">
-        <forecast-temperature-bar-current-indicator-bar style="--margin-left: ${indicatorPosition > 50 ? '0px' : '-2px'}">
-        </forecast-temperature-bar-current-indicator-bar>
+        <forecast-temperature-bar-current-indicator-dot style="--move-left: ${indicatorPosition > 50 ? '1' : '0'}">
+        </forecast-temperature-bar-current-indicator-dot>
         <forecast-temperature-bar-current-indicator-temp style="${indicatorPosition > 50 ? '--right: 100%' : '--left: 100%'}">
           ${this.toConfiguredTempUnit(tempUnit, currentTemp)}
         </forecast-temperature-bar-current-indicator-temp>
@@ -243,8 +242,8 @@ export class ClockWeatherCard extends LitElement {
   private gradientRange(minTemp: number, maxTemp: number, temperatureUnit: TemperatureUnit): Rgb[] {
     const minTempCelsius = this.toCelsius(temperatureUnit, minTemp)
     const maxTempCelsius = this.toCelsius(temperatureUnit, maxTemp)
-    const minVal = Math.max(round(minTempCelsius, 10), min([...gradientMap.keys()]));
-    const maxVal = Math.min(round(maxTempCelsius, 10), max([...gradientMap.keys()]));
+    const minVal = Math.max(roundDown(minTempCelsius, 10), min([...gradientMap.keys()]));
+    const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]));
     return Array.from(gradientMap.keys())
       .filter((temp) => temp >= minVal && temp <= maxVal)
       .map((temp) => gradientMap.get(temp));

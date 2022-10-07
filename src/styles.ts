@@ -1,7 +1,9 @@
 import { css } from 'lit';
 
 export default css`
-  .clock-weather-card {
+
+  ha-card {
+    --bar-height: 1.5rem;
     padding: 1rem;
   }
 
@@ -71,8 +73,8 @@ export default css`
   forecast-temperature-bar {
     position: relative;
     width: 100%;
-    height: 1.5rem;
-    border-radius: var(--ha-card-border-radius);
+    height: var(--bar-height);
+    border-radius: calc(var(--bar-height) / 2);
     overflow: hidden;
   }
 
@@ -82,39 +84,44 @@ export default css`
     background: var(--light-primary-color);
   }
 
-  forecast-temperature-bar-current-indicator {
-    left: var(--position);
-  }
 
-  forecast-temperature-bar-current-indicator-bar {
-    background-color: var(--text-light-primary-color);
-    width: 2px;
-    margin-left: var(--margin-left);
+  forecast-temperature-bar-current-indicator-dot {
+    --border-width: 2px;
+    --double-border-width: calc(var(--border-width) * 2);
+    background-color: var(--primary-text-color);
+    height: calc(100% - var(--double-border-width)) !important;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    border: var(--border-width) solid var(--text-light-primary-color);
+    margin-left: calc(var(--move-left) * -1 * var(--bar-height));
   }
-
+  
   forecast-temperature-bar-current-indicator-temp {
     color: var(--text-light-primary-color);
-    margin-right: 0.2rem;
-    margin-left: 0.2rem;
-    align-items: center;
+    position: relative !important;
     display: grid;
+    align-items: center;
+    margin-right: calc(var(--bar-height) + 0.2rem);
+    margin-left: calc(var(--bar-height) + 0.2rem);
     left: var(--left);
     right: var(--right);
   }
 
   forecast-temperature-bar-range {
+    border-radius: calc(var(--bar-height) / 2);
     left: var(--start-percent);
     right: calc(100% - var(--end-percent));
     background: linear-gradient(to right, var(--gradient));
+    overflow: hidden;
   }
 
-  forecast-temperature-bar-current-indicator-bar,
-  forecast-temperature-bar-current-indicator-temp {
-    opacity: 0.5;
+  forecast-temperature-bar-current-indicator {
+    opacity: 0.75;
+    left: var(--position);
   }
 
   forecast-temperature-bar-current-indicator,
-  forecast-temperature-bar-current-indicator-bar,
+  forecast-temperature-bar-current-indicator-dot,
   forecast-temperature-bar-current-indicator-temp,
   forecast-temperature-bar-background,
   forecast-temperature-bar-range {
