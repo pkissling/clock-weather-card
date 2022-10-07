@@ -218,7 +218,6 @@ export class ClockWeatherCard extends LitElement {
     const weather = this.getWeather();
     const currentTemp = Math.round(weather.attributes.temperature);
     const indicatorPosition = isToday ? (100 / (maxTempDay - minTempDay)) * (currentTemp - minTempDay) : null;
-    const tempUnit = weather.attributes.temperature_unit;
     if (indicatorPosition === null) {
       return html``;
     }
@@ -227,9 +226,6 @@ export class ClockWeatherCard extends LitElement {
       <forecast-temperature-bar-current-indicator style="--position: ${indicatorPosition}%;">
         <forecast-temperature-bar-current-indicator-dot style="--move-left: ${indicatorPosition > 50 ? '1' : '0'}">
         </forecast-temperature-bar-current-indicator-dot>
-        <forecast-temperature-bar-current-indicator-temp style="${indicatorPosition > 50 ? '--right: 100%' : '--left: 100%'}">
-          ${this.toConfiguredTempUnit(tempUnit, currentTemp)}
-        </forecast-temperature-bar-current-indicator-temp>
       </forecast-temperature-bar-current-indicator>
     `;
   }

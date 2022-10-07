@@ -95,17 +95,6 @@ export default css`
     border: var(--border-width) solid var(--text-light-primary-color);
     margin-left: calc(var(--move-left) * -1 * var(--bar-height));
   }
-  
-  forecast-temperature-bar-current-indicator-temp {
-    color: var(--text-light-primary-color);
-    position: relative !important;
-    display: grid;
-    align-items: center;
-    margin-right: calc(var(--bar-height) + 0.2rem);
-    margin-left: calc(var(--bar-height) + 0.2rem);
-    left: var(--left);
-    right: var(--right);
-  }
 
   forecast-temperature-bar-range {
     border-radius: calc(var(--bar-height) / 2);
@@ -122,7 +111,6 @@ export default css`
 
   forecast-temperature-bar-current-indicator,
   forecast-temperature-bar-current-indicator-dot,
-  forecast-temperature-bar-current-indicator-temp,
   forecast-temperature-bar-background,
   forecast-temperature-bar-range {
     height: 100%;
