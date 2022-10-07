@@ -12,14 +12,14 @@ import {
 import { ClockWeatherCardConfig, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
-import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 import { HassEntityBase } from 'home-assistant-js-websocket';
 import { max, min, round } from './utils';
 import { svg, png } from './images';
+import { version } from '../package.json';
 
 console.info(
-  `%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${CARD_VERSION}    `,
+`%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${version}    `,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
