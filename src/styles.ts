@@ -84,15 +84,12 @@ export default css`
     background: var(--light-primary-color);
   }
 
-
   forecast-temperature-bar-current-indicator-dot {
     --border-width: 2px;
-    --double-border-width: calc(var(--border-width) * 2);
     background-color: var(--primary-text-color);
-    height: calc(100% - var(--double-border-width)) !important;
     border-radius: 50%;
     aspect-ratio: 1/1;
-    border: var(--border-width) solid var(--text-light-primary-color);
+    box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
     margin-left: calc(var(--move-left) * -1 * var(--bar-height));
   }
 
