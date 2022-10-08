@@ -161,7 +161,8 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecastDay(forecast: WeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
     const dayText = localize(`day.${new Date(forecast.datetime).getDay()}`);
-    const weatherIcon = this.toIcon(forecast.condition, 'fill', true, 'static');
+    const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
+    const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
     const minTempDay = Math.round(forecast.templow);
     const maxTempDay = Math.round(forecast.temperature);
