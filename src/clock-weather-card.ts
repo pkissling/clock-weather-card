@@ -267,11 +267,11 @@ export class ClockWeatherCard extends LitElement {
     }
 
     function rgbAtPosition(startIndex: number, endIndex: number, percentToNextIndex: number, rgbs: Rgb[]): Rgb {
-      const start = rgbs[startIndex]
-      const end = rgbs[endIndex]
-      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex
-      const left = percentToNextIndex < 0 ? end : start
-      const right = percentToNextIndex < 0 ? start : end
+      const start = rgbs[startIndex];
+      const end = rgbs[endIndex];
+      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex;
+      const left = percentToNextIndex < 0 ? end : start;
+      const right = percentToNextIndex < 0 ? start : end;
       const r = valueAtPosition(left.r, right.r, percent);
       const g = valueAtPosition(left.g, right.g, percent);
       const b = valueAtPosition(left.b, right.b, percent);
@@ -279,12 +279,12 @@ export class ClockWeatherCard extends LitElement {
     }
 
     const steps = 100 / (rgbs.length - 1);
-    const step = percent / steps
+    const step = percent / steps;
     const startIndex = Math.round(step);
     const percentToNextIndex = (100 / steps) * (percent - startIndex * steps);
-    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1
+    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1;
     const rgb = rgbAtPosition(startIndex, endIndex, percentToNextIndex, rgbs);
-    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex)
+    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex);
     return [rgb, index];
   }
 
@@ -370,15 +370,18 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
-    const startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
-    const endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
+    let startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
+    let endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
     if (Math.round(startPercent) === Math.round(endPercent)) {
-      return {
-        startPercent: startPercent - 2.5,
-        endPercent: endPercent + 2.5
-      };
+      startPercent -= 2.5;
+      endPercent += 2.5;
     }
-    return { startPercent, endPercent };
+    // fix floating point issue
+    // (100 / (19 - 8)) * (19 - 8) = 100.00000000000001
+    return {
+      startPercent: Math.max(0, startPercent),
+      endPercent: Math.min(100, endPercent)
+    };
   }
 }
 
