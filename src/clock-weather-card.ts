@@ -6,7 +6,6 @@ import {
   hasAction,
   ActionHandlerEvent,
   handleAction,
-  LovelaceCardEditor,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
 import { ClockWeatherCardConfig, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
@@ -31,22 +30,19 @@ console.info(
 (window as any).customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
-  description: 'A template custom card for you to create something awesome',
+  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
 });
 
-const gradientMap = new Map()
+const gradientMap: Map<number, Rgb> = new Map()
   .set(-10, new Rgb(155, 203, 227)) // darker blue
   .set(0, new Rgb(155, 203, 227)) // light blue
-  .set(10, new Rgb(252, 245, 112)) // yellow
-  .set(20, new Rgb(255, 150, 79)) // orange
-  .set(30, new Rgb(255, 192, 159)); // red
+  .set(10, new Rgb(121, 210 ,179)) // turquoise
+  .set(20, new Rgb(252, 245, 112)) // yellow
+  .set(30, new Rgb(255, 150, 79)) // orange
+  .set(40, new Rgb(255, 192, 159)); // red
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
-  public static async getConfigElement(): Promise<LovelaceCardEditor> {
-    return document.createElement('clock-weather-card-editor');
-  }
-
   public static getStubConfig(): Record<string, unknown> {
     return {};
   }
@@ -243,7 +239,7 @@ export class ClockWeatherCard extends LitElement {
     const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]));
     return Array.from(gradientMap.keys())
       .filter((temp) => temp >= minVal && temp <= maxVal)
-      .map((temp) => gradientMap.get(temp));
+      .map((temp) => gradientMap.get(temp) as Rgb);
   }
 
   private gradient(rgbs: Rgb[], fromPercent: number, toPercent: number): string {

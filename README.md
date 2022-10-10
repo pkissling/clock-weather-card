@@ -1,24 +1,24 @@
+# Clock Weather Card
+
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub all releases](https://img.shields.io/github/downloads/pkissling/clock-weather-card/total)](https://github.com/pkissling/clock-weather-card/releases)
 [![GitHub release (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/total?sort=semver)](https://github.com/pkissling/clock-weather-card/releases/latest)
 
-# Clock Weather Card
-
 A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) available through the [Home Assistant Community Store](https://hacs.xyz)
 showing the current date, time and a weather forecast.
 
-Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
-
 ![Clock Weather Card](.github/assets/card.gif)
 [^1]
+
+Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
 
 ## Installation
 
 ### Manual Installation
 
-1. Download the [clock-weather-card](https://www.github.com/pkissling/clock-weather-card/releases/latest/download/clock-weather-card.js)
-2. Place the file in your `config/www` folder
-3. Add the configuration to your `ui-lovelace.yaml`
+1. Download the [clock-weather-card](https://www.github.com/pkissling/clock-weather-card/releases/latest/download/clock-weather-card.js).
+2. Place the file in your Home Assistant's `config/www` folder.
+3. Add the configuration to your `ui-lovelace.yaml`.
 
    ```yaml
    resources:
@@ -26,13 +26,13 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
        type: module
    ```
 
-4. Write [configuration](#configuration) for the card in your `ui-lovelace.yaml`
+4. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml`.
 
 ### Installation and tracking with `hacs`
 
 1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
-2. Search for `clock-weather-card` and add it through HACS
-3. Add the configuration to your `ui-lovelace.yaml`
+2. Search for `clock-weather-card` in HACS and install it.
+3. Add the configuration to your `ui-lovelace.yaml`.
 
    ```yaml
    resources:
@@ -40,7 +40,8 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
        type: module
    ```
 
-4. Refresh home-assistant.
+4. Restart Home Assistant.
+5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml`.
 
 ## Configuration
 
