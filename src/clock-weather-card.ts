@@ -367,12 +367,8 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
-    let startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
-    let endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
-    if (Math.round(startPercent) === Math.round(endPercent)) {
-      startPercent -= 2.5;
-      endPercent += 2.5;
-    }
+    const startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
+    const endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
     // fix floating point issue
     // (100 / (19 - 8)) * (19 - 8) = 100.00000000000001
     return {

@@ -99,6 +99,7 @@ export default css`
     right: calc(100% - var(--end-percent));
     background: linear-gradient(to right, var(--gradient));
     overflow: hidden;
+    min-width: var(--bar-height);
   }
 
   forecast-temperature-bar-current-indicator {
