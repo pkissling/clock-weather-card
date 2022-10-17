@@ -53,6 +53,14 @@ export class ClockWeatherCard extends LitElement {
   @state() private config!: MergedClockWeatherCardConfig;
   @state() private currentDate!: Date;
 
+  constructor() {
+    super();
+    this.currentDate = new Date();
+    const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000;
+    setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute);
+    setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
+  }
+
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: ClockWeatherCardConfig): void {
     if (!config) {
@@ -68,19 +76,12 @@ export class ClockWeatherCard extends LitElement {
     }
 
     this.config = this.mergeConfig(config);
-    this.currentDate = new Date();
   }
 
   // https://lit.dev/docs/components/lifecycle/#reactive-update-cycle-performing
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     if (!this.config) {
       return false;
-    }
-
-    const hass = changedProps.get('hass') as HomeAssistant | undefined;
-    if (hass && hass.states['sensor.time'].state !== this.time()) {
-      this.currentDate = new Date();
-      return true;
     }
 
     return hasConfigOrEntityChanged(this, changedProps, false);
