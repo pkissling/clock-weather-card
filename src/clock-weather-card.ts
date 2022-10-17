@@ -18,7 +18,7 @@ import { svg, png } from './images';
 import { version } from '../package.json';
 
 console.info(
-`%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${version}    `,
+`%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${version}`,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
