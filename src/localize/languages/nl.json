@@ -1,35 +1,34 @@
 {
-    "common": {
-        "version": "Versie",
-        "invalid_configuration": "Ongeldige configuratie.",
-        "entity_missing": "Vereiste weerentiteit ontbreekt.",
-        "invalid_forecast_days": "De waarde van forecast_days moet groter zijn dan 0."
-    },
-    "weather": {
-        "clear-night": "Helder",
-        "cloudy": "Bewolkt",
-        "fog": "Mist",
-        "hail": "Hagel",
-        "lightning": "Onweersbuien",
-        "lightning-rainy": "Onweersbuien met regen",
-        "partlycloudy": "Half bewolkt",
-        "pouring": "Regen",
-        "rainy": "Regenachtig",
-        "snowy": "Sneeuw",
-        "snowy-rainy": "Natte sneeuw",
-        "sunny": "Zonnig",
-        "windy": "Winderig",
-        "windy-variant": "Storm",
-        "exceptional": "Chaos"
-    },
-    "day": {
-        "0": "Zo",
-        "1": "Ma",
-        "2": "Di",
-        "3": "Wo",
-        "4": "Do",
-        "5": "Vr",
-        "6": "Za",
-        "today": "Vandaag"
-    }
+  "common": {
+    "version": "Versie",
+    "invalid_configuration": "Ongeldige configuratie.",
+    "entity_missing": "Vereiste weerentiteit ontbreekt.",
+    "invalid_forecast_days": "De waarde van forecast_days moet groter zijn dan 0."
+  },
+  "weather": {
+    "clear-night": "Helder",
+    "cloudy": "Bewolkt",
+    "fog": "Mist",
+    "hail": "Hagel",
+    "lightning": "Onweersbuien",
+    "lightning-rainy": "Onweersbuien met regen",
+    "partlycloudy": "Half bewolkt",
+    "pouring": "Regen",
+    "rainy": "Regenachtig",
+    "snowy": "Sneeuw",
+    "snowy-rainy": "Natte sneeuw",
+    "sunny": "Zonnig",
+    "windy": "Winderig",
+    "windy-variant": "Storm",
+    "exceptional": "Chaos"
+  },
+  "day": {
+    "0": "Zo",
+    "1": "Ma",
+    "2": "Di",
+    "3": "Wo",
+    "4": "Do",
+    "5": "Vr",
+    "6": "Za"
+  }
 }
