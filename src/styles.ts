@@ -44,7 +44,8 @@ export default css`
     display: flex;
     height: 4rem;
     align-items: center;
-    font-size: 4rem;
+    font-size: 3.5rem;
+    white-space: nowrap;
   }
 
   clock-weather-card-today-right-wrap-bottom {
