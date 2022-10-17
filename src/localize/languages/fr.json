@@ -1,0 +1,35 @@
+{
+  "common": {
+    "version": "Version",
+    "invalid_configuration": "Configuration invalide.",
+    "entity_missing": "Entité météo requise manquante.",
+    "invalid_forecast_days": "Les jours de prévision doivent être supérieurs à 0."
+  },
+  "weather": {
+    "clear-night": "Dégagé",
+    "cloudy": "Nuageux",
+    "fog": "Brouillard",
+    "hail": "Grêle",
+    "lightning": "Orages",
+    "lightning-rainy": "Orages et pluvieux",
+    "partlycloudy": "Partiellement nuageux",
+    "pouring": "Pluie battante",
+    "rainy": "Pluie",
+    "snowy": "Neige",
+    "snowy-rainy": "Neige fondante",
+    "sunny": "Ensoleillé",
+    "windy": "Venteux",
+    "windy-variant": "Vent fort",
+    "exceptional": "Chaos"
+  },
+  "day": {
+    "0": "Dim",
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mer",
+    "4": "Jeu",
+    "5": "Ven",
+    "6": "Sam",
+    "today": "Aujourd'hui"
+  }
+}
