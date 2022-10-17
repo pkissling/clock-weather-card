@@ -1,0 +1,35 @@
+{
+  "common": {
+    "version": "Version",
+    "invalid_configuration": "Ungültige Konfiguration.",
+    "entity_missing": "Benötigte Wetter-Entität fehlt.",
+    "invalid_forecast_days": "forcast_days muss größer als 0 sein."
+  },
+  "weather": {
+    "clear-night": "Klare Nacht",
+    "cloudy": "Bewölkt",
+    "fog": "Neblig",
+    "hail": "Hagel",
+    "lightning": "Gewitter",
+    "lightning-rainy": "Gewitter",
+    "partlycloudy": "Teilweise bewölkt",
+    "pouring": "Starker Regen",
+    "rainy": "regnerisch",
+    "snowy": "Schneefall",
+    "snowy-rainy": "Schneeregen",
+    "sunny": "Sonnig",
+    "windy": "Windig",
+    "windy-variant": "Starker Wind",
+    "exceptional": "Unwetter"
+  },
+  "day": {
+    "0": "Son",
+    "1": "Mon",
+    "2": "Die",
+    "3": "Mit",
+    "4": "Don",
+    "5": "Fre",
+    "6": "Sam",
+    "today": "Heute"
+  }
+}
