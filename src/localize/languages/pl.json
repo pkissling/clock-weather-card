@@ -1,0 +1,35 @@
+{
+  "common": {
+    "version": "Wersja",
+    "invalid_configuration": "Błędna konfiguracja.",
+    "entity_missing": "Required weather entity missing.",
+    "invalid_forecast_days": "forecast_days musi być większe niż 0."
+  },
+  "weather": {
+    "clear-night": "Bezchmurna noc",
+    "cloudy": "Pochmurnie",
+    "fog": "Mgła",
+    "hail": "Grad",
+    "lightning": "Burza",
+    "lightning-rainy": "Burza z piorunami",
+    "partlycloudy": "Częściowe zachmurzenie",
+    "pouring": "Ulewa",
+    "rainy": "Deszczowo",
+    "snowy": "Śnieg",
+    "snowy-rainy": "Śnieg z deszczem",
+    "sunny": "Słonecznie",
+    "windy": "Wietrznie",
+    "windy-variant": "Silny wiatr",
+    "exceptional": "Chaos"
+  },
+  "day": {
+    "0": "niedz.",
+    "1": "pon.",
+    "2": "wt.",
+    "3": "śr.",
+    "4": "czw.",
+    "5": "pt.",
+    "6": "sob.",
+    "today": "dzisiaj"
+  }
+}
