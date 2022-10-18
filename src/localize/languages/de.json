@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Version",
     "invalid_configuration": "ungültige Konfiguration.",
     "entity_missing": "Erforderliche Wetterentität fehlt.",
     "invalid_forecast_days": "Forecast_Days muss größer als 0 sein."
@@ -23,12 +22,12 @@
     "exceptional": "Unwetter"
   },
   "day": {
-    "0": "Son",
-    "1": "Mon",
-    "2": "Die",
-    "3": "Mit",
-    "4": "Don",
-    "5": "Fre",
-    "6": "Sam"
+    "0": "So",
+    "1": "Mo",
+    "2": "Di",
+    "3": "Mi",
+    "4": "Do",
+    "5": "Fr",
+    "6": "Sa"
   }
 }

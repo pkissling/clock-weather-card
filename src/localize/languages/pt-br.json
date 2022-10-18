@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Versão",
     "invalid_configuration": "Configuração inválida.",
     "entity_missing": "A entidade requerida de clima não foi encontrada.",
     "invalid_forecast_days": "forecast_days deve ser maior do que 0."

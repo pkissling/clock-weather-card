@@ -6,6 +6,7 @@ import {
   hasAction,
   ActionHandlerEvent,
   handleAction,
+  TimeFormat,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
 import { ClockWeatherCardConfig, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
@@ -18,7 +19,7 @@ import { svg, png } from './images';
 import { version } from '../package.json';
 
 console.info(
-`%c  CLOCK-WEATHER-CARD \n%c  ${localize('common.version')} ${version}`,
+`%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
@@ -64,15 +65,19 @@ export class ClockWeatherCard extends LitElement {
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: ClockWeatherCardConfig): void {
     if (!config) {
-      throw new Error(localize('common.invalid_configuration'));
+      throw new Error(this.localize('common.invalid_configuration'));
     }
 
     if (!config.entity) {
-      throw new Error(localize('common.entity_missing'));
+      throw new Error(this.localize('common.entity_missing'));
     }
 
     if (config.forecast_days && config.forecast_days < 1) {
-      throw new Error(localize('common.invalid_forecast_days'));
+      throw new Error(this.localize('common.invalid_forecast_days'));
+    }
+
+    if (config.time_format && config.time_format.toString() !== '24' && config.time_format.toString() !== '12') {
+      throw new Error(this.localize('common.invalid_time_format'));
     }
 
     this.config = this.mergeConfig(config);
@@ -116,7 +121,7 @@ export class ClockWeatherCard extends LitElement {
     const tempUnit = weather.attributes.temperature_unit;
     const iconType = this.config.weather_icon_type;
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind());
-    const localizedState = localize(`weather.${state}`);
+    const localizedState = this.localize(`weather.${state}`);
     const localizedTemp = Math.round(temp) + tempUnit;
 
     return html`
@@ -157,7 +162,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private renderForecastDay(forecast: WeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
-    const dayText = localize(`day.${new Date(forecast.datetime).getDay()}`);
+    const dayText = this.localize(`day.${new Date(forecast.datetime).getDay()}`);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
@@ -299,6 +304,7 @@ export class ClockWeatherCard extends LitElement {
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
       animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
+      time_format: config.time_format?.toString() as '12' | '24' | undefined
     };
   }
 
@@ -311,7 +317,7 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
-    if (!weather?.attributes?.forecast) throw new Error(localize('common.entity_missing'));
+    if (!weather?.attributes?.forecast) throw new Error(this.localize('common.entity_missing'));
     return weather;
   }
 
@@ -320,11 +326,11 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getLocale(): string {
-    return this.config.locale || this.hass?.locale?.language || 'en';
+    return this.config.locale || this.hass.locale?.language || 'en';
   }
 
   private date(): string {
-    const weekday = localize(`day.${this.currentDate.getDay()}`);
+    const weekday = this.localize(`day.${this.currentDate.getDay()}`);
     const date = this.currentDate.toLocaleDateString(this.getLocale(), {
       year: '2-digit',
       month: '2-digit',
@@ -337,6 +343,7 @@ export class ClockWeatherCard extends LitElement {
     return this.currentDate.toLocaleTimeString(this.getLocale(), {
       hour: '2-digit',
       minute: '2-digit',
+      hour12: this.getTimeFormat() === '12'
     });
   }
 
@@ -367,6 +374,16 @@ export class ClockWeatherCard extends LitElement {
       : this.toCelsius(unit, temp) + '°C'
   }
 
+  private getTimeFormat(): '12' | '24' {
+    if (this.config.time_format) {
+      return this.config.time_format
+    }
+
+    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24'
+    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12'
+    return '24'
+  }
+
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
     const startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
     const endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
@@ -376,6 +393,10 @@ export class ClockWeatherCard extends LitElement {
       startPercent: Math.max(0, startPercent),
       endPercent: Math.min(100, endPercent)
     };
+  }
+
+  private localize(key: string): string {
+    return localize(key, this.getLocale())
   }
 }
 

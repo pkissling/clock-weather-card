@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Version",
     "invalid_configuration": "Ugyldig konfiguration.",
     "entity_missing": "Påkrævet vejr-enhed mangler.",
     "invalid_forecast_days": "forecast_days skal være større end 0."

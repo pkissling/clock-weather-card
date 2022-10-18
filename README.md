@@ -62,7 +62,8 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 | weather_icon_type | `fill` \| `line` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
 | animated_icon     | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                         | `true`    |
 | forecast_days     | number           | **Optional** | Days of weather forecast to show                                                                                                                          | `5`       |
-| locale            | string[^2]       | **Optional** | Language to use for date/time formatting and language specific text. If not provided, falls back to the locale set in HA                                  | `en`      |
+| locale            | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                           | `en`      |
+| time_format       | `12` \| `24`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
 
 ## FAQ
 
@@ -76,4 +77,4 @@ Your weather provider may not provide today's weather as part of their weather f
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `en`
+[^2]: Supported languages: `bg`, `da`, `de`, `en`, `fr`, `nl`, `pl`, `pt-BR`

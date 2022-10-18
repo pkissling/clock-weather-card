@@ -1,9 +1,9 @@
 {
   "common": {
-    "version": "Version",
     "invalid_configuration": "Invalid configuration.",
     "entity_missing": "Required weather entity missing.",
-    "invalid_forecast_days": "forecast_days must be greater than 0."
+    "invalid_forecast_days": "forecast_days must be greater than 0.",
+    "invalid_time_format": "time_format must be '12' or '24'"
   },
   "weather": {
     "clear-night": "Clear",
