@@ -298,7 +298,7 @@ export class ClockWeatherCard extends LitElement {
       sun_entity: config.sun_entity || 'sun.sun',
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
-      animated_icon: config.animated_icons || true,
+      animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
     };
   }
 
