@@ -154,7 +154,7 @@ export class ClockWeatherCard extends LitElement {
       .map((f) => f.temperature);
     const minTemp = Math.round(min(minTemps));
     const maxTemp = Math.round(max(maxTemps));
-    const temperatueUnit = weather.attributes.temperature_unit
+    const temperatueUnit = weather.attributes.temperature_unit;
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatueUnit);
     return weather.attributes.forecast
       .slice(0, days)
@@ -181,9 +181,9 @@ export class ClockWeatherCard extends LitElement {
 
   private renderText(text: string, textAlign: 'left' | 'center' | 'right' = 'left'): TemplateResult {
     return html`
-      <div style="text-align: ${textAlign}">
+      <forecast-text style="--text-align: ${textAlign};">
         ${text}
-      </div>
+      </forecast-text>
     `;
   }
 
