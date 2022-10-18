@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Wersja",
     "invalid_configuration": "Błędna konfiguracja.",
     "entity_missing": "Required weather entity missing.",
     "invalid_forecast_days": "forecast_days musi być większe niż 0."

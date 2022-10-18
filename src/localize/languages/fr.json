@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Version",
     "invalid_configuration": "Configuration invalide.",
     "entity_missing": "Entité météo requise manquante.",
     "invalid_forecast_days": "Les jours de prévision doivent être supérieurs à 0."

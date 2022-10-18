@@ -5,7 +5,7 @@ import * as en from './languages/en.json';
 import * as fr from './languages/fr.json';
 import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
-import * as ptBR from './languages/da.json';
+import * as ptBR from './languages/pt-br.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
@@ -19,9 +19,9 @@ const languages: any = {
   ptBR
 };
 
-export function localize(key: string): string {
+export function localize(key: string, locale: string): string {
   let translated: string;
-  const lang = (localStorage.getItem('selectedLanguage') || 'en')
+  const lang = locale
     .replace(/['"]+/g, '')
     .replace('-', '_')
     .replace('_', '');
