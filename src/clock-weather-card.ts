@@ -80,6 +80,10 @@ export class ClockWeatherCard extends LitElement {
       throw new Error(this.localize('common.invalid_time_format'));
     }
 
+    if (config.hide_today_section && config.hide_forecast_section) {
+      throw new Error(this.localize('common.invalid_hides'));
+    }
+
     this.config = this.mergeConfig(config);
   }
 
@@ -94,6 +98,8 @@ export class ClockWeatherCard extends LitElement {
 
   // https://lit.dev/docs/components/rendering/
   protected render(): TemplateResult {
+    const showToday = !this.config.hide_today_section
+    const showForecast = !this.config.hide_forecast_section
     return html`
       <ha-card
         @action=${this.handleAction}
@@ -104,12 +110,14 @@ export class ClockWeatherCard extends LitElement {
         tabindex="0"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
       >
-        <clock-weather-card-today>
-          ${this.renderToday()}
-        </clock-weather-card-today>
-        <clock-weather-card-forecast>
-          ${this.renderForecast()}
-        </clock-weather-card-forecast>
+        ${showToday ? html`
+          <clock-weather-card-today>
+            ${this.renderToday()}
+          </clock-weather-card-today>` : ''}
+        ${showForecast ? html`
+          <clock-weather-card-forecast>
+            ${this.renderForecast()}
+          </clock-weather-card-forecast>` : ''}
       </ha-card>
     `;
   }
@@ -304,7 +312,9 @@ export class ClockWeatherCard extends LitElement {
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
       animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
-      time_format: config.time_format?.toString() as '12' | '24' | undefined
+      time_format: config.time_format?.toString() as '12' | '24' | undefined,
+      hide_forecast_section: config.hide_forecast_section || false,
+      hide_today_section: config.hide_today_section || false,
     };
   }
 
@@ -396,7 +406,13 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private localize(key: string): string {
-    return localize(key, this.getLocale())
+    try {
+      // might fail if rendering a configuration error, since not all variables were initialized
+      return localize(key, this.getLocale());
+    } catch (e) {
+      const locale = localStorage.getItem('selectedLanguage') || 'en';
+      return localize(key, locale);
+    }
   }
 }
 

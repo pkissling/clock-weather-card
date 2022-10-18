@@ -15,7 +15,9 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon?: boolean;
   forecast_days?: number;
   locale?: string;
-  time_format?: '12' | '24'
+  time_format?: '12' | '24';
+  hide_today_section?: boolean;
+  hide_forecast_section?: boolean;
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -25,7 +27,9 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon: boolean;
   forecast_days: number;
   locale?: string;
-  time_format?: '12' | '24'
+  time_format?: '12' | '24';
+  hide_today_section: boolean;
+  hide_forecast_section: boolean;
 }
 
 export interface Weather extends HassEntity {
