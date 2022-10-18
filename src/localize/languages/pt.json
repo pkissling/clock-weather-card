@@ -1,0 +1,33 @@
+{
+  "common": {
+    "invalid_configuration": "Configuração inválida.",
+    "entity_missing": "A entidade de clima não foi encontrada.",
+    "invalid_forecast_days": "forecast_days deve ser maior do que 0."
+  },
+  "weather": {
+    "clear-night": "Céu limpo, sem nuvens",
+    "cloudy": "Nublado",
+    "fog": "Nevoeiro",
+    "hail": "Granizo",
+    "lightning": "Raios",
+    "lightning-rainy": "Chuvoso com raios",
+    "partlycloudy": "Parcialmente nublado",
+    "pouring": "Torrencial",
+    "rainy": "Chuvoso",
+    "snowy": "Neve",
+    "snowy-rainy": "Chuvoso com neve",
+    "sunny": "Ensolarado",
+    "windy": "Ventania",
+    "windy-variant": "Ventania forte",
+    "exceptional": "Excepcional"
+  },
+  "day": {
+    "0": "Domingo",
+    "1": "Segunda",
+    "2": "Terça",
+    "3": "Quarta",
+    "4": "Quinta",
+    "5": "Sexta",
+    "6": "Sábado"
+  }
+}
