@@ -1,0 +1,34 @@
+{
+  "common": {
+    "version": "Versión",
+    "invalid_configuration": "Configuración no válida.",
+    "entity_missing": "Se requiere una entidad tipo 'Weather'.",
+    "invalid_forecast_days": "Los días de previsión deben ser mayor a 0."
+  },
+  "weather": {
+    "clear-night": "Despejado",
+    "cloudy": "Nublado",
+    "fog": "Niebla",
+    "hail": "Granizo",
+    "lightning": "Tormenta eléctrica",
+    "lightning-rainy": "Tormenta",
+    "partlycloudy": "Parcialmente nublado",
+    "pouring": "Diluviando",
+    "rainy": "Lluvioso",
+    "snowy": "Nieve",
+    "snowy-rainy": "Aguanieve",
+    "sunny": "Soleado",
+    "windy": "Viento",
+    "windy-variant": "Fuerte viento",
+    "exceptional": "Caos"
+  },
+  "day": {
+    "0": "Lun",
+    "1": "Mar",
+    "2": "Mie",
+    "3": "Jue",
+    "4": "Vie",
+    "5": "Sab",
+    "6": "Dom"
+  }
+}
