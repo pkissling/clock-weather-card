@@ -54,16 +54,18 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ### Options
 
-| Name              | Type             | Requirement  | Description                                                                                                                                               | Default   |
-|-------------------|------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| type              | string           | **Required** | `custom:clock-weather-card`                                                                                                                               |           |
-| entity            | string           | **Required** | ID of the weather entity                                                                                                                                  |           |
-| sun_entity        | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                    | `sun.sun` |
-| weather_icon_type | `fill` \| `line` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
-| animated_icon     | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                         | `true`    |
-| forecast_days     | number           | **Optional** | Days of weather forecast to show                                                                                                                          | `5`       |
-| locale            | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                           | `en`      |
-| time_format       | `12` \| `24`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
+| Name                  | Type             | Requirement  | Description                                                                                                                                               | Default   |
+|-----------------------|------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| type                  | string           | **Required** | `custom:clock-weather-card`                                                                                                                               |           |
+| entity                | string           | **Required** | ID of the weather entity                                                                                                                                  |           |
+| sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                    | `sun.sun` |
+| weather_icon_type     | `fill` \| `line` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
+| animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                         | `true`    |
+| forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                          | `5`       |
+| locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                           | `en`      |
+| time_format           | `12` \| `24`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
+| hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                  | `false`   |
+| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                          | `false`   |
 
 ## FAQ
 
