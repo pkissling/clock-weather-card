@@ -2,6 +2,7 @@ import * as bg from './languages/bg.json';
 import * as da from './languages/da.json';
 import * as de from './languages/de.json';
 import * as en from './languages/en.json';
+import * as es from './languages/es.json';
 import * as fr from './languages/fr.json';
 import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
@@ -13,6 +14,7 @@ const languages: any = {
   da,
   de,
   en,
+  es,
   fr,
   nl,
   pl,
