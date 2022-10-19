@@ -7,6 +7,7 @@ import * as fr from './languages/fr.json';
 import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
 import * as ptbr from './languages/pt-br.json';
+import * as uk from './languages/uk.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
@@ -18,7 +19,8 @@ const languages: any = {
   fr,
   nl,
   pl,
-  ptbr
+  ptbr,
+  uk,
 };
 
 export function localize(key: string, locale: string): string {
