@@ -22,12 +22,12 @@
     "exceptional": "Excepcional"
   },
   "day": {
-    "0": "Domingo",
-    "1": "Segunda",
-    "2": "Terça",
-    "3": "Quarta",
-    "4": "Quinta",
-    "5": "Sexta",
-    "6": "Sábado"
+    "0": "Dom",
+    "1": "Seg",
+    "2": "Ter",
+    "3": "Qua",
+    "4": "Qui",
+    "5": "Sex",
+    "6": "Sáb"
   }
 }
