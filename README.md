@@ -79,4 +79,4 @@ Your weather provider may not provide today's weather as part of their weather f
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `da`, `de`, `en`, `fr`, `nl`, `pl`, `pt-BR`
+[^2]: Supported languages: `bg`, `da`, `de`, `en`, `es`, `fr`, `nl`, `pl`, `pt`, `pt-BR`, `sk`, `uk`
