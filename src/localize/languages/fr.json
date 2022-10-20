@@ -3,6 +3,8 @@
     "invalid_configuration": "Configuration invalide.",
     "entity_missing": "Entité météo requise manquante.",
     "invalid_forecast_days": "Les jours de prévision doivent être supérieurs à 0."
+    "invalid_time_format": "time_format doit être '12' ou '24'.",
+    "invalid_hides": "'hide_today_section' et 'hide_forecast_section' ne doivent pas être activé en même temps."
   },
   "weather": {
     "clear-night": "Dégagé",
