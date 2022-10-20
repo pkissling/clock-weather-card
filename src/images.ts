@@ -95,7 +95,10 @@ export const svg = {
       night: svgLinePartlyCloudyNight,
     },
     cloudy: svgLineCloudy,
-    'clear-night': svgLineClearNight,
+    'clear-night': {
+      day: svgLineClearDay,
+      night: svgLineClearNight,
+    },
     fog: {
       day: svgLineFogDay,
       night: svgLineFogNight,
@@ -132,7 +135,10 @@ export const svg = {
       night: svgFillPartlyCloudyNight,
     },
     cloudy: svgFillCloudy,
-    'clear-night': svgFillClearNight,
+    'clear-night': {
+      day: svgFillClearDay,
+      night: svgFillClearNight,
+    },
     fog: {
       day: svgFillFogDay,
       night: svgFillFogNight,
@@ -172,7 +178,10 @@ export const png = {
       night: pngLinePartlyCloudyNight,
     },
     cloudy: pngLineCloudy,
-    'clear-night': pngLineClearNight,
+    'clear-night': {
+      day: pngLineClearDay,
+      night: pngLineClearNight,
+    },
     fog: {
       day: pngLineFogDay,
       night: pngLineFogNight,
@@ -209,7 +218,10 @@ export const png = {
       night: pngFillPartlyCloudyNight,
     },
     cloudy: pngFillCloudy,
-    'clear-night': pngFillClearNight,
+    'clear-night': {
+      day: pngFillClearDay,
+      night: pngFillClearNight,
+    },
     fog: {
       day: pngFillFogDay,
       night: pngFillFogNight,

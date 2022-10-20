@@ -9,12 +9,12 @@ import {
   TimeFormat,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
-import { ClockWeatherCardConfig, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
+import { ClockWeatherCardConfig, DailyWeatherForecast, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
 import { localize } from './localize/localize';
 import { HassEntityBase } from 'home-assistant-js-websocket';
-import { max, min, round, roundDown, roundUp } from './utils';
+import { extractMostOccuring, max, min, round, roundDown, roundUp } from './utils';
 import { svg, png } from './images';
 import { version } from '../package.json';
 
@@ -154,22 +154,19 @@ export class ClockWeatherCard extends LitElement {
   private renderForecast(): TemplateResult[] {
     const weather = this.getWeather();
     const days = this.config.forecast_days;
-    const minTemps = weather.attributes.forecast
-      .slice(0, days)
-      .map((f) => f.templow);
-    const maxTemps = weather.attributes.forecast
-      .slice(0, days)
-      .map((f) => f.temperature);
+
+    const dailyForecasts = this.extractDailyForecasts(weather.attributes.forecast, days);
+
+    const minTemps = dailyForecasts.map((f) => f.templow);
+    const maxTemps = dailyForecasts.map((f) => f.temperature);
     const minTemp = Math.round(min(minTemps));
     const maxTemp = Math.round(max(maxTemps));
     const temperatueUnit = weather.attributes.temperature_unit;
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatueUnit);
-    return weather.attributes.forecast
-      .slice(0, days)
-      .map((forecast) => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp));
+    return dailyForecasts.map((forecast) => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp));
   }
 
-  private renderForecastDay(forecast: WeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
+  private renderForecastDay(forecast: DailyWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
     const dayText = this.localize(`day.${new Date(forecast.datetime).getDay()}`);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
@@ -203,7 +200,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastTemperatureBar(forecast: WeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): TemplateResult {
+  private renderForecastTemperatureBar(forecast: DailyWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay);
     return html`
       <forecast-temperature-bar>
@@ -221,7 +218,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastCurrentTemp(forecast: WeatherForecast, minTempDay: number, maxTempDay: number): TemplateResult {
+  private renderForecastCurrentTemp(forecast: DailyWeatherForecast, minTempDay: number, maxTempDay: number): TemplateResult {
     const isToday = new Date().getDay() === new Date(forecast.datetime).getDay();
     if (!isToday) {
       return html``;
@@ -412,6 +409,50 @@ export class ClockWeatherCard extends LitElement {
     } catch (e) {
       const locale = localStorage.getItem('selectedLanguage') || 'en';
       return localize(key, locale);
+    }
+  }
+
+  private extractDailyForecasts(forecasts: WeatherForecast[], days: number): DailyWeatherForecast[] {
+    const agg = forecasts.reduce((forecasts, forecast) => {
+      const day = new Date(forecast.datetime).getDate();
+      forecasts[day] = forecasts[day] || [];
+      forecasts[day].push(forecast);
+      return forecasts;
+    }, {} as Record<number, WeatherForecast[]>);
+
+    return Object.values(agg)
+      .reduce((agg: DailyWeatherForecast[], forecasts) => {
+        if (!forecasts.length) return agg;
+        const avg = this.calculateAverageDailyForecast(forecasts);
+        agg.push(avg);
+        return agg;
+      }, [])
+      .slice(0, days);
+  }
+
+  private calculateAverageDailyForecast(forecasts: WeatherForecast[]): DailyWeatherForecast {
+    const minTemps = forecasts.map((f) => f.templow || f.temperature);
+    const minTemp = min(minTemps);
+
+    const maxTemps = forecasts.map((f) => f.temperature);
+    const maxTemp = max(maxTemps);
+
+    const precipitationProbabilities = forecasts.map((f) => f.precipitation_probability || 0);
+    const precipitationProbability = max(precipitationProbabilities);
+
+    const precipitations = forecasts.map((f) => f.precipitation || 0);
+    const precipitation = max(precipitations);
+
+    const conditions = forecasts.map((f) => f.condition);
+    const condition = extractMostOccuring(conditions);
+
+    return {
+      temperature: maxTemp,
+      templow: minTemp,
+      datetime: forecasts[0].datetime,
+      condition: condition,
+      precipitation_probability: precipitationProbability,
+      precipitation: precipitation,
     }
   }
 }
