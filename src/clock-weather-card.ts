@@ -112,11 +112,11 @@ export class ClockWeatherCard extends LitElement {
       >
         ${showToday ? html`
           <clock-weather-card-today>
-            ${this.renderToday()}
+            ${this.safeRender(() => this.renderToday())}
           </clock-weather-card-today>` : ''}
         ${showForecast ? html`
           <clock-weather-card-forecast>
-            ${this.renderForecast()}
+            ${this.safeRender(() => this.renderForecast())}
           </clock-weather-card-forecast>` : ''}
       </ha-card>
     `;
@@ -163,7 +163,7 @@ export class ClockWeatherCard extends LitElement {
     const maxTemp = Math.round(max(maxTemps));
     const temperatueUnit = weather.attributes.temperature_unit;
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatueUnit);
-    return dailyForecasts.map((forecast) => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp));
+    return dailyForecasts.map((forecast) => this.safeRender(() => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp)));
   }
 
   private renderForecastDay(forecast: DailyWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
@@ -453,6 +453,15 @@ export class ClockWeatherCard extends LitElement {
       condition: condition,
       precipitation_probability: precipitationProbability,
       precipitation: precipitation,
+    }
+  }
+
+  private safeRender<T>(renderFn: () => T): T | TemplateResult {
+    try {
+      return renderFn()
+    } catch (e) {
+      console.error('Error while rendering clock-weather-card component:', e)
+      return html``
     }
   }
 }
