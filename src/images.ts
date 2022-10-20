@@ -115,8 +115,8 @@ export const svg = {
     pouring: svgLineRain,
     raindrop: svgLineRaindrop,
     raindrops: svgLineRaindrops,
-    snow: svgLineSnow,
-    'snowy-rain': svgLineSleet,
+    snowy: svgLineSnow,
+    'snowy-rainy': svgLineSleet,
     sunny: {
       day: svgLineClearDay,
       night: svgLineClearDay,
@@ -155,8 +155,8 @@ export const svg = {
     pouring: svgFillRain,
     raindrop: svgFillRaindrop,
     raindrops: svgFillRaindrops,
-    snow: svgFillSnow,
-    'snowy-rain': svgFillSleet,
+    snowy: svgFillSnow,
+    'snowy-rainy': svgFillSleet,
     sunny: {
       day: svgFillClearDay,
       night: svgFillClearDay,
@@ -198,8 +198,8 @@ export const png = {
     pouring: pngLineRain,
     raindrop: pngLineRaindrop,
     raindrops: pngLineRaindrops,
-    snow: pngLineSnow,
-    'snowy-rain': pngLineSleet,
+    snowy: pngLineSnow,
+    'snowy-rainy': pngLineSleet,
     sunny: {
       day: pngLineClearDay,
       night: pngLineClearDay,
@@ -238,8 +238,8 @@ export const png = {
     pouring: pngFillRain,
     raindrop: pngFillRaindrop,
     raindrops: pngFillRaindrops,
-    snow: pngFillSnow,
-    'snowy-rain': pngFillSleet,
+    snowy: pngFillSnow,
+    'snowy-rainy': pngFillSleet,
     sunny: {
       day: pngFillClearDay,
       night: pngFillClearDay,
