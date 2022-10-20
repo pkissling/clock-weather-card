@@ -1,0 +1,35 @@
+{
+  "common": {
+    "invalid_configuration": "설정이 올바르지 않습니다.",
+    "entity_missing": "엔티티가 누락되었습니다.",
+    "invalid_forecast_days": "forecast_days 는 0보다 커야 합니다.",
+    "invalid_time_format": "time_format 은 '12 또는 '24'이어야 합니다.",
+    "invalid_hides": "'hide_today_section' 와 'hide_forecast_section' 함께 사용할 수 없습니다."
+  },
+  "weather": {
+    "clear-night": "맑은 밤",
+    "cloudy": "흐림",
+    "fog": "안개",
+    "hail": "우박",
+    "lightning": "천둥번개",
+    "lightning-rainy": "국지성 호우",
+    "partlycloudy": "다소 흐림",
+    "pouring": "폭우",
+    "rainy": "비",
+    "snowy": "눈",
+    "snowy-rainy": "진눈깨비",
+    "sunny": "맑음",
+    "windy": "바람",
+    "windy-variant": "강풍",
+    "exceptional": "예외"
+  },
+  "day": {
+    "0": "일",
+    "1": "월",
+    "2": "화",
+    "3": "수",
+    "4": "목",
+    "5": "금",
+    "6": "토"
+  }
+}
