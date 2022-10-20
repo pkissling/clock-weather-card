@@ -1,0 +1,33 @@
+{
+  "common": {
+    "invalid_configuration": "Ugyldig konfigurasjon.",
+    "entity_missing": "Mangler påkrevd vær-entitet.",
+    "invalid_forecast_days": "forecast_days må være større enn 0."
+  },
+  "weather": {
+    "clear-night": "Klart",
+    "cloudy": "Overskyet",
+    "fog": "Tåke",
+    "hail": "Hagl",
+    "lightning": "Lyn",
+    "lightning-rainy": "Lyn, regn",
+    "partlycloudy": "Delvis overskyet",
+    "pouring": "Pøsregn",
+    "rainy": "Regn",
+    "snowy": "Snø",
+    "snowy-rainy": "Sludd",
+    "sunny": "Sol",
+    "windy": "Vindfullt",
+    "windy-variant": "Sterk vind",
+    "exceptional": "Kaos"
+  },
+  "day": {
+    "0": "Søn",
+    "1": "Man",
+    "2": "Tir",
+    "3": "Ons",
+    "4": "Tor",
+    "5": "Fre",
+    "6": "Lør"
+  }
+}
