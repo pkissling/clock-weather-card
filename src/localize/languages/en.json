@@ -1,7 +1,7 @@
 {
   "common": {
     "invalid_configuration": "Invalid configuration.",
-    "entity_missing": "",
+    "entity_missing": "entity must be present",
     "invalid_forecast_days": "forecast_days must be greater than 0.",
     "invalid_time_format": "time_format must be '12' or '24'.",
     "invalid_hides": "'hide_today_section' and 'hide_forecast_section' must not enabled at the same time."
