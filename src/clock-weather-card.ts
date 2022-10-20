@@ -9,7 +9,15 @@ import {
   TimeFormat,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
-import { ClockWeatherCardConfig, DailyWeatherForecast, MergedClockWeatherCardConfig, Rgb, TemperatureUnit, Weather, WeatherForecast } from './types';
+import {
+  ClockWeatherCardConfig,
+  MergedClockWeatherCardConfig,
+  MergedWeatherForecast,
+  Rgb,
+  TemperatureUnit,
+  Weather,
+  WeatherForecast 
+} from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
 import { localize } from './localize/localize';
@@ -166,7 +174,7 @@ export class ClockWeatherCard extends LitElement {
     return dailyForecasts.map((forecast) => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp));
   }
 
-  private renderForecastDay(forecast: DailyWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
+  private renderForecastDay(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number): TemplateResult {
     const dayText = this.localize(`day.${new Date(forecast.datetime).getDay()}`);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
@@ -200,7 +208,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastTemperatureBar(forecast: DailyWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): TemplateResult {
+  private renderForecastTemperatureBar(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay);
     return html`
       <forecast-temperature-bar>
@@ -218,7 +226,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastCurrentTemp(forecast: DailyWeatherForecast, minTempDay: number, maxTempDay: number): TemplateResult {
+  private renderForecastCurrentTemp(forecast: MergedWeatherForecast, minTempDay: number, maxTempDay: number): TemplateResult {
     const isToday = new Date().getDay() === new Date(forecast.datetime).getDay();
     if (!isToday) {
       return html``;
@@ -392,6 +400,10 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
+    if (maxTemp === minTemp) {
+      // avoid division by 0
+      return { startPercent: 0, endPercent: 100 };
+    }
     const startPercent = (100 / (maxTemp - minTemp)) * (minTempDay - minTemp);
     const endPercent = (100 / (maxTemp - minTemp)) * (maxTempDay - minTemp);
     // fix floating point issue
@@ -412,7 +424,7 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-  private extractDailyForecasts(forecasts: WeatherForecast[], days: number): DailyWeatherForecast[] {
+  private extractDailyForecasts(forecasts: WeatherForecast[], days: number): MergedWeatherForecast[] {
     const agg = forecasts.reduce((forecasts, forecast) => {
       const day = new Date(forecast.datetime).getDate();
       forecasts[day] = forecasts[day] || [];
@@ -421,7 +433,7 @@ export class ClockWeatherCard extends LitElement {
     }, {} as Record<number, WeatherForecast[]>);
 
     return Object.values(agg)
-      .reduce((agg: DailyWeatherForecast[], forecasts) => {
+      .reduce((agg: MergedWeatherForecast[], forecasts) => {
         if (!forecasts.length) return agg;
         const avg = this.calculateAverageDailyForecast(forecasts);
         agg.push(avg);
@@ -430,11 +442,11 @@ export class ClockWeatherCard extends LitElement {
       .slice(0, days);
   }
 
-  private calculateAverageDailyForecast(forecasts: WeatherForecast[]): DailyWeatherForecast {
-    const minTemps = forecasts.map((f) => f.templow || f.temperature);
+  private calculateAverageDailyForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
+    const minTemps = forecasts.map((f) => f.templow || f.temperature || this.getWeather().attributes.temperature);
     const minTemp = min(minTemps);
 
-    const maxTemps = forecasts.map((f) => f.temperature);
+    const maxTemps = forecasts.map((f) => f.temperature || this.getWeather().attributes.temperature);
     const maxTemp = max(maxTemps);
 
     const precipitationProbabilities = forecasts.map((f) => f.precipitation_probability || 0);
