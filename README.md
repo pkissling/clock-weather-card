@@ -5,7 +5,6 @@
 [![Downloads of latest version (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/total?sort=semver)](https://github.com/pkissling/clock-weather-card/releases/latest)
 [![Current version](https://img.shields.io/github/v/release/pkissling/clock-weather-card)](https://github.com/pkissling/clock-weather-card/releases/latest)
 
-
 A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) available through the [Home Assistant Community Store](https://hacs.xyz)
 showing the current date, time and a weather forecast.
 
@@ -54,6 +53,21 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
   entity: weather.home
 ```
 
+### Full configuration
+
+```yaml
+- type: custom:clock-weather-card
+  entity: weather.home
+  sun_entity: sun.sun
+  weather_icon_type: line
+  animated_icon: true
+  forecast_days: 5
+  locale: en
+  time_format: 24
+  hide_today_section: false
+  hide_forecast_section: false
+```
+
 ### Options
 
 | Name                  | Type             | Requirement  | Description                                                                                                                                               | Default   |
@@ -61,11 +75,11 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 | type                  | string           | **Required** | `custom:clock-weather-card`                                                                                                                               |           |
 | entity                | string           | **Required** | ID of the weather entity                                                                                                                                  |           |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                    | `sun.sun` |
-| weather_icon_type     | `fill` \| `line` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
+| weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                         | `true`    |
 | forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                          | `5`       |
 | locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                           | `en`      |
-| time_format           | `12` \| `24`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
+| time_format           | `24` \| `12`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                  | `false`   |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                          | `false`   |
 
