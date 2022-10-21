@@ -16,8 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "@lit-labs/scoped-registry-mixin": "^1.0.0",
-    "custom-card-helpers": "^1.7.2",
-    "home-assistant-js-websocket": "^5.11.1",
+    "custom-card-helpers": "^1.8.0",
+    "home-assistant-js-websocket": "^8.0.0",
     "lit": "^2.0.0"
   },
   "devDependencies": {

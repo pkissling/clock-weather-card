@@ -1,0 +1,34 @@
+{
+  "common": {
+    "invalid_configuration": "Помилка конфігурації.",
+    "entity_missing": "Відсутня необхідна сутність погоди.",
+    "invalid_forecast_days": "значення днів прогнозу має бути більше 0.",
+    "invalid_time_format": "формат часу має бути '12' або '24'"
+  },
+  "weather": {
+    "clear-night": "Ясно",
+    "cloudy": "Хмарно",
+    "fog": "Туман",
+    "hail": "Грім",
+    "lightning": "Грози",
+    "lightning-rainy": "Дощові грози",
+    "partlycloudy": "Мінлива хмарність",
+    "pouring": "Злива",
+    "rainy": "Дощ",
+    "snowy": "Сніг",
+    "snowy-rainy": "Мокрий сніг",
+    "sunny": "Сонячно",
+    "windy": "Вітряно",
+    "windy-variant": "Дуже вітряно",
+    "exceptional": "Буря"
+  },
+  "day": {
+    "0": "Нд",
+    "1": "Пн",
+    "2": "Вт",
+    "3": "Ср",
+    "4": "Чт",
+    "5": "Пт",
+    "6": "Сб"
+  }
+}

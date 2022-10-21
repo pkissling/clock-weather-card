@@ -26,3 +26,22 @@ export function roundDown(n: number, precision = 0): number {
   }
   return Math.floor(n / precision) * precision;
 }
+
+// from https://stackoverflow.com/a/1053865
+export function extractMostOccuring<T extends string | number | symbol>(elements: T[]): T {
+  const modeMap = {} as Record<T, number>; let maxEl = elements[0], maxCount = 1;
+  for (let i = 0; i < elements.length; i++) {
+    const el = elements[i];
+    if (modeMap[el] == null) {
+      modeMap[el] = 1;
+    } else {
+      modeMap[el]++;
+      if (modeMap[el] > maxCount) {
+        maxEl = el;
+        maxCount = modeMap[el];
+      }
+    }
+    return maxEl;
+  }
+  return maxEl;
+}

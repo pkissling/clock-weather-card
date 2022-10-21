@@ -15,6 +15,9 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon?: boolean;
   forecast_days?: number;
   locale?: string;
+  time_format?: '12' | '24';
+  hide_today_section?: boolean;
+  hide_forecast_section?: boolean;
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -24,6 +27,9 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon: boolean;
   forecast_days: number;
   locale?: string;
+  time_format?: '12' | '24';
+  hide_today_section: boolean;
+  hide_forecast_section: boolean;
 }
 
 export interface Weather extends HassEntity {
@@ -38,13 +44,23 @@ export interface Weather extends HassEntity {
 
 export type TemperatureUnit = '°C' | '°F';
 
-export interface WeatherForecast {
-  temperature: number;
-  templow: number;
-  precipitation: number;
+export type WeatherForecast = HourlyWeatherForecast | DailyWeatherForecast
+
+export type BaseWeatherForecast = {
   datetime: string;
   condition: string;
+  temperature: number;
+  precipitation: number | null;
+}
+
+export type HourlyWeatherForecast = BaseWeatherForecast & {
+  precipitation_probability: null;
+  templow: null;
+}
+
+export type DailyWeatherForecast = BaseWeatherForecast & {
   precipitation_probability: number;
+  templow: number;
 }
 
 export class Rgb {

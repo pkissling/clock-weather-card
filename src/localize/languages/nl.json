@@ -1,6 +1,5 @@
 {
   "common": {
-    "version": "Versie",
     "invalid_configuration": "Ongeldige configuratie.",
     "entity_missing": "Vereiste weerentiteit ontbreekt.",
     "invalid_forecast_days": "De waarde van forecast_days moet groter zijn dan 0."
