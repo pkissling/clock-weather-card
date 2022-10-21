@@ -4,13 +4,14 @@ import * as de from './languages/de.json';
 import * as en from './languages/en.json';
 import * as es from './languages/es.json';
 import * as fr from './languages/fr.json';
+import * as kr from './languages/kr.json';
 import * as nl from './languages/nl.json';
+import * as no from './languages/no.json';
 import * as pl from './languages/pl.json';
-import * as pt from './languages/pt.json';
 import * as ptbr from './languages/pt-br.json';
+import * as pt from './languages/pt.json';
 import * as sk from './languages/sk.json';
 import * as uk from './languages/uk.json';
-import * as kr from './languages/kr.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
@@ -20,13 +21,14 @@ const languages: any = {
   en,
   es,
   fr,
+  kr,
   nl,
+  no,
   pl,
-  pt,
   ptbr,
+  pt,
   sk,
   uk,
-  kr,
 };
 
 export function localize(key: string, locale: string): string {
