@@ -351,7 +351,7 @@ export class ClockWeatherCard extends LitElement {
     return this.currentDate.toLocaleTimeString(this.getLocale(), {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: this.getTimeFormat() === '12'
+      hourCycle: this.getTimeFormat()
     });
   }
 
@@ -382,14 +382,14 @@ export class ClockWeatherCard extends LitElement {
       : this.toCelsius(unit, temp) + '°C'
   }
 
-  private getTimeFormat(): '12' | '24' {
+  private getTimeFormat(): 'h12' | 'h23' {
     if (this.config.time_format) {
-      return this.config.time_format
+      return this.config.time_format === '12' ? 'h12' : 'h23'
     }
 
-    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24'
-    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12'
-    return '24'
+    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return 'h23'
+    if (this.hass.locale?.time_format === TimeFormat.am_pm) return 'h12'
+    return 'h23'
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
