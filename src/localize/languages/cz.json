@@ -1,0 +1,35 @@
+{
+  "common": {
+    "invalid_configuration": "Neplatná konfigurace.",
+    "entity_missing": "chybí entita",
+    "invalid_forecast_days": "forecast_days musí být větší než 0.",
+    "invalid_time_format": "time_format musí být '12' nebo '24'.",
+    "invalid_hides": "'hide_today_section' a 'hide_forecast_section' nesmí být současně povolené."
+  },
+  "weather": {
+    "clear-night": "Jasno",
+    "cloudy": "Zataženo",
+    "fog": "Mlha",
+    "hail": "Kroupy",
+    "lightning": "Bouřky",
+    "lightning-rainy": "Bouřky s deštěm",
+    "partlycloudy": "Částečně zataženo",
+    "pouring": "Silný déšť",
+    "rainy": "Déšť",
+    "snowy": "Sníh",
+    "snowy-rainy": "Sníh s deštěm",
+    "sunny": "Slunečno",
+    "windy": "Vítr",
+    "windy-variant": "Prudký vítr",
+    "exceptional": "Chaos"
+  },
+  "day": {
+    "0": "Ne",
+    "1": "Po",
+    "2": "Út",
+    "3": "St",
+    "4": "Čt",
+    "5": "Pá",
+    "6": "So"
+  }
+}

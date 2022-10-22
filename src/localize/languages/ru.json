@@ -1,0 +1,35 @@
+{
+  "common": {
+    "invalid_configuration": "Неверная конфигурация",
+    "entity_missing": "Отсутствует сущность погоды",
+    "invalid_forecast_days": "Количество дней прогноза должно быть больше 0",
+    "invalid_time_format": "Значение 'time_format' должно быть '12' или '24'",
+    "invalid_hides": "Опции 'hide_today_section' и 'hide_forecast_section' нельзя включать одновременно!"
+  },
+  "weather": {
+    "clear-night": "Ясно",
+    "cloudy": "Облачно",
+    "fog": "Туман",
+    "hail": "Град",
+    "lightning": "Гроза",
+    "lightning-rainy": "Дождь с грозой",
+    "partlycloudy": "Переменная облачность",
+    "pouring": "Проливной дождь",
+    "rainy": "Дождь",
+    "snowy": "Снег",
+    "snowy-rainy": "Мокрый снег",
+    "sunny": "Солнечно",
+    "windy": "Ветер",
+    "windy-variant": "Сильный ветер",
+    "exceptional": "Буря"
+  },
+  "day": {
+    "0": "Вс",
+    "1": "Пн",
+    "2": "Вт",
+    "3": "Ср",
+    "4": "Чт",
+    "5": "Пт",
+    "6": "Сб"
+  }
+}
