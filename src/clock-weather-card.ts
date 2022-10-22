@@ -162,7 +162,7 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecast(): TemplateResult[] {
     const weather = this.getWeather();
-    const currentTemp = weather.attributes.temperature;
+    const currentTemp = Math.round(weather.attributes.temperature);
     const days = this.config.forecast_days;
 
     const dailyForecasts = this.extractDailyForecasts(weather.attributes.forecast, days);
