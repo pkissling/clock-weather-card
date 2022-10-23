@@ -44,21 +44,20 @@ export interface Weather extends HassEntity {
 
 export type TemperatureUnit = '°C' | '°F';
 
-export type WeatherForecast = HourlyWeatherForecast | DailyWeatherForecast
-
-export type BaseWeatherForecast = {
+export type WeatherForecast = {
   datetime: string;
   condition: string;
-  temperature: number;
+  temperature: number | null;
   precipitation: number | null;
+  precipitation_probability: number | null;
+  templow: number | null;
 }
 
-export type HourlyWeatherForecast = BaseWeatherForecast & {
-  precipitation_probability: null;
-  templow: null;
-}
-
-export type DailyWeatherForecast = BaseWeatherForecast & {
+export type MergedWeatherForecast = {
+  datetime: Date;
+  condition: string;
+  temperature: number;
+  precipitation: number;
   precipitation_probability: number;
   templow: number;
 }
