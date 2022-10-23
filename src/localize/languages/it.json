@@ -1,0 +1,35 @@
+{
+  "common": {
+    "invalid_configuration": "Configurazione non valida.",
+    "entity_missing": "L'entità deve essere presente",
+    "invalid_forecast_days": "forecast_days deve essere maggiore di 0.",
+    "invalid_time_format": "time_format deve essere '12' o '24'.",
+    "invalid_hides": "'hide_today_section' e 'hide_forecast_section' non possono essere abilitati contemporaneamente."
+  },
+  "weather": {
+    "clear-night": "Sereno",
+    "cloudy": "Nuvoloso",
+    "fog": "Nebbia",
+    "hail": "Grandine",
+    "lightning": "Temporali",
+    "lightning-rainy": "Temporali con pioggia",
+    "partlycloudy": "Parzialmente nuvoloso",
+    "pouring": "Rovesci",
+    "rainy": "Pioggia",
+    "snowy": "Neve",
+    "snowy-rainy": "Nevischio",
+    "sunny": "Soleggiato",
+    "windy": "Vento",
+    "windy-variant": "Vento forte",
+    "exceptional": "Tempesta"
+  },
+  "day": {
+    "0": "Dom",
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mer",
+    "4": "Gio",
+    "5": "Ven",
+    "6": "Sab"
+  }
+}
