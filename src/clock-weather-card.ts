@@ -231,9 +231,11 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecastCurrentTemp(minTempDay: number, maxTempDay: number, currentTemp: number): TemplateResult {
     const indicatorPosition = minTempDay === maxTempDay ? 0 : (100 / (maxTempDay - minTempDay)) * (currentTemp - minTempDay)
+    const steps = maxTempDay - minTempDay
+    const moveRight = maxTempDay === minTempDay ? 0 : (currentTemp - minTempDay) / steps
     return html`
       <forecast-temperature-bar-current-indicator style="--position: ${indicatorPosition}%;">
-        <forecast-temperature-bar-current-indicator-dot style="--move-left: ${indicatorPosition > 50 ? '1' : '0'}">
+        <forecast-temperature-bar-current-indicator-dot style="--move-right: ${moveRight}">
         </forecast-temperature-bar-current-indicator-dot>
       </forecast-temperature-bar-current-indicator>
     `;

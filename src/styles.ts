@@ -98,7 +98,7 @@ export default css`
     border-radius: 50%;
     aspect-ratio: 1/1;
     box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
-    margin-left: calc(var(--move-left) * -1 * var(--bar-height));
+    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
   }
 
   forecast-temperature-bar-range {
