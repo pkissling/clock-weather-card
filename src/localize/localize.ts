@@ -1,9 +1,11 @@
 import * as bg from './languages/bg.json';
 import * as da from './languages/da.json';
+import * as cz from './languages/cz.json';
 import * as de from './languages/de.json';
 import * as en from './languages/en.json';
 import * as es from './languages/es.json';
 import * as fr from './languages/fr.json';
+import * as it from './languages/it.json';
 import * as kr from './languages/kr.json';
 import * as nl from './languages/nl.json';
 import * as no from './languages/no.json';
@@ -13,16 +15,17 @@ import * as pt from './languages/pt.json';
 import * as ru from './languages/ru.json';
 import * as sk from './languages/sk.json';
 import * as uk from './languages/uk.json';
-import * as cz from './languages/cz.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
   bg,
+  cz,
   da,
   de,
   en,
   es,
   fr,
+  it,
   kr,
   nl,
   no,
@@ -32,7 +35,6 @@ const languages: any = {
   ru,
   sk,
   uk,
-  cz,
 };
 
 export function localize(key: string, locale: string): string {
