@@ -434,6 +434,7 @@ export class ClockWeatherCard extends LitElement {
         agg.push(avg);
         return agg;
       }, [])
+      .sort((a,b) => a.datetime.getTime() - b.datetime.getTime())
       .slice(0, days);
   }
 
@@ -456,7 +457,7 @@ export class ClockWeatherCard extends LitElement {
     return {
       temperature: maxTemp,
       templow: minTemp,
-      datetime: forecasts[0].datetime,
+      datetime: new Date(forecasts[0].datetime),
       condition: condition,
       precipitation_probability: precipitationProbability,
       precipitation: precipitation,

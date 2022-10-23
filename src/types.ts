@@ -54,7 +54,7 @@ export type WeatherForecast = {
 }
 
 export type MergedWeatherForecast = {
-  datetime: string;
+  datetime: Date;
   condition: string;
   temperature: number;
   precipitation: number;
