@@ -1,0 +1,35 @@
+{
+  "common": {
+    "invalid_configuration": "Érvénytelen konfiguráció.",
+    "entity_missing": "A szükséges időjárás entity hiányzik",
+    "invalid_forecast_days": "A forecast_days értékének 0-nál nagyobbnak kell lennie",
+    "invalid_time_format": "time_format '12' vagy '24' lehet.",
+    "invalid_hides": "'hide_today_section' és 'hide_forecast_section' nem lehet egyszerre engedélyezve."
+  },
+  "weather": {
+    "clear-night": "Tiszta",
+    "cloudy": "Felhős",
+    "fog": "Ködös",
+    "hail": "Jégeső",
+    "lightning": "Villámlás",
+    "lightning-rainy": "Zivatar",
+    "partlycloudy": "Helyenként felhős",
+    "pouring": "Felhőszakadás",
+    "rainy": "Esős",
+    "snowy": "Havazás",
+    "snowy-rainy": "Havaseső, ónoseső",
+    "sunny": "Napos",
+    "windy": "Szeles",
+    "windy-variant": "Erős szél",
+    "exceptional": "Kivételes"
+  },
+  "day": {
+    "0": "V",
+    "1": "H",
+    "2": "K",
+    "3": "Sze",
+    "4": "Cs",
+    "5": "P",
+    "6": "Szo"
+  }
+}
