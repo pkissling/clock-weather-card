@@ -1,0 +1,36 @@
+{
+  "common": {
+    "entity_missing": "Cal una entitat de tipus Meteorològic.",
+    "invalid_configuration": "La configuració no és vàlida.",
+    "invalid_forecast_days": "«Dies de previsió» ha de ser un nombre més gran que 0.",
+    "invalid_hides": "No es poden habilitar alhora les opcions «hide_today_section» i «hide_forecast_section».",
+    "invalid_time_format": "La variable time_format ha de ser «12» o «24».",
+    "version": "Versió"
+  },
+  "weather": {
+    "clear-night": "Serè",
+    "cloudy": "Ennuvolat",
+    "fog": "Boira",
+    "hail": "Calamarsa",
+    "lightning": "Tempesta elèctrica",
+    "lightning-rainy": "Tempesta",
+    "partlycloudy": "Parcialment ennuvolat",
+    "pouring": "Aiguat",
+    "rainy": "Plujós",
+    "snowy": "Neu",
+    "snowy-rainy": "Aiguaneu",
+    "sunny": "Assolellat",
+    "windy": "Ventós",
+    "windy-variant": "Vent fort",
+    "exceptional": "Excepcional"
+  },
+  "day": {
+    "0": "Dg.",
+    "1": "Dl.",
+    "2": "Dt.",
+    "3": "Dc.",
+    "4": "Dj.",
+    "5": "Dv.",
+    "6": "Ds."
+  }
+}
