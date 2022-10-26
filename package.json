@@ -17,6 +17,7 @@
   "dependencies": {
     "@lit-labs/scoped-registry-mixin": "^1.0.0",
     "custom-card-helpers": "^1.8.0",
+    "date-fns": "^2.29.3",
     "home-assistant-js-websocket": "^8.0.0",
     "lit": "^2.0.0"
   },

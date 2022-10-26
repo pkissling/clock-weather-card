@@ -26,6 +26,7 @@ import { extractMostOccuring, max, min, round, roundDown, roundUp } from './util
 import { svg, png } from './images';
 import { version } from '../package.json';
 import { safeRender } from './helpers';
+import { format } from 'date-fns';
 
 console.info(
 `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -350,11 +351,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private time(): string {
-    return this.currentDate.toLocaleTimeString(this.getLocale(), {
-      hour: '2-digit',
-      minute: '2-digit',
-      hourCycle: this.getTimeFormat()
-    });
+    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'hh:mm aa');
   }
 
   private getIconAnimationKind(): 'static' | 'animated' {
@@ -381,17 +378,17 @@ export class ClockWeatherCard extends LitElement {
 
     return unit === '°C'
       ? this.toFahrenheit(unit, temp) + '°F'
-      : this.toCelsius(unit, temp) + '°C'
+      : this.toCelsius(unit, temp) + '°C';
   }
 
-  private getTimeFormat(): 'h12' | 'h23' {
+  private getTimeFormat(): '12' | '24' {
     if (this.config.time_format) {
-      return this.config.time_format === '12' ? 'h12' : 'h23'
+      return this.config.time_format;
     }
 
-    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return 'h23'
-    if (this.hass.locale?.time_format === TimeFormat.am_pm) return 'h12'
-    return 'h23'
+    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24'
+    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12'
+    return '24'
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
