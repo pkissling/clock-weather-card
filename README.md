@@ -100,4 +100,4 @@ Depending on your Home Assistant's configuration, your weather provider might de
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `da`, `cz`, `de`, `en`, `es`, `fr`, `hu`, `it`, `kr`, `nl`, `no`, `pl`, `pt`, `pt-BR`, `ru`, `sk`, `uk`
+[^2]: Supported languages: `bg`, `ca`, `da`, `cz`, `de`, `en`, `es`, `fr`, `hu`, `it`, `kr`, `nl`, `no`, `pl`, `pt`, `pt-BR`, `ru`, `sk`, `sv`, `uk`
