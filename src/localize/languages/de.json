@@ -6,7 +6,7 @@
   },
   "weather": {
     "clear-night": "Klar",
-    "cloudy": "Wolkig",
+    "cloudy": "Bewölkt",
     "fog": "Nebel",
     "hail": "Hagel",
     "lightning": "Gewitter",
