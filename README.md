@@ -13,6 +13,20 @@ showing the current date, time and a weather forecast.
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
 
+## FAQ
+
+- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
+
+### Why don't I see the current day in my weather forecast?
+
+Your weather provider may not provide today's weather as part of their weather forecast. You may consider switching to a different weather provider.
+[OpenWeatherMap](https://www.home-assistant.io/integrations/openweathermap/) is one of the weather integrations providing today's weather.
+
+### Why does the forecast show less days than expected?
+
+Depending on your Home Assistant's configuration, your weather provider might deliver forecasts *hourly*. If this is the case, the weather integrations delivers 48 distinct forecasts (This corresponds to forecasts for the next 48 hours). You might want to consider supplying a weather entity which supplies *daily* forecasts for the card.
+
 ## Installation
 
 ### Manual Installation
@@ -82,21 +96,6 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 | time_format           | `24` \| `12`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                  | `false`   |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                          | `false`   |
-
-## FAQ
-
-- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
-
-### Why don't I see the current day in my weather forecast?
-
-Your weather provider may not provide today's weather as part of their weather forecast. You may consider switching to a different weather provider.
-[OpenWeatherMap](https://www.home-assistant.io/integrations/openweathermap/) is one of the weather integrations providing today's weather.
-
-### Why does the forecast show less days than expected?
-
-Depending on your Home Assistant's configuration, your weather provider might deliver forecasts *hourly*. If this is the case, the weather integrations delivers 48 distinct forecasts (This corresponds to forecasts for the next 48 hours). You might want to consider supplying a weather entity which supplies *daily* forecasts for the card.
-
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
