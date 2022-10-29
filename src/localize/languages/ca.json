@@ -1,12 +1,4 @@
 {
-  "common": {
-    "entity_missing": "Cal una entitat de tipus Meteorològic.",
-    "invalid_configuration": "La configuració no és vàlida.",
-    "invalid_forecast_days": "«Dies de previsió» ha de ser un nombre més gran que 0.",
-    "invalid_hides": "No es poden habilitar alhora les opcions «hide_today_section» i «hide_forecast_section».",
-    "invalid_time_format": "La variable time_format ha de ser «12» o «24».",
-    "version": "Versió"
-  },
   "weather": {
     "clear-night": "Serè",
     "cloudy": "Ennuvolat",

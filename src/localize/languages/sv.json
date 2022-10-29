@@ -1,11 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Felaktig konfiguration.",
-    "entity_missing": "entitet måste anges",
-    "invalid_forecast_days": "forecast_days måste vara större än 0.",
-    "invalid_time_format": "time_format måste vara '12' eller '24'.",
-    "invalid_hides": "'hide_today_section' och 'hide_forecast_section' får inte vara aktiva samtidigt."
-  },
   "weather": {
     "clear-night": "Klart, natt",
     "cloudy": "Molnigt",

@@ -1,9 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Ugyldig konfiguration.",
-    "entity_missing": "Påkrævet vejr-enhed mangler.",
-    "invalid_forecast_days": "forecast_days skal være større end 0."
-  },
   "weather": {
     "clear-night": "Klart",
     "cloudy": "Overskyet",
@@ -20,14 +15,5 @@
     "windy": "Blæsende",
     "windy-variant": "Stærk vind",
     "exceptional": "Kaos"
-  },
-  "day": {
-    "0": "Søn",
-    "1": "Man",
-    "2": "Tir",
-    "3": "Ons",
-    "4": "Tor",
-    "5": "Fre",
-    "6": "Lør"
   }
 }
