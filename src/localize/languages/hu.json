@@ -1,11 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Érvénytelen konfiguráció.",
-    "entity_missing": "A szükséges időjárás entity hiányzik",
-    "invalid_forecast_days": "A forecast_days értékének 0-nál nagyobbnak kell lennie",
-    "invalid_time_format": "time_format '12' vagy '24' lehet.",
-    "invalid_hides": "'hide_today_section' és 'hide_forecast_section' nem lehet egyszerre engedélyezve."
-  },
   "weather": {
     "clear-night": "Tiszta",
     "cloudy": "Felhős",

@@ -1,10 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Помилка конфігурації.",
-    "entity_missing": "Відсутня необхідна сутність погоди.",
-    "invalid_forecast_days": "значення днів прогнозу має бути більше 0.",
-    "invalid_time_format": "формат часу має бути '12' або '24'"
-  },
   "weather": {
     "clear-night": "Ясно",
     "cloudy": "Хмарно",

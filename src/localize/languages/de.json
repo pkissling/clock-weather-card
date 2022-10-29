@@ -1,9 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "ungültige Konfiguration.",
-    "entity_missing": "Erforderliche Wetterentität fehlt.",
-    "invalid_forecast_days": "Forecast_Days muss größer als 0 sein."
-  },
   "weather": {
     "clear-night": "Klar",
     "cloudy": "Bewölkt",

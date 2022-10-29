@@ -84,18 +84,20 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
 ### Options
 
-| Name                  | Type             | Requirement  | Description                                                                                                                                               | Default   |
-|-----------------------|------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| type                  | string           | **Required** | `custom:clock-weather-card`                                                                                                                               |           |
-| entity                | string           | **Required** | ID of the weather entity                                                                                                                                  |           |
-| sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                    | `sun.sun` |
-| weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                      | `line`    |
-| animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                         | `true`    |
-| forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                          | `5`       |
-| locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                           | `en`      |
-| time_format           | `24` \| `12`     | **Optional** | Format to use when formatting date/time. If not provided, falls back to the time format set in HA                                                         | `24`      |
-| hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                  | `false`   |
-| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                          | `false`   |
+| Name                  | Type             | Requirement  | Description                                                                                                                                                                                            | Default     |
+|-----------------------|------------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| type                  | string           | **Required** | `custom:clock-weather-card`                                                                                                                                                                            |             |
+| entity                | string           | **Required** | ID of the weather entity                                                                                                                                                                               |             |
+| sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                 | `sun.sun`   |
+| weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                   | `line`      |
+| animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                      | `true`      |
+| forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                       | `5`         |
+| locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                                                                        | `en-GB`     |
+| time_format           | `24` \| `12`     | **Optional** | Format used to displayed the time. If not provided, falls back to the time format set in HA                                                                                                            | `24`        |
+| date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
+| hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
+| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
+
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).

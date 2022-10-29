@@ -16,7 +16,7 @@ import {
   Rgb,
   TemperatureUnit,
   Weather,
-  WeatherForecast 
+  WeatherForecast
 } from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
@@ -26,7 +26,8 @@ import { extractMostOccuring, max, min, round, roundDown, roundUp } from './util
 import { svg, png } from './images';
 import { version } from '../package.json';
 import { safeRender } from './helpers';
-import { format } from 'date-fns';
+import { format, Locale } from 'date-fns';
+import * as locales from 'date-fns/locale';
 
 console.info(
 `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -75,23 +76,23 @@ export class ClockWeatherCard extends LitElement {
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: ClockWeatherCardConfig): void {
     if (!config) {
-      throw new Error(this.localize('common.invalid_configuration'));
+      throw new Error('Invalid configuration.');
     }
 
     if (!config.entity) {
-      throw new Error(this.localize('common.entity_missing'));
+      throw new Error('Attribute "entity" must be present.');
     }
 
     if (config.forecast_days && config.forecast_days < 1) {
-      throw new Error(this.localize('common.invalid_forecast_days'));
+      throw new Error('Attribute "forecast_days" must be greater than 0.');
     }
 
     if (config.time_format && config.time_format.toString() !== '24' && config.time_format.toString() !== '12') {
-      throw new Error(this.localize('common.invalid_time_format'));
+      throw new Error('Attribute "time_format" must either be "12" or "24".');
     }
 
     if (config.hide_today_section && config.hide_forecast_section) {
-      throw new Error(this.localize('common.invalid_hides'));
+      throw new Error('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.');
     }
 
     this.config = this.mergeConfig(config);
@@ -316,6 +317,7 @@ export class ClockWeatherCard extends LitElement {
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       hide_forecast_section: config.hide_forecast_section || false,
       hide_today_section: config.hide_today_section || false,
+      date_pattern: config.date_pattern || 'P'
     };
   }
 
@@ -328,7 +330,8 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
-    if (!weather?.attributes?.forecast) throw new Error(this.localize('common.entity_missing'));
+    if (!weather) throw new Error('Weather entity could not be found.');
+    if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
     return weather;
   }
 
@@ -337,17 +340,29 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getLocale(): string {
-    return this.config.locale || this.hass.locale?.language || 'en';
+    return this.config.locale || this.hass.locale?.language || 'en-GB';
+  }
+
+  private getDateFnsLocale(): Locale {
+    const locale = this.getLocale();
+    const localeParts = locale
+      .replace('_', '-')
+      .split('-');
+    const localeOne = localeParts[0].toLowerCase();
+    const localeTwo = localeParts[1]?.toUpperCase() || '';
+    const dateFnsLocale = localeOne + localeTwo;
+    const importedLocale = locales[dateFnsLocale];
+    if (!importedLocale) {
+      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale)
+      return locales.enGB
+    }
+    return importedLocale;
   }
 
   private date(): string {
     const weekday = this.localize(`day.${this.currentDate.getDay()}`);
-    const date = this.currentDate.toLocaleDateString(this.getLocale(), {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    return `${weekday}, ${date}`
+    const date = format(this.currentDate, this.config.date_pattern, { locale: this.getDateFnsLocale() });
+    return`${weekday}, ${date}`
   }
 
   private time(): string {
@@ -386,9 +401,9 @@ export class ClockWeatherCard extends LitElement {
       return this.config.time_format;
     }
 
-    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24'
-    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12'
-    return '24'
+    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24';
+    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12';
+    return '24';
   }
 
   private calculateBarRangePercents(minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number} {
@@ -407,13 +422,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private localize(key: string): string {
-    try {
-      // might fail if rendering a configuration error, since not all variables were initialized
       return localize(key, this.getLocale());
-    } catch (e) {
-      const locale = localStorage.getItem('selectedLanguage') || 'en';
-      return localize(key, locale);
-    }
   }
 
   private extractDailyForecasts(forecasts: WeatherForecast[], days: number): MergedWeatherForecast[] {

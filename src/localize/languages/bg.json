@@ -1,9 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Невалидна конфигурация.",
-    "entity_missing": "Липсва задължителен обект за времето.",
-    "invalid_forecast_days": "Стойността на forecast_days трябва да е по-голяма от 0."
-  },
   "weather": {
     "clear-night": "Ясно",
     "cloudy": "Облачно",

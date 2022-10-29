@@ -1,9 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Ugyldig konfigurasjon.",
-    "entity_missing": "Mangler påkrevd vær-entitet.",
-    "invalid_forecast_days": "forecast_days må være større enn 0."
-  },
   "weather": {
     "clear-night": "Klart",
     "cloudy": "Overskyet",

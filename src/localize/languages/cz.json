@@ -1,11 +1,4 @@
 {
-  "common": {
-    "invalid_configuration": "Neplatná konfigurace.",
-    "entity_missing": "chybí entita",
-    "invalid_forecast_days": "forecast_days musí být větší než 0.",
-    "invalid_time_format": "time_format musí být '12' nebo '24'.",
-    "invalid_hides": "'hide_today_section' a 'hide_forecast_section' nesmí být současně povolené."
-  },
   "weather": {
     "clear-night": "Jasno",
     "cloudy": "Zataženo",
