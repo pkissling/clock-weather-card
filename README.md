@@ -15,8 +15,18 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## FAQ
 
-- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
+- [Clock Weather Card](#clock-weather-card)
+  - [FAQ](#faq)
+    - [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+    - [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
+  - [Installation](#installation)
+    - [Manual Installation](#manual-installation)
+    - [Installation and tracking with `hacs`](#installation-and-tracking-with-hacs)
+  - [Configuration](#configuration)
+    - [Minimal configuration](#minimal-configuration)
+    - [Full configuration](#full-configuration)
+    - [Options](#options)
+  - [Footnotes](#footnotes)
 
 ### Why don't I see the current day in my weather forecast?
 
@@ -104,4 +114,4 @@ Depending on your Home Assistant's configuration, your weather provider might de
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `da`, `cz`, `de`, `en`, `es`, `fr`, `hu`, `it`, `kr`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ru`, `sk`, `sv`, `th`, `uk`
+[^2]: Supported languages: `bg`, `ca`, `cs`, `da`, `de`, `en`, `es`, `fr`, `hu`, `it`, `kr`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ru`, `sk`, `sv`, `th`, `uk`
