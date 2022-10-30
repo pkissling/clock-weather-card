@@ -8,7 +8,7 @@ import * as es from './languages/es.json';
 import * as fr from './languages/fr.json';
 import * as hu from './languages/hu.json';
 import * as it from './languages/it.json';
-import * as kr from './languages/kr.json';
+import * as ko from './languages/ko.json';
 import * as nb from './languages/nb.json';
 import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
@@ -32,7 +32,7 @@ const languages: any = {
   fr,
   hu,
   it,
-  kr,
+  ko,
   nb,
   nl,
   pl,
