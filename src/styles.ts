@@ -36,8 +36,9 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap-top {
-    display: flex;
-    justify-content: end;
+    width: 100%;
+    text-align: end;
+    display: block;
   }
 
   clock-weather-card-today-right-wrap-center {
@@ -55,8 +56,7 @@ export default css`
   }
 
   clock-weather-card-forecast {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 
   clock-weather-card-forecast-row {
@@ -97,7 +97,7 @@ export default css`
     --border-width: 2px;
     background-color: var(--primary-text-color);
     border-radius: 50%;
-    aspect-ratio: 1/1;
+    width: var(--bar-height);
     box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
     margin-left: calc(var(--move-right) * -1 * var(--bar-height));
   }
