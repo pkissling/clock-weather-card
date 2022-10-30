@@ -51,7 +51,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
    ```yaml
    resources:
-     - url: /hacsfiles/clock-weather-car/clock-weather-card.js
+     - url: /hacsfiles/clock-weather-card/clock-weather-card.js
        type: module
    ```
 
