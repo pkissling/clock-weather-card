@@ -10,6 +10,7 @@ declare global {
 
 export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string;
+  title?: string;
   sun_entity?: string;
   weather_icon_type?: 'fill' | 'line';
   animated_icon?: boolean;
@@ -23,6 +24,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string;
+  title?: string;
   sun_entity: string;
   weather_icon_type: 'fill' | 'line';
   animated_icon: boolean;

@@ -121,14 +121,20 @@ export class ClockWeatherCard extends LitElement {
         tabindex="0"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
       >
-        ${showToday ? html`
-          <clock-weather-card-today>
-            ${safeRender(() => this.renderToday())}
-          </clock-weather-card-today>` : ''}
-        ${showForecast ? html`
-          <clock-weather-card-forecast>
-            ${safeRender(() => this.renderForecast())}
-          </clock-weather-card-forecast>` : ''}
+        ${this.config.title ? html`
+          <div class="card-header">
+            ${this.config.title}
+          </div>` : '' }
+        <div class="card-content">
+          ${showToday ? html`
+            <clock-weather-card-today>
+              ${safeRender(() => this.renderToday())}
+            </clock-weather-card-today>` : ''}
+          ${showForecast ? html`
+            <clock-weather-card-forecast>
+              ${safeRender(() => this.renderForecast())}
+            </clock-weather-card-forecast>` : ''}
+        </div>
       </ha-card>
     `;
   }
