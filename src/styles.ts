@@ -4,7 +4,6 @@ export default css`
 
   ha-card {
     --bar-height: 1.5rem;
-    padding: 1rem;
   }
 
   clock-weather-card-today {

@@ -72,12 +72,14 @@ Depending on your Home Assistant's configuration, your weather provider might de
 ```yaml
 - type: custom:clock-weather-card
   entity: weather.home
+  title: Home
   sun_entity: sun.sun
   weather_icon_type: line
   animated_icon: true
   forecast_days: 5
   locale: en
   time_format: 24
+  date_pattern: P
   hide_today_section: false
   hide_forecast_section: false
 ```
@@ -88,6 +90,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 |-----------------------|------------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
 | type                  | string           | **Required** | `custom:clock-weather-card`                                                                                                                                                                            |             |
 | entity                | string           | **Required** | ID of the weather entity                                                                                                                                                                               |             |
+| title                 | string           | **Optional** | Title of the card                                                                                                                                                                                      | `''`        |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                 | `sun.sun`   |
 | weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                   | `line`      |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                      | `true`      |
