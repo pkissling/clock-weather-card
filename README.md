@@ -82,6 +82,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   date_pattern: P
   hide_today_section: false
   hide_forecast_section: false
+  forecast_hourly: false
 ```
 
 ### Options
