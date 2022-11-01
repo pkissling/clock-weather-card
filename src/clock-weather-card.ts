@@ -451,16 +451,16 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private calculateAverageDailyForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
-    const minTemps = forecasts.map((f) => f.templow || f.temperature || this.getWeather().attributes.temperature);
+    const minTemps = forecasts.map((f) => f.templow ?? f.temperature ?? this.getWeather().attributes.temperature);
     const minTemp = min(minTemps);
 
-    const maxTemps = forecasts.map((f) => f.temperature || this.getWeather().attributes.temperature);
+    const maxTemps = forecasts.map((f) => f.temperature ?? this.getWeather().attributes.temperature);
     const maxTemp = max(maxTemps);
 
-    const precipitationProbabilities = forecasts.map((f) => f.precipitation_probability || 0);
+    const precipitationProbabilities = forecasts.map((f) => f.precipitation_probability ?? 0);
     const precipitationProbability = max(precipitationProbabilities);
 
-    const precipitations = forecasts.map((f) => f.precipitation || 0);
+    const precipitations = forecasts.map((f) => f.precipitation ?? 0);
     const precipitation = max(precipitations);
 
     const conditions = forecasts.map((f) => f.condition);
