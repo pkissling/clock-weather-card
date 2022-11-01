@@ -16,6 +16,7 @@ import {
   Rgb,
   TemperatureUnit,
   Weather,
+  TemperatureSensor,
   WeatherForecast
 } from './types';
 import styles from './styles';
@@ -317,6 +318,7 @@ export class ClockWeatherCard extends LitElement {
     return {
       ...config,
       sun_entity: config.sun_entity || 'sun.sun',
+      temperature_sensor: config.temperature_sensor || '',
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
       animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
@@ -336,8 +338,10 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
+    const temp = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined;
     if (!weather) throw new Error('Weather entity could not be found.');
     if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
+    if (temp) weather.attributes.temperature = +temp.state;
     return weather;
   }
 

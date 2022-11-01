@@ -74,6 +74,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   entity: weather.home
   title: Home
   sun_entity: sun.sun
+  temperature_sensor: sensor.outdoor_temp
   weather_icon_type: line
   animated_icon: true
   forecast_days: 5
@@ -92,6 +93,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | entity                | string           | **Required** | ID of the weather entity                                                                                                                                                                               |             |
 | title                 | string           | **Optional** | Title of the card                                                                                                                                                                                      | `''`        |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                 | `sun.sun`   |
+| temperature_sensor            | boolean          | **Optional** | ID of the temperature sensor. Used to set the current temperature based on a sensor value instead of the weather forecast                                                                 | ``   |
 | weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                   | `line`      |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                      | `true`      |
 | forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                       | `5`         |
