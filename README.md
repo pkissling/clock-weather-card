@@ -15,18 +15,8 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## FAQ
 
-- [Clock Weather Card](#clock-weather-card)
-  - [FAQ](#faq)
-    - [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-    - [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
-  - [Installation](#installation)
-    - [Manual Installation](#manual-installation)
-    - [Installation and tracking with `hacs`](#installation-and-tracking-with-hacs)
-  - [Configuration](#configuration)
-    - [Minimal configuration](#minimal-configuration)
-    - [Full configuration](#full-configuration)
-    - [Options](#options)
-  - [Footnotes](#footnotes)
+- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
 
 ### Why don't I see the current day in my weather forecast?
 
