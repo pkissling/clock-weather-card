@@ -1,0 +1,28 @@
+{
+  "weather": {
+    "clear-night": "Selkeää",
+    "cloudy": "Pilvistä",
+    "fog": "Sumua",
+    "hail": "Raekuuroja",
+    "lightning": "Ukkosta",
+    "lightning-rainy": "Ukkoskuuroja",
+    "partlycloudy": "Puolipilvistä",
+    "pouring": "Voimakasta vesisadetta",
+    "rainy": "Vesisadetta",
+    "snowy": "Lumisadetta",
+    "snowy-rainy": "Räntäsadetta",
+    "sunny": "Selkeää",
+    "windy": "Tuulista",
+    "windy-variant": "Voimakasta tuulta",
+    "exceptional": "Poikkeuksellista"
+  },
+  "day": {
+    "0": "Su",
+    "1": "Ma",
+    "2": "Ti",
+    "3": "Ke",
+    "4": "To",
+    "5": "Pe",
+    "6": "La"
+  }
+}
