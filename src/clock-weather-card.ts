@@ -372,7 +372,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private time(): string {
-    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'hh:mm aa');
+    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
   }
 
   private getIconAnimationKind(): 'static' | 'animated' {
