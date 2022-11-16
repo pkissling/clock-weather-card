@@ -20,6 +20,7 @@ import * as sk from './languages/sk.json';
 import * as sv from './languages/sv.json';
 import * as th from './languages/th.json';
 import * as uk from './languages/uk.json';
+import * as vi from './languages/vi.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
@@ -45,6 +46,7 @@ const languages: any = {
   sv,
   th,
   uk,
+  vi
 };
 
 export function localize(key: string, locale: string): string {
