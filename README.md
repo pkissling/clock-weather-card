@@ -82,6 +82,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   date_pattern: P
   hide_today_section: false
   hide_forecast_section: false
+  forecast_hourly: false
 ```
 
 ### Options
@@ -100,6 +101,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
+| forecast_hourly | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
 
 ## Footnotes
 

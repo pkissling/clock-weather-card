@@ -171,21 +171,21 @@ export class ClockWeatherCard extends LitElement {
   private renderForecast(): TemplateResult[] {
     const weather = this.getWeather();
     const currentTemp = Math.round(weather.attributes.temperature);
-    const days = this.config.forecast_days;
+    const items = this.config.forecast_days;
+    const hourly = this.config.forecast_hourly;
+    const forecasts = this.extractForecasts(weather.attributes.forecast, items, hourly);
 
-    const dailyForecasts = this.extractDailyForecasts(weather.attributes.forecast, days);
-
-    const minTemps = [...dailyForecasts.map((f) => f.templow), currentTemp];
-    const maxTemps = [...dailyForecasts.map((f) => f.temperature), currentTemp];
+    const minTemps = [...forecasts.map((f) => f.templow), currentTemp];
+    const maxTemps = [...forecasts.map((f) => f.temperature), currentTemp];
     const minTemp = Math.round(min(minTemps));
     const maxTemp = Math.round(max(maxTemps));
     const temperatueUnit = weather.attributes.temperature_unit;
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatueUnit);
-    return dailyForecasts.map((forecast) => safeRender(() => this.renderForecastDay(forecast, gradientRange, minTemp, maxTemp, currentTemp)));
+    return forecasts.map((forecast) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly)));
   }
 
-  private renderForecastDay(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number): TemplateResult {
-    const dayText = this.localize(`day.${new Date(forecast.datetime).getDay()}`);
+  private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number, hourly: boolean): TemplateResult {
+    const displayText = !hourly ? this.localize(`day.${new Date(forecast.datetime).getDay()}`) : new Date(forecast.datetime).toLocaleTimeString().substring(0,5);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
@@ -194,7 +194,7 @@ export class ClockWeatherCard extends LitElement {
     const maxTempDay = Math.round(isToday ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
     return html`
       <clock-weather-card-forecast-row>
-        ${this.renderText(dayText)}
+        ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempUnit(tempUnit, minTempDay), 'right')}
         ${this.renderForecastTemperatureBar(gradientRange, minTemp, maxTemp, minTempDay, maxTempDay, currentTemp, isToday)}
@@ -319,6 +319,7 @@ export class ClockWeatherCard extends LitElement {
       sun_entity: config.sun_entity || 'sun.sun',
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
+      forecast_hourly: config.forecast_hourly || false,
       animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       hide_forecast_section: config.hide_forecast_section || false,
@@ -431,26 +432,27 @@ export class ClockWeatherCard extends LitElement {
       return localize(key, this.getLocale());
   }
 
-  private extractDailyForecasts(forecasts: WeatherForecast[], days: number): MergedWeatherForecast[] {
+  private extractForecasts(forecasts: WeatherForecast[], items: number, hourly: boolean): MergedWeatherForecast[] {
     const agg = forecasts.reduce((forecasts, forecast) => {
-      const day = new Date(forecast.datetime).getDate();
-      forecasts[day] = forecasts[day] || [];
-      forecasts[day].push(forecast);
+      const d = new Date(forecast.datetime);
+      const unit = !hourly ? d.getDate() : d.getHours();
+      forecasts[unit] = forecasts[unit] || [];
+      forecasts[unit].push(forecast);
       return forecasts;
     }, {} as Record<number, WeatherForecast[]>);
 
     return Object.values(agg)
       .reduce((agg: MergedWeatherForecast[], forecasts) => {
         if (!forecasts.length) return agg;
-        const avg = this.calculateAverageDailyForecast(forecasts);
+        const avg = this.calculateAverageForecast(forecasts);
         agg.push(avg);
         return agg;
       }, [])
       .sort((a,b) => a.datetime.getTime() - b.datetime.getTime())
-      .slice(0, days);
+      .slice(0, items);
   }
 
-  private calculateAverageDailyForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
+  private calculateAverageForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
     const minTemps = forecasts.map((f) => f.templow ?? f.temperature ?? this.getWeather().attributes.temperature);
     const minTemp = min(minTemps);
 
