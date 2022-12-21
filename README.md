@@ -99,7 +99,9 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | time_format           | `24` \| `12`     | **Optional** | Format used to displayed the time. If not provided, falls back to the time format set in HA                                                                                                            | `24`        |
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
-| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
+| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section), containing the weather forecast                                                                                                                      | `false`     |
+| hide_clock            | boolean          | **Optional** | Hides the clock from the today section                                                                                                                                                                 | `false`     |
+| hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                  | `false`     |
 
 ## Footnotes
 
