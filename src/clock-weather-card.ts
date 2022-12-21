@@ -162,7 +162,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.hide_clock ? localizedTemp : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
-            ${this.config.hide_date ? this.date() : ''}
+            ${this.config.hide_date ? '' : this.date() }
           </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`;
