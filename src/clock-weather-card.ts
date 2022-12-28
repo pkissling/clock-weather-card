@@ -1,5 +1,5 @@
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import {
   HomeAssistant,
   hasConfigOrEntityChanged,

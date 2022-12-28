@@ -20,9 +20,6 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern?: string;
   hide_today_section?: boolean;
   hide_forecast_section?: boolean;
-  tap_action?: ActionConfig;
-  hold_action?: ActionConfig;
-  double_tap_action?: ActionConfig;
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -37,9 +34,6 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern: string;
   hide_today_section: boolean;
   hide_forecast_section: boolean;
-  tap_action?: ActionConfig;
-  hold_action?: ActionConfig;
-  double_tap_action?: ActionConfig;
 }
 
 export interface Weather extends HassEntity {
