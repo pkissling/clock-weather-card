@@ -1,4 +1,4 @@
-import { LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
+import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket/dist/types';
 
 declare global {
