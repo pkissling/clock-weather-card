@@ -55,11 +55,11 @@ Depending on your Home Assistant's configuration, your weather provider might de
           type: module
       ```
 
-   2. Go to Settings -> Dashboards -> 3 dot menu -> Resources -> Add Resource
-   ```
-   URL: /hacsfiles/clock-weather-card/clock-weather-card.js
-   Type: JavaScript Module
-   ```
+   2. Go to Settings -> Dashboards -> Resources -> Add Resource
+      ```
+      URL: /hacsfiles/clock-weather-card/clock-weather-card.js
+      Type: JavaScript Module
+      ```
 4. Restart Home Assistant.
 5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml`.
 
