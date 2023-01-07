@@ -55,7 +55,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
           type: module
       ```
 
-   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources). 
+   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).  
       *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
       ```
       URL: /hacsfiles/clock-weather-card/clock-weather-card.js
