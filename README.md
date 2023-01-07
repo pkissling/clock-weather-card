@@ -47,16 +47,22 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
 1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
 2. Search for `clock-weather-card` in HACS and install it.
-3. Add the configuration to your `ui-lovelace.yaml`.
+3. Depening on whether you manage your Lovelace resources via YAML (3i) or UI (3ii), you have to add the corresponding resources.
+   1. **YAML:** Add the configuration to your `ui-lovelace.yaml`.
+      ```yaml
+      resources:
+        - url: /hacsfiles/clock-weather-card/clock-weather-card.js
+          type: module
+      ```
 
-   ```yaml
-   resources:
-     - url: /hacsfiles/clock-weather-card/clock-weather-card.js
-       type: module
-   ```
-
+   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).  
+      *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
+      ```
+      URL: /hacsfiles/clock-weather-card/clock-weather-card.js
+      Type: JavaScript Module
+      ```
 4. Restart Home Assistant.
-5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml`.
+5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml` or via the UI.
 
 ## Configuration
 
