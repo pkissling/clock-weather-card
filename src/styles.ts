@@ -68,7 +68,6 @@ export default css`
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: clip;
   }
 
