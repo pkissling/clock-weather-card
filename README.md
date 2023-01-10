@@ -83,7 +83,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   weather_icon_type: line
   animated_icon: true
   forecast_days: 5
-  locale: en
+  locale: en-GB
   time_format: 24
   date_pattern: P
   hide_today_section: false
