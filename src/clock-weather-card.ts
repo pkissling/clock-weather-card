@@ -104,6 +104,15 @@ export class ClockWeatherCard extends LitElement {
       return false;
     }
 
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
+    if (oldHass) {
+      const oldSun = oldHass.states[this.config.sun_entity];
+      const newSun = this.hass?.states[this.config.sun_entity];
+      if (oldSun !== newSun) {
+        return true;
+      }
+    }
+
     return hasConfigOrEntityChanged(this, changedProps, false);
   }
 
