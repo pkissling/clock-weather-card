@@ -20,6 +20,8 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern?: string;
   hide_today_section?: boolean;
   hide_forecast_section?: boolean;
+  hide_clock?: boolean;
+  hide_date?: boolean;
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -34,6 +36,8 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern: string;
   hide_today_section: boolean;
   hide_forecast_section: boolean;
+  hide_clock?: boolean;
+  hide_date?: boolean;
 }
 
 export interface Weather extends HassEntity {
