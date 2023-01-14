@@ -376,10 +376,14 @@ export class ClockWeatherCard extends LitElement {
     const localeOne = localeParts[0].toLowerCase();
     const localeTwo = localeParts[1]?.toUpperCase() || '';
     const dateFnsLocale = localeOne + localeTwo;
+    // HA provides en-US as en
+    if (dateFnsLocale === 'en') {
+      return locales.enUS;
+    }
     const importedLocale = locales[dateFnsLocale];
     if (!importedLocale) {
-      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale)
-      return locales.enGB
+      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale);
+      return locales.enGB;
     }
     return importedLocale;
   }
