@@ -119,7 +119,7 @@ export const svg = {
     'snowy-rainy': svgLineSleet,
     sunny: {
       day: svgLineClearDay,
-      night: svgLineClearDay,
+      night: svgLineClearNight,
     },
     windy: svgLineWindsock,
     'windy-exceptional': svgLineWindsock,
@@ -159,7 +159,7 @@ export const svg = {
     'snowy-rainy': svgFillSleet,
     sunny: {
       day: svgFillClearDay,
-      night: svgFillClearDay,
+      night: svgFillClearNight,
     },
     windy: svgFillWindsock,
     'windy-exceptional': svgFillWindsock,
@@ -202,7 +202,7 @@ export const png = {
     'snowy-rainy': pngLineSleet,
     sunny: {
       day: pngLineClearDay,
-      night: pngLineClearDay,
+      night: pngLineClearNight,
     },
     windy: pngLineWindsock,
     'windy-exceptional': pngLineWindsock,
@@ -242,7 +242,7 @@ export const png = {
     'snowy-rainy': pngFillSleet,
     sunny: {
       day: pngFillClearDay,
-      night: pngFillClearDay,
+      night: pngFillClearNight,
     },
     windy: pngFillWindsock,
     'windy-exceptional': pngFillWindsock,
