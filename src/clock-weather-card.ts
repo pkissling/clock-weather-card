@@ -156,7 +156,7 @@ export class ClockWeatherCard extends LitElement {
     const iconType = this.config.weather_icon_type;
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind());
     const weatherStrings = [this.localize(`weather.${state}`)];
-    const localizedTemp = temp + tempUnit
+    const localizedTemp = temp + tempUnit;
     if (temp !== null) {
       weatherStrings.push(localizedTemp);
     }
@@ -168,7 +168,7 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? weatherStrings[0] : weatherStrings.join(', ') }}
+            ${this.config.hide_clock ? weatherStrings[0] : weatherStrings.join(', ')}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp : this.time()}
