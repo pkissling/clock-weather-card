@@ -43,7 +43,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
 export interface Weather extends HassEntity {
   state: string;
   attributes: {
-    temperature: number;
+    temperature?: number;
     temperature_unit: TemperatureUnit;
     precipitation_unit: string;
     forecast: WeatherForecast[];
