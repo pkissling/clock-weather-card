@@ -156,8 +156,9 @@ export class ClockWeatherCard extends LitElement {
     const iconType = this.config.weather_icon_type;
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind());
     const weatherStrings = [this.localize(`weather.${state}`)];
+    const localizedTemp = temp + tempUnit;
     if (temp !== null) {
-      weatherStrings.push(temp + tempUnit);
+      weatherStrings.push(localizedTemp);
     }
 
     return html`
@@ -167,13 +168,13 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${weatherStrings.join(', ')}
+            ${this.config.hide_clock ? weatherStrings[0] : weatherStrings.join(', ')}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
-            ${this.time()}
+            ${this.config.hide_clock ? localizedTemp : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
-            ${this.date()}
+            ${this.config.hide_date ? '' : this.date() }
           </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`;
@@ -342,6 +343,8 @@ export class ClockWeatherCard extends LitElement {
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       hide_forecast_section: config.hide_forecast_section || false,
       hide_today_section: config.hide_today_section || false,
+      hide_clock: config.hide_clock || false,
+      hide_date: config.hide_date || false,
       date_pattern: config.date_pattern || 'P'
     };
   }
