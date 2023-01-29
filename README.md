@@ -55,7 +55,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
           type: module
       ```
 
-   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).  
+   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).
       *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
       ```
       URL: /hacsfiles/clock-weather-card/clock-weather-card.js
@@ -88,6 +88,8 @@ Depending on your Home Assistant's configuration, your weather provider might de
   date_pattern: P
   hide_today_section: false
   hide_forecast_section: false
+  hide_clock: false
+  hide_date: false
 ```
 
 ### Options
@@ -106,7 +108,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section), containing the weather forecast                                                                                                                      | `false`     |
-| hide_clock            | boolean          | **Optional** | Hides the clock from the today section                                                                                                                                                                 | `false`     |
+| hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead.                                                                                                       | `false`     |
 | hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                  | `false`     |
 
 ## Footnotes
