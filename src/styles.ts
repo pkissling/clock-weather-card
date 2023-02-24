@@ -4,6 +4,7 @@ export default css`
 
   ha-card {
     --bar-height: 1.5rem;
+    height: 100%;
   }
 
   clock-weather-card-today {
@@ -68,7 +69,6 @@ export default css`
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: clip;
   }
 

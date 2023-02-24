@@ -5,7 +5,9 @@ import * as cs from './languages/cs.json';
 import * as de from './languages/de.json';
 import * as en from './languages/en.json';
 import * as es from './languages/es.json';
+import * as fi from './languages/fi.json';
 import * as fr from './languages/fr.json';
+import * as he from './languages/he.json';
 import * as hu from './languages/hu.json';
 import * as it from './languages/it.json';
 import * as ko from './languages/ko.json';
@@ -14,11 +16,14 @@ import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
 import * as ptbr from './languages/pt-br.json';
 import * as pt from './languages/pt.json';
+import * as ro from './languages/ro.json';
 import * as ru from './languages/ru.json';
 import * as sk from './languages/sk.json';
 import * as sv from './languages/sv.json';
 import * as th from './languages/th.json';
 import * as uk from './languages/uk.json';
+import * as vi from './languages/vi.json';
+import * as zhtw from './languages/zh-tw.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
@@ -29,7 +34,9 @@ const languages: any = {
   de,
   en,
   es,
+  fi,
   fr,
+  he,
   hu,
   it,
   ko,
@@ -38,11 +45,14 @@ const languages: any = {
   pl,
   ptbr,
   pt,
+  ro,
   ru,
   sk,
   sv,
   th,
   uk,
+  vi,
+  zhtw
 };
 
 export function localize(key: string, locale: string): string {

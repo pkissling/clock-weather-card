@@ -1,0 +1,28 @@
+{
+  "weather": {
+    "clear-night": "Senin",
+    "cloudy": "Innorat",
+    "fog": "Ceata",
+    "hail": "Grindina",
+    "lightning": "Fulgere",
+    "lightning-rainy": "Furtuni cu ploaie",
+    "partlycloudy": "Partial innorat",
+    "pouring": "Averse",
+    "rainy": "Ploaie",
+    "snowy": "Ninsoare",
+    "snowy-rainy": "Lapovita",
+    "sunny": "Insorit",
+    "windy": "Vant",
+    "windy-variant": "Vant puternic",
+    "exceptional": "Furtuna"
+  },
+  "day": {
+    "0": "Dum",
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mie",
+    "4": "Joi",
+    "5": "Vin",
+    "6": "Sam"
+  }
+}
