@@ -143,12 +143,10 @@ export class ClockWeatherCard extends LitElement {
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
     const state = weather.state;
-    const temp = weather.attributes.temperature;
-    const tempUnit = weather.attributes.temperature_unit;
     const iconType = this.config.weather_icon_type;
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind());
     const localizedState = this.localize(`weather.${state}`);
-    const localizedTemp = Math.round(temp) + tempUnit;
+    const localizedTemp = this.getLocalizedTemperature();
 
     return html`
       <clock-weather-card-today-left>
@@ -338,11 +336,26 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
-    const temp = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined;
     if (!weather) throw new Error('Weather entity could not be found.');
     if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
-    if (temp) weather.attributes.temperature = +temp.state;
     return weather;
+  }
+
+  private getLocalizedTemperature(): string {
+    const weather = this.hass.states[this.config.entity] as Weather | undefined;
+    const temperatureSensor = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined;
+    if (temperatureSensor){
+      const temperature = +temperatureSensor.state;
+      const temperatureUnit = temperatureSensor.attributes.unit_of_measurement;
+      return this.toConfiguredTempUnit(temperatureUnit, temperature);
+    } 
+    else if (weather)
+    {
+      const temperature = weather.attributes.temperature;
+      const temperatureUnit = weather.attributes.temperature_unit;
+      return this.toConfiguredTempUnit(temperatureUnit, temperature);
+    }
+    return ''
   }
 
   private getSun(): HassEntityBase | undefined {
