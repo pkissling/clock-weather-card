@@ -27,6 +27,13 @@ export function roundDown(n: number, precision = 0): number {
   return Math.floor(n / precision) * precision;
 }
 
+export function roundIfNotNull(number: number | null): number | null {
+  if (number === null) {
+    return null
+  }
+
+  return Math.round(number)
+}
 // from https://stackoverflow.com/a/1053865
 export function extractMostOccuring<T extends string | number | symbol>(elements: T[]): T {
   const modeMap = {} as Record<T, number>; let maxEl = elements[0], maxCount = 1;
