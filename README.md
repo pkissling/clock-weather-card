@@ -49,6 +49,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 2. Search for `clock-weather-card` in HACS and install it.
 3. Depening on whether you manage your Lovelace resources via YAML (3i) or UI (3ii), you have to add the corresponding resources.
    1. **YAML:** Add the configuration to your `ui-lovelace.yaml`.
+
       ```yaml
       resources:
         - url: /hacsfiles/clock-weather-card/clock-weather-card.js
@@ -57,10 +58,12 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
    2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).
       *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
-      ```
+
+      ```yaml
       URL: /hacsfiles/clock-weather-card/clock-weather-card.js
       Type: JavaScript Module
       ```
+
 4. Restart Home Assistant.
 5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml` or via the UI.
 
@@ -80,6 +83,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   entity: weather.home
   title: Home
   sun_entity: sun.sun
+  temperature_sensor: sensor.outdoor_temp
   weather_icon_type: line
   animated_icon: true
   forecast_days: 5
@@ -99,6 +103,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | entity                | string           | **Required** | ID of the weather entity                                                                                                                                                                               |             |
 | title                 | string           | **Optional** | Title of the card                                                                                                                                                                                      | `''`        |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                 | `sun.sun`   |
+| temperature_sensor    | string           | **Optional** | ID of the temperature sensor entity. Used to show the current temperature based on a sensor value instead of the weather forecast                                                                      | `''`        |
 | weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                   | `line`      |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                      | `true`      |
 | forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                       | `5`         |

@@ -29,6 +29,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string;
   title?: string;
   sun_entity: string;
+  temperature_sensor?: string;
   weather_icon_type: 'fill' | 'line';
   animated_icon: boolean;
   forecast_days: number;
@@ -82,4 +83,11 @@ export class Rgb {
     this.g = g;
     this.b = b;
   }
+}
+
+export interface TemperatureSensor extends HassEntity {
+  state: string;
+  attributes: {
+    unit_of_measurement?: TemperatureUnit;
+  };
 }
