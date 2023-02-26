@@ -485,7 +485,7 @@ export class ClockWeatherCard extends LitElement {
   private extractForecasts(forecasts: WeatherForecast[], items: number, hourly: boolean): MergedWeatherForecast[] {
     const agg = forecasts.reduce((forecasts, forecast) => {
       const d = new Date(forecast.datetime);
-      const unit = !hourly ? d.getDate() : d.getHours();
+      const unit = !hourly ? d.getDate() : d.getDate()+"_"+d.getHours();
       forecasts[unit] = forecasts[unit] || [];
       forecasts[unit].push(forecast);
       return forecasts;
