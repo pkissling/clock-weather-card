@@ -204,15 +204,17 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean): TemplateResult {
-    const displayText = !hourly ? this.localize(`day.${new Date(forecast.datetime).getDay()}`) : new Date(forecast.datetime).toLocaleTimeString().substring(0,5);
+    const twelveHour = this.getTimeFormat() === '12';
+    const displayText = !hourly ? this.localize(`day.${new Date(forecast.datetime).getDay()}`) : format(new Date(forecast.datetime), !twelveHour ? 'HH:mm' : 'h:mm aa');
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
     const isToday = new Date().getDate() === new Date(forecast.datetime).getDate();
     const minTempDay = Math.round(isToday && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow);
     const maxTempDay = Math.round(isToday && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
+    const colOneSize = hourly && twelveHour ? '3rem' : hourly ? '2.5rem' : '2rem';
     return html`
-      <clock-weather-card-forecast-row>
+      <clock-weather-card-forecast-row style="--col-one-size: ${colOneSize};">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempUnit(tempUnit, minTempDay), 'right')}
