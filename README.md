@@ -47,16 +47,22 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
 1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
 2. Search for `clock-weather-card` in HACS and install it.
-3. Add the configuration to your `ui-lovelace.yaml`.
+3. Depening on whether you manage your Lovelace resources via YAML (3i) or UI (3ii), you have to add the corresponding resources.
+   1. **YAML:** Add the configuration to your `ui-lovelace.yaml`.
+      ```yaml
+      resources:
+        - url: /hacsfiles/clock-weather-card/clock-weather-card.js
+          type: module
+      ```
 
-   ```yaml
-   resources:
-     - url: /hacsfiles/clock-weather-card/clock-weather-card.js
-       type: module
-   ```
-
+   2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).
+      *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
+      ```
+      URL: /hacsfiles/clock-weather-card/clock-weather-card.js
+      Type: JavaScript Module
+      ```
 4. Restart Home Assistant.
-5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml`.
+5. Add [configuration](#configuration) for the card in your `ui-lovelace.yaml` or via the UI.
 
 ## Configuration
 
@@ -77,7 +83,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
   weather_icon_type: line
   animated_icon: true
   forecast_days: 5
-  locale: en
+  locale: en-GB
   time_format: 24
   date_pattern: P
   hide_today_section: false
@@ -97,13 +103,13 @@ Depending on your Home Assistant's configuration, your weather provider might de
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                      | `true`      |
 | forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                       | `5`         |
 | locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                                                                        | `en-GB`     |
-| time_format           | `24` \| `12`     | **Optional** | Format used to displayed the time. If not provided, falls back to the time format set in HA                                                                                                            | `24`        |
+| time_format           | `24` \| `12`     | **Optional** | Format used to display the time. If not provided, falls back to the time format set in HA                                                                                                              | `24`        |
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
-| forecast_hourly | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
+| forecast_hourly       | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
 
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `en`, `es`, `fr`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ru`, `sk`, `sv`, `th`, `uk`
+[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `en`, `es`, `fi`, `fr`, `he`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sv`, `th`, `uk`, `vi`, `zh-TW`

@@ -104,6 +104,15 @@ export class ClockWeatherCard extends LitElement {
       return false;
     }
 
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
+    if (oldHass) {
+      const oldSun = oldHass.states[this.config.sun_entity];
+      const newSun = this.hass?.states[this.config.sun_entity];
+      if (oldSun !== newSun) {
+        return true;
+      }
+    }
+
     return hasConfigOrEntityChanged(this, changedProps, false);
   }
 
@@ -142,12 +151,15 @@ export class ClockWeatherCard extends LitElement {
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
     const state = weather.state;
-    const temp = weather.attributes.temperature;
+    const temp = weather.attributes.temperature !== undefined ? Math.round(weather.attributes.temperature) : null;
     const tempUnit = weather.attributes.temperature_unit;
     const iconType = this.config.weather_icon_type;
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind());
-    const localizedState = this.localize(`weather.${state}`);
-    const localizedTemp = Math.round(temp) + tempUnit;
+    const weatherStrings = [this.localize(`weather.${state}`)];
+    const localizedTemp = temp + tempUnit;
+    if (temp !== null) {
+      weatherStrings.push(localizedTemp);
+    }
 
     return html`
       <clock-weather-card-today-left>
@@ -156,13 +168,13 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${localizedState}, ${localizedTemp}
+            ${this.config.hide_clock ? weatherStrings[0] : weatherStrings.join(', ')}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
-            ${this.time()}
+            ${this.config.hide_clock ? localizedTemp : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
-            ${this.date()}
+            ${this.config.hide_date ? '' : this.date() }
           </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`;
@@ -170,28 +182,35 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecast(): TemplateResult[] {
     const weather = this.getWeather();
-    const currentTemp = Math.round(weather.attributes.temperature);
+    // TODO swith to getTemperature, once merged to master
+    const currentTemp = weather.attributes.temperature !== undefined ? Math.round(weather.attributes.temperature) : null;
     const items = this.config.forecast_days;
     const hourly = this.config.forecast_hourly;
+    const temperatueUnit = weather.attributes.temperature_unit;
+
     const forecasts = this.extractForecasts(weather.attributes.forecast, items, hourly);
 
-    const minTemps = [...forecasts.map((f) => f.templow), currentTemp];
-    const maxTemps = [...forecasts.map((f) => f.temperature), currentTemp];
+    const minTemps = forecasts.map((f) => f.templow);
+    const maxTemps = forecasts.map((f) => f.temperature);
+    if (currentTemp !== null) {
+      minTemps.push(currentTemp);
+      maxTemps.push(currentTemp);
+    }
     const minTemp = Math.round(min(minTemps));
     const maxTemp = Math.round(max(maxTemps));
-    const temperatueUnit = weather.attributes.temperature_unit;
+    
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatueUnit);
     return forecasts.map((forecast) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly)));
   }
 
-  private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number, hourly: boolean): TemplateResult {
+  private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean): TemplateResult {
     const displayText = !hourly ? this.localize(`day.${new Date(forecast.datetime).getDay()}`) : new Date(forecast.datetime).toLocaleTimeString().substring(0,5);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
     const isToday = new Date().getDate() === new Date(forecast.datetime).getDate();
-    const minTempDay = Math.round(isToday ? Math.min(currentTemp, forecast.templow) : forecast.templow);
-    const maxTempDay = Math.round(isToday ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
+    const minTempDay = Math.round(isToday && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow);
+    const maxTempDay = Math.round(isToday && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
     return html`
       <clock-weather-card-forecast-row>
         ${this.renderText(displayText)}
@@ -219,7 +238,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastTemperatureBar(gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, currentTemp: number, isToday: boolean): TemplateResult {
+  private renderForecastTemperatureBar(gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, currentTemp: number | null, isToday: boolean): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay)
     return html`
       <forecast-temperature-bar>
@@ -237,7 +256,10 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastCurrentTemp(minTempDay: number, maxTempDay: number, currentTemp: number): TemplateResult {
+  private renderForecastCurrentTemp(minTempDay: number, maxTempDay: number, currentTemp: number | null): TemplateResult {
+    if (currentTemp == null) {
+      return html``;
+    }
     const indicatorPosition = minTempDay === maxTempDay ? 0 : (100 / (maxTempDay - minTempDay)) * (currentTemp - minTempDay)
     const steps = maxTempDay - minTempDay
     const moveRight = maxTempDay === minTempDay ? 0 : (currentTemp - minTempDay) / steps
@@ -324,6 +346,8 @@ export class ClockWeatherCard extends LitElement {
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       hide_forecast_section: config.hide_forecast_section || false,
       hide_today_section: config.hide_today_section || false,
+      hide_clock: config.hide_clock || false,
+      hide_date: config.hide_date || false,
       date_pattern: config.date_pattern || 'P'
     };
   }
@@ -358,10 +382,14 @@ export class ClockWeatherCard extends LitElement {
     const localeOne = localeParts[0].toLowerCase();
     const localeTwo = localeParts[1]?.toUpperCase() || '';
     const dateFnsLocale = localeOne + localeTwo;
+    // HA provides en-US as en
+    if (dateFnsLocale === 'en') {
+      return locales.enUS;
+    }
     const importedLocale = locales[dateFnsLocale];
     if (!importedLocale) {
-      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale)
-      return locales.enGB
+      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale);
+      return locales.enGB;
     }
     return importedLocale;
   }
@@ -373,7 +401,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private time(): string {
-    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'hh:mm aa');
+    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
   }
 
   private getIconAnimationKind(): 'static' | 'animated' {
@@ -453,10 +481,11 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private calculateAverageForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
-    const minTemps = forecasts.map((f) => f.templow ?? f.temperature ?? this.getWeather().attributes.temperature);
+    // TODO Use getTemperature once merged to maste
+    const minTemps = forecasts.map((f) => f.templow ?? f.temperature ?? this.getWeather().attributes.temperature ?? 0);
     const minTemp = min(minTemps);
-
-    const maxTemps = forecasts.map((f) => f.temperature ?? this.getWeather().attributes.temperature);
+    // TODO Use getTemperature once merged to maste
+    const maxTemps = forecasts.map((f) => f.temperature ?? this.getWeather().attributes.temperature ?? 0);
     const maxTemp = max(maxTemps);
 
     const precipitationProbabilities = forecasts.map((f) => f.precipitation_probability ?? 0);
