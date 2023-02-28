@@ -30,7 +30,7 @@ Depending on your Home Assistant's configuration, your weather provider might de
 
 ### What does the card actually display?
 
-![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png){: style="float: left"}
+![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png)
 
 The bars represent the temperature range for a given day.
 In the above image, the 9° on Thursday represents the low across all of the forecast days and the 21° represents the highs (i.e. all bars are from 9° to 21°).
