@@ -17,6 +17,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 - [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
 - [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
+- [What does the card actually display?](#what-does-the-card-actually-display)
 
 ### Why don't I see the current day in my weather forecast?
 
@@ -26,6 +27,19 @@ Your weather provider may not provide today's weather as part of their weather f
 ### Why does the forecast show less days than expected?
 
 Depending on your Home Assistant's configuration, your weather provider might deliver forecasts *hourly*. If this is the case, the weather integrations delivers 48 distinct forecasts (This corresponds to forecasts for the next 48 hours). You might want to consider supplying a weather entity which supplies *daily* forecasts for the card.
+
+### What does the card actually display?
+
+![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png){: style="float: left"}
+
+The bars represent the temperature range for a given day.
+In the above image, the 9° on Thursday represents the low across all of the forecast days and the 21° represents the highs (i.e. all bars are from 9° to 21°).
+The colored portion of the bar represents the range of temperatures that are forecast for that day (so 12° to 21° on Monday).
+The circle represents the current temperature (16° or roughly midway between 12° and 21° in your case).
+
+*Thanks to @deprecatedcoder for this text from [#143](https://github.com/pkissling/clock-weather-card/issues/143)*
+
+The basic idea of the forecast bars is to be able to understand the weather trend for the upcoming days in a single glance.
 
 ## Installation
 
