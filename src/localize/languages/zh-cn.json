@@ -1,6 +1,6 @@
 {
     "weather": {
-        "clear-night": "晴",
+        "clear-night": "夜间晴朗",
         "cloudy": "阴",
         "fog": "雾",
         "hail": "冰雹",
@@ -14,7 +14,7 @@
         "sunny": "晴",
         "windy": "有风",
         "windy-variant": "强风",
-        "exceptional": "异常"
+        "exceptional": "特殊"
     },
     "day": {
         "0": "周日",
