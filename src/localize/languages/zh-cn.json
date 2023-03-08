@@ -1,12 +1,12 @@
 {
     "weather": {
         "clear-night": "晴",
-        "cloudy": "多云",
+        "cloudy": "阴",
         "fog": "雾",
         "hail": "冰雹",
         "lightning": "雷",
         "lightning-rainy": "雷阵雨",
-        "partlycloudy": "局部多云",
+        "partlycloudy": "多云",
         "pouring": "大雨",
         "rainy": "雨",
         "snowy": "雪",
