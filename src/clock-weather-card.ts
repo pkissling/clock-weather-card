@@ -204,7 +204,7 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean): TemplateResult {
     const twelveHour = this.getTimeFormat() === '12';
-    const displayText = !hourly ? this.localize(`day.${new Date(forecast.datetime).getDay()}`) : format(new Date(forecast.datetime), !twelveHour ? 'HH:mm' : 'h:mm aa');
+    const displayText = !hourly ? this.localize('day.' + forecast.datetime.getDay()) : this.time(forecast.datetime);
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
@@ -416,8 +416,8 @@ export class ClockWeatherCard extends LitElement {
     return`${weekday}, ${date}`
   }
 
-  private time(): string {
-    return format(this.currentDate, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
+  private time(date: Date = this.currentDate): string {
+    return format(date, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
   }
 
   private getIconAnimationKind(): 'static' | 'animated' {
