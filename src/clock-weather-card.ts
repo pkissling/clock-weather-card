@@ -184,7 +184,7 @@ export class ClockWeatherCard extends LitElement {
     const weather = this.getWeather();
     const currentTemp = roundIfNotNull(this.getCurrentTemperature());
     const items = this.config.forecast_days;
-    const hourly = this.config.forecast_hourly;
+    const hourly = this.config.hourly_forecast;
     const temperatureUnit = weather.attributes.temperature_unit;
 
     const forecasts = this.extractForecasts(weather.attributes.forecast, items, hourly);
@@ -343,7 +343,7 @@ export class ClockWeatherCard extends LitElement {
       temperature_sensor: config.temperature_sensor,
       weather_icon_type: config.weather_icon_type || 'line',
       forecast_days: config.forecast_days || 5,
-      forecast_hourly: config.forecast_hourly || false,
+      hourly_forecast: config.hourly_forecast || false,
       animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       hide_forecast_section: config.hide_forecast_section || false,

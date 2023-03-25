@@ -107,7 +107,7 @@ The basic idea of the forecast bars is to be able to understand the weather tren
   hide_today_section: false
   hide_forecast_section: false
   hide_clock: false
-  forecast_hourly: false
+  hourly_forecast: false
 ```
 
 ### Options
@@ -129,7 +129,7 @@ The basic idea of the forecast bars is to be able to understand the weather tren
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section), containing the weather forecast                                                                                                                      | `false`     |
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead.                                                                                                       | `false`     |
-| forecast_hourly       | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
+| hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
 
 ## Footnotes
 
