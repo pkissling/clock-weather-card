@@ -107,6 +107,7 @@ The basic idea of the forecast bars is to be able to understand the weather tren
   hide_today_section: false
   hide_forecast_section: false
   hide_clock: false
+  hide_date: false
   hourly_forecast: false
 ```
 
@@ -127,9 +128,9 @@ The basic idea of the forecast bars is to be able to understand the weather tren
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns | `P`         |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                               | `false`     |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                       | `false`     |
-| hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section), containing the weather forecast                                                                                                                      | `false`     |
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead.                                                                                                       | `false`     |
-| hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                       | `false`     |
+| hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                  | `false`     |
+| hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily.                                                                                                                                                          | `false`     |
 
 ## Footnotes
 
