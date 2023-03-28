@@ -1,20 +1,20 @@
 {
   "weather": {
-    "clear-night": "Jasno",
+    "clear-night": "Jasná noc",
     "cloudy": "Zamračené",
     "fog": "Hmla",
     "hail": "Krupobitie",
     "lightning": "Búrky",
-    "lightning-rainy": "Daždivé búrky",
+    "lightning-rainy": "Búrky s dažďom",
     "partlycloudy": "Polooblačno",
     "pouring": "Silný dážď",
-    "rainy": "Daždivé",
-    "snowy": "Sneženbie",
-    "snowy-rainy": "Fujavica",
+    "rainy": "Daždivo",
+    "snowy": "Sneženie",
+    "snowy-rainy": "Dážď so snehom",
     "sunny": "Slnečno",
     "windy": "Veterno",
     "windy-variant": "Prudký vietor",
-    "exceptional": "Chaos"
+    "exceptional": "Neobyčajné počasie (Chaos)"
   },
   "day": {
     "0": "Ned",
