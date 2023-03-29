@@ -208,16 +208,17 @@ export class ClockWeatherCard extends LitElement {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition;
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static');
     const tempUnit = this.getWeather().attributes.temperature_unit;
-    const isToday = new Date().getDate() === new Date(forecast.datetime).getDate();
-    const minTempDay = Math.round(isToday && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow);
-    const maxTempDay = Math.round(isToday && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
+    const isNow = !hourly ? new Date().getDate() === forecast.datetime.getDate() : new Date().getHours() === forecast.datetime.getHours();
+    const minTempDay = Math.round(isNow && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow);
+    const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature);
     const colOneSize = hourly && twelveHour ? '3rem' : hourly ? '2.5rem' : '2rem';
+    
     return html`
       <clock-weather-card-forecast-row style="--col-one-size: ${colOneSize};">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
-        ${this.renderForecastTemperatureBar(gradientRange, minTemp, maxTemp, minTempDay, maxTempDay, isToday, currentTemp)}
+        ${this.renderForecastTemperatureBar(gradientRange, minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, maxTempDay))}
       </clock-weather-card-forecast-row>
     `;
@@ -239,7 +240,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  private renderForecastTemperatureBar(gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isToday: boolean, currentTemp: number | null): TemplateResult {
+  private renderForecastTemperatureBar(gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay)
     return html`
       <forecast-temperature-bar>
@@ -251,7 +252,7 @@ export class ClockWeatherCard extends LitElement {
             endPercent,
           )};"
         >
-          ${isToday ? this.renderForecastCurrentTemp(minTempDay, maxTempDay, currentTemp) : ''}
+          ${isNow ? this.renderForecastCurrentTemp(minTempDay, maxTempDay, currentTemp) : ''}
         </forecast-temperature-bar-range>
       </forecast-temperature-bar>
     `;
