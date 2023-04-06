@@ -1,14 +1,14 @@
 {
   "weather": {
     "clear-night": "ท้องฟ้าแจ่มใส",
-    "cloudy": "มีเมฆ",
+    "cloudy": "มีเมฆเป็นส่วนมาก",
     "fog": "หมอก",
     "hail": "ลูกเห็บ",
     "lightning": "พายุฝนฟ้าคะนอง",
     "lightning-rainy": "ฝนฟ้าคะนอง",
     "partlycloudy": "มีเมฆบางส่วน",
     "pouring": "ฝนตกหนัก",
-    "rainy": "มีฝนคก",
+    "rainy": "ฝนตก",
     "snowy": "หิมะตก",
     "snowy-rainy": "ฝนตกเป็นลูกเห็บ",
     "sunny": "แดดจัด",
