@@ -4,7 +4,7 @@ export default css`
 
   ha-card {
     --bar-height: 1.5rem;
-    padding: 1rem;
+    height: 100%;
   }
 
   clock-weather-card-today {
@@ -36,8 +36,9 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap-top {
-    display: flex;
-    justify-content: end;
+    width: 100%;
+    text-align: end;
+    display: block;
   }
 
   clock-weather-card-today-right-wrap-center {
@@ -55,13 +56,12 @@ export default css`
   }
 
   clock-weather-card-forecast {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 
   clock-weather-card-forecast-row {
     display: grid;
-    grid-template-columns: 2rem 2rem 2.1rem auto 2.1rem;
+    grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
     grid-gap: 0.5rem;
   }
@@ -69,7 +69,6 @@ export default css`
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: clip;
   }
 
@@ -97,7 +96,7 @@ export default css`
     --border-width: 2px;
     background-color: var(--primary-text-color);
     border-radius: 50%;
-    aspect-ratio: 1/1;
+    width: var(--bar-height);
     box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
     margin-left: calc(var(--move-right) * -1 * var(--bar-height));
   }
@@ -109,6 +108,7 @@ export default css`
     background: linear-gradient(to right, var(--gradient));
     overflow: hidden;
     min-width: var(--bar-height);
+    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
   }
 
   forecast-temperature-bar-current-indicator {

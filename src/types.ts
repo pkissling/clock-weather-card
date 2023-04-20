@@ -10,6 +10,7 @@ declare global {
 
 export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string;
+  title?: string;
   sun_entity?: string;
   weather_icon_type?: 'fill' | 'line';
   animated_icon?: boolean;
@@ -19,11 +20,16 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern?: string;
   hide_today_section?: boolean;
   hide_forecast_section?: boolean;
+  hourly_forecast?: boolean;
+  hide_clock?: boolean;
+  hide_date?: boolean;
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string;
+  title?: string;
   sun_entity: string;
+  temperature_sensor?: string;
   weather_icon_type: 'fill' | 'line';
   animated_icon: boolean;
   forecast_days: number;
@@ -32,12 +38,15 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern: string;
   hide_today_section: boolean;
   hide_forecast_section: boolean;
+  hourly_forecast: boolean;
+  hide_clock?: boolean;
+  hide_date?: boolean;
 }
 
 export interface Weather extends HassEntity {
   state: string;
   attributes: {
-    temperature: number;
+    temperature?: number;
     temperature_unit: TemperatureUnit;
     precipitation_unit: string;
     forecast: WeatherForecast[];
@@ -74,4 +83,11 @@ export class Rgb {
     this.g = g;
     this.b = b;
   }
+}
+
+export interface TemperatureSensor extends HassEntity {
+  state: string;
+  attributes: {
+    unit_of_measurement?: TemperatureUnit;
+  };
 }
