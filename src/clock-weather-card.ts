@@ -30,6 +30,7 @@ import { version } from '../package.json';
 import { safeRender } from './helpers';
 import { format, Locale } from 'date-fns';
 import * as locales from 'date-fns/locale';
+import { DateTime } from 'luxon';
 
 console.info(
 `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -341,18 +342,19 @@ export class ClockWeatherCard extends LitElement {
   private mergeConfig(config: ClockWeatherCardConfig): MergedClockWeatherCardConfig {
     return {
       ...config,
-      sun_entity: config.sun_entity || 'sun.sun',
+      sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
-      weather_icon_type: config.weather_icon_type || 'line',
-      forecast_days: config.forecast_days || 5,
-      hourly_forecast: config.hourly_forecast || false,
-      animated_icon: config.animated_icon === undefined ? true : config.animated_icon,
+      weather_icon_type: config.weather_icon_type ?? 'line',
+      forecast_days: config.forecast_days ?? 5,
+      hourly_forecast: config.hourly_forecast ?? false,
+      animated_icon: config.animated_icon ?? true,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
-      hide_forecast_section: config.hide_forecast_section || false,
-      hide_today_section: config.hide_today_section || false,
-      hide_clock: config.hide_clock || false,
-      hide_date: config.hide_date || false,
-      date_pattern: config.date_pattern || 'P'
+      hide_forecast_section: config.hide_forecast_section ?? false,
+      hide_today_section: config.hide_today_section ?? false,
+      hide_clock: config.hide_clock ?? false,
+      hide_date: config.hide_date ?? false,
+      date_pattern: config.date_pattern ?? 'P',
+      use_browser_time: config.use_browser_time ?? true
     };
   }
 
@@ -413,13 +415,15 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private date(): string {
-    const weekday = this.localize(`day.${this.currentDate.getDay()}`);
-    const date = format(this.currentDate, this.config.date_pattern, { locale: this.getDateFnsLocale() });
+    const zonedDate = this.toZonedDate(this.currentDate);
+    const weekday = this.localize(`day.${zonedDate.getDay()}`);
+    const date = format(zonedDate, this.config.date_pattern, { locale: this.getDateFnsLocale() });
     return`${weekday}, ${date}`
   }
 
   private time(date: Date = this.currentDate): string {
-    return format(date, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
+    const withTimeZone = this.toZonedDate(date);
+    return format(withTimeZone, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa');
   }
 
   private getIconAnimationKind(): 'static' | 'animated' {
@@ -502,6 +506,17 @@ export class ClockWeatherCard extends LitElement {
       }, [])
       .sort((a,b) => a.datetime.getTime() - b.datetime.getTime())
       .slice(0, items);
+  }
+
+  private toZonedDate(date: Date): Date {
+    if (this.config.use_browser_time) return date;
+    const timeZone = this.hass?.config?.time_zone
+    const withTimeZone = DateTime.fromJSDate(date).setZone(timeZone, { keepLocalTime: true });
+    if (!withTimeZone.isValid) {
+      console.error(`clock-weather-card - Time Zone [${timeZone}] not supported. Falling back to browser time.`);
+      return date;
+    }
+    return withTimeZone.toJSDate();
   }
 
   private calculateAverageForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
