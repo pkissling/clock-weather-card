@@ -511,12 +511,12 @@ export class ClockWeatherCard extends LitElement {
   private toZonedDate(date: Date): Date {
     if (this.config.use_browser_time) return date;
     const timeZone = this.hass?.config?.time_zone
-    const withTimeZone = DateTime.fromJSDate(date).setZone(timeZone, { keepLocalTime: true });
+    const withTimeZone = DateTime.fromJSDate(date).setZone(timeZone);
     if (!withTimeZone.isValid) {
       console.error(`clock-weather-card - Time Zone [${timeZone}] not supported. Falling back to browser time.`);
       return date;
     }
-    return withTimeZone.toJSDate();
+    return new Date(withTimeZone.year, withTimeZone.month - 1, withTimeZone.day, withTimeZone.hour, withTimeZone.minute, withTimeZone.second, withTimeZone.millisecond);
   }
 
   private calculateAverageForecast(forecasts: WeatherForecast[]): MergedWeatherForecast {
