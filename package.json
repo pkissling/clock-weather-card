@@ -10,7 +10,7 @@
     "lovelace",
     "custom-cards"
   ],
-  "module": "luka-vrijeme.js",
+  "module": "clock-weather-card.js",
   "repository": "git@github.com:potrgani/test2.git",
   "author": "Patrick Kissling <patrick.kissling@gmx.de>",
   "license": "MIT",
