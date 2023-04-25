@@ -27,7 +27,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
 
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GH_TOKEN }}
           file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.js
           asset_name: clock-weather-card.js
           tag: ${{ github.ref }}
