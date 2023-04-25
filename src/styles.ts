@@ -49,7 +49,7 @@ export default css`
     white-space: nowrap;
     align-items: center;
     justify-content: center;
-    font-size: 50rem;
+    font-size: 50px;
   }
 
   clock-weather-card-today-right-wrap-bottom {
