@@ -41,10 +41,6 @@ export default css`
     width: 100%;
     text-align: end;
     display: block;
-    color: white;
-    font-size: 7rem;
-    -webkit-text-stroke: 0.5px black; /* for webkit browsers */
-    text-stroke: 2px black;
   }
 
   clock-weather-card-today-right-wrap-center {
