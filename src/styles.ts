@@ -5,7 +5,8 @@ export default css`
   ha-card {
     --bar-height: 1.5rem;
     height: 100%;
-    background: yellow;
+    color: white;
+    background: rgba(125, 125, 125, 0.8);
   }
 
   clock-weather-card-today {
@@ -45,7 +46,7 @@ export default css`
   clock-weather-card-today-right-wrap-center {
     display: flex;
     height: 4rem;
-    font-size: 5rem;
+    font-size: 10rem;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
