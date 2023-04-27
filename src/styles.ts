@@ -43,7 +43,10 @@ export default css`
     display: block;
     color: white;
     font-size: 4rem;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    margin-left: -50px;
+    -webkit-text-stroke: 0.5px black; /* for webkit browsers */
+    text-stroke: 2px black;
   }
 
   clock-weather-card-today-right-wrap-center {
