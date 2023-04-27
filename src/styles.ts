@@ -38,11 +38,11 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap-top {
-    width: 100%;
+    width: 150%;
     text-align: end;
     display: block;
     color: white;
-    font-size: 6rem;
+    font-size: 4rem;
     margin-bottom: 20px;
   }
 
