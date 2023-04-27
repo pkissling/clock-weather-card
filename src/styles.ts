@@ -70,7 +70,7 @@ export default css`
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
     margin-top: 20px;
-    margin-left: -50px;
+    margin-left: -90px;
   }
 
   clock-weather-card-forecast {
