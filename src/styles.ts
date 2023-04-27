@@ -38,7 +38,7 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap-top {
-    width: 150%;
+    width: 200%;
     text-align: end;
     display: block;
     color: white;
