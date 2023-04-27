@@ -130,6 +130,7 @@ export class ClockWeatherCard extends LitElement {
         // Force a reflow to trigger a redraw of the styles
         element.offsetHeight;
       }
+    }
     return html`
       <ha-card
         @action=${this.handleAction}
