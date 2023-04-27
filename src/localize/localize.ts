@@ -1,4 +1,5 @@
 import * as bg from './languages/bg.json';
+import * as hr from './languages/hr.json';
 import * as da from './languages/da.json';
 import * as ca from './languages/ca.json';
 import * as cs from './languages/cs.json';
@@ -29,6 +30,7 @@ import * as zhtw from './languages/zh-tw.json';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
   bg,
+  hr,
   cs,
   ca,
   da,
