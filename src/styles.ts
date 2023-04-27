@@ -43,7 +43,7 @@ export default css`
     display: block;
     color: white;
     font-size: 4rem;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     margin-left: -180px;
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
@@ -69,7 +69,8 @@ export default css`
     font-size: 3rem;
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-left: -50px;
   }
 
   clock-weather-card-forecast {
