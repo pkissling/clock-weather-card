@@ -121,9 +121,10 @@ export class ClockWeatherCard extends LitElement {
   }
 
   // https://lit.dev/docs/components/rendering/
-  protected render(): TemplateResult {
+protected render(): TemplateResult {
     const showToday = !this.config.hide_today_section
     const showForecast = !this.config.hide_forecast_section
+
     const refreshStyles = () => {
       const element = this.shadowRoot?.querySelector('.card-content');
       if (element) {
@@ -131,6 +132,7 @@ export class ClockWeatherCard extends LitElement {
         element.offsetHeight;
       }
     }
+
     return html`
       <ha-card
         @action=${this.handleAction}
@@ -140,6 +142,7 @@ export class ClockWeatherCard extends LitElement {
         })}
         tabindex="0"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
+        @iron-resize=${refreshStyles}
       >
         ${this.config.title ? html`
           <div class="card-header">
@@ -158,6 +161,7 @@ export class ClockWeatherCard extends LitElement {
       </ha-card>
     `;
   }
+
 
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
