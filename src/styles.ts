@@ -43,7 +43,7 @@ export default css`
     display: block;
     color: white;
     font-size: 4rem;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   clock-weather-card-today-right-wrap-center {
