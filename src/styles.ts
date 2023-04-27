@@ -44,7 +44,7 @@ export default css`
     color: white;
     font-size: 4rem;
     margin-bottom: 40px;
-    margin-left: -150px;
+    margin-left: -170px;
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
   }
