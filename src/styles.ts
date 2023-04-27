@@ -42,8 +42,8 @@ export default css`
     text-align: end;
     display: block;
     color: white;
-    font-size: 8rem;
-    
+    font-size: 6rem;
+    margin-bottom: 20px;
   }
 
   clock-weather-card-today-right-wrap-center {
