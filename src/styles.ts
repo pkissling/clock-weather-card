@@ -44,7 +44,7 @@ export default css`
     color: white;
     font-size: 4rem;
     margin-bottom: 20px;
-    margin-left: -180px;
+    margin-left: -200px;
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
   }
@@ -69,7 +69,7 @@ export default css`
     font-size: 3rem;
     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
     text-stroke: 2px black;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: -90px;
   }
 
