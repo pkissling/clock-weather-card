@@ -124,6 +124,12 @@ export class ClockWeatherCard extends LitElement {
   protected render(): TemplateResult {
     const showToday = !this.config.hide_today_section
     const showForecast = !this.config.hide_forecast_section
+    const refreshStyles = () => {
+      const element = this.shadowRoot?.querySelector('.card-content');
+      if (element) {
+        // Force a reflow to trigger a redraw of the styles
+        element.offsetHeight;
+      }
     return html`
       <ha-card
         @action=${this.handleAction}
