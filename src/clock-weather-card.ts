@@ -151,8 +151,8 @@ export class ClockWeatherCard extends LitElement {
       </ha-card>
     `;
   }
-   protected firstUpdated() {
-    super.firstUpdated();
+   protected firstUpdated(_changedProperties: PropertyValues) {
+    super.firstUpdated(_changedProperties);
     this.style.display = 'block';
     setTimeout(() => {
     this.style.display = '';
