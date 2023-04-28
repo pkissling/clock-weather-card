@@ -156,6 +156,8 @@ export class ClockWeatherCard extends LitElement {
     this.style.display = 'block';
     setTimeout(() => {
     this.style.display = '';
+    const styleEl = this.shadowRoot.querySelector('style');
+     styleEl.innerHTML = styleEl.innerHTML;
       }, 0);
    }
 
