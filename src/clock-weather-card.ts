@@ -151,6 +151,13 @@ export class ClockWeatherCard extends LitElement {
       </ha-card>
     `;
   }
+  protected firstUpdated() {
+  super.firstUpdated();
+  this.style.display = 'block';
+  setTimeout(() => {
+    this.style.display = '';
+  }, 0);
+}
 
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
