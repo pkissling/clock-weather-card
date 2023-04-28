@@ -79,7 +79,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private reloadStyles() {
-    const hass = this._hass;
+    const hass = this.hass;
     hass.callService("lovelace", "reload_resources");
   }
 
