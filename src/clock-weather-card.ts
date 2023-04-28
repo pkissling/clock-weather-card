@@ -71,10 +71,16 @@ export class ClockWeatherCard extends LitElement {
 
   constructor() {
     super();
+    window.addEventListener('load', () => this.reloadStyles());
     this.currentDate = new Date();
     const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000;
     setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute);
     setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
+  }
+
+  private reloadStyles() {
+    const hass = this._hass;
+    hass.callService("lovelace", "reload_resources");
   }
 
   // https://lit.dev/docs/components/properties/#accessors-custom
