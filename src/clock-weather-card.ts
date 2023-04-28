@@ -151,15 +151,7 @@ export class ClockWeatherCard extends LitElement {
       </ha-card>
     `;
   }
-   protected firstUpdated(_changedProperties: PropertyValues) {
-    super.firstUpdated(_changedProperties);
-    this.style.display = 'block';
-    setTimeout(() => {
-    this.style.display = '';
-    const styleEl = this.shadowRoot.querySelector('style');
-     styleEl.innerHTML = styleEl.innerHTML;
-      }, 0);
-   }
+
 
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
@@ -220,7 +212,16 @@ export class ClockWeatherCard extends LitElement {
       </clock-weather-card-today-left>
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
-          <clock-weather-card-today-right-wrap-top>
+          <clock-weather-card-today-right-wrap-top style="
+            width: 200%;
+            text-align: end;
+            display: block;
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            margin-left: -240px;
+            -webkit-text-stroke: 0.5px black;
+            text-stroke: 2px black;">
            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
