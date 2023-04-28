@@ -72,17 +72,14 @@ export class ClockWeatherCard extends LitElement {
   
   constructor() {
     super();
-    window.addEventListener('load', () => this.reloadStyles());
+    
     this.currentDate = new Date();
     const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000;
     setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute);
     setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
   }
 
-  private reloadStyles() {
-    const hass = this.hass;
-    hass.callService("lovelace", "reload_resources");
-  }
+ 
 
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: ClockWeatherCardConfig): void {
@@ -125,6 +122,10 @@ export class ClockWeatherCard extends LitElement {
     }
 
     return hasConfigOrEntityChanged(this, changedProps, false);
+  }
+ // https://lit.dev/docs/components/styles/
+  static get styles(): CSSResultGroup {
+    return styles;
   }
 
   // https://lit.dev/docs/components/rendering/
@@ -335,10 +336,7 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-  // https://lit.dev/docs/components/styles/
-  static get styles(): CSSResultGroup {
-    return styles;
-  }
+ 
 
   private gradientRange(minTemp: number, maxTemp: number, temperatureUnit: TemperatureUnit): Rgb[] {
     const minTempCelsius = this.toCelsius(temperatureUnit, minTemp)
