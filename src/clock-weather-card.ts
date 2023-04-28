@@ -68,11 +68,7 @@ export class ClockWeatherCard extends LitElement {
 
   @state() private config!: MergedClockWeatherCardConfig;
   @state() private currentDate!: Date;
- 
- public connectedCallback(): void {
-    super.connectedCallback();
-    this.updateStyles();
-  }
+
   
   constructor() {
     super();
