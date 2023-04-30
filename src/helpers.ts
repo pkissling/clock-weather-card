@@ -1,12 +1,16 @@
 import { html, TemplateResult } from "lit";
 
-export function safeRender<T>(renderFn: () => T): T | TemplateResult {
-  try {
-    return renderFn()
-  } catch (e) {
-    console.error('clock-weather-card - Error while rendering clock-weather-card component:', e)
-      setTimeout(() => {safeRender(renderFn)}, 100)
-    // Return an empty TemplateResult for now
-    return html``
+export async function safeRender<T>(renderFn: () => T): Promise<T | TemplateResult> {
+  let numRetries = 3;
+  while (numRetries > 0) {
+    try {
+      return renderFn();
+    } catch (e) {
+      if (--numRetries === 0) {
+        console.error('clock-weather-card - Error while rendering clock-weather-card component:', e);
+        return html``;
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retrying
   }
 }
