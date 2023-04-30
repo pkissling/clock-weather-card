@@ -1,3 +1,39 @@
+
+Skip to content
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+@potrgani
+pkissling /
+clock-weather-card
+Public
+generated from custom-cards/boilerplate-card
+
+Fork your own copy of pkissling/clock-weather-card
+
+Code
+Issues 18
+Pull requests
+Actions
+Security
+
+    Insights
+
+Beta Try the new code view
+clock-weather-card/src/clock-weather-card.ts /
+@pkissling
+pkissling Fix timezone time calculation
+Latest commit a323216 Apr 24, 2023
+History
+5 contributors
+@pkissling
+@jan-philippgieseext
+@oxtn
+@JanGiese
+@jlambert121
+548 lines (478 sloc) 22.1 KB
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customElement, property, state } from 'lit/decorators';
@@ -69,17 +105,13 @@ export class ClockWeatherCard extends LitElement {
   @state() private config!: MergedClockWeatherCardConfig;
   @state() private currentDate!: Date;
 
-  
   constructor() {
     super();
-    
     this.currentDate = new Date();
     const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000;
     setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute);
     setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
   }
-
- 
 
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: ClockWeatherCardConfig): void {
@@ -123,13 +155,9 @@ export class ClockWeatherCard extends LitElement {
 
     return hasConfigOrEntityChanged(this, changedProps, false);
   }
- // https://lit.dev/docs/components/styles/
-  static get styles(): CSSResultGroup {
-    return styles;
-  }
 
   // https://lit.dev/docs/components/rendering/
- protected render(): TemplateResult {
+  protected render(): TemplateResult {
     const showToday = !this.config.hide_today_section
     const showForecast = !this.config.hide_forecast_section
     return html`
@@ -160,7 +188,6 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
-
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
     const state = weather.state;
@@ -172,65 +199,13 @@ export class ClockWeatherCard extends LitElement {
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
 
     return html`
-      <style>
-        ha-card {
-        --bar-height: 1.5rem;
-        height: 100%;
-        color: white;
-        background: rgba(125, 125, 125, 0.8);
-        }
-        
-      clock-weather-card-today-right-wrap-top {
-        width: 200%;
-        text-align: end;
-        display: block;
-        color: white;
-        font-size: 4rem;
-        margin-bottom: 20px;
-        margin-left: -240px;
-        -webkit-text-stroke: 0.5px black; /* for webkit browsers */
-        text-stroke: 2px black;
-      }
-      clock-weather-card-today-right-wrap-center {
-       display: flex;
-       height: 4rem;
-       font-size: 6rem;
-       white-space: nowrap;
-       align-items: center;
-       justify-content: center;
-       color: white;
-       -webkit-text-stroke: 0.5px black; /* for webkit browsers */
-       text-stroke: 2px black;
-       position: relative;
-     }
-    clock-weather-card-today-right-wrap-bottom {
-     display: flex;
-     justify-content: start;
-     color: white;
-     font-size: 3rem;
-     -webkit-text-stroke: 0.5px black; /* for webkit browsers */
-     text-stroke: 2px black;
-     margin-top: 10px;
-     margin-left: -90px;
-     }
-
-    </style>
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
       </clock-weather-card-today-left>
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
-          <clock-weather-card-today-right-wrap-top style="
-            width: 200%;
-            text-align: end;
-            display: block;
-            color: white;
-            font-size: 4rem;
-            margin-bottom: 20px;
-            margin-left: -240px;
-            -webkit-text-stroke: 0.5px black;
-            text-stroke: 2px black;">
-           ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
+          <clock-weather-card-today-right-wrap-top>
+            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -336,7 +311,10 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
- 
+  // https://lit.dev/docs/components/styles/
+  static get styles(): CSSResultGroup {
+    return styles;
+  }
 
   private gradientRange(minTemp: number, maxTemp: number, temperatureUnit: TemperatureUnit): Rgb[] {
     const minTempCelsius = this.toCelsius(temperatureUnit, minTemp)
@@ -603,4 +581,20 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 }
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
 
+    Terms
+    Privacy
+    Security
+    Status
+    Docs
+    Contact GitHub
+    Pricing
+    API
+    Training
+    Blog
+    About
+
+clock-weather-card/clock-weather-card.ts at master · pkissling/clock-weather-card
