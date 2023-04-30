@@ -163,6 +163,20 @@ export class ClockWeatherCard extends LitElement {
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
 
     return html`
+      <style>
+    
+    .today-right-wrap-top {
+      width: 200%;
+      text-align: end;
+      display: block;
+      color: white;
+      font-size: 4rem;
+      margin-bottom: 20px;
+      margin-left: -240px;
+      -webkit-text-stroke: 0.5px black; /* for webkit browsers */
+      text-stroke: 2px black;
+       }
+      </style>
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
       </clock-weather-card-today-left>
