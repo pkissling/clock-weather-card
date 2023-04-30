@@ -1,28 +1,28 @@
 {
   "weather": {
-    "clear-night": "Clear",
-    "cloudy": "Cloudy",
-    "fog": "Fog",
-    "hail": "Hail",
-    "lightning": "Thunderstorms",
-    "lightning-rainy": "Rainy thunderstorms",
-    "partlycloudy": "Partly cloudy",
+    "clear-night": "Čisto",
+    "cloudy": "Oblačno",
+    "fog": "Magla",
+    "hail": "Tuča",
+    "lightning": "Grmljavina",
+    "lightning-rainy": "Grmljavinsko nevrijeme",
+    "partlycloudy": "Oblačno",
     "pouring": "Pouring",
-    "rainy": "Rainy",
-    "snowy": "Snowy",
-    "snowy-rainy": "Sleet",
-    "sunny": "Sunny",
-    "windy": "Windy",
-    "windy-variant": "Strong wind",
+    "rainy": "Kiša",
+    "snowy": "Snijeg",
+    "snowy-rainy": "Snijeg i kiša",
+    "sunny": "Sunčano",
+    "windy": "Vjetrovito",
+    "windy-variant": "Jako vjetrovito",
     "exceptional": "Exceptional"
   },
   "day": {
-    "0": "Sun",
-    "1": "Mon",
-    "2": "Tue",
-    "3": "Wed",
-    "4": "Thu",
-    "5": "Fri",
-    "6": "Sat"
+    "0": "Ned",
+    "1": "Pon",
+    "2": "Ut",
+    "3": "Sri",
+    "4": "Čet",
+    "5": "Pet",
+    "6": "Sub"
   }
 }
