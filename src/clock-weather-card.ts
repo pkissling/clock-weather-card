@@ -1,39 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
-@potrgani
-pkissling /
-clock-weather-card
-Public
-generated from custom-cards/boilerplate-card
-
-Fork your own copy of pkissling/clock-weather-card
-
-Code
-Issues 18
-Pull requests
-Actions
-Security
-
-    Insights
-
-Beta Try the new code view
-clock-weather-card/src/clock-weather-card.ts /
-@pkissling
-pkissling Fix timezone time calculation
-Latest commit a323216 Apr 24, 2023
-History
-5 contributors
-@pkissling
-@jan-philippgieseext
-@oxtn
-@JanGiese
-@jlambert121
-548 lines (478 sloc) 22.1 KB
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup } from 'lit';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customElement, property, state } from 'lit/decorators';
@@ -581,20 +545,4 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 }
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
 
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
-clock-weather-card/clock-weather-card.ts at master · pkissling/clock-weather-card
