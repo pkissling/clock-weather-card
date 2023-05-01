@@ -398,7 +398,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getLocale(): string {
-    return this.config.locale || this.hass.locale?.language || 'en-GB';
+    return this.config.locale || this.hass.locale?.language || 'hr';
   }
 
   private getDateFnsLocale(): Locale {
@@ -410,8 +410,8 @@ export class ClockWeatherCard extends LitElement {
     const localeTwo = localeParts[1]?.toUpperCase() || '';
     const dateFnsLocale = localeOne + localeTwo;
     // HA provides en-US as en
-    if (dateFnsLocale === 'en') {
-      return locales.enUS;
+    if (dateFnsLocale === 'hr') {
+      return locales.hr;
     }
     const importedLocale = locales[dateFnsLocale];
     if (!importedLocale) {
