@@ -1,0 +1,28 @@
+{
+  "weather": {
+    "clear-night": "Selge",
+    "cloudy": "Pilvine",
+    "fog": "Udu",
+    "hail": "Rahe",
+    "lightning": "Äike",
+    "lightning-rainy": "Äiksevihm",
+    "partlycloudy": "Vahelduv pilvisus",
+    "pouring": "Paduvihm",
+    "rainy": "Vihm",
+    "snowy": "Lumi",
+    "snowy-rainy": "Lörts",
+    "sunny": "Päike",
+    "windy": "Tuuline",
+    "windy-variant": "Tuuline",
+    "exceptional": "Äärmuslik"
+  },
+  "day": {
+    "0": "P",
+    "1": "E",
+    "2": "T",
+    "3": "K",
+    "4": "N",
+    "5": "R",
+    "6": "L"
+  }
+}
