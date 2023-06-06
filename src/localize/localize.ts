@@ -5,6 +5,7 @@ import * as cs from './languages/cs.json';
 import * as de from './languages/de.json';
 import * as en from './languages/en.json';
 import * as es from './languages/es.json';
+import * as et from './languages/et.json';
 import * as fi from './languages/fi.json';
 import * as fr from './languages/fr.json';
 import * as he from './languages/he.json';
@@ -35,6 +36,7 @@ const languages: any = {
   de,
   en,
   es,
+  et,
   fi,
   fr,
   he,
