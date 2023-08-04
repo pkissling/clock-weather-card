@@ -48,7 +48,6 @@ export function extractMostOccuring<T extends string | number | symbol>(elements
         maxCount = modeMap[el];
       }
     }
-    return maxEl;
   }
   return maxEl;
 }
