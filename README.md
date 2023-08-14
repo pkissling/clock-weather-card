@@ -137,4 +137,4 @@ The basic idea of the forecast bars is to be able to understand the weather tren
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sv`, `th`, `uk`, `vi`, `zh-CN`, `zh-TW`
+[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sv`, `th`, `uk`, `vi`, `zh-CN`, `zh-TW`
