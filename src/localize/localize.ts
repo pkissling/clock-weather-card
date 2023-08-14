@@ -20,6 +20,7 @@ import * as pt from './languages/pt.json';
 import * as ro from './languages/ro.json';
 import * as ru from './languages/ru.json';
 import * as sk from './languages/sk.json';
+import * as sl from './languages/sl.json';
 import * as sv from './languages/sv.json';
 import * as th from './languages/th.json';
 import * as uk from './languages/uk.json';
@@ -51,6 +52,7 @@ const languages: any = {
   ro,
   ru,
   sk,
+  sl,
   sv,
   th,
   uk,
