@@ -15,9 +15,19 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## FAQ
 
-- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
-- [What does the card actually display?](#what-does-the-card-actually-display)
+- [Clock Weather Card](#clock-weather-card)
+  - [FAQ](#faq)
+    - [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+    - [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
+    - [What does the card actually display?](#what-does-the-card-actually-display)
+  - [Installation](#installation)
+    - [Manual Installation](#manual-installation)
+    - [Installation and tracking with `hacs`](#installation-and-tracking-with-hacs)
+  - [Configuration](#configuration)
+    - [Minimal configuration](#minimal-configuration)
+    - [Full configuration](#full-configuration)
+    - [Options](#options)
+  - [Footnotes](#footnotes)
 
 ### Why don't I see the current day in my weather forecast?
 
@@ -137,4 +147,4 @@ The basic idea of the forecast bars is to be able to understand the weather tren
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sv`, `th`, `uk`, `vi`, `zh-CN`, `zh-TW`
+[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `el`,`en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `it`, `ko`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sv`, `th`, `uk`, `vi`, `zh-CN`, `zh-TW`
