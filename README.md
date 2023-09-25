@@ -86,30 +86,30 @@ The basic idea of the forecast bars is to be able to understand the weather tren
 ### Minimal configuration
 
 ```yaml
-- type: custom:clock-weather-card
-  entity: weather.home
+type: custom:clock-weather-card
+entity: weather.home
 ```
 
 ### Full configuration
 
 ```yaml
-- type: custom:clock-weather-card
-  entity: weather.home
-  title: Home
-  sun_entity: sun.sun
-  temperature_sensor: sensor.outdoor_temp
-  weather_icon_type: line
-  animated_icon: true
-  forecast_days: 5
-  locale: en-GB
-  time_format: 24
-  date_pattern: P
-  hide_today_section: false
-  hide_forecast_section: false
-  hide_clock: false
-  hide_date: false
-  hourly_forecast: false
-  use_browser_time: true
+type: custom:clock-weather-card
+entity: weather.home
+title: Home
+sun_entity: sun.sun
+temperature_sensor: sensor.outdoor_temp
+weather_icon_type: line
+animated_icon: true
+forecast_days: 5
+locale: en-GB
+time_format: 24
+date_pattern: P
+hide_today_section: false
+hide_forecast_section: false
+hide_clock: false
+hide_date: false
+hourly_forecast: false
+use_browser_time: true
 ```
 
 ### Options
