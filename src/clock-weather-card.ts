@@ -59,10 +59,6 @@ const gradientMap: Map<number, Rgb> = new Map()
 @customElement('clock-weather-card')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ClockWeatherCard extends LitElement {
-  public static getStubConfig(): Record<string, unknown> {
-    return {};
-  }
-
   // https://lit.dev/docs/components/properties/
   @property({ attribute: false }) public hass!: HomeAssistant;
 
@@ -75,6 +71,14 @@ export class ClockWeatherCard extends LitElement {
     const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000;
     setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute);
     setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
+  }
+
+  public static getStubConfig(): Record<string, unknown> {
+    return {};
+  }
+
+  public getCardSize(): number {
+    return 3 + roundUp(this.config.forecast_days / 2);
   }
 
   // https://lit.dev/docs/components/properties/#accessors-custom
