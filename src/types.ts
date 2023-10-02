@@ -45,13 +45,20 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   use_browser_time: boolean;
 }
 
+export const enum WeatherEntityFeature {
+  FORECAST_DAILY = 1,
+  FORECAST_HOURLY = 2,
+  FORECAST_TWICE_DAILY = 4,
+}
+
 export interface Weather extends HassEntity {
   state: string;
   attributes: {
     temperature?: number;
     temperature_unit: TemperatureUnit;
     precipitation_unit: string;
-    forecast: WeatherForecast[];
+    forecast?: WeatherForecast[];
+    supported_features: WeatherEntityFeature;
   };
 }
 
@@ -92,4 +99,9 @@ export interface TemperatureSensor extends HassEntity {
   attributes: {
     unit_of_measurement?: TemperatureUnit;
   };
+}
+
+export type WeatherForecastEvent = {
+  forecast?: WeatherForecast[];
+  type: "hourly" | "daily" | "twice_daily";
 }
