@@ -77,7 +77,12 @@ export class ClockWeatherCard extends LitElement {
     setTimeout(() => { this.currentDate = new Date() }, msToNextMinute);
   }
 
-  public static getStubConfig(): Record<string, unknown> {
+  public static getStubConfig(_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
+    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(e => e.startsWith));
+    if (entity) {
+      return { entity };
+    }
+
     return {};
   }
 
