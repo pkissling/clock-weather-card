@@ -24,10 +24,6 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 Your weather provider may not provide today's weather as part of their weather forecast. You may consider switching to a different weather provider.
 [OpenWeatherMap](https://www.home-assistant.io/integrations/openweathermap/) is one of the weather integrations providing today's weather.
 
-### Why does the forecast show less days than expected?
-
-Depending on your Home Assistant's configuration, your weather provider might deliver forecasts *hourly*. If this is the case, the weather integrations delivers 48 distinct forecasts (This corresponds to forecasts for the next 48 hours). You might want to consider supplying a weather entity which supplies *daily* forecasts for the card.
-
 ### What does the card actually display?
 
 ![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png)
@@ -121,18 +117,18 @@ use_browser_time: true
 | title                 | string           | **Optional** | Title of the card                                                                                                                                                                                                                 | `''`      |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                                            | `sun.sun` |
 | temperature_sensor    | string           | **Optional** | ID of the temperature sensor entity. Used to show the current temperature based on a sensor value instead of the weather forecast                                                                                                 | `''`      |
-| weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                                               | `line`    |
+| weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                                              | `line`    |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                                                 | `true`    |
 | forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                                                  | `5`       |
-| locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                                                                                                    | `en-GB`   |
+| locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                                                                                                   | `en-GB`   |
 | time_format           | `24` \| `12`     | **Optional** | Format used to display the time. If not provided, falls back to the time format set in HA                                                                                                                                         | `24`      |
-| date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns                             | `P`       |
+| date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns                            | `P`       |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                                                          | `false`   |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                                                  | `false`   |
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead                                                                                                                                   | `false`   |
 | hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                                             | `false`   |
 | hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily                                                                                                                                                                                      | `false`   |
-| use_browser_time      | boolean          | **Optional** | Uses the time from your browser to indicate the current time. If not provided, falls back to the [`time_zone`](https://www.home-assistant.io/blog/2015/05/09/utc-time-zone-awareness/#setting-up-your-time-zone) configured in HA  | `true`    |
+| use_browser_time      | boolean          | **Optional** | Uses the time from your browser to indicate the current time. If not provided, falls back to the [`time_zone`](https://www.home-assistant.io/blog/2015/05/09/utc-time-zone-awareness/#setting-up-your-time-zone) configured in HA | `true`    |
 
 ## Footnotes
 

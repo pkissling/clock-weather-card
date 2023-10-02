@@ -18,7 +18,9 @@ import {
   TemperatureSensor,
   TemperatureUnit,
   Weather,
-  WeatherForecast
+  WeatherEntityFeature,
+  WeatherForecast,
+  WeatherForecastEvent
 } from './types';
 import styles from './styles';
 import { actionHandler } from './action-handler-directive';
@@ -64,6 +66,8 @@ export class ClockWeatherCard extends LitElement {
 
   @state() private config!: MergedClockWeatherCardConfig;
   @state() private currentDate!: Date;
+  @state() private forecastSubscriber?: Promise<() => void>;
+  @state() private forecasts?: WeatherForecast[];
 
   constructor() {
     super();
@@ -112,6 +116,10 @@ export class ClockWeatherCard extends LitElement {
       return false;
     }
 
+    if (changedProps.has("forecasts")) {
+      return true;
+    }
+
     const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
     if (oldHass) {
       const oldSun = oldHass.states[this.config.sun_entity];
@@ -122,6 +130,13 @@ export class ClockWeatherCard extends LitElement {
     }
 
     return hasConfigOrEntityChanged(this, changedProps, false);
+  }
+
+  protected updated(changedProps: PropertyValues): void {
+    super.updated(changedProps);
+    if (changedProps.has('config')) {
+      this.subscribeForecastEvents();
+    }
   }
 
   // https://lit.dev/docs/components/rendering/
@@ -156,6 +171,18 @@ export class ClockWeatherCard extends LitElement {
     `;
   }
 
+  public connectedCallback(): void {
+    super.connectedCallback();
+    if (this.hasUpdated && this.config && this.hass) {
+      this.subscribeForecastEvents();
+    }
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.unsubscribeForecastEvents();
+  }
+
   private renderToday(): TemplateResult {
     const weather = this.getWeather();
     const state = weather.state;
@@ -188,11 +215,11 @@ export class ClockWeatherCard extends LitElement {
   private renderForecast(): TemplateResult[] {
     const weather = this.getWeather();
     const currentTemp = roundIfNotNull(this.getCurrentTemperature());
-    const items = this.config.forecast_days;
+    const maxItemsCount = this.config.forecast_days;
     const hourly = this.config.hourly_forecast;
     const temperatureUnit = weather.attributes.temperature_unit;
 
-    const forecasts = this.extractForecasts(weather.attributes.forecast, items, hourly);
+    const forecasts = this.mergeForecasts(maxItemsCount, hourly);
 
     const minTemps = forecasts.map((f) => f.templow);
     const maxTemps = forecasts.map((f) => f.temperature);
@@ -371,8 +398,7 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
-    if (!weather) throw new Error('Weather entity could not be found.');
-    if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
+    if (!weather) throw new Error(`Weather entity "${this.config.entity}" could not be found.`);
     return weather;
   }
 
@@ -492,10 +518,11 @@ export class ClockWeatherCard extends LitElement {
       return localize(key, this.getLocale());
   }
 
-  private extractForecasts(forecasts: WeatherForecast[], items: number, hourly: boolean): MergedWeatherForecast[] {
+  private mergeForecasts(maxItemsCount: number, hourly: boolean): MergedWeatherForecast[] {
+    const forecasts = this.getWeather().attributes.forecast ?? this.forecasts ?? [];
     const agg = forecasts.reduce((forecasts, forecast) => {
       const d = new Date(forecast.datetime);
-      const unit = !hourly ? d.getDate() : d.getDate()+"_"+d.getHours();
+      const unit = !hourly ? d.getDate() : `${d.getMonth()}-${d.getDate()}-${+d.getHours()}`;
       forecasts[unit] = forecasts[unit] || [];
       forecasts[unit].push(forecast);
       return forecasts;
@@ -509,7 +536,7 @@ export class ClockWeatherCard extends LitElement {
         return agg;
       }, [])
       .sort((a,b) => a.datetime.getTime() - b.datetime.getTime())
-      .slice(0, items);
+      .slice(0, maxItemsCount);
   }
 
   private toZonedDate(date: Date): Date {
@@ -547,6 +574,44 @@ export class ClockWeatherCard extends LitElement {
       precipitation_probability: precipitationProbability,
       precipitation: precipitation,
     }
+  }
+
+  private subscribeForecastEvents(): void {
+    if (this.isLegacyWeather()) {
+      return;
+    }
+
+    const hourly = this.config.hourly_forecast;
+    if (hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_HOURLY)) {
+      throw new Error(`Weather entity "${this.config.entity}" does not support hourly forecasts.`);
+    }
+
+    if (!hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_DAILY)) {
+      throw new Error(`Weather entity "${this.config.entity}" does not support daily forecasts.`);
+    }
+  
+    const callback = (event: WeatherForecastEvent) => { 
+      this.forecasts = event.forecast;
+    };
+    this.forecastSubscriber = this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, {
+      type: "weather/subscribe_forecast",
+      forecast_type: hourly ? 'hourly' : 'daily',
+      entity_id: this.config.entity,
+    });
+  }
+
+  private unsubscribeForecastEvents(): void {
+    if (this.forecastSubscriber) {
+      this.forecastSubscriber.then((unsub) => unsub());
+    }
+  }
+
+  private isLegacyWeather(): boolean {
+    return (this.getWeather().attributes.forecast?.length ?? 0) > 0;
+  }
+
+  private supportsFeature(feature: WeatherEntityFeature): boolean {
+    return (this.getWeather().attributes.supported_features! & feature) !== 0
   }
 }
 
