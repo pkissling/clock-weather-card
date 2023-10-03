@@ -126,7 +126,7 @@ export class ClockWeatherCard extends LitElement {
     const oldHass = changedProps.get('hass') as HomeAssistant | undefined
     if (oldHass) {
       const oldSun = oldHass.states[this.config.sun_entity]
-      const newSun = this.hass?.states[this.config.sun_entity]
+      const newSun = this.hass.states[this.config.sun_entity]
       if (oldSun !== newSun) {
         return true
       }
@@ -394,7 +394,8 @@ export class ClockWeatherCard extends LitElement {
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
       date_pattern: config.date_pattern ?? 'P',
-      use_browser_time: config.use_browser_time ?? true
+      use_browser_time: config.use_browser_time ?? true,
+      time_zone: config.time_zone ?? undefined
     }
   }
 
@@ -549,7 +550,7 @@ export class ClockWeatherCard extends LitElement {
 
   private toZonedDate (date: Date): Date {
     if (this.config.use_browser_time) return date
-    const timeZone = this.hass?.config?.time_zone
+    const timeZone = this.config.time_zone ?? this.hass?.config?.time_zone
     const withTimeZone = DateTime.fromJSDate(date).setZone(timeZone)
     if (!withTimeZone.isValid) {
       console.error(`clock-weather-card - Time Zone [${timeZone}] not supported. Falling back to browser time.`)
