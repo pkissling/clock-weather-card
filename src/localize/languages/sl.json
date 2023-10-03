@@ -17,12 +17,12 @@
     "exceptional": "Izjemno vreme"
   },
   "day": {
-    "0": "Ned",
     "1": "Pon",
     "2": "Tor",
     "3": "Sre",
     "4": "Čet",
     "5": "Pet",
-    "6": "Sob"
+    "6": "Sob",
+    "7": "Ned"
   }
 }

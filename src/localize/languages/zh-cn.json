@@ -1,28 +1,28 @@
 {
-    "weather": {
-        "clear-night": "夜间晴朗",
-        "cloudy": "阴",
-        "fog": "雾",
-        "hail": "冰雹",
-        "lightning": "雷",
-        "lightning-rainy": "雷阵雨",
-        "partlycloudy": "多云",
-        "pouring": "大雨",
-        "rainy": "雨",
-        "snowy": "雪",
-        "snowy-rainy": "雨夹雪",
-        "sunny": "晴",
-        "windy": "有风",
-        "windy-variant": "强风",
-        "exceptional": "特殊"
-    },
-    "day": {
-        "0": "周日",
-        "1": "周一",
-        "2": "周二",
-        "3": "周三",
-        "4": "周四",
-        "5": "周五",
-        "6": "周六"
-    }
+  "weather": {
+    "clear-night": "夜间晴朗",
+    "cloudy": "阴",
+    "fog": "雾",
+    "hail": "冰雹",
+    "lightning": "雷",
+    "lightning-rainy": "雷阵雨",
+    "partlycloudy": "多云",
+    "pouring": "大雨",
+    "rainy": "雨",
+    "snowy": "雪",
+    "snowy-rainy": "雨夹雪",
+    "sunny": "晴",
+    "windy": "有风",
+    "windy-variant": "强风",
+    "exceptional": "特殊"
+  },
+  "day": {
+    "1": "周一",
+    "2": "周二",
+    "3": "周三",
+    "4": "周四",
+    "5": "周五",
+    "6": "周六",
+    "7": "周日"
+  }
 }

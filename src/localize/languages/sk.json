@@ -17,12 +17,12 @@
     "exceptional": "Neobyčajné počasie (Chaos)"
   },
   "day": {
-    "0": "Ned",
     "1": "Pon",
     "2": "Uto",
     "3": "Str",
     "4": "Štv",
     "5": "Pia",
-    "6": "Sob"
+    "6": "Sob",
+    "7": "Ned"
   }
 }

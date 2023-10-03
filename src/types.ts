@@ -1,5 +1,6 @@
 import { type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
 import { type HassEntity } from 'home-assistant-js-websocket/dist/types'
+import { type DateTime } from 'luxon'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -12,7 +13,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string
   title?: string
   sun_entity?: string
-  temperature_sensor?: string;
+  temperature_sensor?: string
   weather_icon_type?: 'fill' | 'line'
   animated_icon?: boolean
   forecast_rows?: number
@@ -77,7 +78,7 @@ export interface WeatherForecast {
 }
 
 export interface MergedWeatherForecast {
-  datetime: Date
+  datetime: DateTime
   condition: string
   temperature: number
   precipitation: number

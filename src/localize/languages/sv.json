@@ -17,12 +17,12 @@
     "exceptional": "Exceptionellt"
   },
   "day": {
-    "0": "Sön",
     "1": "Mån",
     "2": "Tis",
     "3": "Ons",
     "4": "Tor",
     "5": "Fre",
-    "6": "Lör"
+    "6": "Lör",
+    "7": "Sön"
   }
 }

@@ -17,12 +17,12 @@
     "exceptional": "Tempesta"
   },
   "day": {
-    "0": "Dom",
     "1": "Lun",
     "2": "Mar",
     "3": "Mer",
     "4": "Gio",
     "5": "Ven",
-    "6": "Sab"
+    "6": "Sab",
+    "7": "Dom"
   }
 }
