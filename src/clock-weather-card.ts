@@ -224,11 +224,11 @@ export class ClockWeatherCard extends LitElement {
   private renderForecast (): TemplateResult[] {
     const weather = this.getWeather()
     const currentTemp = roundIfNotNull(this.getCurrentTemperature())
-    const maxItemsCount = this.config.forecast_days
+    const maxRowsCount = this.config.forecast_rows
     const hourly = this.config.hourly_forecast
     const temperatureUnit = weather.attributes.temperature_unit
 
-    const forecasts = this.mergeForecasts(maxItemsCount, hourly)
+    const forecasts = this.mergeForecasts(maxRowsCount, hourly)
 
     const minTemps = forecasts.map((f) => f.templow)
     const maxTemps = forecasts.map((f) => f.temperature)
@@ -385,7 +385,7 @@ export class ClockWeatherCard extends LitElement {
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
       weather_icon_type: config.weather_icon_type ?? 'line',
-      forecast_days: config.forecast_days ?? 5,
+      forecast_rows: config.forecast_rows ?? 5,
       hourly_forecast: config.hourly_forecast ?? false,
       animated_icon: config.animated_icon ?? true,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
@@ -527,7 +527,7 @@ export class ClockWeatherCard extends LitElement {
     return localize(key, this.getLocale())
   }
 
-  private mergeForecasts (maxItemsCount: number, hourly: boolean): MergedWeatherForecast[] {
+  private mergeForecasts (maxRowsCount: number, hourly: boolean): MergedWeatherForecast[] {
     const forecasts = this.getWeather().attributes.forecast ?? this.forecasts ?? []
     const agg = forecasts.reduce<Record<number, WeatherForecast[]>>((forecasts, forecast) => {
       const d = new Date(forecast.datetime)
@@ -545,7 +545,7 @@ export class ClockWeatherCard extends LitElement {
         return agg
       }, [])
       .sort((a, b) => a.datetime.getTime() - b.datetime.getTime())
-      .slice(0, maxItemsCount)
+      .slice(0, maxRowsCount)
   }
 
   private toZonedDate (date: Date): Date {
@@ -621,7 +621,7 @@ export class ClockWeatherCard extends LitElement {
     return (this.getWeather().attributes.forecast?.length ?? 0) > 0
   }
 
-  private supportsFeature (feature: WeatherEntityFeature): boolean {
+  private supportsFeature(feature: WeatherEntityFeature): boolean {
     return (this.getWeather().attributes.supported_features & feature) !== 0
   }
 }

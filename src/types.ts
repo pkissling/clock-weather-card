@@ -12,9 +12,10 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string
   title?: string
   sun_entity?: string
+  temperature_sensor?: string;
   weather_icon_type?: 'fill' | 'line'
   animated_icon?: boolean
-  forecast_days?: number
+  forecast_rows?: number
   locale?: string
   time_format?: '12' | '24'
   date_pattern?: string
@@ -34,7 +35,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   temperature_sensor?: string
   weather_icon_type: 'fill' | 'line'
   animated_icon: boolean
-  forecast_days: number
+  forecast_rows: number
   locale?: string
   time_format?: '12' | '24'
   date_pattern: string
