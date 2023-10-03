@@ -13,11 +13,14 @@ showing the current date, time and a weather forecast.
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
 
+## Migrating from v1 to v2
+
+* Configuration property `forecast_days` was renamed to `forecast_rows` to indicate that this attribute does not only work for daily, but also for hourly forecasts.
+
 ## FAQ
 
-- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-- [Why does the forecast show less days than expected?](#why-does-the-forecast-show-less-days-than-expected)
-- [What does the card actually display?](#what-does-the-card-actually-display)
+* [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+* [What does the card actually display?](#what-does-the-card-actually-display)
 
 ### Why don't I see the current day in my weather forecast?
 
@@ -96,7 +99,7 @@ sun_entity: sun.sun
 temperature_sensor: sensor.outdoor_temp
 weather_icon_type: line
 animated_icon: true
-forecast_days: 5
+forecast_rows: 5
 locale: en-GB
 time_format: 24
 date_pattern: P
@@ -120,7 +123,7 @@ time_zone: null
 | temperature_sensor    | string           | **Optional** | ID of the temperature sensor entity. Used to show the current temperature based on a sensor value instead of the weather forecast                                                                                                 | `''`      |
 | weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                                              | `line`    |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                                                 | `true`    |
-| forecast_days         | number           | **Optional** | Days of weather forecast to show                                                                                                                                                                                                  | `5`       |
+| forecast_rows         | number           | **Optional** | The amount of weather forecast rows to show. Depending on `hourly_forecast` each row either corresponds to a day or an hour                                                                                                       | `5`       |
 | locale                | string[^2]       | **Optional** | Language to use for language specific text. If not provided, falls back to the locale set in HA                                                                                                                                   | `en-GB`   |
 | time_format           | `24` \| `12`     | **Optional** | Format used to display the time. If not provided, falls back to the time format set in HA                                                                                                                                         | `24`      |
 | date_pattern          | string           | **Optional** | Pattern to use for time formatting. If not provided, falls back to the default date formatting of the configured language. See [date-fns](https://date-fns.org/v2.29.3/docs/format) for valid patterns                            | `P`       |
