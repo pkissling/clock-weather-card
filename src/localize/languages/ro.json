@@ -17,12 +17,12 @@
     "exceptional": "Furtuna"
   },
   "day": {
-    "0": "Dum",
     "1": "Lun",
     "2": "Mar",
     "3": "Mie",
     "4": "Joi",
     "5": "Vin",
-    "6": "Sam"
+    "6": "Sam",
+    "7": "Dum"
   }
 }

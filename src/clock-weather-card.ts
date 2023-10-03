@@ -30,8 +30,6 @@ import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundU
 import { svg, png } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
-import { format, type Locale } from 'date-fns'
-import * as locales from 'date-fns/locale'
 import { DateTime } from 'luxon'
 
 console.info(
@@ -63,16 +61,16 @@ export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
 
   @state() private config!: MergedClockWeatherCardConfig
-  @state() private currentDate!: Date
+  @state() private currentDate!: DateTime
   @state() private forecastSubscriber?: Promise<() => void>
   @state() private forecasts?: WeatherForecast[]
 
   constructor () {
     super()
-    this.currentDate = new Date()
-    const msToNextMinute = (60 - this.currentDate.getSeconds()) * 1000
-    setTimeout(() => setInterval(() => { this.currentDate = new Date() }, 1000 * 60), msToNextMinute)
-    setTimeout(() => { this.currentDate = new Date() }, msToNextMinute)
+    this.currentDate = DateTime.now()
+    const msToNextMinute = (60 - this.currentDate.second) * 1000
+    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000 * 60), msToNextMinute)
+    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextMinute)
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
@@ -85,7 +83,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   public getCardSize (): number {
-    return 3 + roundUp(this.config.forecast_days / 2)
+    return 3 + roundUp(this.config.forecast_rows / 2)
   }
 
   // https://lit.dev/docs/components/properties/#accessors-custom
@@ -98,8 +96,8 @@ export class ClockWeatherCard extends LitElement {
       throw new Error('Attribute "entity" must be present.')
     }
 
-    if (config.forecast_days && config.forecast_days < 1) {
-      throw new Error('Attribute "forecast_days" must be greater than 0.')
+    if (config.forecast_rows && config.forecast_rows < 1) {
+      throw new Error('Attribute "forecast_rows" mst be greater than 0.')
     }
 
     if (config.time_format && config.time_format.toString() !== '24' && config.time_format.toString() !== '12') {
@@ -240,22 +238,25 @@ export class ClockWeatherCard extends LitElement {
     const maxTemp = Math.round(max(maxTemps))
 
     const gradientRange = this.gradientRange(minTemp, maxTemp, temperatureUnit)
-    return forecasts.map((forecast) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly)))
+
+    const displayTexts = forecasts
+      .map(f => f.datetime)
+      .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
+    const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
+
+    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly, displayTexts[i], maxColOneChars)))
   }
 
-  private renderForecastItem (forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean): TemplateResult {
-    const twelveHour = this.getTimeFormat() === '12'
-    const displayText = !hourly ? this.localize('day.' + forecast.datetime.getDay()) : this.time(forecast.datetime)
+  private renderForecastItem (forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
     const tempUnit = this.getWeather().attributes.temperature_unit
-    const isNow = !hourly ? new Date().getDate() === forecast.datetime.getDate() : new Date().getHours() === forecast.datetime.getHours()
+    const isNow = hourly ? DateTime.now().hour === forecast.datetime.hour : DateTime.now().day === forecast.datetime.day
     const minTempDay = Math.round(isNow && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow)
     const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature)
-    const colOneSize = hourly && twelveHour ? '3rem' : hourly ? '2.5rem' : '2rem'
 
     return html`
-      <clock-weather-card-forecast-row style="--col-one-size: ${colOneSize};">
+      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.5)}rem;">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
@@ -393,7 +394,7 @@ export class ClockWeatherCard extends LitElement {
       hide_today_section: config.hide_today_section ?? false,
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
-      date_pattern: config.date_pattern ?? 'P',
+      date_pattern: config.date_pattern ?? 'D',
       use_browser_time: config.use_browser_time ?? true,
       time_zone: config.time_zone ?? undefined
     }
@@ -431,39 +432,27 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getLocale (): string {
-    return this.config.locale ?? this.hass.locale?.language ?? 'en-GB'
-  }
-
-  private getDateFnsLocale (): Locale {
-    const locale = this.getLocale()
-    const localeParts = locale
-      .replace('_', '-')
-      .split('-')
-    const localeOne = localeParts[0].toLowerCase()
-    const localeTwo = localeParts[1]?.toUpperCase() || ''
-    const dateFnsLocale = localeOne + localeTwo
-    // HA provides en-US as en
-    if (dateFnsLocale === 'en') {
-      return locales.enUS
-    }
-    const importedLocale = locales[dateFnsLocale]
-    if (!importedLocale) {
-      console.error('clock-weather-card - Locale not supported: ' + dateFnsLocale)
-      return locales.enGB
-    }
-    return importedLocale
+    return this.config.locale ?? this.hass.locale.language ?? 'en-GB'
   }
 
   private date (): string {
-    const zonedDate = this.toZonedDate(this.currentDate)
-    const weekday = this.localize(`day.${zonedDate.getDay()}`)
-    const date = format(zonedDate, this.config.date_pattern, { locale: this.getDateFnsLocale() })
-    return `${weekday}, ${date}`
+    return this.toZonedDate(this.currentDate).toFormat(this.config.date_pattern)
   }
 
-  private time (date: Date = this.currentDate): string {
-    const withTimeZone = this.toZonedDate(date)
-    return format(withTimeZone, this.getTimeFormat() === '24' ? 'HH:mm' : 'h:mm aa')
+  private time (date: DateTime = this.currentDate): string {
+    if (this.config.time_format) {
+      return this.toZonedDate(date)
+        .toFormat(this.config.time_format === '24' ? 'HH:mm' : 'h:mm a')
+    }
+    if (this.hass.locale.time_format === TimeFormat.am_pm) {
+      return this.toZonedDate(date).toFormat('h:mm a')
+    }
+
+    if (this.hass.locale.time_format === TimeFormat.twenty_four) {
+      return this.toZonedDate(date).toFormat('HH:mm')
+    }
+
+    return this.toZonedDate(date).toFormat('t')
   }
 
   private getIconAnimationKind (): 'static' | 'animated' {
@@ -498,16 +487,6 @@ export class ClockWeatherCard extends LitElement {
       : this.toCelsius(unit, temp)
   }
 
-  private getTimeFormat (): '12' | '24' {
-    if (this.config.time_format) {
-      return this.config.time_format
-    }
-
-    if (this.hass.locale?.time_format === TimeFormat.twenty_four) return '24'
-    if (this.hass.locale?.time_format === TimeFormat.am_pm) return '12'
-    return '24'
-  }
-
   private calculateBarRangePercents (minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number): { startPercent: number, endPercent: number } {
     if (maxTemp === minTemp) {
       // avoid division by 0
@@ -531,7 +510,7 @@ export class ClockWeatherCard extends LitElement {
     const forecasts = this.getWeather().attributes.forecast ?? this.forecasts ?? []
     const agg = forecasts.reduce<Record<number, WeatherForecast[]>>((forecasts, forecast) => {
       const d = new Date(forecast.datetime)
-      const unit = !hourly ? d.getDate() : `${d.getMonth()}-${d.getDate()}-${+d.getHours()}`
+      const unit = hourly ? `${d.getMonth()}-${d.getDate()}-${+d.getHours()}` : d.getDate()
       forecasts[unit] = forecasts[unit] || []
       forecasts[unit].push(forecast)
       return forecasts
@@ -544,19 +523,20 @@ export class ClockWeatherCard extends LitElement {
         agg.push(avg)
         return agg
       }, [])
-      .sort((a, b) => a.datetime.getTime() - b.datetime.getTime())
+      .sort((a, b) => a.datetime.toMillis() - b.datetime.toMillis())
       .slice(0, maxRowsCount)
   }
 
-  private toZonedDate (date: Date): Date {
-    if (this.config.use_browser_time) return date
+  private toZonedDate (date: DateTime): DateTime {
+    const localizedDate = date.setLocale(this.getLocale())
+    if (this.config.use_browser_time) return localizedDate
     const timeZone = this.config.time_zone ?? this.hass?.config?.time_zone
-    const withTimeZone = DateTime.fromJSDate(date).setZone(timeZone)
-    if (!withTimeZone.isValid) {
-      console.error(`clock-weather-card - Time Zone [${timeZone}] not supported. Falling back to browser time.`)
-      return date
+    const withTimeZone = localizedDate.setZone(timeZone)
+    if (withTimeZone.isValid) {
+      return withTimeZone
     }
-    return new Date(withTimeZone.year, withTimeZone.month - 1, withTimeZone.day, withTimeZone.hour, withTimeZone.minute, withTimeZone.second, withTimeZone.millisecond)
+    console.error(`clock-weather-card - Time Zone [${timeZone}] not supported. Falling back to browser time.`)
+    return localizedDate
   }
 
   private calculateAverageForecast (forecasts: WeatherForecast[]): MergedWeatherForecast {
@@ -578,7 +558,7 @@ export class ClockWeatherCard extends LitElement {
     return {
       temperature: maxTemp,
       templow: minTemp,
-      datetime: new Date(forecasts[0].datetime),
+      datetime: DateTime.fromISO(forecasts[0].datetime),
       condition,
       precipitation_probability: precipitationProbability,
       precipitation
@@ -621,7 +601,7 @@ export class ClockWeatherCard extends LitElement {
     return (this.getWeather().attributes.forecast?.length ?? 0) > 0
   }
 
-  private supportsFeature(feature: WeatherEntityFeature): boolean {
+  private supportsFeature (feature: WeatherEntityFeature): boolean {
     return (this.getWeather().attributes.supported_features & feature) !== 0
   }
 }

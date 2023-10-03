@@ -17,12 +17,12 @@
     "exceptional": "Excepcional"
   },
   "day": {
-    "0": "Dom",
     "1": "Seg",
     "2": "Ter",
     "3": "Qua",
     "4": "Qui",
     "5": "Sex",
-    "6": "Sáb"
+    "6": "Sáb",
+    "7": "Dom"
   }
 }
