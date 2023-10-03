@@ -24,6 +24,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   hide_clock?: boolean
   hide_date?: boolean
   use_browser_time?: boolean
+  time_zone?: string
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -43,6 +44,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   hide_clock: boolean
   hide_date: boolean
   use_browser_time: boolean
+  time_zone?: string
 }
 
 export const enum WeatherEntityFeature {
