@@ -17,6 +17,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 * Configuration property `forecast_days` was renamed to `forecast_rows` to indicate that this attribute does not only work for daily, but also for hourly forecasts.
 * `date-fns` has been replaced by `luxon` for date/time formatting. If you configure `date_pattern`, make sure to migrate your pattern to comply with [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens). Additionally, the weekday is now [_not_ hardcoded](https://github.com/pkissling/clock-weather-card/issues/89) anymore.
+* Configuration property `use_browser_time` is now by default `false`, so by default the card will show the time of the current HA time zone.
 
 ## FAQ
 
@@ -109,7 +110,7 @@ hide_forecast_section: false
 hide_clock: false
 hide_date: false
 hourly_forecast: false
-use_browser_time: true
+use_browser_time: false
 time_zone: null
 ```
 
@@ -133,7 +134,7 @@ time_zone: null
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead                                                                                                                                   | `false`   |
 | hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                                             | `false`   |
 | hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily                                                                                                                                                                                      | `false`   |
-| use_browser_time      | boolean          | **Optional** | Uses the time from your browser to indicate the current time. If not provided, falls back to the [`time_zone`](https://www.home-assistant.io/blog/2015/05/09/utc-time-zone-awareness/#setting-up-your-time-zone) configured in HA | `true`    |
+| use_browser_time      | boolean          | **Optional** | Uses the time from your browser to indicate the current time. If not provided, uses the [time_zone](https://www.home-assistant.io/blog/2015/05/09/utc-time-zone-awareness/#setting-up-your-time-zone) configured in HA            | `false`   |
 | time_zone             | string           | **Optional** | Uses the given [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to indicate the current date and time. If not provided, uses the time zone configured in HA                                              | `null`    |
 
 ## Footnotes

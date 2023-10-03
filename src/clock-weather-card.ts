@@ -395,7 +395,7 @@ export class ClockWeatherCard extends LitElement {
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
       date_pattern: config.date_pattern ?? 'D',
-      use_browser_time: config.use_browser_time ?? true,
+      use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined
     }
   }
