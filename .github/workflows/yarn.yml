@@ -1,17 +1,24 @@
-name: 'Build'
+name: yarn
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      [master]
+  pull_request:
 
 jobs:
   build:
-    name: Test build
+    name: yarn
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
       - name: Build
         run: |
           yarn install
           yarn build
+      - name: Lint
+        run: |
+          yarn lint

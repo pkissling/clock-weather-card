@@ -1,6 +1,6 @@
-import { html, TemplateResult } from "lit";
+import { html, type TemplateResult } from 'lit'
 
-export function safeRender<T>(renderFn: () => T): T | TemplateResult {
+export function safeRender<T> (renderFn: () => T): T | TemplateResult {
   try {
     return renderFn()
   } catch (e) {

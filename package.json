@@ -29,14 +29,13 @@
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-json": "^5.0.0",
     "@types/luxon": "^3.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^39.1.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
     "rollup": "^2.58.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -45,7 +44,7 @@
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^4.8.4"
+    "typescript": "*"
   },
   "resolutions": {
     "lit": "^2.1.2",
@@ -55,9 +54,8 @@
   },
   "scripts": {
     "start": "rollup -c rollup.config.dev.js --watch",
-    "build": "npm run lint && npm run rollup",
-    "lint": "eslint src/*.ts",
-    "rollup": "rollup -c",
-    "prettier": "prettier --write src/*.ts"
+    "build": "yarn rollup",
+    "lint": "eslint **/*.ts --max-warnings 0",
+    "rollup": "rollup -c"
   }
 }
