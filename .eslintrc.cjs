@@ -3,7 +3,9 @@ module.exports = {
         "browser": true,
         "es2021": true
     },
-    "extends": "standard-with-typescript",
+    "extends": [
+        "standard-with-typescript"
+    ],
     "overrides": [
         {
             "env": {
@@ -23,5 +25,6 @@ module.exports = {
     },
     "rules": {
         "@typescript-eslint/strict-boolean-expressions": "off"
-    }
+    },
+    "root": true
 }
