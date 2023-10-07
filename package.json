@@ -29,7 +29,7 @@
     "@rollup/plugin-json": "^5.0.0",
     "@types/luxon": "^3.3.2",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^4.33.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^39.1.0",
     "eslint-plugin-import": "^2.25.2",
