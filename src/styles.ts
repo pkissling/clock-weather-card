@@ -87,6 +87,8 @@ export default css`
   }
 
   forecast-temperature-bar-background {
+    left: 0%;
+    right: 100%;
     width: 100%;
     opacity: 0.25;
     background: var(--light-primary-color);
