@@ -48,7 +48,7 @@
   },
   "resolutions": {
     "lit": "^2.1.2",
-    "lit-html": "2.8.0",
+    "lit-html": "3.0.0",
     "lit-element": "3.3.3",
     "@lit/reactive-element": "1.6.3"
   },
