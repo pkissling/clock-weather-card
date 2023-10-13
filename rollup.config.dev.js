@@ -1,4 +1,4 @@
-import resolve from 'rollup-plugin-node-resolve'
+import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
 import babel from 'rollup-plugin-babel'
 import serve from 'rollup-plugin-serve'
@@ -14,7 +14,7 @@ export default {
   },
   plugins: [
     image(),
-    resolve(),
+    nodeResolve(),
     typescript(),
     json(),
     babel({
