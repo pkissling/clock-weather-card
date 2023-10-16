@@ -40,7 +40,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   forecast_rows: number
   locale?: string
   time_format?: '12' | '24'
-  time_pattern: string
+  time_pattern?: string
   date_pattern: string
   hide_today_section: boolean
   hide_forecast_section: boolean
