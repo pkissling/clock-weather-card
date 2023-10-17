@@ -390,6 +390,7 @@ export class ClockWeatherCard extends LitElement {
       hourly_forecast: config.hourly_forecast ?? false,
       animated_icon: config.animated_icon ?? true,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
+      time_pattern: config.time_pattern ?? undefined,
       hide_forecast_section: config.hide_forecast_section ?? false,
       hide_today_section: config.hide_today_section ?? false,
       hide_clock: config.hide_clock ?? false,
@@ -440,6 +441,10 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private time (date: DateTime = this.currentDate): string {
+    if (this.config.time_pattern) {
+      return this.toZonedDate(date).toFormat(this.config.time_pattern)
+    }
+
     if (this.config.time_format) {
       return this.toZonedDate(date)
         .toFormat(this.config.time_format === '24' ? 'HH:mm' : 'h:mm a')
