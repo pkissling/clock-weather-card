@@ -9,7 +9,6 @@ import {
   handleAction,
   TimeFormat
 } from 'custom-card-helpers' // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
-
 import {
   type ClockWeatherCardConfig,
   type MergedClockWeatherCardConfig,
@@ -31,6 +30,7 @@ import { svg, png } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
+import * as Sentry from '@sentry/browser'
 
 console.info(
 `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -54,6 +54,18 @@ const gradientMap: Map<number, Rgb> = new Map()
   .set(20, new Rgb(252, 245, 112)) // yellow
   .set(30, new Rgb(255, 150, 79)) // orange
   .set(40, new Rgb(255, 192, 159)) // red
+
+Sentry.init({
+  dsn: 'https://fe6c1f118f256a93acaa8cb90fcb26ee@o4505062260277248.ingest.sentry.io/4506031035645952',
+
+  // Alternatively, use `process.env.npm_package_version` for a dynamic release version
+  // if your build tool supports it.
+  release: `clock-weather-card@${version}`,
+  integrations: [new Sentry.BrowserTracing(), new Sentry.BrowserProfilingIntegration()],
+  tracesSampleRate: 1.0,
+  replaysSessionSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0
+})
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
@@ -152,10 +164,10 @@ export class ClockWeatherCard extends LitElement {
           hasDoubleClick: hasAction(this.config.double_tap_action)
         })}
         tabindex="0"
-        .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
+        .label=${`Clock Weather Card: ${this.config.entity}`}
       >
         ${this.config.title
-? html`
+          ? html`
           <div class="card-header">
             ${this.config.title}
           </div>`

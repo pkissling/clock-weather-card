@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser'
 import json from '@rollup/plugin-json'
 import image from '@rollup/plugin-image'
 import gzipPlugin from 'rollup-plugin-gzip'
+import { sentryRollupPlugin } from "@sentry/rollup-plugin"
 
 export default [
   {
@@ -13,6 +14,7 @@ export default [
     output: {
       dir: 'dist',
       format: 'es',
+      sourcemap: true
     },
     plugins:  [
       image(),
@@ -25,7 +27,12 @@ export default [
         babelHelpers: 'bundled'
       }),
       terser(),
-      gzipPlugin()
+      gzipPlugin(),
+      sentryRollupPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+      })
     ]
   },
 ];

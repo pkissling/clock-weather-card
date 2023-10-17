@@ -2,3 +2,5 @@
 /.rpt2_cache/
 package-lock.json
 /dist
+# Sentry Config File
+.env.sentry-build-plugin
