@@ -3,6 +3,7 @@
   "extends": [
     "config:base"
   ],
+  "timezone": "Europe/Berlin",
   "packageRules": [
     {
       "matchUpdateTypes": [
@@ -14,5 +15,8 @@
       ],
       "groupName": "minor-dependencies"
     }
+  ],
+  "schedule": [
+    "before 9am on tuesday"
   ]
 }
