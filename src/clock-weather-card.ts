@@ -75,7 +75,7 @@ export class ClockWeatherCard extends LitElement {
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
     const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(e => e.startsWith))
-    if (entity === undefined) {
+    if (entity) {
       return { entity }
     }
 
