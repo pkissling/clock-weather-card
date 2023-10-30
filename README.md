@@ -105,7 +105,7 @@ forecast_rows: 5
 locale: en-GB
 time_pattern: HH:mm
 time_format: 24
-date_pattern: P
+date_pattern: cccc d-MM-yyyy
 hide_today_section: false
 hide_forecast_section: false
 hide_clock: false
