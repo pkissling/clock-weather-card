@@ -33,9 +33,9 @@ import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
 
 console.info(
-`%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
-'color: orange; font-weight: bold; background: black',
-'color: white; font-weight: bold; background: dimgray'
+  `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
+  'color: orange; font-weight: bold; background: black',
+  'color: white; font-weight: bold; background: dimgray'
 );
 
 // This puts your card into the UI card picker dialog
@@ -62,7 +62,7 @@ export class ClockWeatherCard extends LitElement {
 
   @state() private config!: MergedClockWeatherCardConfig
   @state() private currentDate!: DateTime
-  @state() private forecastSubscriber?: Promise<() => void>
+  @state() private forecastSubscriber?: () => Promise<void>
   @state() private forecasts?: WeatherForecast[]
 
   constructor () {
@@ -135,7 +135,7 @@ export class ClockWeatherCard extends LitElement {
 
   protected updated (changedProps: PropertyValues): void {
     super.updated(changedProps)
-    if (changedProps.has('config')) {
+    if (changedProps.has('config') || !this.forecastSubscriber) {
       this.subscribeForecastEvents()
     }
   }
@@ -148,31 +148,31 @@ export class ClockWeatherCard extends LitElement {
       <ha-card
         @action=${this.handleAction}
         .actionHandler=${actionHandler({
-          hasHold: hasAction(this.config.hold_action),
-          hasDoubleClick: hasAction(this.config.double_tap_action)
-        })}
+      hasHold: hasAction(this.config.hold_action),
+      hasDoubleClick: hasAction(this.config.double_tap_action)
+    })}
         tabindex="0"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
       >
         ${this.config.title
-? html`
+        ? html`
           <div class="card-header">
             ${this.config.title}
           </div>`
-: ''}
+        : ''}
         <div class="card-content">
           ${showToday
-? html`
+        ? html`
             <clock-weather-card-today>
               ${safeRender(() => this.renderToday())}
             </clock-weather-card-today>`
-: ''}
+        : ''}
           ${showForecast
-? html`
+        ? html`
             <clock-weather-card-forecast>
               ${safeRender(() => this.renderForecast())}
             </clock-weather-card-forecast>`
-: ''}
+        : ''}
         </div>
       </ha-card>
     `
@@ -180,7 +180,7 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback (): void {
     super.connectedCallback()
-    if (this.hasUpdated && this.config && this.hass) {
+    if (this.hasUpdated) {
       this.subscribeForecastEvents()
     }
   }
@@ -188,6 +188,13 @@ export class ClockWeatherCard extends LitElement {
   public disconnectedCallback (): void {
     super.disconnectedCallback()
     this.unsubscribeForecastEvents()
+  }
+
+  protected willUpdate (changedProps: PropertyValues): void {
+    super.willUpdate(changedProps)
+    if (!this.forecastSubscriber) {
+      this.subscribeForecastEvents()
+    }
   }
 
   private renderToday (): TemplateResult {
@@ -571,7 +578,12 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private subscribeForecastEvents (): void {
+    this.unsubscribeForecastEvents()
     if (this.isLegacyWeather()) {
+      return
+    }
+
+    if (!this.isConnected || !this.config || !this.hass) {
       return
     }
 
@@ -587,17 +599,18 @@ export class ClockWeatherCard extends LitElement {
     const callback = (event: WeatherForecastEvent): void => {
       this.forecasts = event.forecast
     }
-    this.forecastSubscriber = this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, {
+    this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, {
       type: 'weather/subscribe_forecast',
       forecast_type: hourly ? 'hourly' : 'daily',
       entity_id: this.config.entity
     })
+      .then(forecastSubscriber => { this.forecastSubscriber = forecastSubscriber })
+      .catch(e => { console.error('clock-weather-card - Error when subscribing to weather forecast: ', JSON.stringify(e)) })
   }
 
   private unsubscribeForecastEvents (): void {
     if (this.forecastSubscriber) {
-      this.forecastSubscriber
-        .then((unsub) => { unsub() })
+      this.forecastSubscriber()
         .catch(e => { console.error('clock-weather-card - Error when unsubscribing weather forecast: ' + e) })
     }
   }
