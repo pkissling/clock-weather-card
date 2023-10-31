@@ -1,6 +1,6 @@
 import { LitElement, html, type TemplateResult, type PropertyValues, type CSSResultGroup } from 'lit'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { customElement, property, state } from 'lit/decorators'
+import { customElement, property, state } from 'lit/decorators.js'
 import {
   type HomeAssistant,
   hasConfigOrEntityChanged,
