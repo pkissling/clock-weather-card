@@ -18,7 +18,7 @@
   "dependencies": {
     "@lit-labs/scoped-registry-mixin": "^1.0.0",
     "custom-card-helpers": "^1.8.0",
-    "home-assistant-js-websocket": "^8.0.0",
+    "home-assistant-js-websocket": "^9.0.0",
     "lit": "^3.0.0",
     "luxon": "^3.4.3"
   },
