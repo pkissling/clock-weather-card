@@ -1605,10 +1605,10 @@ home-assistant-js-websocket@^6.0.1:
   resolved "https://registry.yarnpkg.com/home-assistant-js-websocket/-/home-assistant-js-websocket-6.1.1.tgz#87ba846753c4fb58a2e5ace6bb15a82689fd0735"
   integrity sha512-TnZFzF4mn5F/v0XKUTK2GMQXrn/+eQpgaSDSELl6U0HSwSbFwRhGWLz330YT+hiKMspDflamsye//RPL+zwhDw==
 
-home-assistant-js-websocket@^8.0.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/home-assistant-js-websocket/-/home-assistant-js-websocket-8.2.0.tgz#3505bf004cc3026c5d0cfdae5c031a44b0fcb01b"
-  integrity sha512-B163iuvC1hsObkbSXm89JfjjOguyQXSQeQsGf6KQblUj9QwMgFkQt13TiCYjeFFTMzhQ8Qj3/gKx/6MnSeYUqA==
+home-assistant-js-websocket@^9.0.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/home-assistant-js-websocket/-/home-assistant-js-websocket-9.1.0.tgz#7995f0c663089a47a2ad34d124c85056504d0c3f"
+  integrity sha512-R2LEMX0h5r6lfDydrobgHaA/HkZv45B8UHC96j9oLPJ1qETSfSmWLy8AF/RthjT+6kWWnZDlt7VU1EfNVT0wuQ==
 
 ignore@^5.2.0, ignore@^5.2.4:
   version "5.2.4"
