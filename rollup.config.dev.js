@@ -31,4 +31,14 @@ export default {
       },
     }),
   ],
+  onwarn(warning, warn) {
+    if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes('/luxon/')) {
+      // https://github.com/moment/luxon/issues/193
+      return;
+    } else if (warning.code === 'THIS_IS_UNDEFINED' && warning.id.includes('@formatjs')) {
+      // https://github.com/custom-cards/custom-card-helpers/issues/64
+      return
+    }
+    warn(warning);
+  },
 };
