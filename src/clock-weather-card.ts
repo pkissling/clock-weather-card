@@ -68,9 +68,9 @@ export class ClockWeatherCard extends LitElement {
   constructor () {
     super()
     this.currentDate = DateTime.now()
-    const msToNextMinute = (60 - this.currentDate.second) * 1000
-    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000 * 60), msToNextMinute)
-    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextMinute)
+    const msToNextSecond = (1000 - this.currentDate.millisecond)
+    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
+    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
