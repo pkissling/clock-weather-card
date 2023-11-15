@@ -19,7 +19,10 @@
     "@lit-labs/scoped-registry-mixin": "^1.0.0",
     "custom-card-helpers": "^1.8.0",
     "home-assistant-js-websocket": "^9.0.0",
-    "lit": "^2.0.0",
+    "lit": "^2.8.0",
+    "lit-html": "2.8.0",
+    "lit-element": "2.5.1",
+    "@lit/reactive-element": "1.6.3",
     "luxon": "^3.4.3"
   },
   "devDependencies": {
@@ -45,12 +48,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "typescript": "*"
-  },
-  "resolutions": {
-    "lit": "^2.8.0",
-    "lit-html": "2.8.0",
-    "lit-element": "3.3.3",
-    "@lit/reactive-element": "1.6.3"
   },
   "scripts": {
     "start": "rollup -c rollup.config.dev.js --watch",
