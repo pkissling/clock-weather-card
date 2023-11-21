@@ -22,7 +22,7 @@
     "lit": "^2.8.0",
     "lit-html": "2.8.0",
     "lit-element": "2.5.1",
-    "@lit/reactive-element": "1.6.3",
+    "@lit/reactive-element": "2.0.2",
     "luxon": "^3.4.3"
   },
   "devDependencies": {
