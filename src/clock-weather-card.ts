@@ -74,7 +74,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
-    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(e => e.startsWith))
+    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(() => true))
     if (entity) {
       return { entity }
     }
@@ -146,7 +146,7 @@ export class ClockWeatherCard extends LitElement {
     const showForecast = !this.config.hide_forecast_section
     return html`
       <ha-card
-        @action=${this.handleAction}
+        @action=${(e: ActionHandlerEvent) => { this.handleAction(e) }}
         .actionHandler=${actionHandler({
       hasHold: hasAction(this.config.hold_action),
       hasDoubleClick: hasAction(this.config.double_tap_action)
