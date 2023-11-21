@@ -16,13 +16,9 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@lit-labs/scoped-registry-mixin": "^1.0.0",
     "custom-card-helpers": "^1.8.0",
     "home-assistant-js-websocket": "^9.0.0",
     "lit": "^2.8.0",
-    "lit-html": "2.8.0",
-    "lit-element": "2.5.1",
-    "@lit/reactive-element": "1.6.3",
     "luxon": "^3.4.3"
   },
   "devDependencies": {
