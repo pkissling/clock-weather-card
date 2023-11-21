@@ -14,6 +14,16 @@
         "*"
       ],
       "groupName": "minor-dependencies"
+    },
+    {
+      "matchPackageNames": [
+        "lit"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "enabled": true
     }
   ],
   "schedule": [
