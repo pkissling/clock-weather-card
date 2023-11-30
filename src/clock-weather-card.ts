@@ -611,7 +611,8 @@ export class ClockWeatherCard extends LitElement {
   private unsubscribeForecastEvents (): void {
     if (this.forecastSubscriber) {
       this.forecastSubscriber()
-        .catch(e => { console.error('clock-weather-card - Error when unsubscribing weather forecast: ' + e) })
+        .then(() => { this.forecastSubscriber = undefined })
+        .catch(e => { console.error('clock-weather-card - Error when unsubscribing weather forecast: ', e) })
     }
   }
 
