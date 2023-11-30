@@ -519,7 +519,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private mergeForecasts (maxRowsCount: number, hourly: boolean): MergedWeatherForecast[] {
-    const forecasts = this.getWeather().attributes.forecast ?? this.forecasts ?? []
+    const forecasts = this.isLegacyWeather() ? this.getWeather().attributes.forecast ?? [] : this.forecasts ?? []
     const agg = forecasts.reduce<Record<number, WeatherForecast[]>>((forecasts, forecast) => {
       const d = new Date(forecast.datetime)
       const unit = hourly ? `${d.getMonth()}-${d.getDate()}-${+d.getHours()}` : d.getDate()
@@ -616,7 +616,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private isLegacyWeather (): boolean {
-    return (this.getWeather().attributes.forecast?.length ?? 0) > 0
+    return !this.supportsFeature(WeatherEntityFeature.FORECAST_DAILY) && !this.supportsFeature(WeatherEntityFeature.FORECAST_HOURLY)
   }
 
   private supportsFeature (feature: WeatherEntityFeature): boolean {
