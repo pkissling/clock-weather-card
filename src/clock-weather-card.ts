@@ -595,23 +595,17 @@ export class ClockWeatherCard extends LitElement {
       return
     }
 
-    const hourly = this.config.hourly_forecast
-    if (hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_HOURLY)) {
+    const forecastType = this.determineForecastType()
+    if (forecastType === 'hourly_not_supported') {
       this.forecastSubscriber = async () => {}
-      throw this.createError(`Weather entity "${this.config.entity}" does not support hourly forecasts.`)
+      throw this.createError(`Weather entity [${this.config.entity}] does not support hourly forecast.`)
     }
-
-    if (!hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_DAILY)) {
-      this.forecastSubscriber = async () => {}
-      throw this.createError(`Weather entity "${this.config.entity}" does not support daily forecasts.`)
-    }
-
     const callback = (event: WeatherForecastEvent): void => {
       this.forecasts = event.forecast
     }
     this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, {
       type: 'weather/subscribe_forecast',
-      forecast_type: hourly ? 'hourly' : 'daily',
+      forecast_type: forecastType,
       entity_id: this.config.entity
     })
       .then(forecastSubscriber => { this.forecastSubscriber = forecastSubscriber })
@@ -649,5 +643,24 @@ export class ClockWeatherCard extends LitElement {
     })
     this.error = html`${errorCard}`
     return error
+  }
+
+  private determineForecastType (): 'hourly' | 'daily' | 'hourly_not_supported' {
+    const supportsDaily = this.supportsFeature(WeatherEntityFeature.FORECAST_DAILY)
+    const supportsHourly = this.supportsFeature(WeatherEntityFeature.FORECAST_HOURLY)
+    const hourly = this.config.hourly_forecast
+    if (supportsDaily && supportsHourly) {
+      return hourly ? 'hourly' : 'daily'
+    } else if (hourly && supportsHourly) {
+      return 'hourly'
+    } else if (!hourly && supportsDaily) {
+      return 'daily'
+    } else if (hourly && !supportsHourly) {
+      return 'hourly_not_supported'
+    } else {
+      // !hourly && !supportsDaily
+      console.warn(`clock-weather-card - Weather entity [${this.config.entity}] does not support daily forecast. Falling back to hourly forecast.`)
+      return 'hourly'
+    }
   }
 }
