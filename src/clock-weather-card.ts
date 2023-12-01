@@ -64,6 +64,7 @@ export class ClockWeatherCard extends LitElement {
   @state() private currentDate!: DateTime
   @state() private forecastSubscriber?: () => Promise<void>
   @state() private forecasts?: WeatherForecast[]
+  @state() private error?: TemplateResult
 
   constructor () {
     super()
@@ -89,23 +90,23 @@ export class ClockWeatherCard extends LitElement {
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig (config?: ClockWeatherCardConfig): void {
     if (!config) {
-      throw new Error('Invalid configuration.')
+      throw this.createError('Invalid configuration.')
     }
 
     if (!config.entity) {
-      throw new Error('Attribute "entity" must be present.')
+      throw this.createError('Attribute "entity" must be present.')
     }
 
     if (config.forecast_rows && config.forecast_rows < 1) {
-      throw new Error('Attribute "forecast_rows" mst be greater than 0.')
+      throw this.createError('Attribute "forecast_rows" must be greater than 0.')
     }
 
     if (config.time_format && config.time_format.toString() !== '24' && config.time_format.toString() !== '12') {
-      throw new Error('Attribute "time_format" must either be "12" or "24".')
+      throw this.createError('Attribute "time_format" must either be "12" or "24".')
     }
 
     if (config.hide_today_section && config.hide_forecast_section) {
-      throw new Error('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
+      throw this.createError('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
     }
 
     this.config = this.mergeConfig(config)
@@ -142,6 +143,10 @@ export class ClockWeatherCard extends LitElement {
 
   // https://lit.dev/docs/components/rendering/
   protected render (): TemplateResult {
+    if (this.error) {
+      return this.error
+    }
+
     const showToday = !this.config.hide_today_section
     const showForecast = !this.config.hide_forecast_section
     return html`
@@ -417,7 +422,9 @@ export class ClockWeatherCard extends LitElement {
 
   private getWeather (): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined
-    if (!weather) throw new Error(`Weather entity "${this.config.entity}" could not be found.`)
+    if (!weather) {
+      throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
+    }
     return weather
   }
 
@@ -580,6 +587,7 @@ export class ClockWeatherCard extends LitElement {
   private subscribeForecastEvents (): void {
     this.unsubscribeForecastEvents()
     if (this.isLegacyWeather()) {
+      this.forecastSubscriber = async () => {}
       return
     }
 
@@ -589,11 +597,13 @@ export class ClockWeatherCard extends LitElement {
 
     const hourly = this.config.hourly_forecast
     if (hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_HOURLY)) {
-      throw new Error(`Weather entity "${this.config.entity}" does not support hourly forecasts.`)
+      this.forecastSubscriber = async () => {}
+      throw this.createError(`Weather entity "${this.config.entity}" does not support hourly forecasts.`)
     }
 
     if (!hourly && !this.supportsFeature(WeatherEntityFeature.FORECAST_DAILY)) {
-      throw new Error(`Weather entity "${this.config.entity}" does not support daily forecasts.`)
+      this.forecastSubscriber = async () => {}
+      throw this.createError(`Weather entity "${this.config.entity}" does not support daily forecasts.`)
     }
 
     const callback = (event: WeatherForecastEvent): void => {
@@ -621,6 +631,23 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private supportsFeature (feature: WeatherEntityFeature): boolean {
-    return (this.getWeather().attributes.supported_features & feature) !== 0
+    try {
+      return (this.getWeather().attributes.supported_features & feature) !== 0
+    } catch (e) {
+      // might be that weather entity was not found
+      return false
+    }
+  }
+
+  private createError (errorString: string): Error {
+    const error = new Error(errorString)
+    const errorCard = document.createElement('hui-error-card')
+    errorCard.setConfig({
+      type: 'error',
+      error,
+      origConfig: this.config
+    })
+    this.error = html`${errorCard}`
+    return error
   }
 }
