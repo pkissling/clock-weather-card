@@ -49,6 +49,7 @@ console.info(
 })
 
 const gradientMap: Map<number, Rgb> = new Map()
+  .set(-20, new Rgb(0, 60, 98)) // dark blue
   .set(-10, new Rgb(120, 162, 204)) // darker blue
   .set(0, new Rgb(164, 195, 210)) // light blue
   .set(10, new Rgb(121, 210, 179)) // turquoise
@@ -346,12 +347,18 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private gradient (rgbs: Rgb[], fromPercent: number, toPercent: number): string {
+    if (rgbs.length <= 1) {
+      const rgb = rgbs[0] ?? new Rgb(255, 255, 255)
+      return [rgb, rgb]
+        .map((rgb) => rgb.toRgbString())
+        .join(',')
+    }
     const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent, 'left')
     const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent, 'right')
     const between = rgbs.slice(fromIndex + 1, toIndex)
 
     return [fromRgb, ...between, toRgb]
-      .map((rgb) => `rgb(${rgb.r},${rgb.g},${rgb.b})`)
+      .map((rgb) => rgb.toRgbString())
       .join(',')
   }
 

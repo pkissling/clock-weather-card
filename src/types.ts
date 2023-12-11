@@ -98,6 +98,10 @@ export class Rgb {
     this.g = g
     this.b = b
   }
+
+  toRgbString (): string {
+    return `rgb(${this.r}, ${this.g}, ${this.b})`
+  }
 }
 
 export interface TemperatureSensor extends HassEntity {
