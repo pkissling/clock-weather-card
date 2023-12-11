@@ -48,6 +48,7 @@ console.info(
 })
 
 const gradientMap: Map<number, Rgb> = new Map()
+  .set(-20, new Rgb(0, 60, 98)) // dark blue
   .set(-10, new Rgb(120, 162, 204)) // darker blue
   .set(0, new Rgb(164, 195, 210)) // light blue
   .set(10, new Rgb(121, 210, 179)) // turquoise
