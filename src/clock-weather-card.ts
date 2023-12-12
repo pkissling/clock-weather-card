@@ -66,6 +66,7 @@ export class ClockWeatherCard extends LitElement {
   @state() private forecastSubscriber?: () => Promise<void>
   @state() private forecasts?: WeatherForecast[]
   @state() private error?: TemplateResult
+  forecastSubscriberLock = false
 
   constructor () {
     super()
@@ -186,7 +187,7 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback (): void {
     super.connectedCallback()
-    if (this.hasUpdated) {
+    if (this.hasUpdated && !this.forecastSubscriber) {
       this.subscribeForecastEvents()
     }
   }
@@ -587,38 +588,47 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private subscribeForecastEvents (): void {
+    if (this.forecastSubscriberLock) {
+      return
+    }
+    this.forecastSubscriberLock = true
     this.unsubscribeForecastEvents()
     if (this.isLegacyWeather()) {
       this.forecastSubscriber = async () => {}
+      this.forecastSubscriberLock = false
       return
     }
 
     if (!this.isConnected || !this.config || !this.hass) {
+      this.forecastSubscriberLock = false
       return
     }
 
     const forecastType = this.determineForecastType()
     if (forecastType === 'hourly_not_supported') {
       this.forecastSubscriber = async () => {}
+      this.forecastSubscriberLock = false
       throw this.createError(`Weather entity [${this.config.entity}] does not support hourly forecast.`)
     }
     const callback = (event: WeatherForecastEvent): void => {
       this.forecasts = event.forecast
     }
-    this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, {
+    const options = { resubscribe: false }
+    const subscribeMessage = {
       type: 'weather/subscribe_forecast',
       forecast_type: forecastType,
       entity_id: this.config.entity
-    })
+    }
+    this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, subscribeMessage, options)
       .then(forecastSubscriber => { this.forecastSubscriber = forecastSubscriber })
-      .catch(e => { console.error('clock-weather-card - Error when subscribing to weather forecast: ', e) })
+      .catch(e => { console.error('clock-weather-card - Error when subscribing to weather forecast: ', JSON.stringify(e)) })
+      .finally(() => { this.forecastSubscriberLock = false })
   }
 
   private unsubscribeForecastEvents (): void {
     if (this.forecastSubscriber) {
-      this.forecastSubscriber()
-        .then(() => { this.forecastSubscriber = undefined })
-        .catch(e => { console.error('clock-weather-card - Error when unsubscribing weather forecast: ', e) })
+      void this.forecastSubscriber()
+        .finally(() => { this.forecasts = undefined })
     }
   }
 
