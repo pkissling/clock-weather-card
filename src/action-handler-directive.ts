@@ -83,15 +83,8 @@ class ActionHandler extends HTMLElement implements ActionHandler {
 
     const start = (ev: Event): void => {
       this.held = false
-      let x
-      let y
-      if ((ev as TouchEvent).touches) {
-        x = (ev as TouchEvent).touches[0].pageX
-        y = (ev as TouchEvent).touches[0].pageY
-      } else {
-        x = (ev as MouseEvent).pageX
-        y = (ev as MouseEvent).pageY
-      }
+      const x = (ev as MouseEvent).pageX ?? (ev as TouchEvent).touches[0].pageX
+      const y = (ev as MouseEvent).pageY ?? (ev as TouchEvent).touches[0].pageY
 
       this.timer = window.setTimeout(() => {
         this.startAnimation(x, y)
@@ -166,7 +159,8 @@ customElements.define('action-handler-clock-weather', ActionHandler)
 const getActionHandler = (): ActionHandler => {
   const body = document.body
   if (body.querySelector('action-handler-clock-weather')) {
-    return body.querySelector('action-handler-clock-weather') as ActionHandler
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return body.querySelector('action-handler-clock-weather')!
   }
 
   const actionhandler = document.createElement('action-handler-clock-weather')

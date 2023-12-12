@@ -7,7 +7,8 @@ import {
   hasAction,
   type ActionHandlerEvent,
   handleAction,
-  TimeFormat
+  TimeFormat,
+  type ActionConfig
 } from 'custom-card-helpers' // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
 import {
@@ -153,8 +154,8 @@ export class ClockWeatherCard extends LitElement {
       <ha-card
         @action=${(e: ActionHandlerEvent) => { this.handleAction(e) }}
         .actionHandler=${actionHandler({
-      hasHold: hasAction(this.config.hold_action),
-      hasDoubleClick: hasAction(this.config.double_tap_action)
+      hasHold: hasAction(this.config.hold_action as ActionConfig | undefined),
+      hasDoubleClick: hasAction(this.config.double_tap_action as ActionConfig | undefined)
     })}
         tabindex="0"
         .label=${`Clock Weather Card: ${this.config.entity || 'No Entity Defined'}`}
@@ -340,7 +341,8 @@ export class ClockWeatherCard extends LitElement {
     const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]))
     return Array.from(gradientMap.keys())
       .filter((temp) => temp >= minVal && temp <= maxVal)
-      .map((temp) => gradientMap.get(temp) as Rgb)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .map((temp) => gradientMap.get(temp)!)
   }
 
   private gradient (rgbs: Rgb[], fromPercent: number, toPercent: number): string {
