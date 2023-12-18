@@ -1,0 +1,28 @@
+{
+    "weather": {
+      "clear-night": "Heiðskýrt",
+      "cloudy": "Skýjað",
+      "fog": "Þoka",
+      "hail": "Hagl",
+      "lightning": "Þrumur",
+      "lightning-rainy": "Þrumur",
+      "partlycloudy": "Skýjað að hluta",
+      "pouring": "mikil rigning",
+      "rainy": "Rigning",
+      "snowy": "Snjókoma",
+      "snowy-rainy": "Él",
+      "sunny": "Sólríkt",
+      "windy": "Hvasst",
+      "windy-variant": "Stórmur",
+      "exceptional": "Óveður"
+    },
+    "day": {
+      "1": "Mán",
+      "2": "Þri",
+      "3": "Mið",
+      "4": "Fim",
+      "5": "Fös",
+      "6": "Lau",
+      "7": "Sun"
+    }
+  }
