@@ -11,6 +11,7 @@ import * as fi from './languages/fi.json'
 import * as fr from './languages/fr.json'
 import * as he from './languages/he.json'
 import * as hu from './languages/hu.json'
+import * as is from './languages/is.json'
 import * as it from './languages/it.json'
 import * as ko from './languages/ko.json'
 import * as nb from './languages/nb.json'
@@ -44,6 +45,7 @@ const languages: any = {
   fr,
   he,
   hu,
+  is,
   it,
   ko,
   nb,
