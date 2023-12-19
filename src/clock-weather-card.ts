@@ -189,13 +189,11 @@ export class ClockWeatherCard extends LitElement {
   public connectedCallback (): void {
     super.connectedCallback()
     if (this.hasUpdated) {
-      console.log('clock-weather-card 2.1.11 - connectedCallback')
       void this.subscribeForecastEvents()
     }
   }
 
   public disconnectedCallback (): void {
-    console.log('clock-weather-card 2.1.11 - disconnectedCallback')
     super.disconnectedCallback()
     void this.unsubscribeForecastEvents()
   }
@@ -622,7 +620,6 @@ export class ClockWeatherCard extends LitElement {
     try {
       const callback = (event: WeatherForecastEvent): void => {
         this.forecasts = event.forecast
-        console.log('clock-weather-card 2.1.11 - Recevied weather forecast event', this.config.entity)
       }
       const options = { resubscribe: false }
       const message = {
@@ -631,9 +628,8 @@ export class ClockWeatherCard extends LitElement {
         entity_id: this.config.entity
       }
       this.forecastSubscriber = await this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
-      console.log('clock-weather-card 2.1.11 - Subscribed to weather forecast', this.config.entity)
     } catch (e: unknown) {
-      console.error('clock-weather-card 2.1.11 - Error when subscribing to weather forecast: ', JSON.stringify(e))
+      console.error('clock-weather-card - Error when subscribing to weather forecast', e)
     } finally {
       this.forecastSubscriberLock = false
     }
@@ -643,9 +639,8 @@ export class ClockWeatherCard extends LitElement {
     if (this.forecastSubscriber) {
       try {
         await this.forecastSubscriber()
-        console.log('clock-weather-card 2.1.11 - Unsubscribed from weather forecast', this.config.entity)
       } catch (e: unknown) {
-        console.error('clock-weather-card 2.1.11 - Error when unsubscribing from weather forecast: ', JSON.stringify(e))
+        // swallow error, as this means that connection was closed already
       } finally {
         this.forecastSubscriber = undefined
       }
