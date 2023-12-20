@@ -25,6 +25,7 @@ import * as sk from './languages/sk.json'
 import * as sl from './languages/sl.json'
 import * as sv from './languages/sv.json'
 import * as th from './languages/th.json'
+import * as tr from './languages/tr.json'
 import * as uk from './languages/uk.json'
 import * as vi from './languages/vi.json'
 import * as zhcn from './languages/zh-cn.json'
@@ -59,6 +60,7 @@ const languages: any = {
   sl,
   sv,
   th,
+  tr,
   uk,
   vi,
   zhcn,
