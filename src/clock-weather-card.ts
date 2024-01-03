@@ -587,7 +587,7 @@ export class ClockWeatherCard extends LitElement {
     return {
       temperature: maxTemp,
       templow: minTemp,
-      datetime: DateTime.fromISO(forecasts[0].datetime),
+      datetime: this.parseDateTime(forecasts[0].datetime),
       condition,
       precipitation_probability: precipitationProbability,
       precipitation
@@ -689,5 +689,13 @@ export class ClockWeatherCard extends LitElement {
       console.warn(`clock-weather-card - Weather entity [${this.config.entity}] does not support daily forecast. Falling back to hourly forecast.`)
       return 'hourly'
     }
+  }
+
+  private parseDateTime (date: string): DateTime {
+    const fromIso = DateTime.fromISO(date)
+    if (fromIso.isValid) {
+      return fromIso
+    }
+    return DateTime.fromJSDate(new Date(date))
   }
 }
