@@ -1,0 +1,28 @@
+{
+  "weather": {
+    "clear-night": "Giedra",
+    "cloudy": "Debesuota",
+    "fog": "Rūkas",
+    "hail": "Kruša",
+    "lightning": "Perkūnija",
+    "lightning-rainy": "Perkūnija su lietumi",
+    "partlycloudy": "Apsiniaukę",
+    "pouring": "Liūtis",
+    "rainy": "Lietus",
+    "snowy": "Sniegas",
+    "snowy-rainy": "Šlapdriba",
+    "sunny": "Saulėta",
+    "windy": "Vėjuota",
+    "windy-variant": "Stiprus vėjas",
+    "exceptional": "Audra"
+  },
+  "day": {
+    "1": "Pr",
+    "2": "An",
+    "3": "Tr",
+    "4": "Kt",
+    "5": "Pn",
+    "6": "Št",
+    "7": "Sk"
+  }
+}
