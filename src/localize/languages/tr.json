@@ -24,5 +24,8 @@
     "5": "Cum",
     "6": "Cts",
     "7": "Pzr"
+  },
+  "misc": {
+    "Humidity": "nem"
   }
 }

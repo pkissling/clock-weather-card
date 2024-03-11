@@ -216,7 +216,9 @@ export class ClockWeatherCard extends LitElement {
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
-    const localizedHumidity = humidity !== null ? `${humidity}%` : null;
+    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.Humidity')}` : null;
+
+    
 
     return html`
       <clock-weather-card-today-left>
@@ -226,7 +228,7 @@ export class ClockWeatherCard extends LitElement {
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
-            ${!this.config.hide_humidity && localizedHumidity ? html`<div>${localizedHumidity} Humidity</div>` : ''}
+            ${!this.config.hide_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -420,7 +422,7 @@ export class ClockWeatherCard extends LitElement {
       time_pattern: config.time_pattern ?? undefined,
       hide_forecast_section: config.hide_forecast_section ?? false,
       hide_today_section: config.hide_today_section ?? false,
-      hide_humidity: config.hide_humidity ?? false,
+      hide_humidity: config.hide_humidity ?? true,
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
       date_pattern: config.date_pattern ?? 'D',

@@ -24,5 +24,8 @@
     "5": "Pe",
     "6": "La",
     "7": "Su"
+  },
+  "misc": {
+    "Humidity": "kosteus"
   }
 }

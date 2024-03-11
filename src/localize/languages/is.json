@@ -24,5 +24,8 @@
       "5": "Fös",
       "6": "Lau",
       "7": "Sun"
+    },
+    "misc": {
+      "Humidity": "raki"
     }
   }

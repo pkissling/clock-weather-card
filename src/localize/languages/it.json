@@ -24,5 +24,8 @@
     "5": "Ven",
     "6": "Sab",
     "7": "Dom"
+  },
+  "misc": {
+    "Humidity": "umidità"
   }
 }

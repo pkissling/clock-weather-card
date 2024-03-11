@@ -24,5 +24,8 @@
     "5": "P",
     "6": "Szo",
     "7": "V"
+  },
+  "misc": {
+    "Humidity": "páratartalom"
   }
 }
