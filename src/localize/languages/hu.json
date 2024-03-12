@@ -26,6 +26,6 @@
     "7": "V"
   },
   "misc": {
-    "Humidity": "páratartalom"
+    "humidity": "páratartalom"
   }
 }

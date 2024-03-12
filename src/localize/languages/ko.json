@@ -26,6 +26,6 @@
     "7": "일"
   },
   "misc": {
-    "Humidity": "습도"
+    "humidity": "습도"
   }
 }

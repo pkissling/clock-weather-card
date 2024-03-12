@@ -26,6 +26,6 @@
     "7": "Ne"
   },
   "misc": {
-    "Humidity": "vlhkost"
+    "humidity": "vlhkost"
   }
 }

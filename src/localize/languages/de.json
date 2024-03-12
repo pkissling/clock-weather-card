@@ -26,6 +26,6 @@
     "7": "So"
   },
   "misc": {
-    "Humidity": "Luftfeuchtigkeit"
+    "humidity": "Luftfeuchtigkeit"
   }
 }

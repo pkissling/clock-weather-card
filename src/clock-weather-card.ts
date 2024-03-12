@@ -216,7 +216,7 @@ export class ClockWeatherCard extends LitElement {
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
-    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.Humidity')}` : null;
+    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null;
 
     
 
