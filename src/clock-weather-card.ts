@@ -446,9 +446,9 @@ export class ClockWeatherCard extends LitElement {
 
   private getCurrentTemperature (): number | null {
     if (this.config.temperature_sensor) {
-      const temperatueSensor = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined
-      const temp = temperatueSensor?.state ? parseFloat(temperatueSensor.state) : undefined
-      const unit = temperatueSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
+      const temperatureSensor = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined
+      const temp = temperatureSensor?.state ? parseFloat(temperatureSensor.state) : undefined
+      const unit = temperatureSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
       if (temp !== undefined && !isNaN(temp)) {
         return this.toConfiguredTempWithoutUnit(unit, temp)
       }
@@ -460,11 +460,9 @@ export class ClockWeatherCard extends LitElement {
 
   private getCurrentHumidity (): number | null {
     if (this.config.humidity_sensor) {
-      const humiditeeSensor = this.hass.states[this.config.humidity_sensor] as HumiditySensor | undefined
-      const humid = humiditeeSensor?.state ? parseFloat(humiditeeSensor.state) : undefined
-      // Removed the unit handling as it's not needed for humidity
+      const humiditySensor = this.hass.states[this.config.humidity_sensor] as HumiditySensor | undefined
+      const humid = humiditySensor?.state ? parseFloat(humiditySensor.state) : undefined
       if (humid !== undefined && !isNaN(humid)) {
-        // Directly return the humidity value without converting based on unit
         return humid
       }
     }
