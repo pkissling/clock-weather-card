@@ -24,5 +24,8 @@
     "5": "Vr",
     "6": "Za",
     "7": "Zo"
+  },
+  "misc": {
+    "humidity": "vochtigheid"
   }
 }

@@ -14,6 +14,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   title?: string
   sun_entity?: string
   temperature_sensor?: string
+  humidity_sensor?: string
   weather_icon_type?: 'fill' | 'line'
   animated_icon?: boolean
   forecast_rows?: number
@@ -23,6 +24,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern?: string
   hide_today_section?: boolean
   hide_forecast_section?: boolean
+  show_humidity?: boolean
   hourly_forecast?: boolean
   hide_clock?: boolean
   hide_date?: boolean
@@ -35,6 +37,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   title?: string
   sun_entity: string
   temperature_sensor?: string
+  humidity_sensor?: string
   weather_icon_type: 'fill' | 'line'
   animated_icon: boolean
   forecast_rows: number
@@ -44,6 +47,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern: string
   hide_today_section: boolean
   hide_forecast_section: boolean
+  show_humidity?: boolean
   hourly_forecast: boolean
   hide_clock: boolean
   hide_date: boolean
@@ -62,6 +66,7 @@ export interface Weather extends HassEntity {
   attributes: {
     temperature?: number
     temperature_unit: TemperatureUnit
+    humidity?: number
     precipitation_unit: string
     forecast?: WeatherForecast[]
     supported_features: WeatherEntityFeature
@@ -74,6 +79,7 @@ export interface WeatherForecast {
   datetime: string
   condition: string
   temperature: number | null
+  humidity?: number | null
   precipitation: number | null
   precipitation_probability: number | null
   templow: number | null
@@ -83,6 +89,7 @@ export interface MergedWeatherForecast {
   datetime: DateTime
   condition: string
   temperature: number
+  humidity?: number
   precipitation: number
   precipitation_probability: number
   templow: number
@@ -109,6 +116,10 @@ export interface TemperatureSensor extends HassEntity {
   attributes: {
     unit_of_measurement?: TemperatureUnit
   }
+}
+
+export interface HumiditySensor extends HassEntity {
+  state: string
 }
 
 export interface WeatherForecastEvent {

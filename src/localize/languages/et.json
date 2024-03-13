@@ -24,5 +24,8 @@
     "5": "R",
     "6": "L",
     "7": "P"
+  },
+  "misc": {
+    "humidity": "niiskus"
   }
 }

@@ -24,5 +24,8 @@
     "5": "pt.",
     "6": "sob.",
     "7": "niedz."
+  },
+  "misc": {
+    "humidity": "wilgotność"
   }
 }

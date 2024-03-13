@@ -24,5 +24,8 @@
     "5": "Pá",
     "6": "So",
     "7": "Ne"
+  },
+  "misc": {
+    "humidity": "vlhkost"
   }
 }

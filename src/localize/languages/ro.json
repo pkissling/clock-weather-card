@@ -24,5 +24,8 @@
     "5": "Vin",
     "6": "Sam",
     "7": "Dum"
+  },
+  "misc": {
+    "humidity": "umiditate"
   }
 }

@@ -24,5 +24,8 @@
     "5": "Fre",
     "6": "Lør",
     "7": "Søn"
+  },
+  "misc": {
+    "humidity": "fuktighet"
   }
 }

@@ -24,5 +24,8 @@
     "5": "Fr",
     "6": "Sa",
     "7": "So"
+  },
+  "misc": {
+    "humidity": "Luftfeuchtigkeit"
   }
 }

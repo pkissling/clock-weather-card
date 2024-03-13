@@ -24,5 +24,8 @@
     "5": "Sex",
     "6": "Sáb",
     "7": "Dom"
+  },
+  "misc": {
+    "humidity": "humidade"
   }
 }

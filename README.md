@@ -99,6 +99,7 @@ entity: weather.home
 title: Home
 sun_entity: sun.sun
 temperature_sensor: sensor.outdoor_temp
+humidity_sensor: sensor.outdoor_humidity
 weather_icon_type: line
 animated_icon: true
 forecast_rows: 5
@@ -108,6 +109,7 @@ time_format: 24
 date_pattern: ccc, d.MM.yy
 hide_today_section: false
 hide_forecast_section: false
+hide_humidity: false
 hide_clock: false
 hide_date: false
 hourly_forecast: false
@@ -124,6 +126,7 @@ time_zone: null
 | title                 | string           | **Optional** | Title of the card                                                                                                                                                                                                                 | `''`      |
 | sun_entity            | boolean          | **Optional** | ID of the sun entity. Used to determine whether to show a day or night icon. If sun integration is not enabled, day icon will be shown                                                                                            | `sun.sun` |
 | temperature_sensor    | string           | **Optional** | ID of the temperature sensor entity. Used to show the current temperature based on a sensor value instead of the weather forecast                                                                                                 | `''`      |
+| humidity_sensor    | string           | **Optional** | ID of the humidity sensor entity. Used to show the current humidity based on a sensor value                                                                                                 | `''`      |
 | weather_icon_type     | `line` \| `fill` | **Optional** | Appearance of the large weather icon                                                                                                                                                                                              | `line`    |
 | animated_icon         | boolean          | **Optional** | Whether the large weather icon should be animated                                                                                                                                                                                 | `true`    |
 | forecast_rows         | number           | **Optional** | The amount of weather forecast rows to show. Depending on `hourly_forecast` each row either corresponds to a day or an hour                                                                                                       | `5`       |
@@ -131,6 +134,7 @@ time_zone: null
 | time_format           | `24` \| `12`     | **Optional** | Format used to display the time. If not provided, falls back to the default time format of the configured `locale`.  This option is ignored if `time_pattern` is set.                                                             | `24`      |
 | time_pattern          | string           | **Optional** | Pattern to use for time formatting. See [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for valid tokens. If not provided, falls back to time_format option.                                              | `null`    |
 | date_pattern          | string           | **Optional** | Pattern to use for date formatting. If not provided, falls back to a localized default date formatting. See [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for valid tokens                              | `D`       |
+| show_humidity             | boolean          | **Optional** | Shows the humidity in the today section                                                                                                                                                                                             | `false`   |
 | hide_today_section    | boolean          | **Optional** | Hides the cards today section (upper section), containing the large weather icon, clock and current date                                                                                                                          | `false`   |
 | hide_forecast_section | boolean          | **Optional** | Hides the cards forecast section (lower section),containing the weather forecast                                                                                                                                                  | `false`   |
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead                                                                                                                                   | `false`   |

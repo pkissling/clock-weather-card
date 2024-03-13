@@ -24,5 +24,8 @@
     "5": "Pet",
     "6": "Sob",
     "7": "Ned"
+  },
+  "misc": {
+    "humidity": "vlažnost"
   }
 }

@@ -18,6 +18,7 @@ import {
   Rgb,
   type TemperatureSensor,
   type TemperatureUnit,
+  type HumiditySensor,
   type Weather,
   WeatherEntityFeature,
   type WeatherForecast,
@@ -210,10 +211,12 @@ export class ClockWeatherCard extends LitElement {
     const state = weather.state
     const temp = roundIfNotNull(this.getCurrentTemperature())
     const tempUnit = weather.attributes.temperature_unit
+    const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
+    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
 
     return html`
       <clock-weather-card-today-left>
@@ -223,6 +226,7 @@ export class ClockWeatherCard extends LitElement {
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
+            ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -407,12 +411,14 @@ export class ClockWeatherCard extends LitElement {
       ...config,
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
+      humidity_sensor: config.humidity_sensor,
       weather_icon_type: config.weather_icon_type ?? 'line',
       forecast_rows: config.forecast_rows ?? 5,
       hourly_forecast: config.hourly_forecast ?? false,
       animated_icon: config.animated_icon ?? true,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       time_pattern: config.time_pattern ?? undefined,
+      show_humidity: config.show_humidity ?? false,
       hide_forecast_section: config.hide_forecast_section ?? false,
       hide_today_section: config.hide_today_section ?? false,
       hide_clock: config.hide_clock ?? false,
@@ -450,6 +456,21 @@ export class ClockWeatherCard extends LitElement {
 
     // return weather temperature if above code could not extract temperature from temperature_sensor
     return this.getWeather().attributes.temperature ?? null
+  }
+
+  private getCurrentHumidity (): number | null {
+    if (this.config.humidity_sensor) {
+      const humiditeeSensor = this.hass.states[this.config.humidity_sensor] as HumiditySensor | undefined
+      const humid = humiditeeSensor?.state ? parseFloat(humiditeeSensor.state) : undefined
+      // Removed the unit handling as it's not needed for humidity
+      if (humid !== undefined && !isNaN(humid)) {
+        // Directly return the humidity value without converting based on unit
+        return humid
+      }
+    }
+
+    // Return weather humidity if the code could not extract humidity from the humidity_sensor
+    return this.getWeather().attributes.humidity ?? null
   }
 
   private getSun (): HassEntityBase | undefined {
