@@ -109,7 +109,7 @@ time_format: 24
 date_pattern: ccc, d.MM.yy
 hide_today_section: false
 hide_forecast_section: false
-show_humidty: false
+show_humidity: false
 hide_clock: false
 hide_date: false
 hourly_forecast: false
