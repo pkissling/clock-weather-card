@@ -226,7 +226,7 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}, ${apparentTemp}` : weatherString}
+            ${this.config.hide_clock ? apparentTemp  : localizedTemp ? `${apparentTemp}, ${localizedTemp}` : apparentTemp }
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
