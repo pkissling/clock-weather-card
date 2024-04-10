@@ -427,7 +427,8 @@ export class ClockWeatherCard extends LitElement {
       date_pattern: config.date_pattern ?? 'D',
       use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined,
-      show_decimal: config.show_decimal ?? false
+      show_decimal: config.show_decimal ?? false,
+      apparent_sensor: config.apparent_sensor
     }
   }
 
@@ -479,8 +480,8 @@ export class ClockWeatherCard extends LitElement {
       const temp = apparentSensor?.state ? parseFloat(apparentSensor.state) : undefined
       const unit = apparentSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
       if (temp !== undefined && !isNaN(temp)) {
-        // return this.toConfiguredTempWithoutUnit(unit, temp)
-        return temp
+        return this.toConfiguredTempWithoutUnit(unit, temp)
+        // return temp
       }
     }
     return this.getWeather().attributes.temperature ?? null
