@@ -209,7 +209,7 @@ export class ClockWeatherCard extends LitElement {
   private renderToday (): TemplateResult {
     const weather = this.getWeather()
     const state = weather.state
-    const temp = roundIfNotNull(this.getCurrentTemperature())
+    const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
     const tempUnit = weather.attributes.temperature_unit
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
@@ -425,7 +425,8 @@ export class ClockWeatherCard extends LitElement {
       hide_date: config.hide_date ?? false,
       date_pattern: config.date_pattern ?? 'D',
       use_browser_time: config.use_browser_time ?? false,
-      time_zone: config.time_zone ?? undefined
+      time_zone: config.time_zone ?? undefined,
+      show_decimal: config.show_decimal ?? false
     }
   }
 
