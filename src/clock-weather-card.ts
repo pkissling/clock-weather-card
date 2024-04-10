@@ -483,7 +483,8 @@ export class ClockWeatherCard extends LitElement {
         return temp
       }
     }
-
+  }
+  
   private getSun (): HassEntityBase | undefined {
     return this.hass.states[this.config.sun_entity]
   }
