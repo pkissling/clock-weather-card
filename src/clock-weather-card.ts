@@ -143,7 +143,10 @@ export class ClockWeatherCard extends LitElement {
             <clock-weather-card-today>
               ${safeRender(() => this.renderToday())}
             </clock-weather-card-today>` : ''}
-         
+          ${showForecast ? html`
+            <clock-weather-card-forecast>
+              ${safeRender(() => this.renderForecast())}
+            </clock-weather-card-forecast>` : ''}
         </div>
       </ha-card>
     `;
@@ -185,7 +188,27 @@ export class ClockWeatherCard extends LitElement {
       </clock-weather-card-today-right>`;
   }
 
+  private renderForecast(): TemplateResult[] {
+    const weather = this.getWeather();
+    const currentTemp = roundIfNotNull(this.getCurrentTemperature());
+    const items = this.config.forecast_days;
+    const hourly = this.config.hourly_forecast;
+    const temperatureUnit = weather.attributes.temperature_unit;
 
+    const forecasts = this.extractForecasts(weather.attributes.forecast, items, hourly);
+
+    const minTemps = forecasts.map((f) => f.templow);
+    const maxTemps = forecasts.map((f) => f.temperature);
+    if (currentTemp !== null) {
+      minTemps.push(currentTemp);
+      maxTemps.push(currentTemp);
+    }
+    const minTemp = Math.round(min(minTemps));
+    const maxTemp = Math.round(max(maxTemps));
+    
+    const gradientRange = this.gradientRange(minTemp, maxTemp, temperatureUnit);
+    return forecasts.map((forecast) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly)));
+  }
 
   private renderForecastItem(forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean): TemplateResult {
     const twelveHour = this.getTimeFormat() === '12';
@@ -352,7 +375,7 @@ export class ClockWeatherCard extends LitElement {
   private getWeather(): Weather {
     const weather = this.hass.states[this.config.entity] as Weather | undefined;
     if (!weather) throw new Error('Weather entity could not be found.');
-    if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
+    // if (!weather?.attributes?.forecast) throw new Error('Weather entity does not have attribute "forecast".');
     return weather;
   }
 
