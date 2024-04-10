@@ -226,8 +226,9 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? apparentTemp  : localizedTemp ? `${apparentTemp}, ${localizedTemp}` : apparentTemp }
+            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString }
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
+            ${this.config.show_apparent && apparentTemp ? html`<br>${apparentTemp}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -428,7 +429,8 @@ export class ClockWeatherCard extends LitElement {
       use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
-      apparent_sensor: config.apparent_sensor
+      apparent_sensor: config.apparent_sensor,
+      show_apparent: config.show_apparent ?? false
     }
   }
 
@@ -480,8 +482,8 @@ export class ClockWeatherCard extends LitElement {
       const temp = apparentSensor?.state ? parseFloat(apparentSensor.state) : undefined
       const unit = apparentSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
       if (temp !== undefined && !isNaN(temp)) {
-        return this.toConfiguredTempWithoutUnit(unit, temp)
-        // return temp
+        // return this.toConfiguredTempWithoutUnit(unit, temp)
+        return temp
       }
     }
     return this.getWeather().attributes.temperature ?? null

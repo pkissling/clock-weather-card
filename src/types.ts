@@ -32,6 +32,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   time_zone?: string
   show_decimal?: boolean
   apparent_sensor?: string
+  show_apparent?: boolean
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -57,6 +58,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   time_zone?: string
   show_decimal: boolean
   apparent_sensor?: string
+  show_apparent: boolean
 }
 
 export const enum WeatherEntityFeature {
