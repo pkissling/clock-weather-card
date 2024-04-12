@@ -26,7 +26,8 @@
     "7": "Sun"
   },
   "misc": {
-    "humidity": "Humidity"
+    "humidity": "Humidity",
+    "feels-like": "Feels like"
   }
 
 }
