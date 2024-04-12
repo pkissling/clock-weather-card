@@ -14,7 +14,8 @@
     "sunny": "Sunny",
     "windy": "Windy",
     "windy-variant": "Strong wind",
-    "exceptional": "Exceptional"
+    "exceptional": "Exceptional",
+    "feels-like": "Feels like"
   },
   "day": {
     "1": "Mon",
