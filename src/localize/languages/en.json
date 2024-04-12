@@ -14,8 +14,7 @@
     "sunny": "Sunny",
     "windy": "Windy",
     "windy-variant": "Strong wind",
-    "exceptional": "Exceptional",
-    "feels-like": "Feels like"
+    "exceptional": "Exceptional"
   },
   "day": {
     "1": "Mon",
@@ -27,7 +26,8 @@
     "7": "Sun"
   },
   "misc": {
-    "humidity": "Humidity"
+    "humidity": "Humidity",
+    "feels-like": "Feels like"
   }
 
 }
