@@ -220,7 +220,6 @@ export class ClockWeatherCard extends LitElement {
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
     const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
 
-
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
