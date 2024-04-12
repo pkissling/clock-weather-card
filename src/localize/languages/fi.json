@@ -26,6 +26,7 @@
     "7": "Su"
   },
   "misc": {
-    "humidity": "kosteus"
+    "humidity": "kosteus",
+    "feels-like": "Feels like"
   }
 }

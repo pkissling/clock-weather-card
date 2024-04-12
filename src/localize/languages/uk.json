@@ -26,6 +26,7 @@
     "7": "Нд"
   },
   "misc": {
-    "humidity": "вологість"
+    "humidity": "вологість",
+    "feels-like": "Feels like"
   }
 }

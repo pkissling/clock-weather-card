@@ -26,6 +26,7 @@
     "7": "อา."
   },
   "misc": {
-    "humidity": "ความชื้น"
+    "humidity": "ความชื้น",
+    "feels-like": "Feels like"
   }
 }

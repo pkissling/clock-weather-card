@@ -26,6 +26,7 @@
     "7": "CN"
   },
   "misc": {
-    "humidity": "độ ẩm"
+    "humidity": "độ ẩm",
+    "feels-like": "Feels like"
   }
 }

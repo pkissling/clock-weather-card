@@ -26,6 +26,7 @@
     "7": "niedz."
   },
   "misc": {
-    "humidity": "wilgotność"
+    "humidity": "wilgotność",
+    "feels-like": "Feels like"
   }
 }

@@ -26,6 +26,7 @@
     "7": "Pzr"
   },
   "misc": {
-    "humidity": "nem"
+    "humidity": "nem",
+    "feels-like": "Feels like"
   }
 }

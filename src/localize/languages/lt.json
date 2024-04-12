@@ -26,6 +26,7 @@
     "7": "Sk"
   },
   "misc": {
-    "humidity": "drėgmė"
+    "humidity": "drėgmė",
+    "feels-like": "Feels like"
   }
 }

@@ -26,6 +26,7 @@
     "7": "Søn"
   },
   "misc": {
-    "humidity": "fugtighed"
+    "humidity": "fugtighed",
+    "feels-like": "Feels like"
   }
 }

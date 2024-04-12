@@ -26,6 +26,7 @@
     "7": "周日"
   },
   "misc": {
-    "humidity": "湿度"
+    "humidity": "湿度",
+    "feels-like": "Feels like"
   }
 }

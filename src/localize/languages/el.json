@@ -26,6 +26,7 @@
     "7": "Κυρ"
   },
   "misc": {
-    "humidity": "υγρασία"
+    "humidity": "υγρασία",
+    "feels-like": "Feels like"
   }
 }

@@ -26,6 +26,7 @@
     "7": "Ned"
   },
   "misc": {
-    "humidity": "vlhkosť"
+    "humidity": "vlhkosť",
+    "feels-like": "Feels like"
   }
 }
