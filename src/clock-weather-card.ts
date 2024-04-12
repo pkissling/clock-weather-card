@@ -219,7 +219,7 @@ export class ClockWeatherCard extends LitElement {
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
     const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
-    const apparentString = this.localize(`Feels like`)
+    const apparentString = this.localize('Feels like')
 
     return html`
       <clock-weather-card-today-left>
