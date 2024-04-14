@@ -211,7 +211,7 @@ export class ClockWeatherCard extends LitElement {
     const state = weather.state
     const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
     const tempUnit = weather.attributes.temperature_unit
-    const apparentTemp = this.getApparentTemperature()
+    const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
