@@ -26,6 +26,7 @@
     "7": "Dom"
   },
   "misc": {
-    "humidity": "umidità"
+    "humidity": "umidità",
+    "feels-like": "Feels like"
   }
 }

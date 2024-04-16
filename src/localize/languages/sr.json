@@ -1,32 +1,32 @@
 {
-    "weather": {
-      "clear-night": "Ведро",
-      "cloudy": "Облачно",
-      "fog": "Магла",
-      "hail": "Град",
-      "lightning": "Грмљавина",
-      "lightning-rainy": "Киша уз грмљавину",
-      "partlycloudy": "Делимично облачно",
-      "pouring": "Пљусак",
-      "rainy": "Киша",
-      "snowy": "Снег",
-      "snowy-rainy": "Суснежица",
-      "sunny": "Сунчано",
-      "windy": "Ветар",
-      "windy-variant": "Јак ветар",
-      "exceptional": "Изузетно"
-    },
-    "day": {
-      "1": "Пон",
-      "2": "Уто",
-      "3": "Сре",
-      "4": "Чет",
-      "5": "Пет",
-      "6": "Суб",
-      "7": "Нед"
-    },
-    "misc": {
-      "humidity": "Влажност"
-    }
+  "weather": {
+    "clear-night": "Ведро",
+    "cloudy": "Облачно",
+    "fog": "Магла",
+    "hail": "Град",
+    "lightning": "Грмљавина",
+    "lightning-rainy": "Киша уз грмљавину",
+    "partlycloudy": "Делимично облачно",
+    "pouring": "Пљусак",
+    "rainy": "Киша",
+    "snowy": "Снег",
+    "snowy-rainy": "Суснежица",
+    "sunny": "Сунчано",
+    "windy": "Ветар",
+    "windy-variant": "Јак ветар",
+    "exceptional": "Изузетно"
+  },
+  "day": {
+    "1": "Пон",
+    "2": "Уто",
+    "3": "Сре",
+    "4": "Чет",
+    "5": "Пет",
+    "6": "Суб",
+    "7": "Нед"
+  },
+  "misc": {
+    "humidity": "Влажност",
+    "feels-like": "Feels like"
   }
-  
+}

@@ -26,6 +26,7 @@
     "7": "Dim"
   },
   "misc": {
-    "humidity": "humidité"
+    "humidity": "humidité",
+    "feels-like": "Feels like"
   }
 }

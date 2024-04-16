@@ -26,6 +26,7 @@
     "7": "V"
   },
   "misc": {
-    "humidity": "páratartalom"
+    "humidity": "páratartalom",
+    "feels-like": "Feels like"
   }
 }

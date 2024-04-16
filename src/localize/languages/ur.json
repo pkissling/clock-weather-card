@@ -26,6 +26,7 @@
     "7": "اتوار"
   },
   "misc": {
-    "humidity": "نمی"
+    "humidity": "نمی",
+    "feels-like": "Feels like"
   }
 }

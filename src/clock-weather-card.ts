@@ -211,12 +211,15 @@ export class ClockWeatherCard extends LitElement {
     const state = weather.state
     const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
     const tempUnit = weather.attributes.temperature_unit
+    const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
     const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
+    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+    const apparentString = this.localize('misc.feels-like')
 
     return html`
       <clock-weather-card-today-left>
@@ -227,6 +230,7 @@ export class ClockWeatherCard extends LitElement {
           <clock-weather-card-today-right-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
+            ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -426,7 +430,8 @@ export class ClockWeatherCard extends LitElement {
       date_pattern: config.date_pattern ?? 'D',
       use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined,
-      show_decimal: config.show_decimal ?? false
+      show_decimal: config.show_decimal ?? false,
+      apparent_sensor: config.apparent_sensor ?? undefined
     }
   }
 
@@ -470,6 +475,18 @@ export class ClockWeatherCard extends LitElement {
 
     // Return weather humidity if the code could not extract humidity from the humidity_sensor
     return this.getWeather().attributes.humidity ?? null
+  }
+
+  private getApparentTemperature (): number | null {
+    if (this.config.apparent_sensor) {
+      const apparentSensor = this.hass.states[this.config.apparent_sensor] as TemperatureSensor | undefined
+      const temp = apparentSensor?.state ? parseFloat(apparentSensor.state) : undefined
+      const unit = apparentSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
+      if (temp !== undefined && !isNaN(temp)) {
+        return this.toConfiguredTempWithoutUnit(unit, temp)
+      }
+    }
+    return null
   }
 
   private getSun (): HassEntityBase | undefined {
