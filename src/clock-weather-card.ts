@@ -29,7 +29,7 @@ import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntityBase } from 'home-assistant-js-websocket'
 import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundUp } from './utils'
-import { svg, png } from './images'
+import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
@@ -437,7 +437,7 @@ export class ClockWeatherCard extends LitElement {
 
   private toIcon (weatherState: string, type: 'fill' | 'line', forceDay: boolean, kind: 'static' | 'animated'): string {
     const daytime = forceDay ? 'day' : this.getSun()?.state === 'below_horizon' ? 'night' : 'day'
-    const iconMap = kind === 'animated' ? svg : png
+    const iconMap = kind === 'animated' ? animatedIcons : staticIcons
     const icon = iconMap[type][weatherState]
     return icon?.[daytime] || icon
   }
