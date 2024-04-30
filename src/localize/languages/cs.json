@@ -27,6 +27,6 @@
   },
   "misc": {
     "humidity": "vlhkost",
-    "feels-like": "Feels like"
+    "feels-like": "pocitová teplota"
   }
 }
