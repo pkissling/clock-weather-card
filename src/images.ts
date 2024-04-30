@@ -1,251 +1,251 @@
-import svgFillPartlyCloudyNightRain from './icons/fill/svg/partly-cloudy-night-rain.svg'
-import svgLinePartlyCloudyNightRain from './icons/line/svg/partly-cloudy-night-rain.svg'
-import svgFillPartlyCloudyDayRain from './icons/fill/svg/partly-cloudy-day-rain.svg'
-import svgLinePartlyCloudyDayRain from './icons/line/svg/partly-cloudy-day-rain.svg'
-import svgFillPartlyCloudyNight from './icons/fill/svg/partly-cloudy-night.svg'
-import svgLinePartlyCloudyNight from './icons/line/svg/partly-cloudy-night.svg'
-import svgFillPartlyCloudyDay from './icons/fill/svg/partly-cloudy-day.svg'
-import svgLinePartlyCloudyDay from './icons/line/svg/partly-cloudy-day.svg'
-import svgFillCloudy from './icons/fill/svg/cloudy.svg'
-import svgLineCloudy from './icons/line/svg/cloudy.svg'
-import svgFillClearNight from './icons/fill/svg/clear-night.svg'
-import svgLineClearNight from './icons/line/svg/clear-night.svg'
-import svgFillFogNight from './icons/fill/svg/fog-night.svg'
-import svgLineFogNight from './icons/line/svg/fog-night.svg'
-import svgFillFogDay from './icons/fill/svg/fog-day.svg'
-import svgLineFogDay from './icons/line/svg/fog-day.svg'
-import svgFillHail from './icons/fill/svg/hail.svg'
-import svgLineHail from './icons/line/svg/hail.svg'
-import svgFillThunderstormsNight from './icons/fill/svg/thunderstorms-night.svg'
-import svgLineThunderstormsNight from './icons/line/svg/thunderstorms-night.svg'
-import svgFillThunderstormsDay from './icons/fill/svg/thunderstorms-day.svg'
-import svgLineThunderstormsDay from './icons/line/svg/thunderstorms-day.svg'
-import svgFillThunderstormsRainNight from './icons/fill/svg/thunderstorms-night-rain.svg'
-import svgLineThunderstormsRainNight from './icons/line/svg/thunderstorms-night-rain.svg'
-import svgFillThunderstormsRainDay from './icons/fill/svg/thunderstorms-day-rain.svg'
-import svgLineThunderstormsRainDay from './icons/line/svg/thunderstorms-day-rain.svg'
-import svgFillRain from './icons/fill/svg/rain.svg'
-import svgLineRain from './icons/line/svg/rain.svg'
-import svgFillSnow from './icons/fill/svg/snow.svg'
-import svgLineSnow from './icons/line/svg/snow.svg'
-import svgFillSleet from './icons/fill/svg/sleet.svg'
-import svgLineSleet from './icons/line/svg/sleet.svg'
-import svgFillClearDay from './icons/fill/svg/clear-day.svg'
-import svgLineClearDay from './icons/line/svg/clear-day.svg'
-import svgFillWindsock from './icons/fill/svg/windsock.svg'
-import svgLineWindsock from './icons/line/svg/windsock.svg'
-import svgFillHurricane from './icons/fill/svg/hurricane.svg'
-import svgLineHurricane from './icons/line/svg/hurricane.svg'
-import svgLineRaindrops from './icons/line/svg/raindrops.svg'
-import svgFillRaindrops from './icons/fill/svg/raindrops.svg'
-import svgLineRaindrop from './icons/line/svg/raindrop.svg'
-import svgFillRaindrop from './icons/fill/svg/raindrop.svg'
+import animatedFillPartlyCloudyNightRain from './icons/fill/svg/partly-cloudy-night-rain.svg'
+import animatedLinePartlyCloudyNightRain from './icons/line/svg/partly-cloudy-night-rain.svg'
+import animatedFillPartlyCloudyDayRain from './icons/fill/svg/partly-cloudy-day-rain.svg'
+import animatedLinePartlyCloudyDayRain from './icons/line/svg/partly-cloudy-day-rain.svg'
+import animatedFillPartlyCloudyNight from './icons/fill/svg/partly-cloudy-night.svg'
+import animatedLinePartlyCloudyNight from './icons/line/svg/partly-cloudy-night.svg'
+import animatedFillPartlyCloudyDay from './icons/fill/svg/partly-cloudy-day.svg'
+import animatedLinePartlyCloudyDay from './icons/line/svg/partly-cloudy-day.svg'
+import animatedFillCloudy from './icons/fill/svg/cloudy.svg'
+import animatedLineCloudy from './icons/line/svg/cloudy.svg'
+import animatedFillClearNight from './icons/fill/svg/clear-night.svg'
+import animatedLineClearNight from './icons/line/svg/clear-night.svg'
+import animatedFillFogNight from './icons/fill/svg/fog-night.svg'
+import animatedLineFogNight from './icons/line/svg/fog-night.svg'
+import animatedFillFogDay from './icons/fill/svg/fog-day.svg'
+import animatedLineFogDay from './icons/line/svg/fog-day.svg'
+import animatedFillHail from './icons/fill/svg/hail.svg'
+import animatedLineHail from './icons/line/svg/hail.svg'
+import animatedFillThunderstormsNight from './icons/fill/svg/thunderstorms-night.svg'
+import animatedLineThunderstormsNight from './icons/line/svg/thunderstorms-night.svg'
+import animatedFillThunderstormsDay from './icons/fill/svg/thunderstorms-day.svg'
+import animatedLineThunderstormsDay from './icons/line/svg/thunderstorms-day.svg'
+import animatedFillThunderstormsRainNight from './icons/fill/svg/thunderstorms-night-rain.svg'
+import animatedLineThunderstormsRainNight from './icons/line/svg/thunderstorms-night-rain.svg'
+import animatedFillThunderstormsRainDay from './icons/fill/svg/thunderstorms-day-rain.svg'
+import animatedLineThunderstormsRainDay from './icons/line/svg/thunderstorms-day-rain.svg'
+import animatedFillRain from './icons/fill/svg/rain.svg'
+import animatedLineRain from './icons/line/svg/rain.svg'
+import animatedFillSnow from './icons/fill/svg/snow.svg'
+import animatedLineSnow from './icons/line/svg/snow.svg'
+import animatedFillSleet from './icons/fill/svg/sleet.svg'
+import animatedLineSleet from './icons/line/svg/sleet.svg'
+import animatedFillClearDay from './icons/fill/svg/clear-day.svg'
+import animatedLineClearDay from './icons/line/svg/clear-day.svg'
+import animatedFillWindsock from './icons/fill/svg/windsock.svg'
+import animatedLineWindsock from './icons/line/svg/windsock.svg'
+import animatedFillHurricane from './icons/fill/svg/hurricane.svg'
+import animatedLineHurricane from './icons/line/svg/hurricane.svg'
+import animatedLineRaindrops from './icons/line/svg/raindrops.svg'
+import animatedFillRaindrops from './icons/fill/svg/raindrops.svg'
+import animatedLineRaindrop from './icons/line/svg/raindrop.svg'
+import animatedFillRaindrop from './icons/fill/svg/raindrop.svg'
 
-import pngFillPartlyCloudyNightRain from './icons/fill/png/128/partly-cloudy-night-rain.png'
-import pngLinePartlyCloudyNightRain from './icons/line/png/128/partly-cloudy-night-rain.png'
-import pngFillPartlyCloudyDayRain from './icons/fill/png/128/partly-cloudy-day-rain.png'
-import pngLinePartlyCloudyDayRain from './icons/line/png/128/partly-cloudy-day-rain.png'
-import pngFillPartlyCloudyNight from './icons/fill/png/128/partly-cloudy-night.png'
-import pngLinePartlyCloudyNight from './icons/line/png/128/partly-cloudy-night.png'
-import pngFillPartlyCloudyDay from './icons/fill/png/128/partly-cloudy-day.png'
-import pngLinePartlyCloudyDay from './icons/line/png/128/partly-cloudy-day.png'
-import pngFillCloudy from './icons/fill/png/128/cloudy.png'
-import pngLineCloudy from './icons/line/png/128/cloudy.png'
-import pngFillClearNight from './icons/fill/png/128/clear-night.png'
-import pngLineClearNight from './icons/line/png/128/clear-night.png'
-import pngFillFogNight from './icons/fill/png/128/fog-night.png'
-import pngLineFogNight from './icons/line/png/128/fog-night.png'
-import pngFillFogDay from './icons/fill/png/128/fog-day.png'
-import pngLineFogDay from './icons/line/png/128/fog-day.png'
-import pngFillHail from './icons/fill/png/128/hail.png'
-import pngLineHail from './icons/line/png/128/hail.png'
-import pngFillThunderstormsNight from './icons/fill/png/128/thunderstorms-night.png'
-import pngLineThunderstormsNight from './icons/line/png/128/thunderstorms-night.png'
-import pngFillThunderstormsDay from './icons/fill/png/128/thunderstorms-day.png'
-import pngLineThunderstormsDay from './icons/line/png/128/thunderstorms-day.png'
-import pngFillThunderstormsRainNight from './icons/fill/png/128/thunderstorms-night-rain.png'
-import pngLineThunderstormsRainNight from './icons/line/png/128/thunderstorms-night-rain.png'
-import pngFillThunderstormsRainDay from './icons/fill/png/128/thunderstorms-day-rain.png'
-import pngLineThunderstormsRainDay from './icons/line/png/128/thunderstorms-day-rain.png'
-import pngFillRain from './icons/fill/png/128/rain.png'
-import pngLineRain from './icons/line/png/128/rain.png'
-import pngFillSnow from './icons/fill/png/128/snow.png'
-import pngLineSnow from './icons/line/png/128/snow.png'
-import pngFillSleet from './icons/fill/png/128/sleet.png'
-import pngLineSleet from './icons/line/png/128/sleet.png'
-import pngFillClearDay from './icons/fill/png/128/clear-day.png'
-import pngLineClearDay from './icons/line/png/128/clear-day.png'
-import pngFillWindsock from './icons/fill/png/128/windsock.png'
-import pngLineWindsock from './icons/line/png/128/windsock.png'
-import pngFillHurricane from './icons/fill/png/128/hurricane.png'
-import pngLineHurricane from './icons/line/png/128/hurricane.png'
-import pngFillRaindrops from './icons/fill/png/128/raindrops.png'
-import pngLineRaindrops from './icons/line/png/128/raindrops.png'
-import pngFillRaindrop from './icons/fill/png/128/raindrop.png'
-import pngLineRaindrop from './icons/line/png/128/raindrop.png'
+import staticFillPartlyCloudyNightRain from './icons/fill/svg-static/partly-cloudy-night-rain.svg'
+import staticLinePartlyCloudyNightRain from './icons/line/svg-static/partly-cloudy-night-rain.svg'
+import staticFillPartlyCloudyDayRain from './icons/fill/svg-static/partly-cloudy-day-rain.svg'
+import staticLinePartlyCloudyDayRain from './icons/line/svg-static/partly-cloudy-day-rain.svg'
+import staticFillPartlyCloudyNight from './icons/fill/svg-static/partly-cloudy-night.svg'
+import staticLinePartlyCloudyNight from './icons/line/svg-static/partly-cloudy-night.svg'
+import staticFillPartlyCloudyDay from './icons/fill/svg-static/partly-cloudy-day.svg'
+import staticLinePartlyCloudyDay from './icons/line/svg-static/partly-cloudy-day.svg'
+import staticFillCloudy from './icons/fill/svg-static/cloudy.svg'
+import staticLineCloudy from './icons/line/svg-static/cloudy.svg'
+import staticFillClearNight from './icons/fill/svg-static/clear-night.svg'
+import staticLineClearNight from './icons/line/svg-static/clear-night.svg'
+import staticFillFogNight from './icons/fill/svg-static/fog-night.svg'
+import staticLineFogNight from './icons/line/svg-static/fog-night.svg'
+import staticFillFogDay from './icons/fill/svg-static/fog-day.svg'
+import staticLineFogDay from './icons/line/svg-static/fog-day.svg'
+import staticFillHail from './icons/fill/svg-static/hail.svg'
+import staticLineHail from './icons/line/svg-static/hail.svg'
+import staticFillThunderstormsNight from './icons/fill/svg-static/thunderstorms-night.svg'
+import staticLineThunderstormsNight from './icons/line/svg-static/thunderstorms-night.svg'
+import staticFillThunderstormsDay from './icons/fill/svg-static/thunderstorms-day.svg'
+import staticLineThunderstormsDay from './icons/line/svg-static/thunderstorms-day.svg'
+import staticFillThunderstormsRainNight from './icons/fill/svg-static/thunderstorms-night-rain.svg'
+import staticLineThunderstormsRainNight from './icons/line/svg-static/thunderstorms-night-rain.svg'
+import staticFillThunderstormsRainDay from './icons/fill/svg-static/thunderstorms-day-rain.svg'
+import staticLineThunderstormsRainDay from './icons/line/svg-static/thunderstorms-day-rain.svg'
+import staticFillRain from './icons/fill/svg-static/rain.svg'
+import staticLineRain from './icons/line/svg-static/rain.svg'
+import staticFillSnow from './icons/fill/svg-static/snow.svg'
+import staticLineSnow from './icons/line/svg-static/snow.svg'
+import staticFillSleet from './icons/fill/svg-static/sleet.svg'
+import staticLineSleet from './icons/line/svg-static/sleet.svg'
+import staticFillClearDay from './icons/fill/svg-static/clear-day.svg'
+import staticLineClearDay from './icons/line/svg-static/clear-day.svg'
+import staticFillWindsock from './icons/fill/svg-static/windsock.svg'
+import staticLineWindsock from './icons/line/svg-static/windsock.svg'
+import staticFillHurricane from './icons/fill/svg-static/hurricane.svg'
+import staticLineHurricane from './icons/line/svg-static/hurricane.svg'
+import staticFillRaindrops from './icons/fill/svg-static/raindrops.svg'
+import staticLineRaindrops from './icons/line/svg-static/raindrops.svg'
+import staticFillRaindrop from './icons/fill/svg-static/raindrop.svg'
+import staticLineRaindrop from './icons/line/svg-static/raindrop.svg'
 
-export const svg = {
+export const animatedIcons = {
   line: {
     rainy: {
-      day: svgLinePartlyCloudyDayRain,
-      night: svgLinePartlyCloudyNightRain
+      day: animatedLinePartlyCloudyDayRain,
+      night: animatedLinePartlyCloudyNightRain
     },
     partlycloudy: {
-      day: svgLinePartlyCloudyDay,
-      night: svgLinePartlyCloudyNight
+      day: animatedLinePartlyCloudyDay,
+      night: animatedLinePartlyCloudyNight
     },
-    cloudy: svgLineCloudy,
+    cloudy: animatedLineCloudy,
     'clear-night': {
-      day: svgLineClearDay,
-      night: svgLineClearNight
+      day: animatedLineClearDay,
+      night: animatedLineClearNight
     },
     fog: {
-      day: svgLineFogDay,
-      night: svgLineFogNight
+      day: animatedLineFogDay,
+      night: animatedLineFogNight
     },
-    hail: svgLineHail,
+    hail: animatedLineHail,
     lightning: {
-      day: svgLineThunderstormsDay,
-      night: svgLineThunderstormsNight
+      day: animatedLineThunderstormsDay,
+      night: animatedLineThunderstormsNight
     },
     'lightning-rainy': {
-      day: svgLineThunderstormsRainDay,
-      night: svgLineThunderstormsRainNight
+      day: animatedLineThunderstormsRainDay,
+      night: animatedLineThunderstormsRainNight
     },
-    pouring: svgLineRain,
-    raindrop: svgLineRaindrop,
-    raindrops: svgLineRaindrops,
-    snowy: svgLineSnow,
-    'snowy-rainy': svgLineSleet,
+    pouring: animatedLineRain,
+    raindrop: animatedLineRaindrop,
+    raindrops: animatedLineRaindrops,
+    snowy: animatedLineSnow,
+    'snowy-rainy': animatedLineSleet,
     sunny: {
-      day: svgLineClearDay,
-      night: svgLineClearNight
+      day: animatedLineClearDay,
+      night: animatedLineClearNight
     },
-    windy: svgLineWindsock,
-    'windy-exceptional': svgLineWindsock,
-    exceptional: svgLineHurricane
+    windy: animatedLineWindsock,
+    'windy-exceptional': animatedLineWindsock,
+    exceptional: animatedLineHurricane
   },
   fill: {
     rainy: {
-      day: svgFillPartlyCloudyDayRain,
-      night: svgFillPartlyCloudyNightRain
+      day: animatedFillPartlyCloudyDayRain,
+      night: animatedFillPartlyCloudyNightRain
     },
     partlycloudy: {
-      day: svgFillPartlyCloudyDay,
-      night: svgFillPartlyCloudyNight
+      day: animatedFillPartlyCloudyDay,
+      night: animatedFillPartlyCloudyNight
     },
-    cloudy: svgFillCloudy,
+    cloudy: animatedFillCloudy,
     'clear-night': {
-      day: svgFillClearDay,
-      night: svgFillClearNight
+      day: animatedFillClearDay,
+      night: animatedFillClearNight
     },
     fog: {
-      day: svgFillFogDay,
-      night: svgFillFogNight
+      day: animatedFillFogDay,
+      night: animatedFillFogNight
     },
-    hail: svgFillHail,
+    hail: animatedFillHail,
     lightning: {
-      day: svgFillThunderstormsDay,
-      night: svgFillThunderstormsNight
+      day: animatedFillThunderstormsDay,
+      night: animatedFillThunderstormsNight
     },
     'lightning-rainy': {
-      day: svgFillThunderstormsRainDay,
-      night: svgFillThunderstormsRainNight
+      day: animatedFillThunderstormsRainDay,
+      night: animatedFillThunderstormsRainNight
     },
-    pouring: svgFillRain,
-    raindrop: svgFillRaindrop,
-    raindrops: svgFillRaindrops,
-    snowy: svgFillSnow,
-    'snowy-rainy': svgFillSleet,
+    pouring: animatedFillRain,
+    raindrop: animatedFillRaindrop,
+    raindrops: animatedFillRaindrops,
+    snowy: animatedFillSnow,
+    'snowy-rainy': animatedFillSleet,
     sunny: {
-      day: svgFillClearDay,
-      night: svgFillClearNight
+      day: animatedFillClearDay,
+      night: animatedFillClearNight
     },
-    windy: svgFillWindsock,
-    'windy-exceptional': svgFillWindsock,
-    exceptional: svgFillHurricane
+    windy: animatedFillWindsock,
+    'windy-exceptional': animatedFillWindsock,
+    exceptional: animatedFillHurricane
   }
 }
 
-export const png = {
+export const staticIcons = {
   line: {
     rainy: {
-      day: pngLinePartlyCloudyDayRain,
-      night: pngLinePartlyCloudyNightRain
+      day: staticLinePartlyCloudyDayRain,
+      night: staticLinePartlyCloudyNightRain
     },
     partlycloudy: {
-      day: pngLinePartlyCloudyDay,
-      night: pngLinePartlyCloudyNight
+      day: staticLinePartlyCloudyDay,
+      night: staticLinePartlyCloudyNight
     },
-    cloudy: pngLineCloudy,
+    cloudy: staticLineCloudy,
     'clear-night': {
-      day: pngLineClearDay,
-      night: pngLineClearNight
+      day: staticLineClearDay,
+      night: staticLineClearNight
     },
     fog: {
-      day: pngLineFogDay,
-      night: pngLineFogNight
+      day: staticLineFogDay,
+      night: staticLineFogNight
     },
-    hail: pngLineHail,
+    hail: staticLineHail,
     lightning: {
-      day: pngLineThunderstormsDay,
-      night: pngLineThunderstormsNight
+      day: staticLineThunderstormsDay,
+      night: staticLineThunderstormsNight
     },
     'lightning-rainy': {
-      day: pngLineThunderstormsRainDay,
-      night: pngLineThunderstormsRainNight
+      day: staticLineThunderstormsRainDay,
+      night: staticLineThunderstormsRainNight
     },
-    pouring: pngLineRain,
-    raindrop: pngLineRaindrop,
-    raindrops: pngLineRaindrops,
-    snowy: pngLineSnow,
-    'snowy-rainy': pngLineSleet,
+    pouring: staticLineRain,
+    raindrop: staticLineRaindrop,
+    raindrops: staticLineRaindrops,
+    snowy: staticLineSnow,
+    'snowy-rainy': staticLineSleet,
     sunny: {
-      day: pngLineClearDay,
-      night: pngLineClearNight
+      day: staticLineClearDay,
+      night: staticLineClearNight
     },
-    windy: pngLineWindsock,
-    'windy-exceptional': pngLineWindsock,
-    exceptional: pngLineHurricane
+    windy: staticLineWindsock,
+    'windy-exceptional': staticLineWindsock,
+    exceptional: staticLineHurricane
   },
   fill: {
     rainy: {
-      day: pngFillPartlyCloudyDayRain,
-      night: pngFillPartlyCloudyNightRain
+      day: staticFillPartlyCloudyDayRain,
+      night: staticFillPartlyCloudyNightRain
     },
     partlycloudy: {
-      day: pngFillPartlyCloudyDay,
-      night: pngFillPartlyCloudyNight
+      day: staticFillPartlyCloudyDay,
+      night: staticFillPartlyCloudyNight
     },
-    cloudy: pngFillCloudy,
+    cloudy: staticFillCloudy,
     'clear-night': {
-      day: pngFillClearDay,
-      night: pngFillClearNight
+      day: staticFillClearDay,
+      night: staticFillClearNight
     },
     fog: {
-      day: pngFillFogDay,
-      night: pngFillFogNight
+      day: staticFillFogDay,
+      night: staticFillFogNight
     },
-    hail: pngFillHail,
+    hail: staticFillHail,
     lightning: {
-      day: pngFillThunderstormsDay,
-      night: pngFillThunderstormsNight
+      day: staticFillThunderstormsDay,
+      night: staticFillThunderstormsNight
     },
     'lightning-rainy': {
-      day: pngFillThunderstormsRainDay,
-      night: pngFillThunderstormsRainNight
+      day: staticFillThunderstormsRainDay,
+      night: staticFillThunderstormsRainNight
     },
-    pouring: pngFillRain,
-    raindrop: pngFillRaindrop,
-    raindrops: pngFillRaindrops,
-    snowy: pngFillSnow,
-    'snowy-rainy': pngFillSleet,
+    pouring: staticFillRain,
+    raindrop: staticFillRaindrop,
+    raindrops: staticFillRaindrops,
+    snowy: staticFillSnow,
+    'snowy-rainy': staticFillSleet,
     sunny: {
-      day: pngFillClearDay,
-      night: pngFillClearNight
+      day: staticFillClearDay,
+      night: staticFillClearNight
     },
-    windy: pngFillWindsock,
-    'windy-exceptional': pngFillWindsock,
-    exceptional: pngFillHurricane
+    windy: staticFillWindsock,
+    'windy-exceptional': staticFillWindsock,
+    exceptional: staticFillHurricane
   }
 }
