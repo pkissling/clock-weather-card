@@ -1,0 +1,32 @@
+{
+  "weather": {
+    "clear-night": "Cerah",
+    "cloudy": "Berawan",
+    "fog": "Berkabut",
+    "hail": "Hujan es",
+    "lightning": "Badai",
+    "lightning-rainy": "Hujan badai",
+    "partlycloudy": "Cerah berawan",
+    "pouring": "Gerimis",
+    "rainy": "Hujan",
+    "snowy": "Salju",
+    "snowy-rainy": "Hujan salju",
+    "sunny": "Cerah",
+    "windy": "Berangin",
+    "windy-variant": "Berangin kencang",
+    "exceptional": "Pengecualian"
+  },
+  "day": {
+    "1": "Sen",
+    "2": "Sel",
+    "3": "Rab",
+    "4": "Kam",
+    "5": "Jum",
+    "6": "Sab",
+    "7": "Min"
+  },
+  "misc": {
+    "humidity": "Kelembapan",
+    "feels-like": "Terasa seperti"
+  }
+}
