@@ -26,6 +26,7 @@
     "7": "Dim"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "humidité",
     "feels-like": "Feels like"
   }

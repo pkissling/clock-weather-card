@@ -125,4 +125,9 @@ export default css`
     height: 100%;
     position: absolute;
   }
+
+  aqi {
+    padding: 2px;
+    border-radius: 5px;
+  }
 `

@@ -26,6 +26,7 @@
     "7": "일"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "습도",
     "feels-like": "Feels like"
   }

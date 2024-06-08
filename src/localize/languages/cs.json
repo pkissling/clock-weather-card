@@ -26,6 +26,7 @@
     "7": "Ne"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "vlhkost",
     "feels-like": "pocitová teplota"
   }

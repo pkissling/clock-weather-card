@@ -26,6 +26,7 @@
     "7": "Sön"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "fuktighet",
     "feels-like": "Känns som"
   }

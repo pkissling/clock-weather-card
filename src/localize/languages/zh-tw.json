@@ -26,6 +26,7 @@
     "7": "週日"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "濕度",
     "feels-like": "Feels like"
   }

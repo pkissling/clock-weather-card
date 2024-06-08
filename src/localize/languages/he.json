@@ -26,6 +26,7 @@
     "7": "ראשון"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "לחות",
     "feels-like": "Feels like"
   }

@@ -26,6 +26,7 @@
     "7": "Su"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "kosteus",
     "feels-like": "Feels like"
   }

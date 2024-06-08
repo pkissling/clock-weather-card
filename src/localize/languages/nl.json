@@ -26,6 +26,7 @@
     "7": "Zo"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "vochtigheid",
     "feels-like": "Feels like"
   }
