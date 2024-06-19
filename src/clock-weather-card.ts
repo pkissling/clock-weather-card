@@ -234,7 +234,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi ? html`<br><aqi style="background-color: ${aqiColor}">${aqi} ${aqiString}</aqi>` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiColor}">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -498,7 +498,7 @@ export class ClockWeatherCard extends LitElement {
     if (this.config.aqi_sensor) {
       const aqiSensor = this.hass.states[this.config.aqi_sensor] as HassEntity | undefined
       const aqi = aqiSensor?.state ? parseInt(aqiSensor.state) : undefined
-      if (aqi !== undefined) {
+      if (aqi !== undefined && !isNaN(aqi)) {
         return aqi
       }
     }
@@ -510,7 +510,7 @@ export class ClockWeatherCard extends LitElement {
       return null
     }
     if (aqi <= 50) return 'green'
-    if (aqi <= 100) return 'yellow'
+    if (aqi <= 100) return 'yellowgreen'
     if (aqi <= 150) return 'orange'
     if (aqi <= 200) return 'red'
     if (aqi <= 300) return 'purple'
