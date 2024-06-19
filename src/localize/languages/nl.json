@@ -2,7 +2,7 @@
   "weather": {
     "clear-night": "Helder",
     "cloudy": "Bewolkt",
-    "fog": "Mist",
+    "fog": "Mistig",
     "hail": "Hagel",
     "lightning": "Onweersbuien",
     "lightning-rainy": "Onweersbuien met regen",
@@ -14,7 +14,7 @@
     "sunny": "Zonnig",
     "windy": "Winderig",
     "windy-variant": "Storm",
-    "exceptional": "Chaos"
+    "exceptional": "Uitzonderlijk"
   },
   "day": {
     "1": "Ma",
@@ -27,7 +27,7 @@
   },
   "misc": {
     "aqi": "AQI",
-    "humidity": "vochtigheid",
-    "feels-like": "Feels like"
+    "humidity": "Vochtigheid",
+    "feels-like": "Gevoelstemperatuur"
   }
 }
