@@ -26,6 +26,7 @@
     "7": "Ned"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "Vlažnost",
     "feels-like": "Feels like"
   }

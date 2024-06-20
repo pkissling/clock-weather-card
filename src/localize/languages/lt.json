@@ -26,6 +26,7 @@
     "7": "Sk"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "drėgmė",
     "feels-like": "Feels like"
   }

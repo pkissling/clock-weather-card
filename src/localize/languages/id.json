@@ -26,6 +26,7 @@
     "7": "Min"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "Kelembapan",
     "feels-like": "Terasa seperti"
   }

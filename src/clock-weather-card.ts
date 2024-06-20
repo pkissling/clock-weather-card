@@ -27,7 +27,7 @@ import {
 import styles from './styles'
 import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
-import { type HassEntityBase } from 'home-assistant-js-websocket'
+import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
 import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundUp } from './utils'
 import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
@@ -212,6 +212,8 @@ export class ClockWeatherCard extends LitElement {
     const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
     const tempUnit = weather.attributes.temperature_unit
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
+    const aqi = this.getAqi()
+    const aqiColor = this.getAqiColor(aqi)
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
@@ -220,6 +222,7 @@ export class ClockWeatherCard extends LitElement {
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
     const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
     const apparentString = this.localize('misc.feels-like')
+    const aqiString = this.localize('misc.aqi')
 
     return html`
       <clock-weather-card-today-left>
@@ -231,6 +234,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiColor}">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -431,7 +435,8 @@ export class ClockWeatherCard extends LitElement {
       use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
-      apparent_sensor: config.apparent_sensor ?? undefined
+      apparent_sensor: config.apparent_sensor ?? undefined,
+      aqi_sensor: config.aqi_sensor ?? undefined
     }
   }
 
@@ -487,6 +492,29 @@ export class ClockWeatherCard extends LitElement {
       }
     }
     return null
+  }
+
+  private getAqi (): number | null {
+    if (this.config.aqi_sensor) {
+      const aqiSensor = this.hass.states[this.config.aqi_sensor] as HassEntity | undefined
+      const aqi = aqiSensor?.state ? parseInt(aqiSensor.state) : undefined
+      if (aqi !== undefined && !isNaN(aqi)) {
+        return aqi
+      }
+    }
+    return null
+  }
+
+  private getAqiColor (aqi: number | null): string | null {
+    if (aqi == null) {
+      return null
+    }
+    if (aqi <= 50) return 'green'
+    if (aqi <= 100) return 'yellowgreen'
+    if (aqi <= 150) return 'orange'
+    if (aqi <= 200) return 'red'
+    if (aqi <= 300) return 'purple'
+    return 'maroon'
   }
 
   private getSun (): HassEntityBase | undefined {

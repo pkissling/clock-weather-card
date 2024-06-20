@@ -26,6 +26,7 @@
     "7": "niedz."
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "wilgotność",
     "feels-like": "Odczuwalne"
   }

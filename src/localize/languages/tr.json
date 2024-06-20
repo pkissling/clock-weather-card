@@ -26,6 +26,7 @@
     "7": "Pzr"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "nem",
     "feels-like": "Feels like"
   }

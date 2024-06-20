@@ -26,6 +26,7 @@
     "7": "P"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "niiskus",
     "feels-like": "Feels like"
   }

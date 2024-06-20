@@ -26,6 +26,7 @@
     "7": "Sun"
   },
   "misc": {
+    "aqi": "AQI",
     "humidity": "raki",
     "feels-like": "Feels like"
   }
