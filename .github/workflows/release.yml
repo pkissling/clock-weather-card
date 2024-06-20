@@ -12,15 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Make slug values available
-        uses: gacts/github-slug@v1
-        id: slug
-
       - name: Build the file
         run: |
           cd /home/runner/work/clock-weather-card/clock-weather-card
           yarn install
-          yarn version --no-git-tag-version --new-version ${{ steps.slug.outputs.version }}
           yarn build
 
       - name: Upload zip to release
