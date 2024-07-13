@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/pkissling/clock-weather-card/compare/v2.8.0...v2.8.1) (2024-07-13)
+
+
+### Bug Fixes
+
+* Update "feels-like" translation in it.json ([#414](https://github.com/pkissling/clock-weather-card/issues/414)) ([1c20972](https://github.com/pkissling/clock-weather-card/commit/1c209725ba187d5ba2aedc0ffb3ac9b5e0c7f920))
+
 ## [2.8.0](https://github.com/pkissling/clock-weather-card/compare/2.7.0...v2.8.0) (2024-06-20)
 
 
