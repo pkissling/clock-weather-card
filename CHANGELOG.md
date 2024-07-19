@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/pkissling/clock-weather-card/compare/v2.8.1...v2.8.2) (2024-07-19)
+
+
+### Bug Fixes
+
+* Add Korean translations for "AQI" and "feel like" ([#417](https://github.com/pkissling/clock-weather-card/issues/417)) ([50fd243](https://github.com/pkissling/clock-weather-card/commit/50fd24387bde29499a406612b3d0bb9f1bbe6c12))
+
 ## [2.8.1](https://github.com/pkissling/clock-weather-card/compare/v2.8.0...v2.8.1) (2024-07-13)
 
 
