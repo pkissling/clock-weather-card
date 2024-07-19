@@ -26,8 +26,8 @@
     "7": "일"
   },
   "misc": {
-    "aqi": "AQI",
+    "aqi": "대기환경지수",
     "humidity": "습도",
-    "feels-like": "Feels like"
+    "feels-like": "체감온도"
   }
 }
