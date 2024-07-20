@@ -1,19 +1,19 @@
 {
   "weather": {
-    "clear-night": "klar",
-    "cloudy": "bewölkt",
+    "clear-night": "Klar",
+    "cloudy": "Bewölkt",
     "fog": "Nebel",
     "hail": "Hagel",
     "lightning": "Gewitter",
     "lightning-rainy": "Gewitter",
-    "partlycloudy": "teils bewölkt",
-    "pouring": "starker Regen",
+    "partlycloudy": "Teils bewölkt",
+    "pouring": "Starker Regen",
     "rainy": "Regen",
     "snowy": "Schneefall",
     "snowy-rainy": "Schneeregen",
-    "sunny": "sonnig",
-    "windy": "windig",
-    "windy-variant": "starker Wind",
+    "sunny": "Sonnig",
+    "windy": "Windig",
+    "windy-variant": "Starker Wind",
     "exceptional": "Unwetter"
   },
   "day": {
