@@ -1,20 +1,20 @@
 {
   "weather": {
-    "clear-night": "晴夜",
+    "clear-night": "晴朗夜晚",
     "cloudy": "多雲",
-    "fog": "霧",
+    "fog": "有霧",
     "hail": "冰雹",
-    "lightning": "雷",
+    "lightning": "閃電",
     "lightning-rainy": "雷雨",
     "partlycloudy": "局部多雲",
     "pouring": "大雨",
-    "rainy": "雨",
-    "snowy": "雪",
+    "rainy": "下雨",
+    "snowy": "下雪",
     "snowy-rainy": "雪雨",
-    "sunny": "晴",
+    "sunny": "晴天",
     "windy": "有風",
-    "windy-variant": "有風",
-    "exceptional": "惡劣"
+    "windy-variant": "強風",
+    "exceptional": "極端天氣"
   },
   "day": {
     "1": "週一",
@@ -26,8 +26,8 @@
     "7": "週日"
   },
   "misc": {
-    "aqi": "AQI",
+    "aqi": "空氣品質",
     "humidity": "濕度",
-    "feels-like": "Feels like"
+    "feels-like": "體感溫度"
   }
 }
