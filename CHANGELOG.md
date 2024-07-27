@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.3](https://github.com/pkissling/clock-weather-card/compare/v2.8.2...v2.8.3) (2024-07-27)
+
+
+### Bug Fixes
+
+* Update indonesian translations ([#421](https://github.com/pkissling/clock-weather-card/issues/421)) ([65865a0](https://github.com/pkissling/clock-weather-card/commit/65865a03576517f7f615f0e61639b3eb9c216d38))
+* Update Taiwanese translations ([#425](https://github.com/pkissling/clock-weather-card/issues/425)) ([fd636b4](https://github.com/pkissling/clock-weather-card/commit/fd636b4afd4ecc3d92af1f7e6a494f41ba5e5d8c))
+
 ## [2.8.2](https://github.com/pkissling/clock-weather-card/compare/v2.8.1...v2.8.2) (2024-07-19)
 
 
