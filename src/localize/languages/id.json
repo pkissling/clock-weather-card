@@ -4,17 +4,17 @@
     "cloudy": "Berawan",
     "fog": "Berkabut",
     "hail": "Hujan es",
-    "lightning": "Badai",
-    "lightning-rainy": "Hujan badai",
+    "lightning": "Petir",
+    "lightning-rainy": "Hujan petir",
     "partlycloudy": "Cerah berawan",
-    "pouring": "Gerimis",
+    "pouring": "Hujan deras",
     "rainy": "Hujan",
     "snowy": "Salju",
     "snowy-rainy": "Hujan salju",
     "sunny": "Cerah",
     "windy": "Berangin",
     "windy-variant": "Berangin kencang",
-    "exceptional": "Pengecualian"
+    "exceptional": "Badai"
   },
   "day": {
     "1": "Sen",
