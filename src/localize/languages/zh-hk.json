@@ -1,0 +1,34 @@
+{
+    "weather": {
+      "clear-night": "夜間晴朗",
+      "cloudy": "陰",
+      "fog": "霧",
+      "hail": "冰雹",
+      "lightning": "雷",
+      "lightning-rainy": "雷雨",
+      "partlycloudy": "多雲",
+      "pouring": "大雨",
+      "rainy": "雨",
+      "snowy": "雪",
+      "snowy-rainy": "雨雪",
+      "sunny": "晴",
+      "windy": "有風",
+      "windy-variant": "強風",
+      "exceptional": "特殊"
+    },
+    "day": {
+      "1": "星期一",
+      "2": "星期二",
+      "3": "星期三",
+      "4": "星期四",
+      "5": "星期五",
+      "6": "星期六",
+      "7": "星期日"
+    },
+    "misc": {
+      "aqi": "AQI",
+      "humidity": "濕度",
+      "feels-like": "Feels like"
+    }
+  }
+  
