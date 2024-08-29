@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.4](https://github.com/pkissling/clock-weather-card/compare/v2.8.3...v2.8.4) (2024-08-29)
+
+
+### Bug Fixes
+
+* **deps:** update minor-dependencies ([#431](https://github.com/pkissling/clock-weather-card/issues/431)) ([db7eb72](https://github.com/pkissling/clock-weather-card/commit/db7eb72c21902be234ed4149788465a7e48c1ee5))
+* Translate feels-like in french ([#444](https://github.com/pkissling/clock-weather-card/issues/444)) ([3af024f](https://github.com/pkissling/clock-weather-card/commit/3af024f6bfb5fefa6a053066f81278e5c83b1d25))
+
 ## [2.8.3](https://github.com/pkissling/clock-weather-card/compare/v2.8.2...v2.8.3) (2024-07-27)
 
 
