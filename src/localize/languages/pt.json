@@ -28,6 +28,6 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "humidade",
-    "feels-like": "Feels like"
+    "feels-like": "Sensação térmica"
   }
 }
