@@ -38,7 +38,7 @@ In the above image, the 9° on Thursday represents the low across all of the for
 The colored portion of the bar represents the range of temperatures that are forecast for that day (so 12° to 21° on Monday).
 The circle represents the current temperature (16° or roughly midway between 12° and 21° in your case).
 
-*Thanks to @deprecatedcoder for this text from [#143](https://github.com/pkissling/clock-weather-card/issues/143)*
+_Thanks to @deprecatedcoder for this text from [#143](https://github.com/pkissling/clock-weather-card/issues/143)_
 
 The basic idea of the forecast bars is to be able to understand the weather trend for the upcoming days in a single glance.
 
@@ -72,7 +72,7 @@ The basic idea of the forecast bars is to be able to understand the weather tren
       ```
 
    2. **UI:** Add Lovelace resource [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources).
-      *(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)*
+      _(Alternatively go to Settings -> Dashboards -> Resources -> Add Resource)_
 
       ```yaml
       URL: /hacsfiles/clock-weather-card/clock-weather-card.js
@@ -152,4 +152,4 @@ aqi_sensor: sensor.air_quality_index
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `el`,`en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `id`, `is`, `it`, `ko`, `lt`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sr`, `sr-Latn`, `sv`, `th`, `tr`, `uk`, `ur`, `vi`, `zh-CN`, `zh-TW`
+[^2]: Supported languages: `bg`, `ca`, `cs` `da`, `de`, `el`,`en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `id`, `is`, `it`, `ko`, `lb`, `lt`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sr`, `sr-Latn`, `sv`, `th`, `tr`, `uk`, `ur`, `vi`, `zh-CN`, `zh-TW`

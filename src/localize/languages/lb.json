@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "kloer",
+    "cloudy": "wollekeg",
+    "fog": "Niwwel",
+    "hail": "Knëppelsteng",
+    "lightning": "Donnerwieder",
+    "lightning-rainy": "Donnerwieder",
+    "partlycloudy": "deels wollekeg",
+    "pouring": "staarke Reen",
+    "rainy": "Reen",
+    "snowy": "Schnéi",
+    "snowy-rainy": "Schnéireen",
+    "sunny": "sonneg",
+    "windy": "lëfteg",
+    "windy-variant": "staarke Wand",
+    "exceptional": "Onwieder"
+  },
+  "day": {
+    "1": "Mé",
+    "2": "Dë",
+    "3": "Më",
+    "4": "Do",
+    "5": "Fr",
+    "6": "Sa",
+    "7": "So"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "Loftfiichtegkeet",
+    "feels-like": "Gefillt"
+  }
+}
