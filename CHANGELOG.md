@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.5](https://github.com/pkissling/clock-weather-card/compare/v2.8.4...v2.8.5) (2024-09-08)
+
+
+### Bug Fixes
+
+* Add Luxembourgish language ([#453](https://github.com/pkissling/clock-weather-card/issues/453)) ([ec776b9](https://github.com/pkissling/clock-weather-card/commit/ec776b97bda116ef5f390d93cacafcd4f0f10e89))
+* Update "Feels like" for ca, es, and pt ([#450](https://github.com/pkissling/clock-weather-card/issues/450)) ([6cb9f66](https://github.com/pkissling/clock-weather-card/commit/6cb9f66938c172ff767180eb603e26f35a86dbf1))
+
 ## [2.8.4](https://github.com/pkissling/clock-weather-card/compare/v2.8.3...v2.8.4) (2024-08-29)
 
 
