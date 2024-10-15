@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.6](https://github.com/pkissling/clock-weather-card/compare/v2.8.5...v2.8.6) (2024-10-15)
+
+
+### Bug Fixes
+
+* Translate "Feels like" into Russian ([#464](https://github.com/pkissling/clock-weather-card/issues/464)) ([b85379f](https://github.com/pkissling/clock-weather-card/commit/b85379fdf5a341a4ad802ee36061b086ce385607))
+
 ## [2.8.5](https://github.com/pkissling/clock-weather-card/compare/v2.8.4...v2.8.5) (2024-09-08)
 
 
