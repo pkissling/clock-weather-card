@@ -1,17 +1,17 @@
 {
   "weather": {
     "clear-night": "kloer",
-    "cloudy": "wollekeg",
+    "cloudy": "bedeckt",
     "fog": "Niwwel",
     "hail": "Knëppelsteng",
     "lightning": "Donnerwieder",
     "lightning-rainy": "Donnerwieder",
-    "partlycloudy": "deels wollekeg",
+    "partlycloudy": "deels bedeckt",
     "pouring": "staarke Reen",
     "rainy": "Reen",
     "snowy": "Schnéi",
     "snowy-rainy": "Schnéireen",
-    "sunny": "sonneg",
+    "sunny": "Sonn",
     "windy": "lëfteg",
     "windy-variant": "staarke Wand",
     "exceptional": "Onwieder"
