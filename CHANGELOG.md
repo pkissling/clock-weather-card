@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.8.6](https://github.com/pkissling/clock-weather-card/compare/v2.8.5...v2.8.6) (2024-11-19)
+
+
+### Bug Fixes
+
+* Fix custom element define error ([#472](https://github.com/pkissling/clock-weather-card/issues/472)) ([722fb76](https://github.com/pkissling/clock-weather-card/commit/722fb763b56282f7b3dbfb5ab55c332c404a3390))
+* Translate "Feels like" into Russian ([#464](https://github.com/pkissling/clock-weather-card/issues/464)) ([b85379f](https://github.com/pkissling/clock-weather-card/commit/b85379fdf5a341a4ad802ee36061b086ce385607))
+* Update Luxembourgish translations ([#473](https://github.com/pkissling/clock-weather-card/issues/473)) ([ec584de](https://github.com/pkissling/clock-weather-card/commit/ec584decf5a78300e1652036d494513f2279c49c))
+
 ## [2.8.5](https://github.com/pkissling/clock-weather-card/compare/v2.8.4...v2.8.5) (2024-09-08)
 
 
