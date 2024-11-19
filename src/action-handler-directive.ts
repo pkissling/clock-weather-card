@@ -154,7 +154,9 @@ class ActionHandler extends HTMLElement implements ActionHandler {
   }
 }
 
-customElements.define('action-handler-clock-weather', ActionHandler)
+if (!customElements.get('action-handler-clock-weather')) {
+  customElements.define('action-handler-clock-weather', ActionHandler)
+}
 
 const getActionHandler = (): ActionHandler => {
   const body = document.body
