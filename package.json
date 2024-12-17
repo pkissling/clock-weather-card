@@ -28,7 +28,7 @@
     "@rollup/plugin-babel": "^6.0.0",
     "@rollup/plugin-image": "^3.0.0",
     "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
     "@types/luxon": "^3.3.2",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
