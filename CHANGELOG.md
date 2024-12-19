@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.7](https://github.com/pkissling/clock-weather-card/compare/v2.8.6...v2.8.7) (2024-12-19)
+
+
+### Bug Fixes
+
+* update Hebrew localize text "feels like" ([#495](https://github.com/pkissling/clock-weather-card/issues/495)) ([4dc64f1](https://github.com/pkissling/clock-weather-card/commit/4dc64f1c1ea30d0b484df8507aa78a74634b795d))
+
 ## [2.8.6](https://github.com/pkissling/clock-weather-card/compare/v2.8.5...v2.8.6) (2024-11-19)
 
 
