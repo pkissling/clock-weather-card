@@ -28,6 +28,6 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "páratartalom",
-    "feels-like": "Feels like"
+    "feels-like": "Hőérzet"
   }
 }
