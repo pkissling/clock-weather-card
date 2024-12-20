@@ -28,6 +28,6 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "umiditate",
-    "feels-like": "Feels like"
+    "feels-like": "Temp resimţită"
   }
 }
