@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.8](https://github.com/pkissling/clock-weather-card/compare/v2.8.7...v2.8.8) (2024-12-21)
+
+
+### Bug Fixes
+
+* Add more "feels like" translations ([#497](https://github.com/pkissling/clock-weather-card/issues/497)) ([67205d4](https://github.com/pkissling/clock-weather-card/commit/67205d41a7f7acfbcf336161715efdbe44c9699c))
+* Localize "feels like" for Estonian ([#500](https://github.com/pkissling/clock-weather-card/issues/500)) ([47ee2e1](https://github.com/pkissling/clock-weather-card/commit/47ee2e15218dca9531cabb64914791c2189f71c2))
+
 ## [2.8.7](https://github.com/pkissling/clock-weather-card/compare/v2.8.6...v2.8.7) (2024-12-19)
 
 
