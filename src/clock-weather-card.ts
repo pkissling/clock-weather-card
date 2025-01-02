@@ -153,6 +153,7 @@ export class ClockWeatherCard extends LitElement {
 
     const showToday = !this.config.hide_today_section
     const showForecast = !this.config.hide_forecast_section
+    const showSummary = !this.config.hide_summary_section
     return html`
       <ha-card
         @action=${(e: ActionHandlerEvent) => { this.handleAction(e) }}
@@ -175,6 +176,12 @@ export class ClockWeatherCard extends LitElement {
             <clock-weather-card-today>
               ${safeRender(() => this.renderToday())}
             </clock-weather-card-today>`
+        : ''}
+          ${showSummary
+        ? html`
+            <clock-weather-card-summary>
+              ${safeRender(() => this.renderSummary())}
+            </clock-weather-card-summary>`
         : ''}
           ${showForecast
         ? html`
@@ -244,6 +251,13 @@ export class ClockWeatherCard extends LitElement {
           </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`
+  }
+
+  private renderSummary (): TemplateResult {
+    // keep seperate in case of expanding out the summary section
+    const summaryText = this.getSummary()
+    return html`
+    ${summaryText}`
   }
 
   private renderForecast (): TemplateResult[] {
@@ -429,6 +443,7 @@ export class ClockWeatherCard extends LitElement {
       show_humidity: config.show_humidity ?? false,
       hide_forecast_section: config.hide_forecast_section ?? false,
       hide_today_section: config.hide_today_section ?? false,
+      hide_summary_section: config.hide_summary_section ?? true,
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
       date_pattern: config.date_pattern ?? 'D',
@@ -436,7 +451,8 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      summary_sensor: config.summary_sensor ?? undefined
     }
   }
 
@@ -515,6 +531,17 @@ export class ClockWeatherCard extends LitElement {
     if (aqi <= 200) return 'red'
     if (aqi <= 300) return 'purple'
     return 'maroon'
+  }
+
+  private getSummary (): string | null {
+    if (this.config.summary_sensor) {
+      const summarySensor = this.hass.states[this.config.summary_sensor] as HassEntity | undefined
+      const summary = summarySensor?.state ? summarySensor.state : undefined
+      if (summary !== undefined && summary !== '') {
+        return summary
+      }
+    }
+    return null
   }
 
   private getSun (): HassEntityBase | undefined {
