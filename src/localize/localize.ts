@@ -2,6 +2,7 @@ import * as bg from './languages/bg.json'
 import * as da from './languages/da.json'
 import * as ca from './languages/ca.json'
 import * as cs from './languages/cs.json'
+import * as cy from './languages/cy.json'
 import * as de from './languages/de.json'
 import * as el from './languages/el.json'
 import * as en from './languages/en.json'
@@ -42,6 +43,7 @@ const languages: any = {
   bg,
   cs,
   ca,
+  cy,
   da,
   de,
   el,
