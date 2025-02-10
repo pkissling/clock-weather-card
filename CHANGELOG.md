@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.9](https://github.com/pkissling/clock-weather-card/compare/v2.8.8...v2.8.9) (2025-02-07)
+
+
+### Bug Fixes
+
+* Added Welsh Language (Cymraeg) Localisation ([#512](https://github.com/pkissling/clock-weather-card/issues/512)) ([292ed42](https://github.com/pkissling/clock-weather-card/commit/292ed4283a419470f10fe8891e26d7cd98352f0b))
+
 ## [2.8.8](https://github.com/pkissling/clock-weather-card/compare/v2.8.7...v2.8.8) (2025-01-28)
 
 
