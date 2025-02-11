@@ -1,3 +1,4 @@
+import * as ar from './languages/ar.json'
 import * as bg from './languages/bg.json'
 import * as da from './languages/da.json'
 import * as ca from './languages/ca.json'
@@ -40,6 +41,7 @@ import * as zhtw from './languages/zh-tw.json'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
+  ar,
   bg,
   cs,
   ca,
