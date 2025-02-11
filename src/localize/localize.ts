@@ -41,6 +41,7 @@ import * as zhtw from './languages/zh-tw.json'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
+  ar,
   bg,
   cs,
   ca,
