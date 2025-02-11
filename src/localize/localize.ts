@@ -1,3 +1,4 @@
+import * as ar from './languages/ar.json'
 import * as bg from './languages/bg.json'
 import * as da from './languages/da.json'
 import * as ca from './languages/ca.json'
