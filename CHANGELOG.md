@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.10](https://github.com/pkissling/clock-weather-card/compare/v2.8.9...v2.8.10) (2025-02-18)
+
+
+### Bug Fixes
+
+* Add Arabic support based on [#517](https://github.com/pkissling/clock-weather-card/issues/517) ([#518](https://github.com/pkissling/clock-weather-card/issues/518)) ([da03c6e](https://github.com/pkissling/clock-weather-card/commit/da03c6ebba9a600c28d943285545ed21dbbaa12b))
+
 ## [2.8.9](https://github.com/pkissling/clock-weather-card/compare/v2.8.8...v2.8.9) (2025-02-07)
 
 
