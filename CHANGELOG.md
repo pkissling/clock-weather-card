@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.11](https://github.com/pkissling/clock-weather-card/compare/v2.8.10...v2.8.11) (2025-03-04)
+
+
+### Bug Fixes
+
+* Add feels-like translation for Slovenian ([#525](https://github.com/pkissling/clock-weather-card/issues/525)) ([7a3da16](https://github.com/pkissling/clock-weather-card/commit/7a3da16dccc22836585fc935039c842d64bc54c6))
+
 ## [2.8.10](https://github.com/pkissling/clock-weather-card/compare/v2.8.9...v2.8.10) (2025-02-18)
 
 
