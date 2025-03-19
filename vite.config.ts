@@ -9,10 +9,11 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: tag => tag.startsWith('ha-card')
-        }
-      }
-    })
+          isCustomElement: (tag) => tag.startsWith('ha-card'),
+        },
+      },
+    }),
+    vueDevTools(),
   ],
   build: {
     rollupOptions: {
@@ -20,12 +21,19 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
     cors: true,
-    allowedHosts: true
+    allowedHosts: true,
+    proxy: {
+      '/src/clock-weather-card-dev.js': {
+        target: 'http://localhost:5173',
+        rewrite: () => '/src/clock-weather-card.js'
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
 })
