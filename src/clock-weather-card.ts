@@ -1,40 +1,48 @@
 import { defineCustomElement } from 'vue';
 import MyApp from './App.vue';
+import { type HomeAssistant } from 'custom-card-helpers';
 
 if (!customElements.get('clock-weather-card-ce')) {
     const VueCustomElement = defineCustomElement(MyApp);
     customElements.define('clock-weather-card-ce', VueCustomElement);
 }
 
+declare global {
+    interface Window {
+        customCards: any[];
+    }
+}
+
+type VueElement = HTMLElement & { hass?: HomeAssistant, config?: unknown };
+
 class VueCustomCard extends HTMLElement {
+
+    private vueElement: VueElement | null = null;
+
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
         this.vueElement = null;
-        this.config = {};
     }
 
-    set hass(hass) {
+    set hass(hass: HomeAssistant) {
         if (this.vueElement) {
             this.vueElement.hass = hass;
         }
     }
 
-    setConfig(config) {
+    setConfig(config: unknown) {
         if (!config) {
             return;
         }
-
-        this.config = config;
         if (this.vueElement) {
-            this.vueElement.config = this.config;
+            this.vueElement.config = config;
         }
     }
 
     createVueApp() {
         this.vueElement = document.createElement('clock-weather-card-ce');
-        this.shadowRoot.appendChild(this.vueElement);
-        this.vueElement.config = this.config;
+        this.shadowRoot?.appendChild(this.vueElement);
     }
 
     connectedCallback() {
@@ -45,7 +53,7 @@ class VueCustomCard extends HTMLElement {
 
     disconnectedCallback() {
         if (this.vueElement) {
-            this.shadowRoot.removeChild(this.vueElement);
+            this.shadowRoot?.removeChild(this.vueElement);
             this.vueElement = null;
         }
     }
