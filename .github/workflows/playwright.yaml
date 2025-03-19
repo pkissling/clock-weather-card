@@ -1,0 +1,31 @@
+---
+
+name: Run Playwright tests
+
+on:
+  push:
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: yarn install
+
+      - run: yarn playwright install --with-deps
+
+      - run: yarn test:e2e
+
+      - uses: actions/upload-artifact@v4
+        name: Upload Playwright test report
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 3

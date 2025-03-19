@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-type VueElement = HTMLElement & { hass?: HomeAssistant; config?: unknown };
+type VueElement = HTMLElement & { hass?: HomeAssistant; config?: Record<string, string> };
 
 if (!customElements.get(`${customElementName}-ce`)) {
   const VueCustomElement = defineCustomElement(MyApp)
@@ -25,31 +25,38 @@ if (!customElements.get(`${customElementName}-ce`)) {
 }
 
 class VueCustomCard extends HTMLElement {
-  private vueElement: VueElement | null = null
+  private vueElement: VueElement | undefined 
+  private config = {}
+  private _hass: HomeAssistant | undefined
 
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
-    this.vueElement = null
   }
 
   set hass(hass: HomeAssistant) {
+    console.log('set hass', hass)
+    this._hass = hass
     if (this.vueElement) {
-      this.vueElement.hass = hass
+      this.vueElement.hass = this._hass
     }
   }
 
   setConfig(config: unknown) {
+    console.log('set config', config)
     if (!config) {
       return
     }
+    this.config = config
     if (this.vueElement) {
-      this.vueElement.config = config
+      this.vueElement.config = this.config
     }
   }
 
   createVueApp() {
     this.vueElement = document.createElement(`${customElementName}-ce`)
+    this.vueElement.hass = this._hass
+    this.vueElement.config = this.config
     this.shadowRoot?.appendChild(this.vueElement)
   }
 
@@ -62,7 +69,7 @@ class VueCustomCard extends HTMLElement {
   disconnectedCallback() {
     if (this.vueElement) {
       this.shadowRoot?.removeChild(this.vueElement)
-      this.vueElement = null
+      this.vueElement = undefined
     }
   }
 }
