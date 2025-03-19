@@ -1,5 +1,6 @@
 {
-    "name": "Clock Weather Card",
+    "name": "Vue Custom Card",
     "render_readme": true,
-    "filename": "clock-weather-card.js"
-}
+    "filename": "main_prod.js",
+    "content_in_root": true
+  }
