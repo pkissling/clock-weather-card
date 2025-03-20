@@ -10,6 +10,6 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 defineProps<{
   hass?: HomeAssistant;
-  config?: Record<string, string>;
+  config?: ClockWeatherCardConfig
 }>()
 </script>

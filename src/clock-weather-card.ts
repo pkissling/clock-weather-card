@@ -11,22 +11,14 @@ console.info(
 
 const customElementName = `clock-weather-card-${import.meta.env.DEV ? 'dev' : ''}`
 
-declare global {
-  interface Window {
-    customCards: { type: string; name: string; description?: string, preview?: boolean, documentationURL?: string}[];
-  }
-}
-
-type VueElement = HTMLElement & { hass?: HomeAssistant; config?: Record<string, string> };
-
 if (!customElements.get(`${customElementName}-ce`)) {
   const VueCustomElement = defineCustomElement(MyApp)
   customElements.define(`${customElementName}-ce`, VueCustomElement)
 }
 
 class VueCustomCard extends HTMLElement {
-  private vueElement: VueElement | undefined 
-  private config = {}
+  private customElement: ClockWeatherCardCustomElement | undefined
+  private _config: ClockWeatherCardConfig | undefined
   private _hass: HomeAssistant | undefined
 
   constructor() {
@@ -35,41 +27,37 @@ class VueCustomCard extends HTMLElement {
   }
 
   set hass(hass: HomeAssistant) {
-    console.log('set hass', hass)
     this._hass = hass
-    if (this.vueElement) {
-      this.vueElement.hass = this._hass
+    if (this.customElement) {
+      this.customElement.hass = this._hass
     }
   }
 
-  setConfig(config: unknown) {
-    console.log('set config', config)
-    if (!config) {
-      return
-    }
-    this.config = config
-    if (this.vueElement) {
-      this.vueElement.config = this.config
+  set config(config: ClockWeatherCardConfig) {
+    if (!config) return
+    this._config = config
+    if (this.customElement) {
+      this.customElement.config = this._config
     }
   }
 
   createVueApp() {
-    this.vueElement = document.createElement(`${customElementName}-ce`)
-    this.vueElement.hass = this._hass
-    this.vueElement.config = this.config
-    this.shadowRoot?.appendChild(this.vueElement)
+    this.customElement = document.createElement(`${customElementName}-ce`)
+    this.customElement.hass = this._hass
+    this.customElement.config = this._config
+    this.shadowRoot?.appendChild(this.customElement)
   }
 
   connectedCallback() {
-    if (!this.vueElement) {
+    if (!this.customElement) {
       this.createVueApp()
     }
   }
 
   disconnectedCallback() {
-    if (this.vueElement) {
-      this.shadowRoot?.removeChild(this.vueElement)
-      this.vueElement = undefined
+    if (this.customElement) {
+      this.shadowRoot?.removeChild(this.customElement)
+      this.customElement = undefined
     }
   }
 }

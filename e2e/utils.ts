@@ -1,15 +1,12 @@
 import { Page } from '@playwright/test'
+import { HomeAssistant } from 'custom-card-helpers'
 
-export const setupTestData = async (page: Page, config: Record<string, string>, hass: HomeAssistant): Promise<void> => {
-  // Wait for custom element to be defined
-  await page.waitForFunction(() => !!customElements.get('clock-weather-card-dev')) 
-  
-  // Now inject your values
-  console.log('setupTestData', config, hass)
-  await page.evaluate(() => {
-    console.log('setupTestData', config, hass)
-    const element = document.getElementById('clock-weather-card-dev')!
-    element.setConfig(config)
-    element.hass = hass 
-  })
+export const mockState = async (page: Page, hass: HomeAssistant, config: ClockWeatherCardConfig): Promise<void> => {
+  await page.waitForFunction(() => !!customElements.get('clock-weather-card-dev'))
+
+  await page.evaluate(({config, hass}) => {
+    const element = document.getElementById('clock-weather-card-dev')! as ClockWeatherCardCustomElement
+    element.config = config
+    element.hass = hass
+  }, {config, hass})
 }

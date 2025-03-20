@@ -1,4 +1,10 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
-  "include": ["./**/*"]
+  "include": ["./**/*"],
+  "compilerOptions": {
+    "types": ["playwright", "node", "../src/types/types.d.ts"],
+    "lib": ["dom"],
+    "moduleResolution": "bundler",
+    "module": "ESNext"
+  }
 }
