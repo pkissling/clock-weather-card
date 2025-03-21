@@ -2,8 +2,8 @@ name: Sync icons
 
 on:
   push:
-    branches:
-      - master
+    # branches:
+    #   - master
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
