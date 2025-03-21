@@ -2,8 +2,8 @@ name: Sync icons
 
 on:
   push:
-    # branches:
-    #   - master
+    branches:
+      - master
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
@@ -16,6 +16,6 @@ jobs:
       - name: Run GitHub File Sync
         uses: BetaHuhn/repo-file-sync-action@v1
         with:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: foobar 
           ASSIGNEES: pkissling
           CONFIG_PATH: .github/sync-icons-config.yml
