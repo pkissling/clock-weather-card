@@ -1,0 +1,60 @@
+name: Sync icons
+
+on:
+  push:
+    # branches:
+    #   - master
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+    - name: Generate timestamps
+      id: timestamps
+      run: |
+        TIMESTAMP=$(date +%s)
+        DATE_TIME=$(date +'%Y-%m-%d_%H-%M')
+        echo "branch_name=sync/weather-icons-$TIMESTAMP" >> $GITHUB_OUTPUT
+        echo "pr_title=Icon Sync: $DATE_TIME" >> $GITHUB_OUTPUT
+
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Required for proper diff detection
+
+    - name: Clone source repository
+      uses: actions/checkout@v4
+      with:
+        repository: basmilius/weather-icons
+        path: weather-icons-source
+
+    - name: Synchronize directories
+      run: |
+        mkdir -p src/icons/
+        rsync -av --delete --exclude='.git/' \
+          weather-icons-source/production/ \
+          src/icons/ 
+      shell: bash
+
+    - name: Remove source repository traces
+      run: |
+        rm -rf weather-icons-source
+        git ls-files -z | xargs -0 git update-index --assume-unchanged
+
+    - name: Commit and create pull request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        token: ${{ secrets.GH_PAT }}
+        branch: ${{ steps.timestamps.outputs.branch_name }}
+        commit-message: "chore: Synchronize weather icons from source"
+        title: ${{ steps.timestamps.outputs.pr_title }}
+        body: |
+          Automated synchronization from:
+          - Source: `production/` in basmilius/weather-icons
+          - Target: `icons/src/` in current repository
