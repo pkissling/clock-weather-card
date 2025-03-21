@@ -20,7 +20,7 @@ jobs:
       id: timestamps
       run: |
         TIMESTAMP=$(date +%s)
-        DATE_TIME=$(date +'%Y-%m-%d_%H-%M')
+        DATE_TIME=$(date +'%Y-%m-%d')
         echo "branch_name=sync/weather-icons-$TIMESTAMP" >> $GITHUB_OUTPUT
         echo "pr_title=Icon Sync: $DATE_TIME" >> $GITHUB_OUTPUT
 
