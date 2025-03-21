@@ -11,11 +11,41 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
     steps:
-      - uses: actions/checkout@main
-      - name: Run GitHub File Sync
-        uses: BetaHuhn/repo-file-sync-action@v1
-        with:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          ASSIGNEES: pkissling
-          CONFIG_PATH: .github/sync-icons-config.yml
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Required for proper diff detection
+
+    - name: Clone source repository
+      uses: actions/checkout@v4
+      with:
+        repository: basmilius/weather-icons
+        path: weather-icons-source
+
+    - name: Synchronize directories
+      run: |
+        mkdir -p src/icons/
+        rsync -av --delete --exclude='.git/' \
+          weather-icons-source/production/ \
+          src/icons/ 
+      shell: bash
+
+    - name: Commit and create pull request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        token: ${{ secrets.GH_PAT }}
+        branch: sync/weather-icons-$(date +%s)
+        commit-message: "chore: Synchronize weather icons from basmilius/weather-icons" 
+        title: "Icon Sync: $(date +'%Y-%m-%d %H:%M')"
+        body: |
+          Automated synchronization from:
+          - Source: `production/` in basmilius/weather-icons
+          - Target: `src/icons/` in current repository
+          
+          Changes include:
+          - Recursive directory synchronization
+          - File additions/removals based on source state

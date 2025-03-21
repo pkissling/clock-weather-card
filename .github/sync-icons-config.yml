@@ -1,3 +1,0 @@
-basmilius/weather-icons:
-  - source: .github/
-    dest: src/icons/
