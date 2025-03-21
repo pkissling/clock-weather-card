@@ -1,0 +1,31 @@
+.clock-weather-card {
+  padding: 5px;
+}
+
+.clock-weather-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.clock-weather-card-today {
+  flex-grow: 1;
+  display: flex;
+  column-gap: 5px;
+}
+
+.clock-weather-card-today-icon {
+  background-color: white;
+  width: 33%;
+  aspect-ratio: 1 / 1;
+}
+
+.clock-weather-card-today-time {
+  background-color: yellow;
+  flex-grow: 1;
+}
+
+.clock-weather-card-forecasts {
+  background-color: green;
+  height: 100px;
+}

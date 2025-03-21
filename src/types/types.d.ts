@@ -1,13 +1,13 @@
 type ClockWeatherCardConfig = {
-  entity_id: string;
-  title: string;
-};
+  entity: string
+  title: string
+}
 
 type ClockWeatherCard = HTMLElement & {
-  hass?: HomeAssistant;
-  config?: ClockWeatherCardConfig;
-};
+  hass?: HomeAssistant
+  config?: ClockWeatherCardConfig
+}
 
 type ClockWeatherCardCustomElement = typeof ClockWeatherCard & {
-  setConfig(config: ClockWeatherCardConfig): void;
-} & Omit<'config'>;
+  setConfig(config: ClockWeatherCardConfig): void
+} & Omit<'config'>

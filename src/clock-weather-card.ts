@@ -2,6 +2,7 @@ import { defineCustomElement } from 'vue'
 import MyApp from './App.vue'
 import { type HomeAssistant } from 'custom-card-helpers'
 import { version } from '../package.json'
+import styles from './styles.scss?inline'
 
 const isDev = import.meta.env.DEV
 
@@ -14,7 +15,11 @@ console.info(
 const customElementName = `clock-weather-card-${isDev ? 'dev' : ''}`
 
 if (!customElements.get(`${customElementName}-ce`)) {
-  const VueCustomElement = defineCustomElement(MyApp)
+  const VueCustomElement = defineCustomElement(MyApp, {
+    styles: [
+      styles
+    ]
+  })
   customElements.define(`${customElementName}-ce`, VueCustomElement)
 }
 
