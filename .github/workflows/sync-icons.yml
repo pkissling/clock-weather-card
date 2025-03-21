@@ -34,6 +34,11 @@ jobs:
           src/icons/ 
       shell: bash
 
+    - name: Remove source repository traces
+      run: |
+        rm -rf weather-icons-source
+        git ls-files -z | xargs -0 git update-index --assume-unchanged
+
     - name: Commit and create pull request
       uses: peter-evans/create-pull-request@v7
       with:
