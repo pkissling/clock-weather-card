@@ -1,0 +1,3 @@
+basmilius/weather-icons:
+  - source: production/
+    dest: src/icons/
