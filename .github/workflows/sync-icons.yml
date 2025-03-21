@@ -43,7 +43,7 @@ jobs:
       uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GH_PAT }}
-        branch: sync/weather-icons-$(date +%s)
+        branch: sync/weather-icons
         commit-message: "chore: Synchronize weather icons from basmilius/weather-icons" 
         title: "Icon Sync"
         body: |
