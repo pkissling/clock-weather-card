@@ -45,7 +45,7 @@ jobs:
         token: ${{ secrets.GH_PAT }}
         branch: sync/weather-icons-$(date +%s)
         commit-message: "chore: Synchronize weather icons from basmilius/weather-icons" 
-        title: "Icon Sync: $(date +'%Y-%m-%d %H:%M')"
+        title: "Icon Sync"
         body: |
           Automated synchronization from:
           - Source: `production/` in basmilius/weather-icons
