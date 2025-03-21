@@ -16,6 +16,6 @@ jobs:
       - name: Run GitHub File Sync
         uses: BetaHuhn/repo-file-sync-action@v1
         with:
-          GH_PAT: foobar
+          GH_PAT: ${{ secrets.GH_PAT }}
           ASSIGNEES: pkissling
           CONFIG_PATH: .github/sync-icons-config.yml
