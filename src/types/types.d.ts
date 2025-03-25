@@ -1,6 +1,7 @@
 type ClockWeatherCardConfig = {
   entity: string
   title: string
+  customizations?: Record<string, string>
 }
 
 type ClockWeatherCard = HTMLElement & {

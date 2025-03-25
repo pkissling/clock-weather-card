@@ -1,8 +1,7 @@
 import { defineCustomElement } from 'vue'
-import MyApp from './App.vue'
+import ClockWeatherCard from './ClockWeatherCard.vue'
 import { type HomeAssistant } from 'custom-card-helpers'
 import { version } from '../package.json'
-import styles from './styles.scss?inline'
 
 const isDev = import.meta.env.DEV
 
@@ -13,15 +12,6 @@ console.info(
 )
 
 const customElementName = `clock-weather-card-${isDev ? 'dev' : ''}`
-
-if (!customElements.get(`${customElementName}-ce`)) {
-  const VueCustomElement = defineCustomElement(MyApp, {
-    styles: [
-      styles
-    ]
-  })
-  customElements.define(`${customElementName}-ce`, VueCustomElement)
-}
 
 class VueCustomCard extends HTMLElement {
   private customElement: ClockWeatherCard | undefined
@@ -77,11 +67,10 @@ if (!window.customCards.some((card) => card.type === customElementName)) {
     name: 'Clock Weather Card',
     description:
       'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
-    preview: import.meta.env.DEV,
+    preview: isDev,
     documentationURL: 'https://github.com/pkissling/clock-weather-card',
   })
 }
 
-if (!customElements.get(customElementName)) {
-  customElements.define(customElementName, VueCustomCard)
-}
+customElements.get(customElementName) || customElements.define(customElementName, VueCustomCard)
+customElements.get(`${customElementName}-ce`) || customElements.define(`${customElementName}-ce`, defineCustomElement(ClockWeatherCard))

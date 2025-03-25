@@ -9,7 +9,7 @@
           <div class="clock-weather-card-today-time">
           </div>
         </div>
-        <div class="clock-weather-card-forecasts" style="background-color: pink;">
+        <div class="clock-weather-card-forecasts">
         </div>
       </div>
     </div>
@@ -19,18 +19,18 @@
 <script setup lang="ts">
 import type { HomeAssistant } from 'custom-card-helpers'
 import { onBeforeUnmount, ref, watch, watchEffect } from 'vue'
+import style from './styles.scss?inline'
 
 const props = defineProps<{
   hass?: HomeAssistant
   config?: ClockWeatherCardConfig
 }>()
 
+defineOptions({
+  styles: [style]
+})
 const weather = ref<string>('')
 const forecastUnsubscriber = ref<(() => Promise<void>) | null>(null)
-
-watch(() => props.hass?.states, (entity) => {
-  console.log('entity changed', entity)
-})
 
 watchEffect(async () => {
   if (!props.hass || forecastUnsubscriber.value) {
