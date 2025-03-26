@@ -1,0 +1,28 @@
+{
+  "weather": {
+    "clear-night": "Čisto",
+    "cloudy": "Oblačno",
+    "fog": "Magla",
+    "hail": "Tuča",
+    "lightning": "Grmljavina",
+    "lightning-rainy": "Grmljavinsko nevrijeme",
+    "partlycloudy": "Oblačno",
+    "pouring": "Pouring",
+    "rainy": "Kiša",
+    "snowy": "Snijeg",
+    "snowy-rainy": "Snijeg i kiša",
+    "sunny": "Sunčano",
+    "windy": "Vjetrovito",
+    "windy-variant": "Jako vjetrovito",
+    "exceptional": "Exceptional"
+  },
+  "day": {
+    "0": "Ned",
+    "1": "Pon",
+    "2": "Ut",
+    "3": "Sri",
+    "4": "Čet",
+    "5": "Pet",
+    "6": "Sub"
+  }
+}
