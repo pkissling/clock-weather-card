@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.8.11](https://github.com/pkissling/clock-weather-card/compare/v2.8.10...v2.8.11) (2025-04-02)
+
+
+### Bug Fixes
+
+* Add additional translations for Hungarian ([#544](https://github.com/pkissling/clock-weather-card/issues/544)) ([a942e57](https://github.com/pkissling/clock-weather-card/commit/a942e57d503550f9c80508819baebb4ed403e384))
+* Add Croatian language ([#543](https://github.com/pkissling/clock-weather-card/issues/543)) ([7b9fcd0](https://github.com/pkissling/clock-weather-card/commit/7b9fcd096a1c9e6573c2943b404b93268d6ebed7))
+* Add feels-like translation for Slovenian ([#525](https://github.com/pkissling/clock-weather-card/issues/525)) ([7a3da16](https://github.com/pkissling/clock-weather-card/commit/7a3da16dccc22836585fc935039c842d64bc54c6))
+* **deps:** update minor-dependencies ([#545](https://github.com/pkissling/clock-weather-card/issues/545)) ([b6623ef](https://github.com/pkissling/clock-weather-card/commit/b6623efa5f10af90bb704dedd44ac7239354d5f2))
+
 ## [2.8.10](https://github.com/pkissling/clock-weather-card/compare/v2.8.9...v2.8.10) (2025-02-18)
 
 
