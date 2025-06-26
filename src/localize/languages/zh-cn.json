@@ -28,6 +28,6 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "湿度",
-    "feels-like": "Feels like"
+    "feels-like": "体感温度"
   }
 }
