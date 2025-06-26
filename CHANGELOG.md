@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.12](https://github.com/pkissling/clock-weather-card/compare/v2.8.11...v2.8.12) (2025-06-26)
+
+
+### Bug Fixes
+
+* **deps:** update minor-dependencies ([#549](https://github.com/pkissling/clock-weather-card/issues/549)) ([3c2d61f](https://github.com/pkissling/clock-weather-card/commit/3c2d61f497df62407c02f61894c02d92bd8ee94a))
+* Update "Feels like" for cn ([#568](https://github.com/pkissling/clock-weather-card/issues/568)) ([da1b5e0](https://github.com/pkissling/clock-weather-card/commit/da1b5e07787096f40117c45588c008ac579275f6))
+
 ## [2.8.11](https://github.com/pkissling/clock-weather-card/compare/v2.8.10...v2.8.11) (2025-04-02)
 
 
