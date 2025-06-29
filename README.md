@@ -27,7 +27,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 ### Why don't I see the current day in my weather forecast?
 
 Your weather provider may not provide today's weather as part of their weather forecast. You may consider switching to a different weather provider.
-[OpenWeatherMap](https://www.home-assistant.io/integrations/openweathermap/) is one of the weather integrations providing today's weather.
+[Open Meteo](https://www.home-assistant.io/integrations/open_meteo/) is the default weather integrations in home assistant and providings today's weather.
 
 ### What does the card actually display?
 
