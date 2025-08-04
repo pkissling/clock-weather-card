@@ -509,12 +509,12 @@ export class ClockWeatherCard extends LitElement {
     if (aqi == null) {
       return null
     }
-    if (aqi <= 50) return 'green'
-    if (aqi <= 100) return 'yellowgreen'
-    if (aqi <= 150) return 'orange'
+    if (aqi <= 50) return 'lime'
+    if (aqi <= 100) return 'yellow'
+    if (aqi <= 150) return 'darkorange'
     if (aqi <= 200) return 'red'
-    if (aqi <= 300) return 'purple'
-    return 'maroon'
+    if (aqi <= 300) return 'darkviolet'
+    return 'darkred'
   }
 
   private getSun (): HassEntityBase | undefined {
