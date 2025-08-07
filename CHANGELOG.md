@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.9.0](https://github.com/pkissling/clock-weather-card/compare/v2.8.12...v2.9.0) (2025-08-07)
+
+
+### Features
+
+* Update AQI background colors to match airnow.gov ([#589](https://github.com/pkissling/clock-weather-card/issues/589)) ([18c8034](https://github.com/pkissling/clock-weather-card/commit/18c8034611cba880a3492949c17407e957508700))
+
+
+### Bug Fixes
+
+* **deps:** update minor-dependencies ([#579](https://github.com/pkissling/clock-weather-card/issues/579)) ([9c0beef](https://github.com/pkissling/clock-weather-card/commit/9c0beef8c7dabfd68078b25f5d2d1b83c9ee5302))
+
 ## [2.8.12](https://github.com/pkissling/clock-weather-card/compare/v2.8.11...v2.8.12) (2025-06-26)
 
 
