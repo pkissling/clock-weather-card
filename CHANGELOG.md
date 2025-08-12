@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.1](https://github.com/pkissling/clock-weather-card/compare/v2.9.0...v2.9.1) (2025-08-12)
+
+
+### Bug Fixes
+
+* missing diacritics in romanian translation ([#597](https://github.com/pkissling/clock-weather-card/issues/597)) ([320a376](https://github.com/pkissling/clock-weather-card/commit/320a3760f0f37a4142905807e0c6574d8733725a))
+
 ## [2.9.0](https://github.com/pkissling/clock-weather-card/compare/v2.8.12...v2.9.0) (2025-08-07)
 
 
