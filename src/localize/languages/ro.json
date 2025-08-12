@@ -1,20 +1,20 @@
 {
   "weather": {
     "clear-night": "Senin",
-    "cloudy": "Innorat",
-    "fog": "Ceata",
-    "hail": "Grindina",
+    "cloudy": "Înnorat",
+    "fog": "Ceață",
+    "hail": "Grindină",
     "lightning": "Fulgere",
     "lightning-rainy": "Furtuni cu ploaie",
-    "partlycloudy": "Partial innorat",
+    "partlycloudy": "Parțial înnorat",
     "pouring": "Averse",
     "rainy": "Ploaie",
     "snowy": "Ninsoare",
-    "snowy-rainy": "Lapovita",
-    "sunny": "Insorit",
-    "windy": "Vant",
-    "windy-variant": "Vant puternic",
-    "exceptional": "Furtuna"
+    "snowy-rainy": "Lapoviță",
+    "sunny": "Însorit",
+    "windy": "Vânt",
+    "windy-variant": "Vânt puternic",
+    "exceptional": "Furtună"
   },
   "day": {
     "1": "Lun",
@@ -22,12 +22,12 @@
     "3": "Mie",
     "4": "Joi",
     "5": "Vin",
-    "6": "Sam",
+    "6": "Sâm",
     "7": "Dum"
   },
   "misc": {
     "aqi": "AQI",
     "humidity": "umiditate",
-    "feels-like": "Temp resimţită"
+    "feels-like": "Temp. resimțită"
   }
 }
