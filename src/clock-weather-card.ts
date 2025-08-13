@@ -214,6 +214,7 @@ export class ClockWeatherCard extends LitElement {
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const aqi = this.getAqi()
     const aqiColor = this.getAqiColor(aqi)
+    const aqiTextColor = this.getAqiTextColor(aqi)
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
@@ -234,7 +235,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiColor}">${aqi} ${aqiString}</aqi>` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiColor};color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -517,6 +518,15 @@ export class ClockWeatherCard extends LitElement {
     return '#8B0000'
   }
 
+  private getAqiTextColor (aqi: number | null): string | null {
+    if (aqi == null) {
+      return null
+    }
+    
+    if (aqi <= 150) return 'black'
+    return 'white'
+  }
+  
   private getSun (): HassEntityBase | undefined {
     return this.hass.states[this.config.sun_entity]
   }
