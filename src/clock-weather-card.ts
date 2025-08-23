@@ -28,7 +28,7 @@ import styles from './styles'
 import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
-import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundUp } from './utils'
+import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
 import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
@@ -265,17 +265,15 @@ export class ClockWeatherCard extends LitElement {
     const minTemp = Math.round(min(minTemps))
     const maxTemp = Math.round(max(maxTemps))
 
-    const gradientRange = this.gradientRange(minTemp, maxTemp, temperatureUnit)
-
     const displayTexts = forecasts
       .map(f => f.datetime)
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly, displayTexts[i], maxColOneChars)))
+    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
   }
 
-  private renderForecastItem (forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
+  private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
     const tempUnit = this.getWeather().attributes.temperature_unit
@@ -288,7 +286,7 @@ export class ClockWeatherCard extends LitElement {
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
-        ${this.renderForecastTemperatureBar(gradientRange, minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp)}
+        ${this.renderForecastTemperatureBar(minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp, temperatureUnit)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, maxTempDay))}
       </clock-weather-card-forecast-row>
     `
@@ -310,17 +308,17 @@ export class ClockWeatherCard extends LitElement {
     `
   }
 
-  private renderForecastTemperatureBar (gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null): TemplateResult {
+  private renderForecastTemperatureBar (minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null, temperatureUnit: TemperatureUnit): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay)
     const moveRight = maxTemp === minTemp ? 0 : (minTempDay - minTemp) / (maxTemp - minTemp)
     return html`
       <forecast-temperature-bar>
         <forecast-temperature-bar-background> </forecast-temperature-bar-background>
         <forecast-temperature-bar-range
-          style="--move-right: ${moveRight}; --start-percent: ${startPercent}%; --end-percent: ${endPercent}%; --gradient: ${this.gradient(
-            gradientRange,
-            startPercent,
-            endPercent
+          style="--move-right: ${moveRight.toFixed(2)}; --start-percent: ${startPercent.toFixed(2)}%; --end-percent: ${endPercent.toFixed(2)}%; --gradient: ${this.createGradientString(
+            minTempDay,
+            maxTempDay,
+            temperatureUnit
           )};"
         >
           ${isNow ? this.renderForecastCurrentTemp(minTempDay, maxTempDay, currentTemp) : ''}
@@ -349,64 +347,81 @@ export class ClockWeatherCard extends LitElement {
     return styles
   }
 
-  private gradientRange (minTemp: number, maxTemp: number, temperatureUnit: TemperatureUnit): Rgb[] {
-    const minTempCelsius = this.toCelsius(temperatureUnit, minTemp)
-    const maxTempCelsius = this.toCelsius(temperatureUnit, maxTemp)
-    const minVal = Math.max(roundDown(minTempCelsius, 10), min([...gradientMap.keys()]))
-    const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]))
-    return Array.from(gradientMap.keys())
-      .filter((temp) => temp >= minVal && temp <= maxVal)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .map((temp) => gradientMap.get(temp)!)
-  }
-
-  private gradient (rgbs: Rgb[], fromPercent: number, toPercent: number): string {
-    if (rgbs.length <= 1) {
-      const rgb = rgbs[0] ?? new Rgb(255, 255, 255)
-      return [rgb, rgb]
-        .map((rgb) => rgb.toRgbString())
-        .join(',')
-    }
-    const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent, 'left')
-    const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent, 'right')
-    const between = rgbs.slice(fromIndex + 1, toIndex)
-
-    return [fromRgb, ...between, toRgb]
-      .map((rgb) => rgb.toRgbString())
-      .join(',')
-  }
-
-  private calculateRgb (rgbs: Rgb[], percent: number, pickIndex: 'left' | 'right'): [rgb: Rgb, index: number] {
-    function valueAtPosition (start: number, end: number, percent: number): number {
-      const abs = Math.abs(start - end)
-      const value = (abs / 100) * percent
-      if (start > end) {
-        return round(start - value)
-      } else {
-        return round(start + value)
-      }
+  private createGradientString (minTempDay: number, maxTempDay: number, temperatureUnit: TemperatureUnit): string {
+    function linearizeColor (temp: number, [tempLeft, colorLeft]: [number, Rgb], [tempRight, colorRight]: [number, Rgb]): Rgb {
+      const ratio = Math.max(Math.min((temp - tempLeft) / (tempRight - tempLeft), 100.0), 0.0)
+      return new Rgb(
+        Math.round(colorLeft.r + ratio * (colorRight.r - colorLeft.r)),
+        Math.round(colorLeft.g + ratio * (colorRight.g - colorLeft.g)),
+        Math.round(colorLeft.b + ratio * (colorRight.b - colorLeft.b))
+      )
     }
 
-    function rgbAtPosition (startIndex: number, endIndex: number, percentToNextIndex: number, rgbs: Rgb[]): Rgb {
-      const start = rgbs[startIndex]
-      const end = rgbs[endIndex]
-      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex
-      const left = percentToNextIndex < 0 ? end : start
-      const right = percentToNextIndex < 0 ? start : end
-      const r = valueAtPosition(left.r, right.r, percent)
-      const g = valueAtPosition(left.g, right.g, percent)
-      const b = valueAtPosition(left.b, right.b, percent)
-      return new Rgb(r, g, b)
+    const minTempDayCelsius = this.toCelsius(temperatureUnit, minTempDay)
+    const maxTempDayCelsius = this.toCelsius(temperatureUnit, maxTempDay)
+
+    const outputGradient = ([...gradientMap.entries()]
+      .reduce((gradient, [temp, color], index, arr) => {
+        if (index === 0) {
+          // First color
+          // Remark: This if-level can't be optimized away as in the unlikely event
+          // that the daily low would be exactly same floating point value than
+          // the first color temperature, we would hit negative index on the lower branches.
+          if (temp > minTempDayCelsius) {
+            // Daily low is lower than lowest color temperature
+            // so we have to duplicate.
+            gradient.set(0.0, color)
+            gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
+          } else {
+            // Temp is smaller or equal than daily low so we'll skip the color until we know what we need to linearize.
+          }
+        } else if (temp < minTempDayCelsius) {
+          // Still haven't found a color that would be the first one
+
+        } else if (!gradient.has(0.0)) {
+          // This is the first color usable color, we need to linearize the color with the previous one
+          gradient.set(0.0, linearizeColor(minTempDayCelsius, arr[index - 1], [temp, color]))
+
+          // and then add this color to the right position
+          if (temp > maxTempDayCelsius) {
+            // This color is also higher than the daily max so we need to linearize it as well
+            gradient.set(1.0, linearizeColor(maxTempDayCelsius, arr[index - 1], [temp, color]))
+          } else {
+            // In other cases (> 0.0 and <= 1.0) we calculate the position
+            gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
+          }
+        } else if (temp < maxTempDayCelsius) {
+          // color is on the gradient
+          gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
+        } else if (!gradient.has(1.0)) {
+          // Last color of the gradient
+          if (temp > maxTempDayCelsius) {
+            // Linearize the last color
+            gradient.set(1.0, linearizeColor(maxTempDayCelsius, arr[index - 1], [temp, color]))
+          } else {
+            // Get last color from the color temperature
+            gradient.set(1.0, color)
+          }
+        } else {
+          // We don't care for intermediate colors that are not on the daily gradient
+        }
+
+        return gradient
+      }, new Map<number, Rgb>())
+    )
+
+    // Gradient endpoint check
+    if (!outputGradient.has(1.0)) {
+      // Gradient is missing the final color. This means that the daily max is higher
+      // than highest color temperature so we have to duplicate.
+      outputGradient.set(1.0, Array.from(outputGradient.values()).slice(-1)[0])
     }
 
-    const steps = 100 / (rgbs.length - 1)
-    const step = percent / steps
-    const startIndex = Math.round(step)
-    const percentToNextIndex = (100 / steps) * (percent - startIndex * steps)
-    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1
-    const rgb = rgbAtPosition(startIndex, endIndex, percentToNextIndex, rgbs)
-    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex)
-    return [rgb, index]
+    // Make the gradient string
+    return ([...outputGradient.entries()]
+      .map(([pos, color]) => `${color.toRgbString()} ${Math.round(pos * 100.0)}%`)
+      .join(', ')
+    )
   }
 
   private handleAction (ev: ActionHandlerEvent): void {
