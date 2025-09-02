@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.9.1](https://github.com/pkissling/clock-weather-card/compare/v2.9.0...v2.9.1) (2025-09-02)
+
+
+### Bug Fixes
+
+* Improve AQI Text Readability on Light Backgrounds ([#602](https://github.com/pkissling/clock-weather-card/issues/602)) ([7ec081f](https://github.com/pkissling/clock-weather-card/commit/7ec081f1c21f9dd76e71574494233c559bbb5a71))
+* missing diacritics in romanian translation ([#597](https://github.com/pkissling/clock-weather-card/issues/597)) ([320a376](https://github.com/pkissling/clock-weather-card/commit/320a3760f0f37a4142905807e0c6574d8733725a))
+
 ## [2.9.0](https://github.com/pkissling/clock-weather-card/compare/v2.8.12...v2.9.0) (2025-08-07)
 
 
