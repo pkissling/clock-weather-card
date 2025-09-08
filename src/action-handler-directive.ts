@@ -1,15 +1,18 @@
-import { noChange } from 'lit'
-import { type AttributePart, directive, Directive, type DirectiveParameters } from 'lit/directive.js'
-
-import { type ActionHandlerDetail, type ActionHandlerOptions } from 'custom-card-helpers/dist/types'
 import { fireEvent } from 'custom-card-helpers'
+import { type ActionHandlerDetail, type ActionHandlerOptions } from 'custom-card-helpers/dist/types'
+import { noChange } from 'lit'
+import { type AttributePart, Directive, directive } from 'lit/directive.js'
+
+interface MWCRipple extends HTMLElement {
+  primary: boolean
+  disabled: boolean
+  active: boolean
+  unbounded: boolean
+}
 
 const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.maxTouchPoints > 0
 
-interface ActionHandler extends HTMLElement {
-  holdTime: number
-}
-interface ActionHandlerElement extends HTMLElement {
+type ActionHandlerElement = HTMLElement & {
   actionHandler?: boolean
 }
 
@@ -19,21 +22,17 @@ declare global {
   }
 }
 
-class ActionHandler extends HTMLElement implements ActionHandler {
+class ActionHandler extends HTMLElement {
   public holdTime = 500
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public ripple: any
+  public ripple: MWCRipple
 
   protected timer?: number
-
   protected held = false
-
   private dblClickTimeout?: number
 
   constructor () {
     super()
-    this.ripple = document.createElement('mwc-ripple')
+    this.ripple = document.createElement('mwc-ripple') as MWCRipple
   }
 
   public connectedCallback (): void {
@@ -152,6 +151,8 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     this.ripple.disabled = true
     this.style.display = 'none'
   }
+
+  render (): void {}
 }
 
 if (!customElements.get('action-handler-clock-weather')) {
@@ -161,7 +162,7 @@ if (!customElements.get('action-handler-clock-weather')) {
 const getActionHandler = (): ActionHandler => {
   const body = document.body
   if (body.querySelector('action-handler-clock-weather')) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     return body.querySelector('action-handler-clock-weather')!
   }
 
@@ -181,11 +182,11 @@ export const actionHandlerBind = (element: ActionHandlerElement, options?: Actio
 
 export const actionHandler = directive(
   class extends Directive {
-    update (part: AttributePart, [options]: DirectiveParameters<this>): unknown {
+    update (part: AttributePart, [options]: [ActionHandlerOptions]): unknown {
       actionHandlerBind(part.element as ActionHandlerElement, options)
       return noChange
     }
 
-    render (_options?: ActionHandlerOptions): void {}
+    render (): void {}
   }
 )

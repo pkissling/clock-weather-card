@@ -3,6 +3,25 @@ import { type HassEntity } from 'home-assistant-js-websocket/dist/types'
 import { type DateTime } from 'luxon'
 
 declare global {
+
+  interface ImportMeta {
+    env: {
+      MODE: 'development' | 'production'
+    }
+  }
+
+  interface Window {
+    customCards: CustomCard[]
+  }
+
+  interface CustomCard {
+    type: string
+    name: string
+    description: string
+    preview?: boolean
+    documentationURL?: string
+  }
+
   interface HTMLElementTagNameMap {
     'clock-weather-card-editor': LovelaceCardEditor
     'hui-error-card': LovelaceCard
