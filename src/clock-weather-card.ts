@@ -1,4 +1,5 @@
 import { LitElement, html, type TemplateResult, type PropertyValues, type CSSResultGroup } from 'lit'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customElement, property, state } from 'lit/decorators.js'
 import {
   type HomeAssistant,
@@ -27,22 +28,32 @@ import styles from './styles'
 import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
-import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
+import { extractMostOccuring, max, min, round, roundDown, roundIfNotNull, roundUp } from './utils'
 import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
-import { safeRender } from './helpers'
-import { DateTime } from 'luxon'
 
+const customElementName = generateCustomElementName()
+
+// This puts your card into the UI card picker dialog
+window.customCards = window.customCards || []
+window.customCards.push({
+  type: customElementName,
+  name: 'Clock Weather Card',
+  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
+  preview: true,
+  documentationURL: 'https://github.com/pkissling/clock-weather-card'
+})
+
+// eslint-disable-next-line no-console
 console.info(
-  `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
+  `%c  CLOCK-WEATHER-CARD \n%c Version: ${isDev ? 'DEV' : version}`,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray'
 );
 
 // This puts your card into the UI card picker dialog
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 (window as any).customCards = (window as any).customCards || [];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
@@ -60,92 +71,6 @@ const gradientMap: Map<number, Rgb> = new Map()
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
-  // https://lit.dev/docs/components/properties/
-  @property({ attribute: false }) public hass!: HomeAssistant
-
-  @state() private config!: MergedClockWeatherCardConfig
-  @state() private currentDate!: DateTime
-  @state() private forecasts?: WeatherForecast[]
-  @state() private error?: TemplateResult
-  private forecastSubscriber?: () => Promise<void>
-  private forecastSubscriberLock = false
-
-  constructor () {
-    super()
-    this.currentDate = DateTime.now()
-    const msToNextSecond = (1000 - this.currentDate.millisecond)
-    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
-    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
-  }
-
-  public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
-    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(() => true))
-    if (entity) {
-      return { entity }
-    }
-
-    return {}
-  }
-
-  public getCardSize (): number {
-    return 3 + roundUp(this.config.forecast_rows / 2)
-  }
-
-  // https://lit.dev/docs/components/properties/#accessors-custom
-  public setConfig (config?: ClockWeatherCardConfig): void {
-    if (!config) {
-      throw this.createError('Invalid configuration.')
-    }
-
-    if (!config.entity) {
-      throw this.createError('Attribute "entity" must be present.')
-    }
-
-    if (config.forecast_rows && config.forecast_rows < 1) {
-      throw this.createError('Attribute "forecast_rows" must be greater than 0.')
-    }
-
-    if (config.time_format && config.time_format.toString() !== '24' && config.time_format.toString() !== '12') {
-      throw this.createError('Attribute "time_format" must either be "12" or "24".')
-    }
-
-    if (config.hide_today_section && config.hide_forecast_section) {
-      throw this.createError('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
-    }
-
-    this.config = this.mergeConfig(config)
-  }
-
-  // https://lit.dev/docs/components/lifecycle/#reactive-update-cycle-performing
-  protected shouldUpdate (changedProps: PropertyValues): boolean {
-    if (!this.config) {
-      return false
-    }
-
-    if (changedProps.has('forecasts')) {
-      return true
-    }
-
-    const oldHass = changedProps.get('hass') as HomeAssistant | undefined
-    if (oldHass) {
-      const oldSun = oldHass.states[this.config.sun_entity]
-      const newSun = this.hass.states[this.config.sun_entity]
-      if (oldSun !== newSun) {
-        return true
-      }
-    }
-
-    return hasConfigOrEntityChanged(this, changedProps, false)
-  }
-
-  protected updated (changedProps: PropertyValues): void {
-    super.updated(changedProps)
-    if (changedProps.has('config')) {
-      void this.subscribeForecastEvents()
-    }
-  }
-
-  // https://lit.dev/docs/components/rendering/
   protected render (): TemplateResult {
     if (this.error) {
       return this.error
@@ -213,8 +138,7 @@ export class ClockWeatherCard extends LitElement {
     const tempUnit = weather.attributes.temperature_unit
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const aqi = this.getAqi()
-    const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
-    const aqiTextColor = this.getAqiTextColor(aqi)
+    const aqiColor = this.getAqiColor(aqi)
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
@@ -235,7 +159,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiColor}">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
@@ -265,15 +189,17 @@ export class ClockWeatherCard extends LitElement {
     const minTemp = Math.round(min(minTemps))
     const maxTemp = Math.round(max(maxTemps))
 
+    const gradientRange = this.gradientRange(minTemp, maxTemp, temperatureUnit)
+
     const displayTexts = forecasts
       .map(f => f.datetime)
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, gradientRange, minTemp, maxTemp, currentTemp, hourly, displayTexts[i], maxColOneChars)))
   }
 
-  private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
+  private renderForecastItem (forecast: MergedWeatherForecast, gradientRange: Rgb[], minTemp: number, maxTemp: number, currentTemp: number | null, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
     const tempUnit = this.getWeather().attributes.temperature_unit
@@ -286,7 +212,7 @@ export class ClockWeatherCard extends LitElement {
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
-        ${this.renderForecastTemperatureBar(minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp, temperatureUnit)}
+        ${this.renderForecastTemperatureBar(gradientRange, minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, maxTempDay))}
       </clock-weather-card-forecast-row>
     `
@@ -308,17 +234,17 @@ export class ClockWeatherCard extends LitElement {
     `
   }
 
-  private renderForecastTemperatureBar (minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null, temperatureUnit: TemperatureUnit): TemplateResult {
+  private renderForecastTemperatureBar (gradientRange: Rgb[], minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay)
     const moveRight = maxTemp === minTemp ? 0 : (minTempDay - minTemp) / (maxTemp - minTemp)
     return html`
       <forecast-temperature-bar>
         <forecast-temperature-bar-background> </forecast-temperature-bar-background>
         <forecast-temperature-bar-range
-          style="--move-right: ${moveRight.toFixed(2)}; --start-percent: ${startPercent.toFixed(2)}%; --end-percent: ${endPercent.toFixed(2)}%; --gradient: ${this.createGradientString(
-            minTempDay,
-            maxTempDay,
-            temperatureUnit
+          style="--move-right: ${moveRight}; --start-percent: ${startPercent}%; --end-percent: ${endPercent}%; --gradient: ${this.gradient(
+            gradientRange,
+            startPercent,
+            endPercent
           )};"
         >
           ${isNow ? this.renderForecastCurrentTemp(minTempDay, maxTempDay, currentTemp) : ''}
@@ -347,95 +273,64 @@ export class ClockWeatherCard extends LitElement {
     return styles
   }
 
-  private createGradientString (minTempDay: number, maxTempDay: number, temperatureUnit: TemperatureUnit): string {
-    function linearizeColor (temp: number, [tempLeft, colorLeft]: [number, Rgb], [tempRight, colorRight]: [number, Rgb]): Rgb {
-      const ratio = Math.max(Math.min((temp - tempLeft) / (tempRight - tempLeft), 1.0), 0.0)
-      return new Rgb(
-        Math.round(colorLeft.r + ratio * (colorRight.r - colorLeft.r)),
-        Math.round(colorLeft.g + ratio * (colorRight.g - colorLeft.g)),
-        Math.round(colorLeft.b + ratio * (colorRight.b - colorLeft.b))
-      )
+  private gradientRange (minTemp: number, maxTemp: number, temperatureUnit: TemperatureUnit): Rgb[] {
+    const minTempCelsius = this.toCelsius(temperatureUnit, minTemp)
+    const maxTempCelsius = this.toCelsius(temperatureUnit, maxTemp)
+    const minVal = Math.max(roundDown(minTempCelsius, 10), min([...gradientMap.keys()]))
+    const maxVal = Math.min(roundUp(maxTempCelsius, 10), max([...gradientMap.keys()]))
+    return Array.from(gradientMap.keys())
+      .filter((temp) => temp >= minVal && temp <= maxVal)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .map((temp) => gradientMap.get(temp)!)
+  }
+
+  private gradient (rgbs: Rgb[], fromPercent: number, toPercent: number): string {
+    if (rgbs.length <= 1) {
+      const rgb = rgbs[0] ?? new Rgb(255, 255, 255)
+      return [rgb, rgb]
+        .map((rgb) => rgb.toRgbString())
+        .join(',')
     }
+    const [fromRgb, fromIndex] = this.calculateRgb(rgbs, fromPercent, 'left')
+    const [toRgb, toIndex] = this.calculateRgb(rgbs, toPercent, 'right')
+    const between = rgbs.slice(fromIndex + 1, toIndex)
 
-    const minTempDayCelsius = this.toCelsius(temperatureUnit, minTempDay)
-    const maxTempDayCelsius = this.toCelsius(temperatureUnit, maxTempDay)
+    return [fromRgb, ...between, toRgb]
+      .map((rgb) => rgb.toRgbString())
+      .join(',')
+  }
 
-    if (minTempDayCelsius === maxTempDayCelsius) {
-      const entries = [...gradientMap.entries()]
-      let color: Rgb
-      if (minTempDayCelsius <= entries[0][0]) {
-        color = entries[0][1]
-      } else if (minTempDayCelsius >= entries[entries.length - 1][0]) {
-        color = entries[entries.length - 1][1]
+  private calculateRgb (rgbs: Rgb[], percent: number, pickIndex: 'left' | 'right'): [rgb: Rgb, index: number] {
+    function valueAtPosition (start: number, end: number, percent: number): number {
+      const abs = Math.abs(start - end)
+      const value = (abs / 100) * percent
+      if (start > end) {
+        return round(start - value)
       } else {
-        const upperIndex = entries.findIndex(([temp]) => temp >= minTempDayCelsius)
-        color = linearizeColor(minTempDayCelsius, entries[upperIndex - 1], entries[upperIndex])
+        return round(start + value)
       }
-      return `${color.toRgbString()} 0%, ${color.toRgbString()} 100%`
     }
 
-    const outputGradient = ([...gradientMap.entries()]
-      .reduce((gradient, [temp, color], index, arr) => {
-        if (index === 0) {
-          // First color
-          // Remark: This if-level can't be optimized away as in the unlikely event
-          // that the daily low would be exactly same floating point value than
-          // the first color temperature, we would hit negative index on the lower branches.
-          if (temp > minTempDayCelsius) {
-            // Daily low is lower than lowest color temperature
-            // so we have to duplicate.
-            gradient.set(0.0, color)
-            gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
-          } else {
-            // Temp is smaller or equal than daily low so we'll skip the color until we know what we need to linearize.
-          }
-        } else if (temp < minTempDayCelsius) {
-          // Still haven't found a color that would be the first one
-
-        } else if (!gradient.has(0.0)) {
-          // This is the first color usable color, we need to linearize the color with the previous one
-          gradient.set(0.0, linearizeColor(minTempDayCelsius, arr[index - 1], [temp, color]))
-
-          // and then add this color to the right position
-          if (temp > maxTempDayCelsius) {
-            // This color is also higher than the daily max so we need to linearize it as well
-            gradient.set(1.0, linearizeColor(maxTempDayCelsius, arr[index - 1], [temp, color]))
-          } else {
-            // In other cases (> 0.0 and <= 1.0) we calculate the position
-            gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
-          }
-        } else if (temp < maxTempDayCelsius) {
-          // color is on the gradient
-          gradient.set((temp - minTempDayCelsius) / (maxTempDayCelsius - minTempDayCelsius), color)
-        } else if (!gradient.has(1.0)) {
-          // Last color of the gradient
-          if (temp > maxTempDayCelsius) {
-            // Linearize the last color
-            gradient.set(1.0, linearizeColor(maxTempDayCelsius, arr[index - 1], [temp, color]))
-          } else {
-            // Get last color from the color temperature
-            gradient.set(1.0, color)
-          }
-        } else {
-          // We don't care for intermediate colors that are not on the daily gradient
-        }
-
-        return gradient
-      }, new Map<number, Rgb>())
-    )
-
-    // Gradient endpoint check
-    if (!outputGradient.has(1.0)) {
-      // Gradient is missing the final color. This means that the daily max is higher
-      // than highest color temperature so we have to duplicate.
-      outputGradient.set(1.0, Array.from(outputGradient.values()).slice(-1)[0])
+    function rgbAtPosition (startIndex: number, endIndex: number, percentToNextIndex: number, rgbs: Rgb[]): Rgb {
+      const start = rgbs[startIndex]
+      const end = rgbs[endIndex]
+      const percent = percentToNextIndex < 0 ? 100 + percentToNextIndex : percentToNextIndex
+      const left = percentToNextIndex < 0 ? end : start
+      const right = percentToNextIndex < 0 ? start : end
+      const r = valueAtPosition(left.r, right.r, percent)
+      const g = valueAtPosition(left.g, right.g, percent)
+      const b = valueAtPosition(left.b, right.b, percent)
+      return new Rgb(r, g, b)
     }
 
-    // Make the gradient string
-    return ([...outputGradient.entries()]
-      .map(([pos, color]) => `${color.toRgbString()} ${Math.round(pos * 100.0)}%`)
-      .join(', ')
-    )
+    const steps = 100 / (rgbs.length - 1)
+    const step = percent / steps
+    const startIndex = Math.round(step)
+    const percentToNextIndex = (100 / steps) * (percent - startIndex * steps)
+    const endIndex = percentToNextIndex === 0 ? startIndex : percentToNextIndex < 0 ? startIndex - 1 : startIndex + 1
+    const rgb = rgbAtPosition(startIndex, endIndex, percentToNextIndex, rgbs)
+    const index = pickIndex === 'left' ? Math.min(startIndex, endIndex) : Math.max(startIndex, endIndex)
+    return [rgb, index]
   }
 
   private handleAction (ev: ActionHandlerEvent): void {
@@ -478,7 +373,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getWeather (): Weather {
-    const weather = this.hass.states[this.config.entity] as unknown as Weather | undefined
+    const weather = this.hass.states[this.config.entity] as Weather | undefined
     if (!weather) {
       throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
     }
@@ -535,25 +430,16 @@ export class ClockWeatherCard extends LitElement {
     return null
   }
 
-  private getAqiBackgroundColor (aqi: number | null): string | null {
+  private getAqiColor (aqi: number | null): string | null {
     if (aqi == null) {
       return null
     }
-    if (aqi <= 50) return '#00FF00'
-    if (aqi <= 100) return '#FFFF00'
-    if (aqi <= 150) return '#FF8C00'
-    if (aqi <= 200) return '#FF0000'
-    if (aqi <= 300) return '#9400D3'
-    return '#8B0000'
-  }
-
-  private getAqiTextColor (aqi: number | null): string {
-    // Use black text for light backgrounds (green, yellow, orange) for better readability.
-    if (aqi !== null && aqi <= 150) {
-      return '#000000'
-    }
-    // Use white text for dark backgrounds (red, purple, maroon).
-    return '#FFFFFF'
+    if (aqi <= 50) return 'green'
+    if (aqi <= 100) return 'yellowgreen'
+    if (aqi <= 150) return 'orange'
+    if (aqi <= 200) return 'red'
+    if (aqi <= 300) return 'purple'
+    return 'maroon'
   }
 
   private getSun (): HassEntityBase | undefined {
