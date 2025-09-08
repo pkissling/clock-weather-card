@@ -5,11 +5,53 @@
 [![Downloads of latest version (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/total?sort=semver)](https://github.com/pkissling/clock-weather-card/releases/latest)
 [![Current version](https://img.shields.io/github/v/release/pkissling/clock-weather-card)](https://github.com/pkissling/clock-weather-card/releases/latest)
 
-A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) available through the [Home Assistant Community Store](https://hacs.xyz)
-showing the current date, time and a weather forecast.
+Welcome to Clock Weather Card! 🌤️
+
+A beautiful and feature-rich [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) that elegantly displays the current date, time, and weather forecast. Available through the [Home Assistant Community Store](https://hacs.xyz), this card brings a modern and informative weather display to your Home Assistant dashboard.
 
 ![Clock Weather Card](.github/assets/card.gif)
 [^1]
+
+## ✨ Features
+
+- 🕒 Real-time clock display with customizable formats
+- 🌤️ Beautiful weather icons with optional animations
+- 📅 Current date display with flexible formatting
+- 📊 Temperature range visualization
+- 🌡️ Support for current temperature, humidity, and "feels like" temperature
+- 🌍 Multi-language support
+- ⚡ Highly customizable appearance and layout
+- 🔄 Support for both daily and hourly forecasts
+- 🌙 Automatic day/night icon switching
+- 📱 Responsive design that works on all devices
+
+## 🎨 Customization
+
+The card is highly customizable to match your dashboard's style and your preferences. You can:
+- Choose between line or filled weather icons
+- Enable/disable animations
+- Customize the number of forecast days
+- Adjust date and time formats
+- Show/hide various elements
+- Configure temperature display options
+- Set your preferred time zone
+
+## 🚀 Quick Start
+
+### Installation via HACS (Recommended)
+
+1. Make sure you have [HACS](https://github.com/custom-components/hacs) installed
+2. Search for "Clock Weather Card" in HACS
+3. Click "Download"
+4. Add the resource to your Lovelace configuration
+5. Add the card to your dashboard
+
+### Manual Installation
+
+1. Download the [latest release](https://www.github.com/pkissling/clock-weather-card/releases/latest/download/clock-weather-card.js)
+2. Place the file in your `config/www` folder
+3. Add the resource to your Lovelace configuration
+4. Add the card to your dashboard
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
 
@@ -41,6 +83,26 @@ The circle represents the current temperature (16° or roughly midway between 12
 _Thanks to @deprecatedcoder for this text from [#143](https://github.com/pkissling/clock-weather-card/issues/143)_
 
 The basic idea of the forecast bars is to be able to understand the weather trend for the upcoming days in a single glance.
+
+## 🤝 Contributing
+
+We welcome contributions! Whether you're fixing bugs, improving documentation, or adding new features, your help is appreciated. Please feel free to:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Credits to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons)
+- Thanks to all contributors who have helped shape this project
+- Special thanks to the Home Assistant community for their support and feedback
 
 ## Installation
 
@@ -148,6 +210,9 @@ aqi_sensor: sensor.air_quality_index
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 | aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+
+# Local development
+TODO
 
 ## Footnotes
 

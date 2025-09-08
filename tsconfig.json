@@ -16,7 +16,11 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src", "src/custom.d.ts"]
+  "include": ["src", "src/custom.d.ts", "e2e"]
 }
