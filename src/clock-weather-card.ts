@@ -1,11 +1,13 @@
 import { html, LitElement, type TemplateResult } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 
 import translationsService from '@/service/translations-service'
 import { generateCustomElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
+import { HomeAssistant } from 'custom-card-helpers'
+import { ClockWeatherCardConfig, Weather } from './types'
 
 const customElementName = generateCustomElementName()
 
@@ -28,6 +30,9 @@ console.info(
 
 @customElement(customElementName)
 export class ClockWeatherCard extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant
+  @state() private config!: ClockWeatherCardConfig
+
   protected render (): TemplateResult {
     translationsService.fetchTranslation('de', 'misc.aqi')
       .then((translation) => {
@@ -41,12 +46,22 @@ export class ClockWeatherCard extends LitElement {
       })
 
     return html`
-      <div>
+      <ha-card>
         <h1>Hello World</h1>
-      </div>
+        <p>Current Weather: ${this.getWeather().state}</p>
+      </ha-card>
     `
   }
 
-  public setConfig(_: unknown): void {
+  public setConfig(config: ClockWeatherCardConfig): void {
+    this.config = config
+  }
+
+  private getWeather (): Weather {
+    const weather = this.hass.states[this.config.entity] as Weather | undefined
+    if (!weather) {
+      throw new Error(`Entity ${this.config.entity} not found`)
+    }
+    return weather
   }
 }
