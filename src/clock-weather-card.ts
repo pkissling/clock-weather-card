@@ -8,6 +8,8 @@ import { generateCustomElementName, isDev } from '@/utils/development'
 import { version } from '../package.json'
 import { HomeAssistant } from 'custom-card-helpers'
 import { ClockWeatherCardConfig, Weather } from './types'
+import {until} from 'lit-html/directives/until';
+
 
 const customElementName = generateCustomElementName()
 
@@ -32,28 +34,20 @@ console.info(
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: ClockWeatherCardConfig
+  @state() private misc: string | null = null
 
   protected render (): TemplateResult {
-    translationsService.fetchTranslation('de', 'misc.aqi')
-      .then((translation) => {
-        // eslint-disable-next-line no-console
-        console.log('translation', translation)
-      })
-    translationsService.fetchTranslations('de')
-      .then((translations) => {
-        // eslint-disable-next-line no-console
-        console.log('translations', translations)
-      })
-
     return html`
       <ha-card>
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
+        <p>Misc: ${this.misc}</p>
       </ha-card>
     `
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
+    console.log('setConifg', config)
     this.config = config
   }
 
@@ -63,5 +57,13 @@ export class ClockWeatherCard extends LitElement {
       throw new Error(`Entity ${this.config.entity} not found`)
     }
     return weather
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    translationsService.fetchTranslation('ar', 'weather.pouring')
+      .then((translation) => {
+        this.misc = translation
+      })
   }
 }

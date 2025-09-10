@@ -19,6 +19,7 @@ class TranslationsService {
 
     const manifest = await this.crowdinApi.fetchManifest()
     this.languageMappings = this.toLanguageMappings(manifest.content)
+    console.log('languageMappings', this.languageMappings)
     this.initialized = true
   }
 
@@ -26,10 +27,9 @@ class TranslationsService {
     await this.initialize()
 
     const targetLanguagePath = this.languageMappings?.get(language)
+    console.log('targetLanguagePath', targetLanguagePath)
     if (targetLanguagePath) {
-      logger.info('targetLanguagePath', targetLanguagePath)
-      const translations = await this.fetchTranslations(targetLanguagePath)
-      logger.info('translations', translations)
+      const translations = await this.fetchAllTranslationsOfLanguage(targetLanguagePath)
       if (translations[key]) {
         return translations[key]
       }
@@ -43,13 +43,7 @@ class TranslationsService {
     return key
   }
 
-  public async fetchTranslations(language: string): Promise<Record<string, string>> {
-    await this.initialize()
-    const path = this.languageMappings?.get(language)
-    if (!path) {
-      logger.warn(`Language "${language}" is not supported. Falling back to default language (English).`)
-      return this.flattenTranslations(en)
-    }
+  public async fetchAllTranslationsOfLanguage(path: string): Promise<Record<string, string>> {
     const translations = await this.crowdinApi.fetchTranslations(path)
     return this.flattenTranslations(translations)
   }
