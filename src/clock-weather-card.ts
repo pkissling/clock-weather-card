@@ -8,7 +8,8 @@ import { generateCustomElementName, isDev } from '@/utils/development'
 import { version } from '../package.json'
 import { HomeAssistant } from 'custom-card-helpers'
 import { ClockWeatherCardConfig, Weather } from './types'
-import {until} from 'lit-html/directives/until';
+import animatedFillFogNight from './icons/fill/svg/fog-night.svg'
+
 
 
 const customElementName = generateCustomElementName()
@@ -42,6 +43,7 @@ export class ClockWeatherCard extends LitElement {
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
         <p>Misc: ${this.misc}</p>
+        <img src="${animatedFillFogNight}" alt="Fog Night Animation">
       </ha-card>
     `
   }
