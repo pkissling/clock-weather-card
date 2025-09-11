@@ -19,7 +19,6 @@ class TranslationsService {
 
     const manifest = await this.crowdinApi.fetchManifest()
     this.languageMappings = this.toLanguageMappings(manifest.content)
-    console.log('languageMappings', this.languageMappings)
     this.initialized = true
   }
 
@@ -27,7 +26,6 @@ class TranslationsService {
     await this.initialize()
 
     const targetLanguagePath = this.languageMappings?.get(language)
-    console.log('targetLanguagePath', targetLanguagePath)
     if (targetLanguagePath) {
       const translations = await this.fetchAllTranslationsOfLanguage(targetLanguagePath)
       if (translations[key]) {

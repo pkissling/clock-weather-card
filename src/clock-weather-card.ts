@@ -1,14 +1,18 @@
+import { HomeAssistant } from 'custom-card-helpers'
 import { html, LitElement, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
+import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
 import translationsService from '@/service/translations-service'
+import { ClockWeatherCardConfig, Weather } from '@/types'
 import { generateCustomElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
 import { HomeAssistant } from 'custom-card-helpers'
 import { ClockWeatherCardConfig, Weather } from './types'
-import {until} from 'lit-html/directives/until';
+import animatedFillFogNight from './icons/fill/svg/fog-night.svg'
+
 
 
 const customElementName = generateCustomElementName()
@@ -51,29 +55,18 @@ const gradientMap: Map<number, Rgb> = new Map()
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
   protected render (): TemplateResult {
-    translationsService.fetchTranslation('de', 'misc.aqi')
-      .then((translation) => {
-        // eslint-disable-next-line no-console
-        console.log('translation', translation)
-      })
-    translationsService.fetchTranslations('de')
-      .then((translations) => {
-        // eslint-disable-next-line no-console
-        console.log('translations', translations)
-      })
-
     return html`
       <ha-card>
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
         <p>Misc: ${this.misc}</p>
-        <img src="${animatedFillFogNight}" alt="Fog Night Animation">
+        <img src="${animatedFillFogNight}">
       </ha-card>
     `
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
-    console.log('setConifg', config)
+    // TODO null check?
     this.config = config
   }
 
@@ -85,7 +78,7 @@ export class ClockWeatherCard extends LitElement {
     return weather
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     super.connectedCallback()
     translationsService.fetchTranslation('ar', 'weather.pouring')
       .then((translation) => {
