@@ -20,7 +20,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --max-warnings 0 --fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "playwright-ui": "playwright test --ui"
   },
   "dependencies": {
     "custom-card-helpers": "^1.8.0",

@@ -1,16 +1,14 @@
+import { HomeAssistant } from 'custom-card-helpers'
 import { html, LitElement, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
+import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
 import translationsService from '@/service/translations-service'
+import { ClockWeatherCardConfig, Weather } from '@/types'
 import { generateCustomElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
-import { HomeAssistant } from 'custom-card-helpers'
-import { ClockWeatherCardConfig, Weather } from './types'
-import animatedFillFogNight from './icons/fill/svg/fog-night.svg'
-
-
 
 const customElementName = generateCustomElementName()
 
@@ -38,18 +36,22 @@ export class ClockWeatherCard extends LitElement {
   @state() private misc: string | null = null
 
   protected render (): TemplateResult {
+    if (!this.hass || !this.config) {
+      // TODO
+      return html`<ha-card><h1>Loading...</h1></ha-card>`
+    }
     return html`
       <ha-card>
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
         <p>Misc: ${this.misc}</p>
-        <img src="${animatedFillFogNight}" alt="Fog Night Animation">
+        <img src="${animatedFillFogNight}">
       </ha-card>
     `
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
-    console.log('setConifg', config)
+    // TODO null check?
     this.config = config
   }
 
@@ -61,7 +63,7 @@ export class ClockWeatherCard extends LitElement {
     return weather
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     super.connectedCallback()
     translationsService.fetchTranslation('ar', 'weather.pouring')
       .then((translation) => {
