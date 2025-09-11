@@ -28,6 +28,7 @@ A beautiful and feature-rich [Home Assistant Dashboard Card](https://www.home-as
 ## 🎨 Customization
 
 The card is highly customizable to match your dashboard's style and your preferences. You can:
+
 - Choose between line or filled weather icons
 - Enable/disable animations
 - Customize the number of forecast days
@@ -57,14 +58,14 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## Migrating from v1 to v2
 
-* Configuration property `forecast_days` was renamed to `forecast_rows` to indicate that this attribute does not only work for daily, but also for hourly forecasts.
-* `date-fns` has been replaced by `luxon` for date/time formatting. If you configure `date_pattern`, make sure to migrate your pattern to comply with [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens). Additionally, the weekday is now [_not_ hardcoded](https://github.com/pkissling/clock-weather-card/issues/89) anymore.
-* Configuration property `use_browser_time` is now by default `false`, so by default the card will show the time of the current HA time zone.
+- Configuration property `forecast_days` was renamed to `forecast_rows` to indicate that this attribute does not only work for daily, but also for hourly forecasts.
+- `date-fns` has been replaced by `luxon` for date/time formatting. If you configure `date_pattern`, make sure to migrate your pattern to comply with [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens). Additionally, the weekday is now [_not_ hardcoded](https://github.com/pkissling/clock-weather-card/issues/89) anymore.
+- Configuration property `use_browser_time` is now by default `false`, so by default the card will show the time of the current HA time zone.
 
 ## FAQ
 
-* [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
-* [What does the card actually display?](#what-does-the-card-actually-display)
+- [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
+- [What does the card actually display?](#what-does-the-card-actually-display)
 
 ### Why don't I see the current day in my weather forecast?
 
@@ -211,8 +212,41 @@ aqi_sensor: sensor.air_quality_index
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 | aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 
-# Local development
-TODO
+## Development
+
+When developing locally, this repository exposes a development variant of the card so you can test changes without affecting the production card.
+
+- Production card: `clock-weather-card`
+- Development card: `clock-weather-card-dev`
+
+The `-dev` prefix lets you place both cards side-by-side on the same dashboard.
+
+### Run the dev server
+
+```sh
+yarn install
+yarn dev
+```
+
+This starts a Vite dev server on port `5173` that serves the development build of the card.
+
+### Add the dev card to Home Assistant
+
+1. In Home Assistant, go to Settings → Dashboards → Resources and add a new resource with:
+   - URL: `http://<your-dev-ip>:5173/src/clock-weather-card-dev.js`
+   - Resource type: JavaScript Module
+
+2. Edit a dashboard/view and add the dev card. For YAML mode:
+
+```yaml
+type: custom:clock-weather-card-dev
+entity: weather.home  # replace with your weather providers's entity id
+```
+
+Notes:
+
+- Replace `<your-dev-ip>` with the IP/hostname where the dev server runs (port 5173).
+- Ensure Home Assistant can reach that IP (e.g., use your machine’s LAN IP if HA runs on another host or container).
 
 ## Footnotes
 
