@@ -1,4 +1,4 @@
-name: Sync icons
+name: Sync icons from basmilius/weather-icons
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      
+
     steps:
     - name: Generate timestamps
       id: timestamps
@@ -39,7 +39,7 @@ jobs:
         mkdir -p src/icons/
         rsync -av --delete --exclude='.git/' \
           weather-icons-source/production/ \
-          src/icons/ 
+          src/icons/
       shell: bash
 
     - name: Remove source repository traces
