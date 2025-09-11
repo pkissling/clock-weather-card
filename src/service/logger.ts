@@ -19,6 +19,11 @@ class Logger {
 
   public error = (msg: string, ...optionalParams: unknown[]): void => console.error(this.logMessagePrefix, msg, ...optionalParams)
 
+  public debug = (msg: string, ...optionalParams: unknown[]): void => {
+    if (isDev) {
+      console.debug(this.logMessagePrefix, msg, ...optionalParams)
+    }
+  }
 }
 
 export default new Logger()
