@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { HassEntities, HassEntity } from 'home-assistant-js-websocket'
@@ -20,13 +20,11 @@ test('mock weather entity', async ({ page }) => {
   const config = { entity: 'weather.home' }
   await mockState(page, entities, config)
 
-  await expect(page.getByText('Current Weather: sunny')).toBeVisible()
+  await expect(page).toHaveScreenshot('card-sunny.png', { maxDiffPixelRatio: 0.003 })
 })
 
 const mockState = async (page: Page, entities: Partial<HassEntity>[], config: Partial<ClockWeatherCardConfig>): Promise<void> => {
   const card = page.locator('clock-weather-card-dev')
-  // Wait only for attachment to the DOM; visibility comes after render
-  await card.waitFor({ state: 'attached' })
 
   const combinedConfig = {
     type: 'clock-weather-card-dev',
@@ -53,11 +51,8 @@ const mockState = async (page: Page, entities: Partial<HassEntity>[], config: Pa
     states
   } as HomeAssistant
 
-  await card.evaluate((el: ClockWeatherCard, { config: cfg, hass }) => {
-    el.setConfig(cfg)
+  await card.evaluate((el: ClockWeatherCard, { config, hass }) => {
+    el.setConfig(config)
     el.hass = hass
   }, { config: combinedConfig, hass: combinedHass })
-
-  // wait until rendering is done
-  await card.evaluate((el: LitElement) => el.updateComplete)
 }
