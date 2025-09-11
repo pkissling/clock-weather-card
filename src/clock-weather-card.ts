@@ -36,6 +36,7 @@ export class ClockWeatherCard extends LitElement {
   @state() private config!: ClockWeatherCardConfig
   @state() private misc: string | null = null
   @state() private forecasts?: WeatherForecast[]
+  private forecastSubscription: (() => Promise<void>) | null = null
 
   protected render (): TemplateResult {
     if (!this.hass || !this.config) {
@@ -74,14 +75,25 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback()
-    this.subscribeWeather()
+    this.trySubscribeToForecastEvents()
     translationsService.fetchTranslation('ar', 'weather.pouring')
       .then((translation) => {
         this.misc = translation
       })
   }
 
-  private async subscribeWeather(): Promise<void> {
+  public disconnectedCallback(): void {
+    super.disconnectedCallback()
+    this.tryUnsubscribeForecastEvents()
+  }
+
+  protected updated(): void {
+    this.trySubscribeToForecastEvents()
+  }
+
+  private async trySubscribeToForecastEvents(): Promise<void> {
+    if (this.forecastSubscription || !this.hass || !this.config) return
+
     try {
       const callback = (event: WeatherForecastEvent): void => {
         this.forecasts = event.forecast
@@ -92,11 +104,23 @@ export class ClockWeatherCard extends LitElement {
         forecast_type: 'daily', // TODO
         entity_id: this.config.entity
       }
-      this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
-      logger.info('Subscribed to weather forecast')
+      this.forecastSubscription = await this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
+      logger.debug('Subscribed to weather forecast')
     } catch (e: unknown) {
       logger.error('Error subscribing to weather forecast', e)
     }
+  }
 
+  private async tryUnsubscribeForecastEvents (): Promise<void> {
+    if (this.forecastSubscription) {
+      try {
+        await this.forecastSubscription()
+        logger.debug('Unsubscribed from weather forecast')
+      } catch (e: unknown) {
+        // swallow error, as this means that connection was closed already
+      } finally {
+        this.forecastSubscription = null
+      }
+    }
   }
 }
