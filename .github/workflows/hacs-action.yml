@@ -1,4 +1,4 @@
-name: HACS Action
+name: Validate HACS Action
 
 on:
   schedule:
