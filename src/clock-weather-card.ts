@@ -3,8 +3,9 @@ import { html, LitElement, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
 import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
+import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
-import { ClockWeatherCardConfig, Weather } from '@/types'
+import { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
 import { generateCustomElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
@@ -34,6 +35,7 @@ export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: ClockWeatherCardConfig
   @state() private misc: string | null = null
+  @state() private forecasts?: WeatherForecast[]
 
   protected render (): TemplateResult {
     if (!this.hass || !this.config) {
@@ -45,7 +47,14 @@ export class ClockWeatherCard extends LitElement {
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
         <p>Misc: ${this.misc}</p>
+        <ul>
+          ${this.forecasts?.map((forecast) => html`
+            <li>
+              ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
+            </li>`)}
+        </ul>
         <img src="${animatedFillFogNight}">
+
       </ha-card>
     `
   }
@@ -63,11 +72,31 @@ export class ClockWeatherCard extends LitElement {
     return weather
   }
 
-  connectedCallback(): void {
+  public connectedCallback(): void {
     super.connectedCallback()
+    this.subscribeWeather()
     translationsService.fetchTranslation('ar', 'weather.pouring')
       .then((translation) => {
         this.misc = translation
       })
+  }
+
+  private async subscribeWeather(): Promise<void> {
+    try {
+      const callback = (event: WeatherForecastEvent): void => {
+        this.forecasts = event.forecast
+      }
+      const options = { resubscribe: false }
+      const message = {
+        type: 'weather/subscribe_forecast',
+        forecast_type: 'daily', // TODO
+        entity_id: this.config.entity
+      }
+      this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
+      logger.info('Subscribed to weather forecast')
+    } catch (e: unknown) {
+      logger.error('Error subscribing to weather forecast', e)
+    }
+
   }
 }
