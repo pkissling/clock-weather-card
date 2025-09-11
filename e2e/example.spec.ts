@@ -1,11 +1,10 @@
-import type { Locator, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { HassEntities, HassEntity } from 'home-assistant-js-websocket'
-import { LitElement } from 'lit'
 
 import type { ClockWeatherCard } from '../src/clock-weather-card'
-import type { ClockWeatherCardConfig } from '../src/types'
+import type { ClockWeatherCardConfig, WeatherForecastEvent } from '../src/types'
 
 
 test.beforeEach(async ({ page }) => {
@@ -24,7 +23,7 @@ test('mock weather entity', async ({ page }) => {
 })
 
 const mockState = async (page: Page, entities: Partial<HassEntity>[], config: Partial<ClockWeatherCardConfig>): Promise<void> => {
-  const card = page.locator('clock-weather-card-dev')
+  const clockWeatherCard = page.locator('clock-weather-card-dev')
 
   const combinedConfig = {
     type: 'clock-weather-card-dev',
@@ -47,12 +46,48 @@ const mockState = async (page: Page, entities: Partial<HassEntity>[], config: Pa
     }
     return accStates
   }, {} as HassEntities)
+
+  const forecastEvent = {
+    type: 'daily' as const,
+    forecast: [
+      {
+        datetime: '2024-01-02T00:00:00+00:00',
+        condition: 'sunny',
+        temperature: 21,
+        templow: 11,
+        precipitation: 0,
+        precipitation_probability: 0,
+        humidity: null
+      },
+      {
+        datetime: '2024-01-03T00:00:00+00:00',
+        condition: 'cloudy',
+        temperature: 19,
+        templow: 9,
+        precipitation: 1,
+        precipitation_probability: 30,
+        humidity: null
+      }
+    ]
+  }
+
   const combinedHass = {
-    states
+    states,
+    config: {
+      unit_system: {
+        temperature: '°C'
+      }
+    }
   } as HomeAssistant
 
-  await card.evaluate((el: ClockWeatherCard, { config, hass }) => {
+  await clockWeatherCard.evaluate((el: ClockWeatherCard, { config, hass, forecastEvent }) => {
     el.setConfig(config)
-    el.hass = hass
-  }, { config: combinedConfig, hass: combinedHass })
+    const connection = {
+      subscribeMessage: (callback: (ev: WeatherForecastEvent) => void) => {
+        callback(forecastEvent)
+        return Promise.resolve(async () => { })
+      }
+    } as unknown as HomeAssistant['connection']
+    el.hass = ({ ...hass, connection })
+  }, { config: combinedConfig, hass: combinedHass, forecastEvent })
 }
