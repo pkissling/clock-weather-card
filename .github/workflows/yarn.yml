@@ -1,4 +1,4 @@
-name: yarn
+name: Run yarn
 
 on:
   push:
