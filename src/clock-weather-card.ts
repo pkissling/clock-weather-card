@@ -2,7 +2,7 @@ import { HomeAssistant } from 'custom-card-helpers'
 import { html, LitElement, nothing, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
-import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
+import iconsService from '@/service/icons-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
@@ -40,18 +40,22 @@ export class ClockWeatherCard extends LitElement {
       // TODO
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
+    const weather = this.getWeather()
+    const type = this.config.weather_icon_type ?? 'line'
+    const animated = this.config.animated_icon ?? true
+    const iconUrl = iconsService.getWeatherIcon(type, animated, weather.state, this.isNight())
     return html`
       <ha-card>
-      ${this.config.title ? html`<h1>${this.config.title}</h1>` : nothing}
-      <p>Current Weather: ${this.getWeather().state}</p>
-      <p>Misc: ${translationsService.t('ar', 'weather.pouring')}</p>
-      <ul>
-        ${this.forecasts?.map((forecast) => html`
-        <li>
-          ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
-        </li>`)}
-      </ul>
-      <img src="${animatedFillFogNight}">
+        ${this.config.title ? html`<h1>${this.config.title}</h1>` : nothing}
+        <p>Current Weather: ${weather.state}</p>
+        <p>Misc: ${translationsService.t('de', 'weather.pouring')}</p>
+        <ul>
+          ${this.forecasts?.map((forecast) => html`
+          <li>
+            ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
+          </li>`)}
+        </ul>
+        <img src="${iconUrl}" alt="weather icon">
       </ha-card>
     `
   }
@@ -59,6 +63,12 @@ export class ClockWeatherCard extends LitElement {
   public setConfig(config: ClockWeatherCardConfig): void {
     // TODO null check?
     this.config = config
+  }
+
+  private isNight(): boolean {
+    const sunEntityId = this.config.sun_entity || 'sun.sun'
+    const sun = this.hass.states[sunEntityId]
+    return sun?.state === 'below_horizon'
   }
 
   public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
@@ -121,11 +131,11 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-  public static getConfigForm() {
+  public static getConfigForm(): Object {
     return {
       schema: [
-        { name: "entity", required: true, selector: { entity: {} } },
-        { name: "title", selector: { text: {} } },
+        { name: 'entity', required: true, selector: { entity: {} } },
+        { name: 'title', selector: { text: {} } },
       ],
       computeLabel: (schema: { name?: string }) => {
         if (!schema.name) return ''
@@ -135,6 +145,6 @@ export class ClockWeatherCard extends LitElement {
       assertConfig: (_: ClockWeatherCard) => {
         // TODO
       },
-    };
+    }
   }
 }
