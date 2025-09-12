@@ -120,4 +120,20 @@ export class ClockWeatherCard extends LitElement {
       }
     }
   }
+  public static getConfigForm() {
+    return {
+      schema: [
+        { name: "entity", required: true, selector: { entity: {} } },
+        { name: "title", selector: { text: {} } },
+      ],
+      computeLabel: (schema: { name?: string }) => {
+        if (!schema.name) return ''
+        // TODO locale
+        return translationsService.t('en-GB', `config-editor.${schema.name}`)
+      },
+      assertConfig: (_: ClockWeatherCard) => {
+        // TODO
+      },
+    };
+  }
 }
