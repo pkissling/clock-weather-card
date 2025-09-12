@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Serè",
+    "cloudy": "Ennuvolat",
+    "fog": "Boira",
+    "hail": "Calamarsa",
+    "lightning": "Tempesta elèctrica",
+    "lightning-rainy": "Tempesta",
+    "partlycloudy": "Parcialment ennuvolat",
+    "pouring": "Aiguat",
+    "rainy": "Plujós",
+    "snowy": "Neu",
+    "snowy-rainy": "Aiguaneu",
+    "sunny": "Assolellat",
+    "windy": "Ventós",
+    "windy-variant": "Vent fort",
+    "exceptional": "Excepcional"
+  },
+  "day": {
+    "1": "Dl.",
+    "2": "Dt.",
+    "3": "Dc.",
+    "4": "Dj.",
+    "5": "Dv.",
+    "6": "Ds.",
+    "7": "Dg."
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "humitat",
+    "feels-like": "Sensació tèrmica"
+  }
+}

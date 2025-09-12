@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Açık",
+    "cloudy": "Bulutlu",
+    "fog": "Sis",
+    "hail": "Dolu",
+    "lightning": "Gökgürültülü",
+    "lightning-rainy": "Gökgürültülü Yağmurlu",
+    "partlycloudy": "Parçalı Bulutlu",
+    "pouring": "Sağanak",
+    "rainy": "Yağmurlu",
+    "snowy": "Karlı",
+    "snowy-rainy": "Sulu Kar",
+    "sunny": "Güneşli",
+    "windy": "Rüzgarlı",
+    "windy-variant": "Güçlü Rüzgar",
+    "exceptional": "Mükemmel"
+  },
+  "day": {
+    "1": "Pzt",
+    "2": "Sal",
+    "3": "Çrş",
+    "4": "Prş",
+    "5": "Cum",
+    "6": "Cts",
+    "7": "Pzr"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "nem",
+    "feels-like": "Hissedilen"
+  }
+}
