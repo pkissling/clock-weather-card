@@ -1,5 +1,5 @@
 import { HomeAssistant } from 'custom-card-helpers'
-import { html, LitElement, type TemplateResult } from 'lit'
+import { html, LitElement, nothing, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
 import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
@@ -42,16 +42,16 @@ export class ClockWeatherCard extends LitElement {
     }
     return html`
       <ha-card>
-        <h1>Hello World</h1>
-        <p>Current Weather: ${this.getWeather().state}</p>
-        <p>Misc: ${translationsService.t('ar', 'weather.pouring')}</p>
-        <ul>
-          ${this.forecasts?.map((forecast) => html`
-            <li>
-              ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
-            </li>`)}
-        </ul>
-        <img src="${animatedFillFogNight}">
+      ${this.config.title ? html`<h1>${this.config.title}</h1>` : nothing}
+      <p>Current Weather: ${this.getWeather().state}</p>
+      <p>Misc: ${translationsService.t('ar', 'weather.pouring')}</p>
+      <ul>
+        ${this.forecasts?.map((forecast) => html`
+        <li>
+          ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
+        </li>`)}
+      </ul>
+      <img src="${animatedFillFogNight}">
       </ha-card>
     `
   }
@@ -120,6 +120,7 @@ export class ClockWeatherCard extends LitElement {
       }
     }
   }
+
   public static getConfigForm() {
     return {
       schema: [
