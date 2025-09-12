@@ -29,5 +29,9 @@
     "aqi": "AQI",
     "humidity": "Humidity",
     "feels-like": "Feels like"
+  },
+  "config-editor": {
+    "title": "Title",
+    "entity": "Weather Entity"
   }
 }
