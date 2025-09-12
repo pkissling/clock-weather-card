@@ -11,7 +11,7 @@ import { expectScreenshot } from './utils'
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
   // Ensure fonts are fully loaded before capturing screenshots
-  await page.evaluate(() => (document as any).fonts?.ready)
+  await page.evaluate(() => document.fonts.ready)
 })
 
 test('mock weather entity', async ({ page }) => {
