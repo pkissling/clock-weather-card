@@ -6,12 +6,10 @@ import animatedFillFogNight from '@/icons/fill/svg/fog-night.svg'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
-import { generateCustomElementName, isDev } from '@/utils/development'
+import { customElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
-
-const customElementName = generateCustomElementName()
 
 // This puts your card into the UI card picker dialog
 window.customCards = window.customCards || []
@@ -63,6 +61,11 @@ export class ClockWeatherCard extends LitElement {
   public setConfig(config: ClockWeatherCardConfig): void {
     // TODO null check?
     this.config = config
+  }
+
+  public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
+    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(() => true))
+    return { entity }
   }
 
   private getWeather (): Weather {
