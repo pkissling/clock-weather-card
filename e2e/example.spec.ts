@@ -5,6 +5,7 @@ import type { HassEntities, HassEntity } from 'home-assistant-js-websocket'
 
 import type { ClockWeatherCard } from '../src/clock-weather-card'
 import type { ClockWeatherCardConfig, WeatherForecastEvent } from '../src/types'
+import { expectScreenshot } from './utils'
 
 
 test.beforeEach(async ({ page }) => {
@@ -19,7 +20,8 @@ test('mock weather entity', async ({ page }) => {
   const config = { entity: 'weather.home' }
   await mockState(page, entities, config)
 
-  await expect(page).toHaveScreenshot('card-sunny.png', { maxDiffPixelRatio: 0.003 })
+  await expect(page.getByText('Misc: غزير')).toBeVisible()
+  await expectScreenshot(page, 'card-sunny.png')
 })
 
 const mockState = async (page: Page, entities: Partial<HassEntity>[], config: Partial<ClockWeatherCardConfig>): Promise<void> => {
