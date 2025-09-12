@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "pogodna noc",
+    "cloudy": "pochmurno",
+    "fog": "mgła",
+    "hail": "grad",
+    "lightning": "błyskawice",
+    "lightning-rainy": "burza",
+    "partlycloudy": "częściowe zachmurzenie",
+    "pouring": "ulewa",
+    "rainy": "deszczowo",
+    "snowy": "opady śniegu",
+    "snowy-rainy": "deszcz ze śniegiem",
+    "sunny": "słonecznie",
+    "windy": "wietrznie",
+    "windy-variant": "wietrznie",
+    "exceptional": "warunki nadzwyczajne"
+  },
+  "day": {
+    "1": "pon.",
+    "2": "wt.",
+    "3": "śr.",
+    "4": "czw.",
+    "5": "pt.",
+    "6": "sob.",
+    "7": "niedz."
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "wilgotność",
+    "feels-like": "Odczuwalne"
+  }
+}
