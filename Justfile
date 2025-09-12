@@ -2,6 +2,9 @@ set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
 # Update Playwright snapshots for both macOS (local) and Linux (via Docker)
 update-snapshots:
+  # Cleanup old snapshots
+  rm -r e2e/*-snapshots || true
+
   # Update local (macOS/darwin) snapshots
   yarn install --immutable
   yarn test:e2e --update-snapshots
