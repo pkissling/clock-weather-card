@@ -9,3 +9,4 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.yarn/install-state.gz
