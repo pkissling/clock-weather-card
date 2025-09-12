@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="src/clock-weather-card.ts"></script>
     <title>clock-weather-card</title>
+    <style>
+      /* Force a deterministic default font stack for snapshots */
+      html, body, * {
+        font-family: 'Roboto', 'Noto Sans', 'DejaVu Sans', Arial, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+    </style>
   </head>
   <body>
     <clock-weather-card-dev id="clock-weather-card"> </clock-weather-card-dev>
