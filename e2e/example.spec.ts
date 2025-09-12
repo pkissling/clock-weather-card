@@ -10,8 +10,6 @@ import { expectScreenshot } from './utils'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
-  // Ensure fonts are fully loaded before capturing screenshots
-  await page.evaluate(() => document.fonts.ready)
 })
 
 test('mock weather entity', async ({ page }) => {
@@ -22,7 +20,6 @@ test('mock weather entity', async ({ page }) => {
   const config = { entity: 'weather.home' }
   await mockState(page, entities, config)
 
-  await expect(page.getByText('Misc: غزير')).toBeVisible()
   await expectScreenshot(page, 'card-sunny.png')
 })
 

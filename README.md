@@ -56,12 +56,6 @@ The card is highly customizable to match your dashboard's style and your prefere
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
 
-## Migrating from v1 to v2
-
-- Configuration property `forecast_days` was renamed to `forecast_rows` to indicate that this attribute does not only work for daily, but also for hourly forecasts.
-- `date-fns` has been replaced by `luxon` for date/time formatting. If you configure `date_pattern`, make sure to migrate your pattern to comply with [luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens). Additionally, the weekday is now [_not_ hardcoded](https://github.com/pkissling/clock-weather-card/issues/89) anymore.
-- Configuration property `use_browser_time` is now by default `false`, so by default the card will show the time of the current HA time zone.
-
 ## FAQ
 
 - [Why don't I see the current day in my weather forecast?](#why-dont-i-see-the-current-day-in-my-weather-forecast)
@@ -84,6 +78,33 @@ The circle represents the current temperature (16° or roughly midway between 12
 _Thanks to @deprecatedcoder for this text from [#143](https://github.com/pkissling/clock-weather-card/issues/143)_
 
 The basic idea of the forecast bars is to be able to understand the weather trend for the upcoming days in a single glance.
+
+## 🌐 Contributing Translations
+
+- Where to edit: translation files live in [src/locales/](/src/locales).
+- Source of truth: [en.json](/src/locales/en.json) is the source file for all other languages.
+- Naming: filenames are locale codes in lowercase; use hyphens for region/script variants (e.g., `de.json`, `pt-br.json`, `sr-latn.json`, `zh-cn.json`).
+- Missing translation fallback: if a key is missing in a language, the card falls back to English.
+- Missing language fallback: if an entire language is missing, the card falls back to English.
+
+Update an existing language
+
+- Open the relevant file in `src/locales/` (e.g., `de.json`).
+- Translate values only; do not change keys.
+- If `en.json` has new keys, add them and translate.
+- Ensure the JSON is valid (no trailing commas, proper quotes).
+
+Add a new language
+
+- Copy `src/locales/en.json` to `src/locales/<locale>.json` (e.g., `src/locales/it.json`).
+- Translate values; keep the key structure identical to `en.json`.
+- Choose a correct locale code for the filename (lowercase, hyphenated for variants).
+
+Submitting your changes
+
+- Fork the repository and create a branch.
+- Commit your changes with a clear message (mention the locale).
+- Open a Pull Request describing what you updated/added.
 
 ## 🤝 Contributing
 
@@ -251,4 +272,4 @@ Notes:
 ## Footnotes
 
 [^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
-[^2]: Supported languages: `ar`, `bg`, `ca`, `cs`, `cy`, `da`, `de`, `el`,`en`, `es`, `et`, `fi`, `fr`, `he`, `hu`, `id`, `is`, `it`, `ko`, `lb`, `lt`, `nb`, `nl`, `pl`, `pt`, `pt-BR`, `ro`, `ru`, `sk`, `sl`, `sr`, `sr-Latn`, `sv`, `th`, `tr`, `uk`, `ur`, `vi`, `zh-CN`, `zh-TW`
+[^2]: Supported languages correspond to the files in `src/locales/`. See the list here: [src/locales](src/locales) (filenames are the locale codes).

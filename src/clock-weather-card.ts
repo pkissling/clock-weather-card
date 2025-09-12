@@ -32,7 +32,6 @@ console.info(
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: ClockWeatherCardConfig
-  @state() private misc: string | null = null
   @state() private forecasts?: WeatherForecast[]
   private forecastSubscription: (() => Promise<void>) | null = null
 
@@ -45,7 +44,7 @@ export class ClockWeatherCard extends LitElement {
       <ha-card>
         <h1>Hello World</h1>
         <p>Current Weather: ${this.getWeather().state}</p>
-        <p>Misc: ${this.misc}</p>
+        <p>Misc: ${translationsService.t('ar', 'weather.pouring')}</p>
         <ul>
           ${this.forecasts?.map((forecast) => html`
             <li>
@@ -53,7 +52,6 @@ export class ClockWeatherCard extends LitElement {
             </li>`)}
         </ul>
         <img src="${animatedFillFogNight}">
-
       </ha-card>
     `
   }
@@ -79,10 +77,6 @@ export class ClockWeatherCard extends LitElement {
   public connectedCallback(): void {
     super.connectedCallback()
     this.trySubscribeToForecastEvents()
-    translationsService.fetchTranslation('ar', 'weather.pouring')
-      .then((translation) => {
-        this.misc = translation
-      })
   }
 
   public disconnectedCallback(): void {
