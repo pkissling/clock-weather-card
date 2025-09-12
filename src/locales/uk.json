@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Ясно",
+    "cloudy": "Хмарно",
+    "fog": "Туман",
+    "hail": "Грім",
+    "lightning": "Грози",
+    "lightning-rainy": "Дощові грози",
+    "partlycloudy": "Мінлива хмарність",
+    "pouring": "Злива",
+    "rainy": "Дощ",
+    "snowy": "Сніг",
+    "snowy-rainy": "Мокрий сніг",
+    "sunny": "Сонячно",
+    "windy": "Вітряно",
+    "windy-variant": "Дуже вітряно",
+    "exceptional": "Буря"
+  },
+  "day": {
+    "1": "Пн",
+    "2": "Вт",
+    "3": "Ср",
+    "4": "Чт",
+    "5": "Пт",
+    "6": "Сб",
+    "7": "Нд"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "вологість",
+    "feels-like": "Feels like"
+  }
+}

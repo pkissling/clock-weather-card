@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "صاف",
+    "cloudy": "ابر آلود",
+    "fog": "دھند",
+    "hail": "اولے",
+    "lightning": "گرج چمک",
+    "lightning-rainy": "گرج چمک کے ساتھ بارش",
+    "partlycloudy": "جزوی طور پر ابر آلود",
+    "pouring": "موسلا دھار بارش",
+    "rainy": "بارش",
+    "snowy": "برفانی",
+    "snowy-rainy": "ژالہ باری",
+    "sunny": "دھوپ",
+    "windy": "آندھی",
+    "windy-variant": "تیز آندھی",
+    "exceptional": "غیر معمولی"
+  },
+  "day": {
+    "1": "پیر",
+    "2": "منگل",
+    "3": "بدھ",
+    "4": "جمعرات",
+    "5": "جمعہ",
+    "6": "ہفتہ",
+    "7": "اتوار"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "نمی",
+    "feels-like": "Feels like"
+  }
+}

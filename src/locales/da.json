@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Klart",
+    "cloudy": "Overskyet",
+    "fog": "Tåge",
+    "hail": "Hagl",
+    "lightning": "Lyn",
+    "lightning-rainy": "Lyn ,regnvejr",
+    "partlycloudy": "Delvis overskyet",
+    "pouring": "Regnvejr",
+    "rainy": "Regnfuldt",
+    "snowy": "Sne",
+    "snowy-rainy": "Slud",
+    "sunny": "Solrig",
+    "windy": "Blæsende",
+    "windy-variant": "Stærk vind",
+    "exceptional": "Kaos"
+  },
+  "day": {
+    "1": "Man",
+    "2": "Tir",
+    "3": "Ons",
+    "4": "Tor",
+    "5": "Fre",
+    "6": "Lør",
+    "7": "Søn"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "fugtighed",
+    "feels-like": "Føles som"
+  }
+}
