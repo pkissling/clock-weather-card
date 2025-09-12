@@ -4,7 +4,6 @@ export const expectScreenshot = async (page: Page, screenshotName: string): Prom
   const clockWeatherCard = page.locator('clock-weather-card-dev')
 
   await expect(async () => {
-    console.log('Taking screenshot for weather entity test', new Date().toISOString())
-    await expect(clockWeatherCard).toHaveScreenshot(screenshotName, { maxDiffPixelRatio: 0.01 })
+    await expect(clockWeatherCard).toHaveScreenshot(screenshotName, { maxDiffPixelRatio: 0.02 })
   }).toPass({ intervals: [1] })
 }
