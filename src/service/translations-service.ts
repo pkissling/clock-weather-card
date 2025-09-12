@@ -1,76 +1,56 @@
-import { CrowdinApi } from '@/api/crowdin-api'
 import logger from '@/service/logger'
-import * as en from '@/translations/en.json'
+
+type Translations = Map<string, string>
 
 class TranslationsService {
-  private crowdinApi: CrowdinApi
-  private languageMappings: Map<string, string> | null = null
-  private languageFileName = 'clock-weather-card.json'
-  private initialized = false
+  private translationsByLang: Map<string, Translations> = new Map()
 
   constructor() {
-    this.crowdinApi = new CrowdinApi('06f24835cc7c298da8f1d8a410e')
+    // Eagerly import all locale JSON files at build time (Vite)
+    const rawLocales = import.meta.glob('../locales/*.json', { eager: true, import: 'default' }) as Record<string, Record<string, unknown>>
+
+    this.translationsByLang = Object.entries(rawLocales).reduce((acc, [path, data]) => {
+      // Extract language code from filename
+      const match = path.match(/\/([^/]+)\.json$/)
+      if (!match || !match[1]) return acc
+      const lang = match[1]
+      return acc.set(lang, this.flattenTranslations(data))
+    }, new Map<string, Translations>())
   }
 
-  private async initialize(): Promise<void> {
-    if (this.initialized) {
-      return
+  public t(language: string, key: string): string {
+    const lang = this.normalizeLang(language)
+
+    const langDict = this.translationsByLang.get(lang)
+    if (langDict && langDict.has(key)) return langDict.get(key) as string
+
+    const fallback = this.translationsByLang.get('en')
+    if (fallback && fallback.has(key)) {
+      logger.warn(`Translation for key "${key}" not found for language "${language}", using fallback (en).`)
+      return fallback.get(key) as string
     }
 
-    const manifest = await this.crowdinApi.fetchManifest()
-    this.languageMappings = this.toLanguageMappings(manifest.content)
-    this.initialized = true
-  }
-
-  public async fetchTranslation(language: string, key: string): Promise<string> {
-    await this.initialize()
-
-    const targetLanguagePath = this.languageMappings?.get(language)
-    if (targetLanguagePath) {
-      const translations = await this.fetchAllTranslationsOfLanguage(targetLanguagePath)
-      if (translations[key]) {
-        return translations[key]
-      }
-      logger.warn(`Translation for key "${key}" not found in language "${language}"`)
-    }
-
-    if (en[key]) {
-      return en[key]
-    }
-    logger.warn(`Translation for key "${key}" not found in default language (English).`)
+    logger.warn(`Translation for key "${key}" not found for language "${language}" nor fallback (en).`)
     return key
   }
 
-  public async fetchAllTranslationsOfLanguage(path: string): Promise<Record<string, string>> {
-    const translations = await this.crowdinApi.fetchTranslations(path)
-    return this.flattenTranslations(translations)
+  private normalizeLang(language: string): string {
+    // Keep lower-case, map underscores to hyphens to match filenames like pt-br, zh-cn
+    return language.toLowerCase().replace('_', '-')
   }
 
-  private toLanguageMappings(content: Record<string, object>): Map<string, string> {
-    return Object.keys(content).reduce((acc, lang) => {
-      const files = content[lang]
-      if (Array.isArray(files)) {
-        const file = files.find((file) => file.endsWith(this.languageFileName))
-        if (file) {
-          acc.set(lang, file)
-        }
-      }
-      return acc
-    }, new Map<string, string>())
-  }
-
-  private flattenTranslations(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
+  private flattenTranslations(obj: Record<string, unknown>, prefix = ''): Translations {
+    const acc: Translations = new Map()
     return Object.entries(obj).reduce((acc, [key, value]) => {
       const newKey = prefix ? `${prefix}.${key}` : key
-
-      if (typeof value === 'string') {
-        acc[newKey] = value
+      if (typeof value == 'string') {
+        acc.set(newKey, value)
       } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-        Object.assign(acc, this.flattenTranslations(value as Record<string, unknown>, newKey))
+        const nested = this.flattenTranslations(value as Record<string, unknown>, newKey)
+        for (const [nKey, nVal] of nested.entries()) acc.set(nKey, nVal)
       }
-
       return acc
-    }, {} as Record<string, string>)
+    }, acc)
   }
 }
 
