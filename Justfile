@@ -10,12 +10,7 @@ update-snapshots:
   yarn test:e2e --update-snapshots
 
   # Build Linux Playwright image
-  docker build -t clock-weather-card-e2e .github/linux-snapshots-helper/
+  docker build -t clock-weather-card-e2e -f .github/linux-snapshots-helper/Dockerfile .
 
-  # Update Linux snapshots inside container, writing back to repo
-  docker run --rm \
-    --shm-size=1g \
-    -e CI=true \
-    -v "$PWD:/work" \
-    -w /work \
-    clock-weather-card-e2e
+  # Update Linux snapshots inside an isolated container and copy them back
+  bash .github/linux-snapshots-helper/copy_snapshots.sh
