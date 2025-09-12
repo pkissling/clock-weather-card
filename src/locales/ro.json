@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Senin",
+    "cloudy": "Înnorat",
+    "fog": "Ceață",
+    "hail": "Grindină",
+    "lightning": "Fulgere",
+    "lightning-rainy": "Furtuni cu ploaie",
+    "partlycloudy": "Parțial înnorat",
+    "pouring": "Averse",
+    "rainy": "Ploaie",
+    "snowy": "Ninsoare",
+    "snowy-rainy": "Lapoviță",
+    "sunny": "Însorit",
+    "windy": "Vânt",
+    "windy-variant": "Vânt puternic",
+    "exceptional": "Furtună"
+  },
+  "day": {
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mie",
+    "4": "Joi",
+    "5": "Vin",
+    "6": "Sâm",
+    "7": "Dum"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "umiditate",
+    "feels-like": "Temp. resimțită"
+  }
+}

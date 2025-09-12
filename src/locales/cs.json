@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Jasno",
+    "cloudy": "Zataženo",
+    "fog": "Mlha",
+    "hail": "Kroupy",
+    "lightning": "Bouřky",
+    "lightning-rainy": "Bouřky s deštěm",
+    "partlycloudy": "Částečně zataženo",
+    "pouring": "Silný déšť",
+    "rainy": "Déšť",
+    "snowy": "Sníh",
+    "snowy-rainy": "Sníh s deštěm",
+    "sunny": "Slunečno",
+    "windy": "Vítr",
+    "windy-variant": "Prudký vítr",
+    "exceptional": "Nevšední"
+  },
+  "day": {
+    "1": "Po",
+    "2": "Út",
+    "3": "St",
+    "4": "Čt",
+    "5": "Pá",
+    "6": "So",
+    "7": "Ne"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "vlhkost",
+    "feels-like": "pocitová teplota"
+  }
+}

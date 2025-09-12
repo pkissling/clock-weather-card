@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Tiszta",
+    "cloudy": "Felhős",
+    "fog": "Ködös",
+    "hail": "Jégeső",
+    "lightning": "Villámlás",
+    "lightning-rainy": "Zivatar",
+    "partlycloudy": "Helyenként felhős",
+    "pouring": "Felhőszakadás",
+    "rainy": "Esős",
+    "snowy": "Havazás",
+    "snowy-rainy": "Havaseső, ónoseső",
+    "sunny": "Napos",
+    "windy": "Szeles",
+    "windy-variant": "Erős szél",
+    "exceptional": "Kivételes"
+  },
+  "day": {
+    "1": "H",
+    "2": "K",
+    "3": "Sze",
+    "4": "Cs",
+    "5": "P",
+    "6": "Szo",
+    "7": "V"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "páratartalom",
+    "feels-like": "Hőérzet"
+  }
+}

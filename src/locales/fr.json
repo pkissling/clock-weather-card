@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "Dégagé",
+    "cloudy": "Nuageux",
+    "fog": "Brouillard",
+    "hail": "Grêle",
+    "lightning": "Orages",
+    "lightning-rainy": "Orages et pluie",
+    "partlycloudy": "Partiellement nuageux",
+    "pouring": "Pluie battante",
+    "rainy": "Pluie",
+    "snowy": "Neige",
+    "snowy-rainy": "Neige fondante",
+    "sunny": "Ensoleillé",
+    "windy": "Venteux",
+    "windy-variant": "Vent fort",
+    "exceptional": "Exceptionnelle"
+  },
+  "day": {
+    "1": "Lun",
+    "2": "Mar",
+    "3": "Mer",
+    "4": "Jeu",
+    "5": "Ven",
+    "6": "Sam",
+    "7": "Dim"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "humidité",
+    "feels-like": "Ressentie"
+  }
+}

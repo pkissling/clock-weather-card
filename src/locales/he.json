@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "בהיר",
+    "cloudy": "מעונן",
+    "fog": "ערפל",
+    "hail": "ברד",
+    "lightning": "סופות רעמים",
+    "lightning-rainy": "סופות רעמים גשומות",
+    "partlycloudy": "מעונן חלקית",
+    "pouring": "גשם זלעפות",
+    "rainy": "גשום",
+    "snowy": "מושלג",
+    "snowy-rainy": "ברד",
+    "sunny": "שמשי",
+    "windy": "סוער",
+    "windy-variant": "רוח חזקה",
+    "exceptional": "חריג"
+  },
+  "day": {
+    "1": "שני",
+    "2": "שלישי",
+    "3": "רביעי",
+    "4": "חמישי",
+    "5": "שישי",
+    "6": "שבת",
+    "7": "ראשון"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "לחות",
+    "feels-like": "מרגיש כמו"
+  }
+}
