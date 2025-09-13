@@ -24,10 +24,19 @@ class TranslationsService {
     const langDict = this.translationsByLang.get(lang)
     if (langDict && langDict.has(key)) return langDict.get(key) as string
 
-    const fallback = this.translationsByLang.get('en')
-    if (fallback && fallback.has(key)) {
+    const baseLang = lang.split('-')[0]
+    if (baseLang !== lang) {
+      const baseLangDict = this.translationsByLang.get(baseLang)
+      if (baseLangDict && baseLangDict.has(key)) {
+        logger.warn(`Translation for key "${key}" not found for language "${language}", using base language (${baseLang}).`)
+        return baseLangDict.get(key) as string
+      }
+    }
+
+    const enFallback = this.translationsByLang.get('en')
+    if (enFallback && enFallback.has(key)) {
       logger.warn(`Translation for key "${key}" not found for language "${language}", using fallback (en).`)
-      return fallback.get(key) as string
+      return enFallback.get(key) as string
     }
 
     logger.warn(`Translation for key "${key}" not found for language "${language}" nor fallback (en).`)
