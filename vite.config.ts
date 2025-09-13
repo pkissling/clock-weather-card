@@ -1,13 +1,24 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import compression from 'vite-plugin-compression'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // don't include public dir's content in dist, since those files are only required
+  // for the development server (playwright tests)
+  publicDir: command === 'build' ? false : 'public',
+  plugins: [
+    compression(),
+  ],
   build: {
+    lib: {
+      entry: 'src/clock-weather-card.ts',
+      formats: ['es']
+    },
     rollupOptions: {
-      input: 'src/clock-weather-card.ts',
       output: {
-        dir: 'dist',
-        format: 'es',
+        // Keep other assets (svg, translations) under assets/
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
       },
     },
   },
@@ -27,4 +38,4 @@ export default defineConfig({
       '@': resolve(__dirname, './src')
     }
   }
-})
+}))
