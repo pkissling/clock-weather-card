@@ -7,7 +7,8 @@ export default defineConfig(({ command }) => ({
   // for the development server (playwright tests)
   publicDir: command === 'build' ? false : 'public',
   plugins: [
-    compression(),
+    // Emit only gzip bundles for production; no Brotli
+    compression({ algorithms: ['gzip'] })
   ],
   build: {
     lib: {
