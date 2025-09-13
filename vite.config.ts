@@ -11,6 +11,7 @@ export default defineConfig(({ command }) => ({
     compression({ algorithms: ['gzip'] })
   ],
   build: {
+    target: 'es2019',
     lib: {
       entry: 'src/clock-weather-card.ts',
       formats: ['es']
