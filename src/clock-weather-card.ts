@@ -1,11 +1,11 @@
-import { HomeAssistant } from 'custom-card-helpers'
+import type { HomeAssistant } from 'custom-card-helpers'
 import { html, LitElement, nothing, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
 import iconsService from '@/service/icons-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
-import { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
+import type { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
 import { customElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
@@ -123,7 +123,7 @@ export class ClockWeatherCard extends LitElement {
       try {
         await this.forecastSubscription()
         logger.debug('Unsubscribed from weather forecast')
-      } catch (e: unknown) {
+      } catch (_: unknown) {
         // swallow error, as this means that connection was closed already
       } finally {
         this.forecastSubscription = null
