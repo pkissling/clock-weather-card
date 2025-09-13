@@ -1,9 +1,10 @@
-import { expect, Page } from '@playwright/test'
-import { HomeAssistant } from 'custom-card-helpers'
-import { HassEntity } from 'home-assistant-js-websocket'
+import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
+import type { HomeAssistant } from 'custom-card-helpers'
+import type { HassEntity } from 'home-assistant-js-websocket'
 
-import { ClockWeatherCard } from '../src/clock-weather-card'
-import { ClockWeatherCardConfig, WeatherForecastEvent } from '../src/types'
+import type { ClockWeatherCard } from '../src/clock-weather-card'
+import type { ClockWeatherCardConfig, WeatherForecastEvent } from '../src/types'
 
 type MockOptions = undefined | {
   weather?: Partial<HassEntity>,
