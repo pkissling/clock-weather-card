@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-import compression from 'vite-plugin-compression'
+import compression from 'vite-plugin-compression2'
 
 export default defineConfig(({ command }) => ({
   // don't include public dir's content in dist, since those files are only required
