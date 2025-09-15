@@ -26,52 +26,16 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string
   title?: string
   sun_entity?: string
-  temperature_sensor?: string
-  humidity_sensor?: string
-  weather_icon_type?: 'fill' | 'line' | 'monochrome'
+  weather_icon_type?: WeatherIconType
   animated_icon?: boolean
-  forecast_rows?: number
-  locale?: string
-  time_format?: '12' | '24'
-  time_pattern?: string
-  date_pattern?: string
-  hide_today_section?: boolean
-  hide_forecast_section?: boolean
-  show_humidity?: boolean
-  hourly_forecast?: boolean
-  hide_clock?: boolean
-  hide_date?: boolean
-  use_browser_time?: boolean
-  time_zone?: string
-  show_decimal?: boolean
-  apparent_sensor?: string
-  aqi_sensor?: string
 }
 
-export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
+export interface MergedClockWeatherCardConfig {
   entity: string
-  title?: string
+  title: string | null
   sun_entity: string
-  temperature_sensor?: string
-  humidity_sensor?: string
-  weather_icon_type: 'fill' | 'line' | 'monochrome'
+  weather_icon_type: WeatherIconType
   animated_icon: boolean
-  forecast_rows: number
-  locale?: string
-  time_format?: '12' | '24'
-  time_pattern?: string
-  date_pattern: string
-  hide_today_section: boolean
-  hide_forecast_section: boolean
-  show_humidity: boolean
-  hourly_forecast: boolean
-  hide_clock: boolean
-  hide_date: boolean
-  use_browser_time: boolean
-  time_zone?: string
-  show_decimal: boolean
-  apparent_sensor?: string
-  aqi_sensor?: string
 }
 
 export const enum WeatherEntityFeature {
@@ -144,3 +108,5 @@ export interface WeatherForecastEvent {
   forecast?: WeatherForecast[]
   type: 'hourly' | 'daily' | 'twice_daily'
 }
+
+export type WeatherIconType = 'fill' | 'line' | 'monochrome'
