@@ -1,11 +1,16 @@
+import '@/components/clock-weather-card-today'
+
 import type { HomeAssistant } from 'custom-card-helpers'
-import { html, LitElement, nothing, type TemplateResult } from 'lit'
+import type { CSSResultGroup } from 'lit'
+import { html, LitElement, type TemplateResult } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
-import iconsService from '@/service/icons-service'
+import configService from '@/service/config-service'
+import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
-import type { ClockWeatherCardConfig, Weather, WeatherForecast, WeatherForecastEvent } from '@/types'
+import styles from '@/styles'
+import type { ClockWeatherCardConfig, MergedClockWeatherCardConfig, WeatherForecastEvent } from '@/types'
 import { customElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
@@ -31,8 +36,7 @@ console.info(
 @customElement(customElementName)
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
-  @state() private config!: ClockWeatherCardConfig
-  @state() private forecasts?: WeatherForecast[]
+  @state() private config!: MergedClockWeatherCardConfig
   private forecastSubscription: (() => Promise<void>) | null = null
 
   protected render (): TemplateResult {
@@ -40,48 +44,36 @@ export class ClockWeatherCard extends LitElement {
       // TODO
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
-    const weather = this.getWeather()
-    const type = this.config.weather_icon_type ?? 'line'
-    const animated = this.config.animated_icon ?? true
-    const iconUrl = iconsService.getWeatherIcon(type, animated, weather.state, this.isNight())
+
+    const weatherState = hassService.getWeatherState(this.hass.states, this.config.entity)
+    const isNight = hassService.isNight(this.hass.states, this.config.sun_entity)
+    const weatherIconType = this.config.weather_icon_type
+    const animatedIcon = this.config.animated_icon
+
     return html`
       <ha-card>
-        ${this.config.title ? html`<h1>${this.config.title}</h1>` : nothing}
-        <p>Current Weather: ${weather.state}</p>
-        <p>Misc: ${translationsService.t('de', 'weather.pouring')}</p>
-        <ul>
-          ${this.forecasts?.map((forecast) => html`
-          <li>
-            ${forecast.datetime}: ${forecast.condition}, ${forecast.temperature}${this.hass.config.unit_system.temperature}
-          </li>`)}
-        </ul>
-        <img src="${iconUrl}" alt="weather icon">
+        <h1 class="card-header">${this.config.title}</h1>
+        <div class="card-content">
+          <clock-weather-card-today
+            .weatherState=${weatherState}
+            .isNight=${isNight}
+            .animatedIcon=${animatedIcon}
+            .weatherIconType=${weatherIconType}
+          ></clock-weather-card-today>
+        </div>
       </ha-card>
-    `
+      `
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
     // TODO null check?
-    this.config = config
-  }
-
-  private isNight(): boolean {
-    const sunEntityId = this.config.sun_entity || 'sun.sun'
-    const sun = this.hass.states[sunEntityId]
-    return sun?.state === 'below_horizon'
+    // TODO validation
+    this.config = configService.mergeWithDefaultConfig(config)
   }
 
   public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
     const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(() => true))
     return { entity }
-  }
-
-  private getWeather (): Weather {
-    const weather = this.hass.states[this.config.entity] as Weather | undefined
-    if (!weather) {
-      throw new Error(`Entity ${this.config.entity} not found`)
-    }
-    return weather
   }
 
   public connectedCallback(): void {
@@ -94,7 +86,7 @@ export class ClockWeatherCard extends LitElement {
     this.tryUnsubscribeForecastEvents()
   }
 
-  protected updated(): void {
+  public updated(): void {
     this.trySubscribeToForecastEvents()
   }
 
@@ -102,8 +94,8 @@ export class ClockWeatherCard extends LitElement {
     if (this.forecastSubscription || !this.hass || !this.config) return
 
     try {
-      const callback = (event: WeatherForecastEvent): void => {
-        this.forecasts = event.forecast
+      const callback = (_: WeatherForecastEvent): void => {
+        // this.forecasts = event.forecast
       }
       const options = { resubscribe: false }
       const message = {
@@ -146,5 +138,9 @@ export class ClockWeatherCard extends LitElement {
         // TODO
       },
     }
+  }
+
+  public static get styles (): CSSResultGroup {
+    return styles
   }
 }

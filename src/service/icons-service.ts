@@ -1,4 +1,5 @@
-type IconType = 'fill' | 'line' | 'monochrome'
+import type { WeatherIconType } from '@/types'
+
 type IconKind = 'svg' | 'svg-static'
 
 interface IconIndex {
@@ -21,7 +22,7 @@ class IconsService {
       // path example: ../icons/line/svg/clear-day.svg
       const match = path.match(/\.\.\/icons\/(fill|line|monochrome)\/(svg|svg-static)\/([^/]+)\.svg$/)
       if (!match) return acc
-      const [, type, kind, name] = match as unknown as [string, IconType, IconKind, string]
+      const [, type, kind, name] = match as unknown as [string, WeatherIconType, IconKind, string]
       if (!acc[type]) acc[type] = {}
       if (!acc[type][kind]) acc[type][kind] = new Map<string, string>()
       acc[type][kind]!.set(name, url)
@@ -29,7 +30,7 @@ class IconsService {
     }, {} as IconIndex)
   }
 
-  public getWeatherIcon(type: IconType, animated: boolean, weatherState: string, isNight: boolean): string {
+  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string {
     const kind: IconKind = type === 'monochrome' ? 'svg-static' : (animated ? 'svg' : 'svg-static')
 
     const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)

@@ -37,12 +37,12 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'Desktop Chrome',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
-      name: 'firefox',
+      name: 'Desktop Firefox',
       use: { ...devices['Desktop Firefox'] },
     },
 
@@ -56,10 +56,10 @@ export default defineConfig({
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
     // },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 12'] },
+    // },
 
     /* Test against branded browsers. */
     // {

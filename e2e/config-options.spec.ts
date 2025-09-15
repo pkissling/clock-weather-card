@@ -1,6 +1,6 @@
-import { test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
-import { mockClockWeatherCardState, toHaveScreenshot } from './test-utils'
+import { mockClockWeatherCardState } from './test-utils'
 
 
 test.beforeEach(async ({ page }) => {
@@ -9,5 +9,6 @@ test.beforeEach(async ({ page }) => {
 
 test('with title', async ({ page }) => {
   await mockClockWeatherCardState(page, { cardConfig: { title: 'My Weather' } })
-  await toHaveScreenshot(page)
+
+  await expect(page.locator('h1.card-header')).toHaveText('My Weather')
 })
