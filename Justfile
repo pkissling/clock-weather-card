@@ -9,7 +9,7 @@ update-playwright-snapshots: update-playwright-macos-snapshots update-playwright
 update-playwright-macos-snapshots:
   # Update macOS snapshots
   yarn install --immutable
-  yarn test:e2e --update-snapshots
+  PLAYWRIGHT_HTML_OPEN=never yarn test:e2e --update-snapshots || true
 
 # Update Linux snapshots using Docker
 update-playwright-linux-snapshots:

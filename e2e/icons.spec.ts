@@ -1,8 +1,26 @@
 import { test } from '@playwright/test'
 
-import { supportedWeatherStates } from '../src/service/icon-constants'
 import { mockClockWeatherCardState, toHaveScreenshot } from './test-utils'
 
+export const supportedWeatherStates = [
+  'rainy',
+  'partlycloudy',
+  'cloudy',
+  'clear-night',
+  'fog',
+  'hail',
+  'lightning',
+  'lightning-rainy',
+  'pouring',
+  'raindrop',
+  'raindrops',
+  'snowy',
+  'snowy-rainy',
+  'sunny',
+  'windy',
+  'windy-exceptional',
+  'exceptional'
+] as const
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
