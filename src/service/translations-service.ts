@@ -3,7 +3,7 @@ import logger from '@/service/logger'
 type Translations = Map<string, string>
 
 class TranslationsService {
-  private translationsByLang: Map<string, Translations> = new Map()
+  private translationsByLang: Map<string, Translations>
 
   constructor() {
     // Eagerly import all locale JSON files at build time (Vite)
@@ -27,14 +27,14 @@ class TranslationsService {
     const baseLang = lang.split('-')[0]
     if (baseLang !== lang) {
       const baseLangDict = this.translationsByLang.get(baseLang)
-      if (baseLangDict && baseLangDict.has(key)) {
+      if (baseLangDict?.has(key)) {
         logger.warn(`Translation for key "${key}" not found for language "${language}", using base language (${baseLang}).`)
-        return baseLangDict.get(key) as string
+        return baseLangDict.get(key)!
       }
     }
 
     const enFallback = this.translationsByLang.get('en')
-    if (enFallback && enFallback.has(key)) {
+    if (enFallback?.has(key)) {
       logger.warn(`Translation for key "${key}" not found for language "${language}", using fallback (en).`)
       return enFallback.get(key) as string
     }
