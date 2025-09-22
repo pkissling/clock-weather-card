@@ -13,46 +13,68 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
-    width: 35%;
+    width: 25%;
     align-items: center;
     justify-content: center;
+    z-index: 1;
   }
 
   .grow-img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 150%; /* Increase the size of the weather icon */
+    max-height: 150%;
+    opacity: 0.8;
+    position: relative; /* Ensure proper positioning */
+    z-index: 3; /* Bring the icon above other elements */
+  }
+
+  clock-weather-card-today-right .oversized-bg-icon {
+    position: absolute;
+    left: 15%;      /* Move icon further left (smaller % = more left) */
+    top: 20%;       /* Move icon up (smaller % = more up) */
+    width: 20rem;   /* Make icon larger */
+    height: 20rem;  /* Make icon larger */
+    transform: translate(-50%, -50%);
+//    opacity: 0.5;  /* Faint background */
+    z-index: 0;     /* Behind other content */
+    pointer-events: none; /* Allow clicks through */
   }
 
   clock-weather-card-today-right {
     display: flex;
-    width: 65%;
+    width: 75%;
     justify-content: space-around;
     align-items: center;
+    z-index: 3; /* Ensure it is below the icon */
   }
 
   clock-weather-card-today-right-wrap {
     display: flex;
     flex-direction: column;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: 4rem;
-    font-size: 3.5rem;
+    height: 7rem;
+    font-size: 6rem;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.5s ease; /* Smooth transitions for swapping content */
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
     justify-content: start;
+    z-index: 3;
   }
 
   clock-weather-card-forecast {
@@ -64,18 +86,21 @@ export default css`
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
     grid-gap: 0.5rem;
+    z-index: 3;
   }
 
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
     text-overflow: clip;
+    z-index: 3;
   }
 
   forecast-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
   }
 
   forecast-temperature-bar {
@@ -84,6 +109,7 @@ export default css`
     height: var(--bar-height);
     border-radius: calc(var(--bar-height) / 2);
     overflow: hidden;
+    z-index: 3;
   }
 
   forecast-temperature-bar-background {
