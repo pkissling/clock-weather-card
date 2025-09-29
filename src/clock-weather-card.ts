@@ -138,6 +138,13 @@ export class ClockWeatherCard extends LitElement {
     return hasConfigOrEntityChanged(this, changedProps, false)
   }
 
+  protected willUpdate (changedProps: PropertyValues): void {
+    super.willUpdate(changedProps)
+    if (!this.forecastSubscriber) {
+      void this.subscribeForecastEvents()
+    }
+  }
+
   protected updated (changedProps: PropertyValues): void {
     super.updated(changedProps)
     if (changedProps.has('config')) {
@@ -193,6 +200,9 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
+    if (this.hasUpdated) {
+      void this.subscribeForecastEvents()
+    }
 
     const cycleDuration = this.config.cycle_display ?? 0;
 
@@ -206,6 +216,7 @@ export class ClockWeatherCard extends LitElement {
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
+    void this.unsubscribeForecastEvents()
 
     if (this.intervalID) {
       clearInterval(this.intervalID);
@@ -264,7 +275,7 @@ export class ClockWeatherCard extends LitElement {
 
     return html`
       <clock-weather-card-today-left>
-        <img class="grow-img" src=${icon} />
+        <img class="oversized-bg-icon" src=${icon} />
       </clock-weather-card-today-left>
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>

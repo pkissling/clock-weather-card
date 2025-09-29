@@ -17,26 +17,17 @@ export default css`
     align-items: center;
     justify-content: center;
     z-index: 1;
+    position: relative;
   }
 
-  .grow-img {
-    max-width: 150%; /* Increase the size of the weather icon */
-    max-height: 150%;
+  .oversized-bg-icon {
+    max-width: 200%;
+    max-height: 200%;
+    width: 150%;
+    height: 150%;
     opacity: 0.8;
-    position: relative; /* Ensure proper positioning */
-    z-index: 3; /* Bring the icon above other elements */
-  }
-
-  clock-weather-card-today-right .oversized-bg-icon {
-    position: absolute;
-    left: 15%;      /* Move icon further left (smaller % = more left) */
-    top: 20%;       /* Move icon up (smaller % = more up) */
-    width: 20rem;   /* Make icon larger */
-    height: 20rem;  /* Make icon larger */
-    transform: translate(-50%, -50%);
-//    opacity: 0.5;  /* Faint background */
-    z-index: 0;     /* Behind other content */
-    pointer-events: none; /* Allow clicks through */
+    z-index: 2;
+    transform: scale(1.5);
   }
 
   clock-weather-card-today-right {
@@ -62,8 +53,8 @@ export default css`
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: 7rem;
-    font-size: 6rem;
+    height: 8rem;
+    font-size: 7rem;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
@@ -157,3 +148,4 @@ export default css`
     border-radius: 5px;
   }
 `
+
