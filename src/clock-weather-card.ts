@@ -210,7 +210,7 @@ export class ClockWeatherCard extends LitElement {
     const weather = this.getWeather()
     const state = weather.state
     const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
-    const tempUnit = weather.attributes.temperature_unit
+    const tempValueUnit = this.getCurrentTemperatureValueUnit()
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const aqi = this.getAqi()
     const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
@@ -219,9 +219,9 @@ export class ClockWeatherCard extends LitElement {
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
-    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
+    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempValueUnit, temp) : null
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
-    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+    const localizedApparent = apparentTemp !== null ? `${apparentTemp}${this.getConfiguredTemperatureUnit()}` : null
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
@@ -256,11 +256,16 @@ export class ClockWeatherCard extends LitElement {
 
     const forecasts = this.mergeForecasts(maxRowsCount, hourly)
 
+    const currentTempValueUnit = this.getCurrentTemperatureValueUnit()
+    const currentTempInWeatherUnit = currentTemp !== null
+      ? this.convertTemperature(currentTemp, currentTempValueUnit, temperatureUnit)
+      : null
+
     const minTemps = forecasts.map((f) => f.templow)
     const maxTemps = forecasts.map((f) => f.temperature)
-    if (currentTemp !== null) {
-      minTemps.push(currentTemp)
-      maxTemps.push(currentTemp)
+    if (currentTempInWeatherUnit !== null) {
+      minTemps.push(currentTempInWeatherUnit)
+      maxTemps.push(currentTempInWeatherUnit)
     }
     const minTemp = Math.round(min(minTemps))
     const maxTemp = Math.round(max(maxTemps))
@@ -270,7 +275,7 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTempInWeatherUnit, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
   }
 
   private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
@@ -433,6 +438,7 @@ export class ClockWeatherCard extends LitElement {
   private mergeConfig (config: ClockWeatherCardConfig): MergedClockWeatherCardConfig {
     return {
       ...config,
+      temperature_unit: this.normalizeTemperatureUnit(config.temperature_unit),
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
       humidity_sensor: config.humidity_sensor,
@@ -454,6 +460,12 @@ export class ClockWeatherCard extends LitElement {
       apparent_sensor: config.apparent_sensor ?? undefined,
       aqi_sensor: config.aqi_sensor ?? undefined
     }
+  }
+
+  private normalizeTemperatureUnit (unit?: unknown): TemperatureUnit | undefined {
+    if (unit === '°C' || unit === 'C') return '°C'
+    if (unit === '°F' || unit === 'F') return '°F'
+    return undefined
   }
 
   private toIcon (weatherState: string, type: 'fill' | 'line', forceDay: boolean, kind: 'static' | 'animated'): string {
@@ -578,16 +590,27 @@ export class ClockWeatherCard extends LitElement {
     return this.config.animated_icon ? 'animated' : 'static'
   }
 
-  private toCelsius (temperatueUnit: TemperatureUnit, temperature: number): number {
-    return temperatueUnit === '°C' ? temperature : Math.round((temperature - 32) * (5 / 9))
+  private toCelsius (temperatureUnit: TemperatureUnit, temperature: number): number {
+    return temperatureUnit === '°C' ? temperature : Math.round((temperature - 32) * (5 / 9))
   }
 
-  private toFahrenheit (temperatueUnit: TemperatureUnit, temperature: number): number {
-    return temperatueUnit === '°F' ? temperature : Math.round((temperature * 9 / 5) + 32)
+  private toFahrenheit (temperatureUnit: TemperatureUnit, temperature: number): number {
+    return temperatureUnit === '°F' ? temperature : Math.round((temperature * 9 / 5) + 32)
+  }
+
+  private convertTemperature (temperature: number, fromUnit: TemperatureUnit, toUnit: TemperatureUnit): number {
+    if (fromUnit === toUnit) return temperature
+    return toUnit === '°C' ? this.toCelsius(fromUnit, temperature) : this.toFahrenheit(fromUnit, temperature)
   }
 
   private getConfiguredTemperatureUnit (): TemperatureUnit {
-    return this.hass.config.unit_system.temperature as TemperatureUnit
+    return this.config.temperature_unit ?? this.hass.config.unit_system.temperature as TemperatureUnit
+  }
+
+  private getCurrentTemperatureValueUnit (): TemperatureUnit {
+    // If using a dedicated temperature sensor, we convert to the configured unit in getCurrentTemperature
+    // Otherwise, we use the weather entity's unit
+    return this.config.temperature_sensor ? this.getConfiguredTemperatureUnit() : this.getWeather().attributes.temperature_unit
   }
 
   private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number): string {
