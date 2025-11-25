@@ -24,12 +24,12 @@ jobs:
         echo "branch_name=sync/weather-icons-$TIMESTAMP" >> $GITHUB_OUTPUT
         echo "pr_title=Icon Sync: $DATE_TIME" >> $GITHUB_OUTPUT
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0  # Required for proper diff detection
 
     - name: Clone source repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: basmilius/weather-icons
         path: weather-icons-source
