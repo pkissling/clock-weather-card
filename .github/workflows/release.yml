@@ -1,34 +1,144 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
 
 jobs:
   release:
-    name: Prepare release
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Build the file
-        run: |
-          cd /home/runner/work/clock-weather-card/clock-weather-card
-          yarn install
-          yarn build
-
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v1-release
-
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.js
-          asset_name: clock-weather-card.js
-          tag: ${{ github.ref }}
-          overwrite: true
-
-      - name: Verify HACS compliance
-        uses: hacs/action@main
-        with:
-          category: plugin
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Get version from tag
+      id: get_version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        echo "📦 Version: ${VERSION}"
+    
+    - name: Create distribution package
+      run: |
+        mkdir -p release
+        cp -r dist/* release/
+        cp README.md release/ 2>/dev/null || true
+        cp LICENSE release/ 2>/dev/null || true
+        cd release
+        zip -r ../clock-weather-card-v${{ steps.get_version.outputs.version }}.zip .
+        cd ..
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        if [ -f CHANGELOG.md ]; then
+          # Extract changes for this version if CHANGELOG exists
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          awk '/^## \[?'${{ steps.get_version.outputs.version }}'\]?/,/^## \[?[0-9]/' CHANGELOG.md | head -n -1 >> $GITHUB_OUTPUT || echo "See commit history for changes." >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "changelog=See commit history for changes." >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Clock Weather Card v${{ steps.get_version.outputs.version }}
+        body: |
+          ## Clock Weather Card v${{ steps.get_version.outputs.version }}
+          
+          ### 📥 Installation
+          
+          **Option 1: Download ZIP (Recommended)**
+          1. Download `clock-weather-card-v${{ steps.get_version.outputs.version }}.zip`
+          2. Extract the contents
+          3. Copy `clock-weather-card.js` to your Home Assistant `config/www/` folder
+          4. Add as a resource in Home Assistant
+          
+          **Option 2: Direct Download**
+          1. Download `clock-weather-card.js` directly
+          2. Place it in your Home Assistant `config/www/` folder
+          3. Add as a resource in Home Assistant
+          
+          ### 🔧 Adding as Resource in Home Assistant
+          
+          **UI Method:**
+          1. Go to Settings → Dashboards → Resources
+          2. Click "+ Add Resource"
+          3. URL: `/local/clock-weather-card.js`
+          4. Resource type: JavaScript Module
+          
+          **YAML Method:**
+          ```yaml
+          resources:
+            - url: /local/clock-weather-card.js
+              type: module
+          ```
+          
+          ### 📝 Configuration Example
+          
+          ```yaml
+          type: custom:clock-weather-card
+          entity: weather.home
+          weather_text_below_icon: false  # Set to true for alternate layout
+          ```
+          
+          ### 📋 Changes
+          
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ### 📦 Files Included
+          
+          - `clock-weather-card.js` - Main card file
+          - `clock-weather-card.js.map` - Source map for debugging
+          
+          ---
+          
+          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_version.outputs.version }}...v${{ steps.get_version.outputs.version }}
+        files: |
+          clock-weather-card-v${{ steps.get_version.outputs.version }}.zip
+          dist/clock-weather-card.js
+          dist/clock-weather-card.js.map
+        draft: false
+        prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-v${{ steps.get_version.outputs.version }}
+        path: |
+          clock-weather-card-v${{ steps.get_version.outputs.version }}.zip
+          dist/
+        retention-days: 90
+    
+    - name: Release summary
+      run: |
+        echo "### 🚀 Release Published! " >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Version:** v${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Tag:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📦 Release assets created and uploaded" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 View release: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
