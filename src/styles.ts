@@ -1,7 +1,6 @@
 import { css } from 'lit'
 
 export default css`
-
   ha-card {
     --bar-height: 1.5rem;
     height: 100%;
@@ -16,11 +15,13 @@ export default css`
     width: 35%;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem;
   }
 
   .grow-img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
   }
 
   clock-weather-card-today-right {
@@ -33,12 +34,14 @@ export default css`
   clock-weather-card-today-right-wrap {
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
 
   clock-weather-card-today-right-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
+    margin-bottom: 0.5rem;
   }
 
   clock-weather-card-today-right-wrap-center {
@@ -53,10 +56,12 @@ export default css`
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
     justify-content: start;
+    margin-top: 0.5rem;
   }
 
   clock-weather-card-forecast {
     display: block;
+    margin-top: 1rem;
   }
 
   clock-weather-card-forecast-row {
@@ -64,6 +69,7 @@ export default css`
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
     grid-gap: 0.5rem;
+    padding: 0.25rem 0;
   }
 
   forecast-text {
@@ -128,7 +134,9 @@ export default css`
   }
 
   aqi {
-    padding: 2px;
+    padding: 2px 4px;
     border-radius: 5px;
+    font-size: 0.9em;
+    display: inline-block;
   }
 `
