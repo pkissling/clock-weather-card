@@ -206,24 +206,24 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-private renderToday (): TemplateResult {
-  const weather = this.getWeather()
-  const state = weather.state
-  const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
-  const tempUnit = weather.attributes.temperature_unit
-  const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
-  const aqi = this.getAqi()
-  const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
-  const aqiTextColor = this.getAqiTextColor(aqi)
-  const humidity = roundIfNotNull(this.getCurrentHumidity())
-  const iconType = this.config.weather_icon_type
-  const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
-  const weatherString = this.localize(`weather.${state}`)
-  const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
-  const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
-  const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
-  const apparentString = this.localize('misc.feels-like')
-  const aqiString = this.localize('misc.aqi')
+  private renderToday (): TemplateResult {
+    const weather = this.getWeather()
+    const state = weather.state
+    const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
+    const tempUnit = weather.attributes.temperature_unit
+    const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
+    const aqi = this.getAqi()
+    const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
+    const aqiTextColor = this.getAqiTextColor(aqi)
+    const humidity = roundIfNotNull(this.getCurrentHumidity())
+    const iconType = this.config.weather_icon_type
+    const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
+    const weatherString = this.localize(`weather.${state}`)
+    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
+    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
+    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+    const apparentString = this.localize('misc.feels-like')
+    const aqiString = this.localize('misc.aqi')
 
   if (this.config.weather_text_below_icon) {
     return html`
