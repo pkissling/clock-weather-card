@@ -13,22 +13,75 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for proper git operations
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
+        cache: 'npm'
     
     - name: Install dependencies
-      run: npm install
+      run: npm ci  # Use npm ci instead of npm install for CI environments
     
-    - name: Build
+    - name: Run linter (if available)
+      run: npm run lint --if-present
+      continue-on-error: true
+    
+    - name: Build project
       run: npm run build
     
-    - name: Commit and push if changed
+    - name: Check for changes
+      id: check_changes
       run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "📦 Build generated new files"
+        else
+          echo "changes=false" >> $GITHUB_OUTPUT
+          echo "✅ No changes detected"
+        fi
+    
+    - name: Display build output
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        echo "Built files:"
+        ls -lah dist/
+        echo ""
+        echo "File sizes:"
+        du -h dist/*
+    
+    - name: Commit and push if changed
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add -A
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Build dist files" && git push)
+        git commit -m "🤖 Build: Update dist files [skip ci]"
+        git push
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output-${{ github.sha }}
+        path: |
+          dist/
+          *.js
+          *.js.map
+        retention-days: 30
+    
+    - name: Build summary
+      run: |
+        echo "### Build Complete! 🎉" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
+          echo "✅ New build files committed and pushed" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "ℹ️ No changes in build output" >> $GITHUB_STEP_SUMMARY
+        fi
