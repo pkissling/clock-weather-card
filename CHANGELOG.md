@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.9.2](https://github.com/bapesupreme/clock-weather-card/compare/v2.9.1...v2.9.2) (2025-12-14)
+
+### Features
+
+* add option to hide temperature forecast bars ([95249d5](https://github.com/bapesupreme/clock-weather-card/commit/95249d5))
+
 ## [2.9.1](https://github.com/pkissling/clock-weather-card/compare/v2.9.0...v2.9.1) (2025-09-10)
 
 
