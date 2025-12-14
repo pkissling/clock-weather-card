@@ -25,7 +25,7 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install  # Changed from npm ci
     
     - name: Build project
       run: npm run build
@@ -40,7 +40,7 @@ jobs:
     - name: Create distribution package
       run: |
         mkdir -p release
-        cp -r dist/* release/
+        cp -r dist/* release/ 2>/dev/null || cp *.js release/ 2>/dev/null || true
         cp README.md release/ 2>/dev/null || true
         cp LICENSE release/ 2>/dev/null || true
         cd release
@@ -51,7 +51,6 @@ jobs:
       id: changelog
       run: |
         if [ -f CHANGELOG.md ]; then
-          # Extract changes for this version if CHANGELOG exists
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           awk '/^## \[?'${{ steps.get_version.outputs.version }}'\]?/,/^## \[?[0-9]/' CHANGELOG.md | head -n -1 >> $GITHUB_OUTPUT || echo "See commit history for changes." >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -66,7 +65,7 @@ jobs:
         body: |
           ## Clock Weather Card v${{ steps.get_version.outputs.version }}
           
-          ### 📥 Installation
+          ### 🔥 Installation
           
           **Option 1: Download ZIP (Recommended)**
           1. Download `clock-weather-card-v${{ steps.get_version.outputs.version }}.zip`
@@ -109,11 +108,11 @@ jobs:
           ### 📦 Files Included
           
           - `clock-weather-card.js` - Main card file
-          - `clock-weather-card.js.map` - Source map for debugging
+          - `clock-weather-card.js.map` - Source map for debugging (if available)
           
           ---
           
-          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_version.outputs.version }}...v${{ steps.get_version.outputs.version }}
+          **Full Changelog**: https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}
         files: |
           clock-weather-card-v${{ steps.get_version.outputs.version }}.zip
           dist/clock-weather-card.js
