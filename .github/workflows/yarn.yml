@@ -1,16 +1,18 @@
 name: yarn
-
 on:
   push:
   pull_request:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     name: yarn
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
       - name: Build
@@ -20,3 +22,9 @@ jobs:
       - name: Lint
         run: |
           yarn lint
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Build dist files" && git push)
