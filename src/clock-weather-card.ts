@@ -225,8 +225,8 @@ export class ClockWeatherCard extends LitElement {
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
-  if (this.config.weather_text_below_icon) {
-    return html`
+    if (this.config.weather_text_below_icon) {
+      return html`
       <clock-weather-card-today-left>
         <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 0.5rem;">
           <img class="grow-img" src=${icon} style="max-height: 70%;" />
@@ -250,7 +250,7 @@ export class ClockWeatherCard extends LitElement {
           </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`
-  }
+    }
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
