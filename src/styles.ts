@@ -84,6 +84,7 @@ export default css`
     height: var(--bar-height);
     border-radius: calc(var(--bar-height) / 2);
     overflow: hidden;
+    display: var(--temperature-bar-display, block)
   }
 
   forecast-temperature-bar-background {
