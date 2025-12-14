@@ -238,7 +238,10 @@ const ne=(e,t)=>"method"===t.kind&&t.descriptor&&!("value"in t.descriptor)?{...t
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock?u:h?`${u}, ${h}`:u}
+            <div style="text-align: center;">
+              ${u}
+              ${!this.config.hide_clock&&h?D`<br>${h}`:""}
+            </div>
             ${this.config.show_humidity&&m?D`<br>${m}`:""}
             ${this.config.apparent_sensor&&a?D`<br>${p}: ${f}`:""}
             ${this.config.aqi_sensor&&null!==s?D`<br><aqi style="background-color: ${n}; color: ${o};">${s} ${y}</aqi>`:""}
