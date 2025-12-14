@@ -3,8 +3,7 @@ name: Build
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,10 +23,9 @@ jobs:
     - name: Build
       run: npm run build
     
-    - name: Commit built files
+    - name: Commit and push if changed
       run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add dist/
-        git commit -m "Auto-build dist files" || exit 0
-        git push
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add -A
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Build dist files" && git push)
