@@ -34,6 +34,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   apparent_sensor?: string
   aqi_sensor?: string
   hide_temperature_bars?: boolean
+  weather_text_below_icon?: boolean
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -61,6 +62,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   apparent_sensor?: string
   aqi_sensor?: string
   hide_temperature_bars: boolean
+  weather_text_below_icon?: boolean
 }
 
 export const enum WeatherEntityFeature {
