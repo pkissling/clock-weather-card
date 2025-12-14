@@ -206,25 +206,51 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-  private renderToday (): TemplateResult {
-    const weather = this.getWeather()
-    const state = weather.state
-    const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
-    const tempUnit = weather.attributes.temperature_unit
-    const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
-    const aqi = this.getAqi()
-    const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
-    const aqiTextColor = this.getAqiTextColor(aqi)
-    const humidity = roundIfNotNull(this.getCurrentHumidity())
-    const iconType = this.config.weather_icon_type
-    const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
-    const weatherString = this.localize(`weather.${state}`)
-    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
-    const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
-    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
-    const apparentString = this.localize('misc.feels-like')
-    const aqiString = this.localize('misc.aqi')
+private renderToday (): TemplateResult {
+  const weather = this.getWeather()
+  const state = weather.state
+  const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
+  const tempUnit = weather.attributes.temperature_unit
+  const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
+  const aqi = this.getAqi()
+  const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
+  const aqiTextColor = this.getAqiTextColor(aqi)
+  const humidity = roundIfNotNull(this.getCurrentHumidity())
+  const iconType = this.config.weather_icon_type
+  const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
+  const weatherString = this.localize(`weather.${state}`)
+  const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
+  const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
+  const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+  const apparentString = this.localize('misc.feels-like')
+  const aqiString = this.localize('misc.aqi')
 
+  if (this.config.weather_text_below_icon) {
+    return html`
+      <clock-weather-card-today-left>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 0.5rem;">
+          <img class="grow-img" src=${icon} style="max-height: 70%;" />
+          <div style="text-align: center; font-size: 0.9rem;">
+            ${weatherString}${!this.config.hide_clock && localizedTemp ? `, ${localizedTemp}` : ''}
+          </div>
+        </div>
+      </clock-weather-card-today-left>
+      <clock-weather-card-today-right>
+        <clock-weather-card-today-right-wrap>
+          <clock-weather-card-today-right-wrap-top>
+            ${this.config.show_humidity && localizedHumidity ? html`${localizedHumidity}<br>` : ''}
+            ${this.config.apparent_sensor && apparentTemp ? html`${apparentString}: ${localizedApparent}<br>` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`<aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+          </clock-weather-card-today-right-wrap-top>
+          <clock-weather-card-today-right-wrap-center>
+            ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
+          </clock-weather-card-today-right-wrap-center>
+          <clock-weather-card-today-right-wrap-bottom>
+            ${this.config.hide_date ? '' : this.date()}
+          </clock-weather-card-today-right-wrap-bottom>
+        </clock-weather-card-today-right-wrap>
+      </clock-weather-card-today-right>`
+  }
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
@@ -453,7 +479,8 @@ export class ClockWeatherCard extends LitElement {
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
       aqi_sensor: config.aqi_sensor ?? undefined,
-      hide_temperature_bars: config.hide_temperature_bars ?? false
+      hide_temperature_bars: config.hide_temperature_bars ?? false,
+      weather_text_below_icon: config.weather_text_below_icon ?? false
     }
   }
 
