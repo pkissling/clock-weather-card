@@ -48,7 +48,7 @@ jobs:
         git ls-files -z | xargs -0 git update-index --assume-unchanged
 
     - name: Commit and create pull request
-      uses: peter-evans/create-pull-request@v7
+      uses: peter-evans/create-pull-request@v8
       with:
         token: ${{ secrets.GH_PAT }}
         branch: ${{ steps.timestamps.outputs.branch_name }}
