@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.2](https://github.com/pkissling/clock-weather-card/compare/v2.9.1...v2.9.2) (2025-12-23)
+
+
+### Bug Fixes
+
+* Update German translations ([#644](https://github.com/pkissling/clock-weather-card/issues/644)) ([59a4977](https://github.com/pkissling/clock-weather-card/commit/59a49775248b1a768ecede80f97af6a3abc4b957))
+
 ## [2.9.1](https://github.com/pkissling/clock-weather-card/compare/v2.9.0...v2.9.1) (2025-09-10)
 
 
