@@ -282,7 +282,7 @@ export class ClockWeatherCard extends LitElement {
     const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature)
 
     return html`
-      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.55)}rem;">
+      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.7)}rem;">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
