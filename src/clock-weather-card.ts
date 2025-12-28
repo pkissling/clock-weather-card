@@ -28,7 +28,7 @@ import styles from './styles'
 import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
-import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
+import { extractMostOccuring, getVisualLength, max, min, roundIfNotNull, roundUp } from './utils'
 import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
@@ -268,7 +268,7 @@ export class ClockWeatherCard extends LitElement {
     const displayTexts = forecasts
       .map(f => f.datetime)
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
-    const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
+    const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => getVisualLength(t))) : 0
 
     return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
   }
@@ -282,7 +282,7 @@ export class ClockWeatherCard extends LitElement {
     const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature)
 
     return html`
-      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.5)}rem;">
+      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.7)}rem;">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}

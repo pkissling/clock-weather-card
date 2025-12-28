@@ -54,3 +54,7 @@ export function extractMostOccuring<T extends string | number | symbol> (element
   }
   return maxEl
 }
+
+export function getVisualLength (str: string): number {
+  return str.replace(/[^\x00-\xff]/g, 'aa').length
+}
