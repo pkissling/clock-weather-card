@@ -226,25 +226,25 @@ export class ClockWeatherCard extends LitElement {
     const aqiString = this.localize('misc.aqi')
 
     return html`
-      <clock-weather-card-today-left>
+      <clock-weather-card-today-start>
         <img class="grow-img" src=${icon} />
-      </clock-weather-card-today-left>
-      <clock-weather-card-today-right>
-        <clock-weather-card-today-right-wrap>
-          <clock-weather-card-today-right-wrap-top>
+      </clock-weather-card-today-start>
+      <clock-weather-card-today-end>
+        <clock-weather-card-today-end-wrap>
+          <clock-weather-card-today-end-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
             ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
-          </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center>
+          </clock-weather-card-today-end-wrap-top>
+          <clock-weather-card-today-end-wrap-center>
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
-          </clock-weather-card-today-right-wrap-center>
-          <clock-weather-card-today-right-wrap-bottom>
+          </clock-weather-card-today-end-wrap-center>
+          <clock-weather-card-today-end-wrap-bottom>
             ${this.config.hide_date ? '' : this.date()}
-          </clock-weather-card-today-right-wrap-bottom>
-        </clock-weather-card-today-right-wrap>
-      </clock-weather-card-today-right>`
+          </clock-weather-card-today-end-wrap-bottom>
+        </clock-weather-card-today-end-wrap>
+      </clock-weather-card-today-end>`
   }
 
   private renderForecast (): TemplateResult[] {
@@ -285,14 +285,14 @@ export class ClockWeatherCard extends LitElement {
       <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.5)}rem;">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
-        ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
+        ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'end')}
         ${this.renderForecastTemperatureBar(minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp, temperatureUnit)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, maxTempDay))}
       </clock-weather-card-forecast-row>
     `
   }
 
-  private renderText (text: string, textAlign: 'left' | 'center' | 'right' = 'left'): TemplateResult {
+  private renderText (text: string, textAlign: 'start' | 'center' | 'end' = 'start'): TemplateResult {
     return html`
       <forecast-text style="--text-align: ${textAlign};">
         ${text}
@@ -310,12 +310,12 @@ export class ClockWeatherCard extends LitElement {
 
   private renderForecastTemperatureBar (minTemp: number, maxTemp: number, minTempDay: number, maxTempDay: number, isNow: boolean, currentTemp: number | null, temperatureUnit: TemperatureUnit): TemplateResult {
     const { startPercent, endPercent } = this.calculateBarRangePercents(minTemp, maxTemp, minTempDay, maxTempDay)
-    const moveRight = maxTemp === minTemp ? 0 : (minTempDay - minTemp) / (maxTemp - minTemp)
+    const moveEnd = maxTemp === minTemp ? 0 : (minTempDay - minTemp) / (maxTemp - minTemp)
     return html`
       <forecast-temperature-bar>
         <forecast-temperature-bar-background> </forecast-temperature-bar-background>
         <forecast-temperature-bar-range
-          style="--move-right: ${moveRight.toFixed(2)}; --start-percent: ${startPercent.toFixed(2)}%; --end-percent: ${endPercent.toFixed(2)}%; --gradient: ${this.createGradientString(
+          style="--move-end: ${moveEnd.toFixed(2)}; --start-percent: ${startPercent.toFixed(2)}%; --end-percent: ${endPercent.toFixed(2)}%; --gradient: ${this.createGradientString(
             minTempDay,
             maxTempDay,
             temperatureUnit
@@ -333,10 +333,10 @@ export class ClockWeatherCard extends LitElement {
     }
     const indicatorPosition = minTempDay === maxTempDay ? 0 : (100 / (maxTempDay - minTempDay)) * (currentTemp - minTempDay)
     const steps = maxTempDay - minTempDay
-    const moveRight = maxTempDay === minTempDay ? 0 : (currentTemp - minTempDay) / steps
+    const moveEnd = maxTempDay === minTempDay ? 0 : (currentTemp - minTempDay) / steps
     return html`
       <forecast-temperature-bar-current-indicator style="--position: ${indicatorPosition}%;">
-        <forecast-temperature-bar-current-indicator-dot style="--move-right: ${moveRight}">
+        <forecast-temperature-bar-current-indicator-dot style="--move-end: ${moveEnd}">
         </forecast-temperature-bar-current-indicator-dot>
       </forecast-temperature-bar-current-indicator>
     `
@@ -348,12 +348,12 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private createGradientString (minTempDay: number, maxTempDay: number, temperatureUnit: TemperatureUnit): string {
-    function linearizeColor (temp: number, [tempLeft, colorLeft]: [number, Rgb], [tempRight, colorRight]: [number, Rgb]): Rgb {
-      const ratio = Math.max(Math.min((temp - tempLeft) / (tempRight - tempLeft), 100.0), 0.0)
+    function linearizeColor (temp: number, [tempStart, colorStart]: [number, Rgb], [tempEnd, colorEnd]: [number, Rgb]): Rgb {
+      const ratio = Math.max(Math.min((temp - tempStart) / (tempEnd - tempStart), 100.0), 0.0)
       return new Rgb(
-        Math.round(colorLeft.r + ratio * (colorRight.r - colorLeft.r)),
-        Math.round(colorLeft.g + ratio * (colorRight.g - colorLeft.g)),
-        Math.round(colorLeft.b + ratio * (colorRight.b - colorLeft.b))
+        Math.round(colorStart.r + ratio * (colorEnd.r - colorStart.r)),
+        Math.round(colorStart.g + ratio * (colorEnd.g - colorStart.g)),
+        Math.round(colorStart.b + ratio * (colorEnd.b - colorStart.b))
       )
     }
 
@@ -382,7 +382,7 @@ export class ClockWeatherCard extends LitElement {
           // This is the first color usable color, we need to linearize the color with the previous one
           gradient.set(0.0, linearizeColor(minTempDayCelsius, arr[index - 1], [temp, color]))
 
-          // and then add this color to the right position
+          // and then add this color to the end position
           if (temp > maxTempDayCelsius) {
             // This color is also higher than the daily max so we need to linearize it as well
             gradient.set(1.0, linearizeColor(maxTempDayCelsius, arr[index - 1], [temp, color]))
