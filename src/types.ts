@@ -24,6 +24,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern?: string
   hide_today_section?: boolean
   hide_forecast_section?: boolean
+  hide_summary_section?: boolean
   show_humidity?: boolean
   hourly_forecast?: boolean
   hide_clock?: boolean
@@ -33,6 +34,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   show_decimal?: boolean
   apparent_sensor?: string
   aqi_sensor?: string
+  summary_sensor?: string
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -50,6 +52,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   date_pattern: string
   hide_today_section: boolean
   hide_forecast_section: boolean
+  hide_summary_section: boolean
   show_humidity: boolean
   hourly_forecast: boolean
   hide_clock: boolean
@@ -59,6 +62,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   show_decimal: boolean
   apparent_sensor?: string
   aqi_sensor?: string
+  summary_sensor?: string
 }
 
 export const enum WeatherEntityFeature {
