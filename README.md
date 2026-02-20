@@ -118,6 +118,8 @@ time_zone: null
 show_decimal: false
 apparent_sensor: sensor.real_feel_temperature
 aqi_sensor: sensor.air_quality_index
+aqi_min: 0
+aqi_max: 300
 ```
 
 ### Options
