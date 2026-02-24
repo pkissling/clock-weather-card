@@ -16,7 +16,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "custom-card-helpers": "^1.8.0",
+    "custom-card-helpers": "^2.0.0",
     "home-assistant-js-websocket": "^9.0.0",
     "lit": "^2.8.0",
     "luxon": "^3.4.3"
