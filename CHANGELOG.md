@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.3](https://github.com/pkissling/clock-weather-card/compare/v2.9.2...v2.9.3) (2026-02-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency custom-card-helpers to v2 ([#663](https://github.com/pkissling/clock-weather-card/issues/663)) ([de52a84](https://github.com/pkissling/clock-weather-card/commit/de52a847d8d170a676103f7c82838c7543b2fd5e))
+
 ## [2.9.2](https://github.com/pkissling/clock-weather-card/compare/v2.9.1...v2.9.2) (2025-12-23)
 
 
