@@ -452,7 +452,9 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      aqi_min: config.aqi_min ?? 0,
+      aqi_max: config.aqi_max ?? 300
     }
   }
 
@@ -525,17 +527,26 @@ export class ClockWeatherCard extends LitElement {
     if (aqi == null) {
       return null
     }
-    if (aqi <= 50) return '#00FF00'
-    if (aqi <= 100) return '#FFFF00'
-    if (aqi <= 150) return '#FF8C00'
-    if (aqi <= 200) return '#FF0000'
-    if (aqi <= 300) return '#9400D3'
-    return '#8B0000'
+    const range = this.config.aqi_max - this.config.aqi_min
+    const ratio = (aqi - this.config.aqi_min) / range
+
+    if (ratio <= 0.167) return '#00FF00' // green
+    if (ratio <= 0.333) return '#FFFF00' // yellow
+    if (ratio <= 0.5) return '#FF8C00' // orange
+    if (ratio <= 0.667) return '#FF0000' // red
+    if (ratio <= 0.833) return '#9400D3' // purple
+    return '#8B0000' // dark brown
   }
 
-  private getAqiTextColor (aqi: number | null): string {
+  private getAqiTextColor (aqi: number | null): string | null {
+    if (aqi == null) {
+      return null
+    }
+    const range = this.config.aqi_max - this.config.aqi_min
+    const ratio = (aqi - this.config.aqi_min) / range
+
     // Use black text for light backgrounds (green, yellow, orange) for better readability.
-    if (aqi !== null && aqi <= 150) {
+    if (ratio <= 0.5) {
       return '#000000'
     }
     // Use white text for dark backgrounds (red, purple, maroon).
