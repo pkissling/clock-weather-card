@@ -2765,9 +2765,9 @@ rollup-plugin-commonjs@^10.1.0:
     rollup-pluginutils "^2.8.1"
 
 rollup-plugin-gzip@^4.0.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-gzip/-/rollup-plugin-gzip-4.1.1.tgz#a7a1539a537de7abde4d891f4f3b2cd894892f5b"
-  integrity sha512-yyhAAn4/bqo/EZlfpKqPu3+675u2KRYy3AVYeEPpU+ej+fEuhXA7lL1+UfmDw4MlH1593LQQOEQ8+1itw02L6A==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-gzip/-/rollup-plugin-gzip-4.2.0.tgz#f337499daa29fd8cce3faaefb138876916809acc"
+  integrity sha512-XDs02OO6B5cJBQ6leATfdGJPJ9HPuQ841e21LVrbfcBL10gAcA/uxsXnherbUp3T/U9SWpfKKGpfqB4DSBisHw==
 
 rollup-plugin-serve@^3.0.0:
   version "3.0.0"
