@@ -242,16 +242,15 @@ export class ClockWeatherCard extends LitElement {
 
   private getTodayLayoutVars (): string {
     const largeDisplay = this.config.large_display
-    const todayIconScalePercent = Math.min(100, Math.max(1, this.config.today_icon_scale))
-    const todayFontScalePercent = Math.min(100, Math.max(1, this.config.today_font_scale))
-    const todayIconScale = (todayIconScalePercent / 100) * (largeDisplay ? 1.5 : 1)
-    const todayFontScale = (todayFontScalePercent / 100) * (largeDisplay ? 2 : 1)
+    const todayIconScale = largeDisplay ? 1.5 : 1
+    const todayCenterHeight = largeDisplay ? 8 : 4
+    const todayCenterFontSize = largeDisplay ? 7 : 3.5
 
     return [
       `--today-left-width: ${largeDisplay ? '25%' : '35%'}`,
       `--today-right-width: ${largeDisplay ? '75%' : '65%'}`,
-      `--today-center-height: ${(4 * todayFontScale).toFixed(2)}rem`,
-      `--today-center-font-size: ${(3.5 * todayFontScale).toFixed(2)}rem`,
+      `--today-center-height: ${todayCenterHeight.toFixed(2)}rem`,
+      `--today-center-font-size: ${todayCenterFontSize.toFixed(2)}rem`,
       `--today-icon-scale: ${todayIconScale.toFixed(2)}`,
       `--today-icon-opacity: ${largeDisplay ? 0.8 : 1}`
     ].join('; ')
@@ -522,8 +521,6 @@ export class ClockWeatherCard extends LitElement {
       displayed_temperature: config.displayed_temperature ?? 'current',
       cycle_display: config.cycle_display ?? 0,
       large_display: config.large_display ?? false,
-      today_icon_scale: config.today_icon_scale ?? 100,
-      today_font_scale: config.today_font_scale ?? 100,
       outdoor_temp_sensor: config.outdoor_temp_sensor,
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
