@@ -40,8 +40,6 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   outdoor_temp_sensor?: string
   displayed_temperature?: 'current' | 'apparent' | 'outdoor';
   large_display?: boolean
-  today_icon_scale?: number // percentage from 1 to 100, where 100 is default size
-  today_font_scale?: number // percentage from 1 to 100, where 100 is default size
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -72,8 +70,6 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   outdoor_temp_sensor?: string
   displayed_temperature: 'current' | 'apparent' | 'outdoor'
   large_display: boolean
-  today_icon_scale: number
-  today_font_scale: number
 }
 
 export const enum WeatherEntityFeature {
