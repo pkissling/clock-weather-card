@@ -13,29 +13,29 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
-    width: var(--today-left-width, 35%);
+    width: 25%;
     align-items: center;
     justify-content: center;
+    z-index: 1;
+    position: relative;
   }
 
-  .grow-img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .today-main-icon {
-    max-width: 100%;
-    max-height: 100%;
-    opacity: var(--today-icon-opacity, 1);
-    transform: scale(var(--today-icon-scale, 1));
-    transform-origin: center;
+  .oversized-bg-icon {
+    max-width: 200%;
+    max-height: 200%;
+    width: 150%;
+    height: 150%;
+    opacity: 0.8;
+    z-index: 2;
+    transform: scale(1.5);
   }
 
   clock-weather-card-today-right {
     display: flex;
-    width: var(--today-right-width, 65%);
+    width: 75%;
     justify-content: space-around;
     align-items: center;
+    z-index: 3; /* Ensure it is below the icon */
   }
 
   clock-weather-card-today-right-wrap {
@@ -53,17 +53,19 @@ export default css`
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: var(--today-center-height, 4rem);
-    font-size: var(--today-center-font-size, 3.5rem);
+    height: 8rem;
+    font-size: 7rem;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease; /* Smooth transitions for swapping content */
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
     justify-content: start;
+    z-index: 3;
   }
 
   clock-weather-card-forecast {
@@ -75,18 +77,21 @@ export default css`
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
     grid-gap: 0.5rem;
+    z-index: 3;
   }
 
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
     text-overflow: clip;
+    z-index: 3;
   }
 
   forecast-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
   }
 
   forecast-temperature-bar {
@@ -95,6 +100,7 @@ export default css`
     height: var(--bar-height);
     border-radius: calc(var(--bar-height) / 2);
     overflow: hidden;
+    z-index: 3;
   }
 
   forecast-temperature-bar-background {
