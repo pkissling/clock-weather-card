@@ -122,8 +122,8 @@ displayed_temperature: current
 outdoor_temp_sensor: sensor.outdoor_temperature
 cycle_display: 0
 large_display: false
-today_icon_scale: 1
-today_font_scale: 1
+today_icon_scale: 100
+today_font_scale: 100
 ```
 
 ### Options
@@ -158,8 +158,8 @@ today_font_scale: 1
 | outdoor_temp_sensor   | string           | **Optional** | ID of an outdoor temperature sensor entity used when `displayed_temperature` is set to `outdoor`.                                                                                                                | `''`      |
 | cycle_display         | number           | **Optional** | When greater than `0`, alternates the center display between time and primary temperature every N seconds. Set `0` to disable cycling.                                                                            | `0`       |
 | large_display         | boolean          | **Optional** | Enables the larger icon and larger center text layout introduced in PR 616. Keep `false` to preserve the classic size.                                                                                            | `false`   |
-| today_icon_scale      | number           | **Optional** | Multiplier for today's main weather icon size. Values `< 1` shrink it and values `> 1` enlarge it.                                                                                                                | `1`       |
-| today_font_scale      | number           | **Optional** | Multiplier for center text size (time/temperature). Values `< 1` shrink it and values `> 1` enlarge it.                                                                                                           | `1`       |
+| today_icon_scale      | number           | **Optional** | Percentage scale for today's main weather icon. Accepted range: `1` to `100`, where `100` is default size.                                                                                                          | `100`     |
+| today_font_scale      | number           | **Optional** | Percentage scale for center text (time/temperature). Accepted range: `1` to `100`, where `100` is default size.                                                                                                     | `100`     |
 
 ## Footnotes
 
