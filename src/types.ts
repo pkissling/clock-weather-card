@@ -39,7 +39,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   cycle_display?: number; // 0 disables cycling, otherwise specifies seconds for cycling
   outdoor_temp_sensor?: string
   displayed_temperature?: 'current' | 'apparent' | 'outdoor';
-  large_display?: boolean
+  oversized?: boolean
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -69,7 +69,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   cycle_display: number
   outdoor_temp_sensor?: string
   displayed_temperature: 'current' | 'apparent' | 'outdoor'
-  large_display: boolean
+  oversized: boolean
 }
 
 export const enum WeatherEntityFeature {

@@ -121,7 +121,7 @@ aqi_sensor: sensor.air_quality_index
 displayed_temperature: current
 outdoor_temp_sensor: sensor.outdoor_temperature
 cycle_display: 0
-large_display: false
+oversized: false
 ```
 
 ### Options
@@ -155,7 +155,7 @@ large_display: false
 | displayed_temperature | `current` \| `apparent` \| `outdoor` | **Optional** | Selects the temperature shown as primary temperature in the today section.                                                                                                                                        | `current` |
 | outdoor_temp_sensor   | string           | **Optional** | ID of an outdoor temperature sensor entity used when `displayed_temperature` is set to `outdoor`.                                                                                                                | `''`      |
 | cycle_display         | number           | **Optional** | When greater than `0`, alternates the center display between time and primary temperature every N seconds. Set `0` to disable cycling.                                                                            | `0`       |
-| large_display         | boolean          | **Optional** | Turns oversized icon and center text on or off. Set `true` for larger layout, `false` for classic size.                                                                                                            | `false`   |
+| oversized         | boolean          | **Optional** | Turns oversized icon and center text on or off. Set `true` for larger layout, `false` for classic size.                                                                                                            | `false`   |
 
 ## Footnotes
 
