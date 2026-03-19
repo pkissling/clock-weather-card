@@ -13,7 +13,7 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
-    width: 35%;
+    width: var(--today-left-width, 35%);
     align-items: center;
     justify-content: center;
   }
@@ -23,9 +23,17 @@ export default css`
     max-height: 100%;
   }
 
+  .today-main-icon {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: var(--today-icon-opacity, 1);
+    transform: scale(var(--today-icon-scale, 1));
+    transform-origin: center;
+  }
+
   clock-weather-card-today-right {
     display: flex;
-    width: 65%;
+    width: var(--today-right-width, 65%);
     justify-content: space-around;
     align-items: center;
   }
@@ -33,21 +41,24 @@ export default css`
   clock-weather-card-today-right-wrap {
     display: flex;
     flex-direction: column;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: 4rem;
-    font-size: 3.5rem;
+    height: var(--today-center-height, 4rem);
+    font-size: var(--today-center-font-size, 3.5rem);
     white-space: nowrap;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.5s ease;
   }
 
   clock-weather-card-today-right-wrap-bottom {
@@ -131,3 +142,4 @@ export default css`
     border-radius: 5px;
   }
 `
+
