@@ -293,10 +293,10 @@ export class ClockWeatherCard extends LitElement {
     const layoutVars = this.getTodayLayoutVars()
 
     return html`
-      <clock-weather-card-today-left style=${layoutVars}>
+      <clock-weather-card-today-left style="${layoutVars}">
         <img class="today-main-icon" src=${icon} />
       </clock-weather-card-today-left>
-      <clock-weather-card-today-right style=${layoutVars}>
+      <clock-weather-card-today-right style="${layoutVars}">
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedDisplayedTemp ? `${weatherString}, ${localizedDisplayedTemp}` : weatherString}
@@ -305,7 +305,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.aqi_sensor && aqi !== null ? html`, <aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center style=${layoutVars}>
+          <clock-weather-card-today-right-wrap-center style="${layoutVars}">
             ${this.showClock ? this.time() : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
