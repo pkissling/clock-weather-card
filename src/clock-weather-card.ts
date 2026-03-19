@@ -241,18 +241,18 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getTodayLayoutVars (): string {
-    const largeDisplay = this.config.large_display
-    const todayIconScale = largeDisplay ? 1.5 : 1
-    const todayCenterHeight = largeDisplay ? 8 : 4
-    const todayCenterFontSize = largeDisplay ? 7 : 3.5
+    const oversized = this.config.oversized
+    const todayIconScale = oversized ? 1.5 : 1
+    const todayCenterHeight = oversized ? 8 : 4
+    const todayCenterFontSize = oversized ? 7 : 3.5
 
     return [
-      `--today-left-width: ${largeDisplay ? '25%' : '35%'}`,
-      `--today-right-width: ${largeDisplay ? '75%' : '65%'}`,
+      `--today-left-width: ${oversized ? '25%' : '35%'}`,
+      `--today-right-width: ${oversized ? '75%' : '65%'}`,
       `--today-center-height: ${todayCenterHeight.toFixed(2)}rem`,
       `--today-center-font-size: ${todayCenterFontSize.toFixed(2)}rem`,
       `--today-icon-scale: ${todayIconScale.toFixed(2)}`,
-      `--today-icon-opacity: ${largeDisplay ? 0.8 : 1}`
+      `--today-icon-opacity: ${oversized ? 0.8 : 1}`
     ].join('; ')
   }
 
@@ -520,7 +520,7 @@ export class ClockWeatherCard extends LitElement {
       ...config,
       displayed_temperature: config.displayed_temperature ?? 'current',
       cycle_display: config.cycle_display ?? 0,
-      large_display: config.large_display ?? false,
+      oversized: config.oversized ?? false,
       outdoor_temp_sensor: config.outdoor_temp_sensor,
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
