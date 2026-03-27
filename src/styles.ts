@@ -11,6 +11,11 @@ export default css`
     display: flex;
   }
 
+  clock-weather-card-summary {
+    display: block;
+    padding-bottom: 5px;
+  }
+
   clock-weather-card-today-left {
     display: flex;
     width: 35%;
