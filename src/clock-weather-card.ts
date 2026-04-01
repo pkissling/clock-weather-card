@@ -33,6 +33,7 @@ import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
+import './editor'
 
 console.info(
   `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -76,6 +77,10 @@ export class ClockWeatherCard extends LitElement {
     const msToNextSecond = (1000 - this.currentDate.millisecond)
     setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
     setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
+  }
+
+  public static getConfigElement (): HTMLElement {
+    return document.createElement('clock-weather-card-editor')
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
@@ -237,7 +242,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center>
+          <clock-weather-card-today-right-wrap-center style="--time-font-size: ${this.config.clock_font_size}rem;">
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
@@ -452,7 +457,8 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      clock_font_size: config.clock_font_size ?? 3.5
     }
   }
 
