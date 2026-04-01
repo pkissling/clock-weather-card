@@ -12,6 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
       - name: Build the file
         run: |
           cd /home/runner/work/clock-weather-card/clock-weather-card
