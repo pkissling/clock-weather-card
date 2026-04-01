@@ -31,29 +31,39 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap {
-    display: flex;
-    flex-direction: column;
+    /* Grid: Wetter-Info oben, Uhr flexibel mittig, Datum unten – stabile Positionen */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    /* Aktiviert cqw (Container Query Width) für font-size-Begrenzung */
+    container-type: inline-size;
   }
 
   clock-weather-card-today-right-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
+    align-self: start;
   }
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    font-size: var(--time-font-size, 3.5rem);
+    /* min() begrenzt Schriftgröße auf das kleinere von rem-Wert und cqw-Limit,
+       damit die Uhr nie den Container-Rand überschreitet */
+    font-size: min(var(--time-font-size, 3.5rem), var(--time-max-cqw, 28cqw));
     line-height: 1.1;
     padding: 0.2rem 0;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    align-self: center;
   }
 
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
     justify-content: start;
+    align-self: end;
   }
 
   clock-weather-card-forecast {

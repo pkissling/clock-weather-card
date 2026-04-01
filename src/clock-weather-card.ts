@@ -230,6 +230,13 @@ export class ClockWeatherCard extends LitElement {
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
+    // Berechne maximale Schriftgröße in cqw (Container Query Width) basierend auf dem Zeitformat,
+    // damit die Uhr nie breiter als der Container wird.
+    // 24h "HH:mm" hat ~5 Zeichen → max ~28cqw; 12h "h:mm a" hat ~8 Zeichen → max ~19cqw
+    const is12h = this.config.time_format === '12' ||
+      (!this.config.time_format && !this.config.time_pattern && this.hass.locale.time_format === TimeFormat.am_pm)
+    const maxCqw = this.config.time_pattern ? 16 : (is12h ? 19 : 28)
+
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
@@ -242,7 +249,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
           </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center style="--time-font-size: ${this.config.clock_font_size}rem;">
+          <clock-weather-card-today-right-wrap-center style="--time-font-size: ${this.config.clock_font_size}rem; --time-max-cqw: ${maxCqw}cqw;">
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
