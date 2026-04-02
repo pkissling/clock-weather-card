@@ -11,7 +11,7 @@ export default css`
     display: flex;
   }
 
-  clock-weather-card-today-left {
+  clock-weather-card-today-start {
     display: flex;
     width: 35%;
     align-items: center;
@@ -23,25 +23,25 @@ export default css`
     max-height: 100%;
   }
 
-  clock-weather-card-today-right {
+  clock-weather-card-today-end {
     display: flex;
     width: 65%;
     justify-content: space-around;
     align-items: center;
   }
 
-  clock-weather-card-today-right-wrap {
+  clock-weather-card-today-end-wrap {
     display: flex;
     flex-direction: column;
   }
 
-  clock-weather-card-today-right-wrap-top {
+  clock-weather-card-today-end-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
   }
 
-  clock-weather-card-today-right-wrap-center {
+  clock-weather-card-today-end-wrap-center {
     display: flex;
     height: 4rem;
     font-size: 3.5rem;
@@ -50,7 +50,7 @@ export default css`
     justify-content: center;
   }
 
-  clock-weather-card-today-right-wrap-bottom {
+  clock-weather-card-today-end-wrap-bottom {
     display: flex;
     justify-content: start;
   }
@@ -87,8 +87,8 @@ export default css`
   }
 
   forecast-temperature-bar-background {
-    left: 0%;
-    right: 100%;
+    inset-inline-start: 0%;
+    inset-inline-end: 100%;
     width: 100%;
     opacity: 0.25;
     background: var(--light-primary-color);
@@ -100,22 +100,26 @@ export default css`
     border-radius: 50%;
     width: var(--bar-height);
     box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
-    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
+    margin-inline-start: calc(var(--move-end) * -1 * var(--bar-height));
   }
 
   forecast-temperature-bar-range {
     border-radius: calc(var(--bar-height) / 2);
-    left: var(--start-percent);
-    right: calc(100% - var(--end-percent));
+    inset-inline-start:var(--start-percent);
+    inset-inline-end: calc(100% - var(--end-percent));
     background: linear-gradient(to right, var(--gradient));
     overflow: hidden;
     min-width: var(--bar-height);
-    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
+    margin-inline-start: calc(var(--move-end) * -1 * var(--bar-height));
+  }
+
+  [dir="rtl"] forecast-temperature-bar-range {
+    background: linear-gradient(to left, var(--gradient));
   }
 
   forecast-temperature-bar-current-indicator {
     opacity: 0.75;
-    left: var(--position);
+    inset-inline-start:var(--position);
   }
 
   forecast-temperature-bar-current-indicator,

@@ -138,7 +138,7 @@ class ActionHandler extends HTMLElement implements ActionHandler {
 
   private startAnimation (x: number, y: number): void {
     Object.assign(this.style, {
-      left: `${x}px`,
+      insetInlineStart: `${x}px`,
       top: `${y}px`,
       display: null
     })
