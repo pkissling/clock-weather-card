@@ -85,15 +85,15 @@ export class ClockWeatherCardEditor extends LitElement implements LovelaceCardEd
           select: {
             custom_value: true,
             options: [
-              { value: 'D',                   label: 'Lokal (z.B. 2.4.2026 / 4/2/2026)' },
-              { value: 'dd.MM.yyyy',           label: '02.04.2026' },
-              { value: 'cccc, dd.MM.yyyy',     label: 'Donnerstag, 02.04.2026' },
-              { value: 'ccc, dd.MM.yyyy',      label: 'Do, 02.04.2026' },
-              { value: 'MM/dd/yyyy',           label: '04/02/2026 (US)' },
-              { value: 'cccc, MM/dd/yyyy',     label: 'Thursday, 04/02/2026 (US)' },
-              { value: 'DD',                   label: 'Apr 2, 2026 (international)' },
-              { value: 'cccc, DD',             label: 'Thursday, Apr 2, 2026' },
-              { value: 'yyyy-MM-dd',           label: '2026-04-02 (ISO)' }
+              { value: 'D', label: 'Lokal (z.B. 2.4.2026 / 4/2/2026)' },
+              { value: 'dd.MM.yyyy', label: '02.04.2026' },
+              { value: 'cccc, dd.MM.yyyy', label: 'Donnerstag, 02.04.2026' },
+              { value: 'ccc, dd.MM.yyyy', label: 'Do, 02.04.2026' },
+              { value: 'MM/dd/yyyy', label: '04/02/2026 (US)' },
+              { value: 'cccc, MM/dd/yyyy', label: 'Thursday, 04/02/2026 (US)' },
+              { value: 'DD', label: 'Apr 2, 2026 (international)' },
+              { value: 'cccc, DD', label: 'Thursday, Apr 2, 2026' },
+              { value: 'yyyy-MM-dd', label: '2026-04-02 (ISO)' }
             ]
           }
         }
