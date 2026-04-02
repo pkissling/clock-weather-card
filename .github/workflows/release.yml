@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Prepare release
@@ -12,23 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
       - name: Build the file
         run: |
-          cd /home/runner/work/clock-weather-card/clock-weather-card
           yarn install
           yarn build
 
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v1-release
-
+      - name: Upload to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.js
-          asset_name: clock-weather-card.js
-          tag: ${{ github.ref }}
-          overwrite: true
-
-      - name: Verify HACS compliance
-        uses: hacs/action@main
-        with:
-          category: plugin
+          file: dist/clock-weather-card.js

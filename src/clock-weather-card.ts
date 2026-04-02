@@ -33,6 +33,7 @@ import { animatedIcons, staticIcons } from './images'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
+import './editor'
 
 console.info(
   `%c  CLOCK-WEATHER-CARD \n%c Version: ${version}`,
@@ -76,6 +77,10 @@ export class ClockWeatherCard extends LitElement {
     const msToNextSecond = (1000 - this.currentDate.millisecond)
     setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
     setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
+  }
+
+  public static getConfigElement (): HTMLElement {
+    return document.createElement('clock-weather-card-editor')
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
@@ -225,19 +230,37 @@ export class ClockWeatherCard extends LitElement {
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
+    // Max font size in cqw (container query width, relative to the right column width).
+    // 24h "HH:mm": 5 chars at ~0.6em → ~3em wide → max ~38cqw
+    // 12h "h:mm a": 8 chars → max ~26cqw
+    const is12h = this.config.time_format === '12' ||
+      (!this.config.time_format && !this.config.time_pattern && this.hass.locale.time_format === TimeFormat.am_pm)
+    const maxCqw = this.config.time_pattern ? 22 : (is12h ? 26 : 38)
+
+    // When the date row is hidden, boost font size by 30% to fill the freed vertical space.
+    const effectiveFontSize = this.config.hide_date
+      ? (this.config.clock_font_size * 1.3).toFixed(2)
+      : this.config.clock_font_size
+
+    // Weather info for the left column below the icon.
+    // When hide_clock is set, temperature is shown large on the right → only weatherString on the left.
+    const leftInfo = this.config.hide_clock
+      ? html`<span>${weatherString}</span>`
+      : html`
+          <span>${localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}</span>
+          ${this.config.show_humidity && localizedHumidity ? html`<span>${localizedHumidity}</span>` : ''}
+          ${this.config.apparent_sensor && apparentTemp ? html`<span>${apparentString}: ${localizedApparent}</span>` : ''}
+          ${this.config.aqi_sensor && aqi !== null ? html`<aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+        `
+
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
+        <clock-weather-card-today-left-info>${leftInfo}</clock-weather-card-today-left-info>
       </clock-weather-card-today-left>
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
-          <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
-            ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
-            ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
-          </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center>
+          <clock-weather-card-today-right-wrap-center style="--time-font-size: ${effectiveFontSize}rem; --time-max-cqw: ${maxCqw}cqw;">
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
@@ -447,12 +470,13 @@ export class ClockWeatherCard extends LitElement {
       hide_today_section: config.hide_today_section ?? false,
       hide_clock: config.hide_clock ?? false,
       hide_date: config.hide_date ?? false,
-      date_pattern: config.date_pattern ?? 'D',
+      date_pattern: config.date_pattern ?? 'cccc, dd.MM.yyyy',
       use_browser_time: config.use_browser_time ?? false,
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      clock_font_size: config.clock_font_size ?? 5
     }
   }
 
