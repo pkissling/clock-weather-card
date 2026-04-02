@@ -31,8 +31,17 @@ export default css`
 
   .grow-img {
     max-width: 100%;
-    max-height: 5.5rem;
     object-fit: contain;
+  }
+
+  /* Today section: large icon fills its column */
+  clock-weather-card-today-left img.grow-img {
+    max-height: 7rem;
+  }
+
+  /* Forecast rows: icon must stay within the bar height to keep rows compact */
+  forecast-icon img.grow-img {
+    max-height: var(--bar-height);
   }
 
   clock-weather-card-today-left-info {
