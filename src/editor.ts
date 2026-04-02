@@ -78,6 +78,27 @@ export class ClockWeatherCardEditor extends LitElement implements LovelaceCardEd
         selector: { boolean: {} }
       },
       {
+        // Luxon format tokens: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+        // 'D' = locale-aware short date; 'cccc' = full weekday; 'dd'/'MM' = zero-padded day/month
+        name: 'date_pattern',
+        selector: {
+          select: {
+            custom_value: true,
+            options: [
+              { value: 'D',                   label: 'Lokal (z.B. 2.4.2026 / 4/2/2026)' },
+              { value: 'dd.MM.yyyy',           label: '02.04.2026' },
+              { value: 'cccc, dd.MM.yyyy',     label: 'Donnerstag, 02.04.2026' },
+              { value: 'ccc, dd.MM.yyyy',      label: 'Do, 02.04.2026' },
+              { value: 'MM/dd/yyyy',           label: '04/02/2026 (US)' },
+              { value: 'cccc, MM/dd/yyyy',     label: 'Thursday, 04/02/2026 (US)' },
+              { value: 'DD',                   label: 'Apr 2, 2026 (international)' },
+              { value: 'cccc, DD',             label: 'Thursday, Apr 2, 2026' },
+              { value: 'yyyy-MM-dd',           label: '2026-04-02 (ISO)' }
+            ]
+          }
+        }
+      },
+      {
         name: 'hide_today_section',
         selector: { boolean: {} }
       },
@@ -135,6 +156,7 @@ export class ClockWeatherCardEditor extends LitElement implements LovelaceCardEd
       animated_icon: 'Animiertes Icon',
       hide_clock: 'Uhr ausblenden',
       hide_date: 'Datum ausblenden',
+      date_pattern: 'Datumsformat',
       hide_today_section: 'Heute-Bereich ausblenden',
       forecast_rows: 'Vorhersage-Zeilen',
       hourly_forecast: 'Stündliche Vorhersage',

@@ -16,7 +16,8 @@ export default css`
   clock-weather-card-today {
     display: flex;
     flex: 0 0 auto;
-    align-items: center;
+    /* stretch makes left column adopt the same height as the right (clock-driven) column */
+    align-items: stretch;
   }
 
   clock-weather-card-today-left {
@@ -34,9 +35,10 @@ export default css`
     object-fit: contain;
   }
 
-  /* Today section: large icon fills its column */
+  /* Today section: icon grows to fill all column height not taken by the info text below */
   clock-weather-card-today-left img.grow-img {
-    max-height: 7rem;
+    flex: 1 1 0;
+    min-height: 0;
   }
 
   /* Forecast rows: icon must stay within the bar height to keep rows compact */
