@@ -16,7 +16,7 @@ export default css`
   clock-weather-card-today {
     display: flex;
     flex: 0 0 auto;
-    align-items: stretch;
+    align-items: center;
   }
 
   clock-weather-card-today-left {
@@ -30,7 +30,6 @@ export default css`
   }
 
   .grow-img {
-    /* Cap icon height so the today section stays compact */
     max-width: 100%;
     max-height: 5.5rem;
     object-fit: contain;
@@ -55,13 +54,14 @@ export default css`
   }
 
   clock-weather-card-today-right-wrap {
-    /* Flex column: clock on top, date below – height driven by content, not by grid stretch */
+    /* Flex column: clock on top, date below – height driven by content */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* Enables cqw (container query width) for font-size capping */
+    /* inline-size enables cqw (width) for font-size capping; supported from Chrome 105.
+       Falls back gracefully: if cqw is unknown the rem fallback declaration below is used. */
     container-type: inline-size;
     padding: 0.3rem 0;
     gap: 0.15rem;
@@ -69,14 +69,17 @@ export default css`
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    /* min() clamps font size to the smaller of the rem value and the cqw limit,
-       so the clock never overflows the container.
-       33cqw ≈ max safe width for "HH:mm" (5 chars at ~0.6em each) */
+    /* Fallback for browsers without Container Query support (e.g. older Silk / FireOS). */
+    font-size: var(--time-font-size, 5rem);
+    /* min() with cqw: if cqw is unsupported the entire declaration is ignored and the
+       rem fallback above applies – providing progressive enhancement on Echo Show. */
     font-size: min(var(--time-font-size, 5rem), var(--time-max-cqw, 33cqw));
     line-height: 1.0;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
+    /* max-width prevents overflow on any browser */
+    max-width: 100%;
     overflow: hidden;
   }
 

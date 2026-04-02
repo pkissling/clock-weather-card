@@ -41,7 +41,7 @@ export class ClockWeatherCardEditor extends LitElement implements LovelaceCardEd
       // ── Today section ────────────────────────────────────────────────────
       {
         name: 'clock_font_size',
-        selector: { number: { min: 1, max: 12, step: 0.5, mode: 'slider' } }
+        selector: { number: { min: 1, max: 8, step: 0.5, mode: 'slider' } }
       },
       {
         name: 'time_format',
