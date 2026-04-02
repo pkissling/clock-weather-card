@@ -7,8 +7,16 @@ export default css`
     height: 100%;
   }
 
+  /* Prevent the today section from stretching to fill the full card height */
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   clock-weather-card-today {
     display: flex;
+    flex: 0 0 auto;
+    align-items: stretch;
   }
 
   clock-weather-card-today-left {
@@ -22,10 +30,9 @@ export default css`
   }
 
   .grow-img {
-    /* flex: 1 lets the icon fill available space; min-height: 0 prevents overflow */
-    flex: 1;
-    min-height: 0;
+    /* Cap icon height so the today section stays compact */
     max-width: 100%;
+    max-height: 5.5rem;
     object-fit: contain;
   }
 
@@ -44,17 +51,20 @@ export default css`
     display: flex;
     width: 60%;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
   }
 
   clock-weather-card-today-right-wrap {
-    /* 2-row grid: clock fills available space, date pinned to bottom */
-    display: grid;
-    grid-template-rows: 1fr auto;
+    /* Flex column: clock on top, date below – height driven by content, not by grid stretch */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     /* Enables cqw (container query width) for font-size capping */
     container-type: inline-size;
     padding: 0.3rem 0;
+    gap: 0.15rem;
   }
 
   clock-weather-card-today-right-wrap-center {
@@ -68,15 +78,12 @@ export default css`
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    align-self: center;
   }
 
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
     justify-content: center;
-    align-self: end;
     font-size: 0.85rem;
-    padding-bottom: 0.2rem;
   }
 
   clock-weather-card-forecast {
