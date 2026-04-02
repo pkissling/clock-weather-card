@@ -13,46 +13,57 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
-    width: 35%;
+    flex-direction: column;
+    width: 40%;
     align-items: center;
     justify-content: center;
+    padding: 0.4rem 0.2rem;
+    gap: 0.3rem;
   }
 
   .grow-img {
+    /* flex: 1 lets the icon fill available space; min-height: 0 prevents overflow */
+    flex: 1;
+    min-height: 0;
     max-width: 100%;
-    max-height: 100%;
+    object-fit: contain;
+  }
+
+  clock-weather-card-today-left-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    width: 100%;
+    color: var(--secondary-text-color);
   }
 
   clock-weather-card-today-right {
     display: flex;
-    width: 65%;
-    justify-content: space-around;
-    align-items: center;
+    width: 60%;
+    justify-content: center;
+    align-items: stretch;
   }
 
   clock-weather-card-today-right-wrap {
-    /* Grid: Wetter-Info oben, Uhr flexibel mittig, Datum unten – stabile Positionen */
+    /* 2-row grid: clock fills available space, date pinned to bottom */
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
     width: 100%;
-    /* Aktiviert cqw (Container Query Width) für font-size-Begrenzung */
+    /* Enables cqw (container query width) for font-size capping */
     container-type: inline-size;
-  }
-
-  clock-weather-card-today-right-wrap-top {
-    width: 100%;
-    text-align: end;
-    display: block;
-    align-self: start;
+    padding: 0.3rem 0;
   }
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    /* min() begrenzt Schriftgröße auf das kleinere von rem-Wert und cqw-Limit,
-       damit die Uhr nie den Container-Rand überschreitet */
-    font-size: min(var(--time-font-size, 3.5rem), var(--time-max-cqw, 28cqw));
-    line-height: 1.1;
-    padding: 0.2rem 0;
+    /* min() clamps font size to the smaller of the rem value and the cqw limit,
+       so the clock never overflows the container.
+       33cqw ≈ max safe width for "HH:mm" (5 chars at ~0.6em each) */
+    font-size: min(var(--time-font-size, 5rem), var(--time-max-cqw, 33cqw));
+    line-height: 1.0;
     white-space: nowrap;
     align-items: center;
     justify-content: center;
@@ -62,8 +73,10 @@ export default css`
 
   clock-weather-card-today-right-wrap-bottom {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-self: end;
+    font-size: 0.85rem;
+    padding-bottom: 0.2rem;
   }
 
   clock-weather-card-forecast {

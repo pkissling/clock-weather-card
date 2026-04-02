@@ -230,25 +230,31 @@ export class ClockWeatherCard extends LitElement {
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
-    // Berechne maximale Schriftgröße in cqw (Container Query Width) basierend auf dem Zeitformat,
-    // damit die Uhr nie breiter als der Container wird.
-    // 24h "HH:mm" hat ~5 Zeichen → max ~28cqw; 12h "h:mm a" hat ~8 Zeichen → max ~19cqw
+    // Max font size in cqw (container query width, relative to the right column width).
+    // 24h "HH:mm": 5 chars at ~0.6em → ~3em wide → max ~33cqw
+    // 12h "h:mm a": 8 chars → max ~22cqw
     const is12h = this.config.time_format === '12' ||
       (!this.config.time_format && !this.config.time_pattern && this.hass.locale.time_format === TimeFormat.am_pm)
-    const maxCqw = this.config.time_pattern ? 16 : (is12h ? 19 : 28)
+    const maxCqw = this.config.time_pattern ? 18 : (is12h ? 22 : 33)
+
+    // Weather info for the left column below the icon.
+    // When hide_clock is set, temperature is shown large on the right → only weatherString on the left.
+    const leftInfo = this.config.hide_clock
+      ? html`<span>${weatherString}</span>`
+      : html`
+          <span>${localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}</span>
+          ${this.config.show_humidity && localizedHumidity ? html`<span>${localizedHumidity}</span>` : ''}
+          ${this.config.apparent_sensor && apparentTemp ? html`<span>${apparentString}: ${localizedApparent}</span>` : ''}
+          ${this.config.aqi_sensor && aqi !== null ? html`<aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+        `
 
     return html`
       <clock-weather-card-today-left>
         <img class="grow-img" src=${icon} />
+        <clock-weather-card-today-left-info>${leftInfo}</clock-weather-card-today-left-info>
       </clock-weather-card-today-left>
       <clock-weather-card-today-right>
         <clock-weather-card-today-right-wrap>
-          <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
-            ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
-            ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
-          </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="--time-font-size: ${this.config.clock_font_size}rem; --time-max-cqw: ${maxCqw}cqw;">
             ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
           </clock-weather-card-today-right-wrap-center>
@@ -465,7 +471,7 @@ export class ClockWeatherCard extends LitElement {
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
       aqi_sensor: config.aqi_sensor ?? undefined,
-      clock_font_size: config.clock_font_size ?? 3.5
+      clock_font_size: config.clock_font_size ?? 5
     }
   }
 
