@@ -35,10 +35,13 @@ export default css`
     object-fit: contain;
   }
 
-  /* Today section: icon grows to fill all column height not taken by the info text below */
+  /* Today section: icon grows to fill all column height not taken by the info text.
+     width: 100% makes the img span the full column width so object-fit: contain
+     scales the icon to fill the entire available box. */
   clock-weather-card-today-left img.grow-img {
     flex: 1 1 0;
     min-height: 0;
+    width: 100%;
   }
 
   /* Forecast rows: icon must stay within the bar height to keep rows compact */
@@ -109,6 +112,7 @@ export default css`
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
     grid-gap: 0.5rem;
+    padding: 0.2rem 0;
   }
 
   forecast-text {
