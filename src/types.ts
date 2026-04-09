@@ -1,5 +1,5 @@
 import { type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
-import { type HassEntity } from 'home-assistant-js-websocket/dist/types'
+import { type HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 import { type DateTime } from 'luxon'
 
 declare global {
