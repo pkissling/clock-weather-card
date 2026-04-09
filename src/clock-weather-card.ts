@@ -1,5 +1,4 @@
 import { LitElement, html, type TemplateResult, type PropertyValues, type CSSResultGroup } from 'lit'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customElement, property, state } from 'lit/decorators.js'
 import {
   type HomeAssistant,
@@ -41,8 +40,9 @@ console.info(
 );
 
 // This puts your card into the UI card picker dialog
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).customCards = (window as any).customCards || [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
