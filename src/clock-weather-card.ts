@@ -464,7 +464,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getWeather (): Weather {
-    const weather = this.hass.states[this.config.entity] as Weather | undefined
+    const weather = this.hass.states[this.config.entity] as unknown as Weather | undefined
     if (!weather) {
       throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
     }
