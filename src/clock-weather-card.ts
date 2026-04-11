@@ -15,11 +15,6 @@ import { customElementName, isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
-import { HomeAssistant } from 'custom-card-helpers'
-import { ClockWeatherCardConfig, Weather } from './types'
-import animatedFillFogNight from './icons/fill/svg/fog-night.svg'
-
-
 
 // This puts your card into the UI card picker dialog
 window.customCards = window.customCards || []
@@ -36,27 +31,9 @@ console.info(
   `%c  CLOCK-WEATHER-CARD \n%c Version: ${isDev ? 'DEV' : version}`,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray'
-);
+)
 
-// This puts your card into the UI card picker dialog
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
-  type: 'clock-weather-card',
-  name: 'Clock Weather Card',
-  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.'
-})
-
-const gradientMap: Map<number, Rgb> = new Map()
-  .set(-20, new Rgb(0, 60, 98)) // dark blue
-  .set(-10, new Rgb(120, 162, 204)) // darker blue
-  .set(0, new Rgb(164, 195, 210)) // light blue
-  .set(10, new Rgb(121, 210, 179)) // turquoise
-  .set(20, new Rgb(252, 245, 112)) // yellow
-  .set(30, new Rgb(255, 150, 79)) // orange
-  .set(40, new Rgb(255, 192, 159)) // red
-
-@customElement('clock-weather-card')
+@customElement(customElementName)
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: MergedClockWeatherCardConfig
