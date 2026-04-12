@@ -1,12 +1,16 @@
+# yarn
 /node_modules/
 /.rpt2_cache/
 package-lock.json
 /dist
 .yarn/install-state.gz
+
 # Playwright
 node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-.yarn/install-state.gz
+
+# Claude
+.claude/
