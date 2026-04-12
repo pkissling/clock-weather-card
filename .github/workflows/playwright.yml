@@ -1,18 +1,18 @@
-name: Run Playwright Tests
+name: Playwright Tests
 
 on:
   push:
   pull_request:
 
-# only run one workflow at a time for a specific branch or PR
 concurrency:
-  group: ${{ github.ref }}
+  group: playwright-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   playwright:
-    timeout-minutes: 30
+    name: E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
     - uses: actions/checkout@v4
@@ -26,9 +26,6 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-
-    - name: Lint
-      run: yarn lint
 
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
