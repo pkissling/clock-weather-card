@@ -1,15 +1,19 @@
-import '@/components/clock-weather-card-icon'
-import '@/components/clock-weather-card-time'
-
+/* eslint-disable lit/no-invalid-html */
 import type { TemplateResult } from 'lit'
-import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { html } from 'lit/static-html.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
+import ClockWeatherCardIcon from '@/components/clock-weather-card-icon'
+import ClockWeatherCardTime from '@/components/clock-weather-card-time'
 import type { WeatherIconType } from '@/types'
 
-@customElement('clock-weather-card-today')
+@customElement(ClockWeatherCardToday.customElementName)
 class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
+  protected static override getCustomElementName(): string {
+    return 'clock-weather-card-today'
+  }
+
   @property({ attribute: false }) public weatherState!: string
   @property({ attribute: false }) public isNight!: boolean
   @property({ attribute: false }) public animatedIcon!: boolean
@@ -17,17 +21,15 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
 
   public render (): TemplateResult {
     return html`
-      <clock-weather-card-icon
+      <${ClockWeatherCardIcon.tag}
         .weatherState=${this.weatherState}
         .isNight=${this.isNight}
         .animatedIcon=${this.animatedIcon}
         .weatherIconType=${this.weatherIconType}
-      ></clock-weather-card-icon>
-      <clock-weather-card-time></clock-weather-card-time>
+      ></${ClockWeatherCardIcon.tag}>
+      <${ClockWeatherCardTime.tag}></${ClockWeatherCardTime.tag}>
     `
   }
-
-  protected getComponentName(): String {
-    return 'clock-weather-card-today'
-  }
 }
+
+export default ClockWeatherCardToday

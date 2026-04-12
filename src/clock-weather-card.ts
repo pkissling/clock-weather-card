@@ -1,10 +1,11 @@
-import '@/components/clock-weather-card-today'
-
+/* eslint-disable lit/no-invalid-html */
 import type { HomeAssistant } from 'custom-card-helpers'
-import type { CSSResultGroup } from 'lit'
-import { html, LitElement, type TemplateResult } from 'lit'
+import type { CSSResultGroup, TemplateResult } from 'lit'
+import { LitElement } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import { html } from 'lit/static-html.js'
 
+import ClockWeatherCardToday from '@/components/clock-weather-card-today'
 import configService from '@/service/config-service'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
@@ -16,10 +17,12 @@ import { customElementName, isDev } from '@/utils/development'
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
 
+const CUSTOM_ELEMENT_NAME = customElementName('clock-weather-card')
+
 // This puts your card into the UI card picker dialog
 window.customCards = window.customCards || []
 window.customCards.push({
-  type: customElementName,
+  type: CUSTOM_ELEMENT_NAME,
   name: 'Clock Weather Card',
   description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
   preview: true,
@@ -33,7 +36,7 @@ console.info(
   'color: white; font-weight: bold; background: dimgray'
 )
 
-@customElement(customElementName)
+@customElement(CUSTOM_ELEMENT_NAME)
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: MergedClockWeatherCardConfig
@@ -54,12 +57,12 @@ export class ClockWeatherCard extends LitElement {
       <ha-card>
         <h1 class="card-header">${this.config.title}</h1>
         <div class="card-content">
-          <clock-weather-card-today
+          <${ClockWeatherCardToday.tag}
             .weatherState=${weatherState}
             .isNight=${isNight}
             .animatedIcon=${animatedIcon}
             .weatherIconType=${weatherIconType}
-          ></clock-weather-card-today>
+          ></${ClockWeatherCardToday.tag}>
         </div>
       </ha-card>
       `
