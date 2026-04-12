@@ -1,0 +1,14 @@
+homeassistant:
+  auth_providers:
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.0/8
+        - "::1"
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+      allow_bypass_login: true
+    - type: homeassistant
+
+frontend:
+
+mock_weather:

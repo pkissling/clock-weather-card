@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   playwright:
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-latest
 
     steps:
@@ -21,8 +21,17 @@ jobs:
       with:
         node-version: lts/*
 
+    - name: Enable Corepack
+      run: corepack enable
+
     - name: Install dependencies
-      run: npm install -g yarn && yarn
+      run: yarn install
+
+    - name: Lint
+      run: yarn lint
+
+    - name: Pull HA Docker image
+      run: docker pull ghcr.io/home-assistant/home-assistant:stable
 
     - name: Install Playwright Browsers
       run: yarn playwright install --with-deps
