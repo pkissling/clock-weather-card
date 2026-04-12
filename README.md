@@ -276,6 +276,7 @@ yarn install
 | `yarn lint` | Run ESLint with auto-fix |
 | `yarn test:e2e` | Run Playwright E2E tests against a real HA instance |
 | `yarn playwright-ui` | Open the Playwright UI for interactive test debugging |
+| `yarn test:e2e:update-snapshots` | Regenerate Playwright snapshots in a Linux Docker container |
 
 ### E2E tests
 
@@ -312,7 +313,10 @@ Use lowercase [BCP 47 language tags](https://en.wikipedia.org/wiki/IETF_language
 
 E2E tests run against a real Home Assistant instance via Docker. Visual regression tests use Playwright screenshots to verify the card renders correctly.
 
-To regenerate screenshots after visual changes, run the **Update Playwright Snapshots** workflow from the Actions tab. It updates snapshots for both Linux and macOS in separate commits on the current branch.
+To regenerate screenshots after visual changes, either:
+
+- **CI:** Run the **Update Playwright Snapshots** workflow from the Actions tab. It updates snapshots in separate commits on the current branch.
+- **Locally:** Run `yarn test:e2e:update-snapshots` to regenerate snapshots. This builds a Docker image with the Playwright browsers and runs the tests inside it, writing updated snapshots back to `e2e/`. Requires Docker with access to the Docker socket (to spawn Home-Assistant in a dedicated Docker container).
 
 ## Footnotes
 
