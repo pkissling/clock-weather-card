@@ -37,7 +37,7 @@ jobs:
       run: yarn playwright test
 
     - uses: actions/upload-artifact@v6
-      if: ${{ !cancelled() }}
+      if: failure()
       with:
         name: playwright-report
         path: playwright-report/
