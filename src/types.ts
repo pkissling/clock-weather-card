@@ -1,6 +1,5 @@
 import { type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
 import { type HassEntity } from 'home-assistant-js-websocket/dist/types.js'
-import { type DateTime } from 'luxon'
 
 declare global {
 
@@ -68,14 +67,6 @@ export interface WeatherForecast {
   templow: number | null
 }
 
-export interface MergedWeatherForecast {
-  datetime: DateTime
-  condition: string
-  temperature: number
-  precipitation: number
-  precipitation_probability: number
-  templow: number
-}
 
 export class Rgb {
   r: number

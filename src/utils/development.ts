@@ -1,2 +1,3 @@
 export const isDev = import.meta.env.MODE === 'development'
-export const customElementName = 'clock-weather-card' + (isDev ? '-dev' : '')
+
+export const customElementName = (name: string): string => name + (isDev ? '-dev' : '')

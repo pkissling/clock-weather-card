@@ -1,19 +1,26 @@
 import { LitElement } from 'lit'
+import { type StaticValue, unsafeStatic } from 'lit/static-html.js'
 
-import { isDev } from '@/utils/development'
+import { customElementName } from '@/utils/development'
 
 abstract class AbstractClockWeatherCardComponent extends LitElement {
 
-  public constructsComponentName(): String {
-    return this.getComponentName() + (isDev ? '-dev' : '')
+  protected static getCustomElementName(): string {
+    throw new Error('getCustomElementName() must be overridden by subclass')
+  }
+
+  static get customElementName(): string {
+    return customElementName(this.getCustomElementName())
+  }
+
+  static get tag(): StaticValue {
+    return unsafeStatic(this.customElementName)
   }
 
   protected createRenderRoot(): Element | ShadowRoot {
     // do not create a shadow DOM for given component
     return this
   }
-
-  protected abstract getComponentName(): String
 }
 
 export default AbstractClockWeatherCardComponent
