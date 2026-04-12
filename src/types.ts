@@ -21,12 +21,62 @@ declare global {
   }
 }
 
+// Segment configs
+export interface TimeSegmentConfig {
+  type: 'time'
+  time_pattern?: string
+}
+
+export interface DateSegmentConfig {
+  type: 'date'
+  date_pattern?: string
+}
+
+export interface WeatherSegmentConfig {
+  type: 'weather'
+  attribute?: string
+  show_unit?: boolean
+}
+
+export interface EntitySegmentConfig {
+  type: 'entity'
+  entity_id: string
+  attribute?: string
+  show_unit?: boolean
+  unit_attribute?: string
+}
+
+export interface IconSegmentConfig {
+  type: 'icon'
+  icon: string
+}
+
+export interface SpacerSegmentConfig {
+  type: 'spacer'
+}
+
+export type SegmentConfig =
+  | TimeSegmentConfig
+  | DateSegmentConfig
+  | WeatherSegmentConfig
+  | EntitySegmentConfig
+  | IconSegmentConfig
+  | SpacerSegmentConfig
+
+export interface RowConfig {
+  segments: SegmentConfig[]
+  font_size?: string
+}
+
+// Card configs
+
 export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string
   title?: string
   sun_entity?: string
   weather_icon_type?: WeatherIconType
   animated_icon?: boolean
+  rows?: RowConfig[]
 }
 
 export interface MergedClockWeatherCardConfig {
@@ -35,6 +85,7 @@ export interface MergedClockWeatherCardConfig {
   sun_entity: string
   weather_icon_type: WeatherIconType
   animated_icon: boolean
+  rows: RowConfig[]
 }
 
 export const enum WeatherEntityFeature {

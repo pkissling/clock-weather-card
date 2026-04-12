@@ -1,5 +1,9 @@
 # clock-weather-card
 
+## Package manager
+
+Use `yarn` (not `npm`) for all dependency and script commands.
+
 ## Verification after changes
 
 After every change, run the following commands to verify:

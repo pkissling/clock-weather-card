@@ -7,7 +7,6 @@ import { html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 
 import configService from '@/service/config-service'
-import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
@@ -38,7 +37,10 @@ console.info(
 export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config!: MergedClockWeatherCardConfig
+  @state() private currentDate = new Date()
   private forecastSubscription: (() => Promise<void>) | null = null
+  private _clockIntervalId: number | null = null
+  private _clockTimeoutId: number | null = null
 
   protected render (): TemplateResult {
     if (!this.hass || !this.config) {
@@ -46,20 +48,14 @@ export class ClockWeatherCard extends LitElement {
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
 
-    const weatherState = hassService.getWeatherState(this.hass.states, this.config.entity)
-    const isNight = hassService.isNight(this.hass.states, this.config.sun_entity)
-    const weatherIconType = this.config.weather_icon_type
-    const animatedIcon = this.config.animated_icon
-
     return html`
       <ha-card>
-        <h1 class="card-header">${this.config.title}</h1>
+        ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
         <div class="card-content">
           <clock-weather-card-today
-            .weatherState=${weatherState}
-            .isNight=${isNight}
-            .animatedIcon=${animatedIcon}
-            .weatherIconType=${weatherIconType}
+            .hass=${this.hass}
+            .config=${this.config}
+            .currentDate=${this.currentDate}
           ></clock-weather-card-today>
         </div>
       </ha-card>
@@ -79,16 +75,39 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback()
+    this._startClock()
     this.trySubscribeToForecastEvents()
   }
 
   public disconnectedCallback(): void {
     super.disconnectedCallback()
+    this._stopClock()
     this.tryUnsubscribeForecastEvents()
   }
 
   public updated(): void {
     this.trySubscribeToForecastEvents()
+  }
+
+  private _startClock(): void {
+    const msToNextSecond = 1000 - (Date.now() % 1000)
+    this._clockTimeoutId = window.setTimeout(() => {
+      this.currentDate = new Date()
+      this._clockIntervalId = window.setInterval(() => {
+        this.currentDate = new Date()
+      }, 1000)
+    }, msToNextSecond)
+  }
+
+  private _stopClock(): void {
+    if (this._clockTimeoutId !== null) {
+      clearTimeout(this._clockTimeoutId)
+      this._clockTimeoutId = null
+    }
+    if (this._clockIntervalId !== null) {
+      clearInterval(this._clockIntervalId)
+      this._clockIntervalId = null
+    }
   }
 
   private async trySubscribeToForecastEvents(): Promise<void> {

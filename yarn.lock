@@ -658,6 +658,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^3.4.0":
+  version: 3.7.1
+  resolution: "@types/luxon@npm:3.7.1"
+  checksum: 10c0/2db30c13b58adcd86daa447faa3ba59515fe907ead8ee3e6bb716d662812af0619d712f6c1eb190cdd7f9d2c00444c3ecd80af0f36e8143eb0c5e7339d6b2aca
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^24.3.3":
   version: 24.12.2
   resolution: "@types/node@npm:24.12.2"
@@ -901,6 +908,7 @@ __metadata:
     "@eslint/compat": "npm:^1.2.7"
     "@eslint/js": "npm:^9.23.0"
     "@playwright/test": "npm:^1.55.0"
+    "@types/luxon": "npm:^3.4.0"
     "@types/node": "npm:^24.3.3"
     "@typescript-eslint/eslint-plugin": "npm:^8.28.0"
     "@typescript-eslint/parser": "npm:^8.28.0"
@@ -912,6 +920,7 @@ __metadata:
     globals: "npm:^16.0.0"
     home-assistant-js-websocket: "npm:^9.4.0"
     lit: "npm:^2.8.0"
+    luxon: "npm:^3.4.0"
     typescript: "npm:^5.5.0"
     typescript-eslint: "npm:^8.28.0"
     vite: "npm:^7.1.5"
@@ -1603,6 +1612,13 @@ __metadata:
   version: 11.3.3
   resolution: "lru-cache@npm:11.3.3"
   checksum: 10c0/f0053c0d6f58caca93b62c0037c8c913dfc02d9bc63b6c90f34279116e301ce051197796640ed5e71d96404fe6cfa5e841f40594dab30b8938f1d4f0b52e1883
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.4.0":
+  version: 3.7.2
+  resolution: "luxon@npm:3.7.2"
+  checksum: 10c0/ed8f0f637826c08c343a29dd478b00628be93bba6f068417b1d8896b61cb61c6deacbe1df1e057dbd9298334044afa150f9aaabbeb3181418ac8520acfdc2ae2
   languageName: node
   linkType: hard
 

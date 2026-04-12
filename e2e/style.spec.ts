@@ -10,6 +10,8 @@ test.beforeEach(async ({ page }) => {
 test('title reduces bottom padding of card header', async ({ page }) => {
   await mockClockWeatherCardState(page, { cardConfig: { title: 'My Weather' } })
 
-  await expect(page.locator('h1.card-header')).toHaveText('My Weather')
-  await expect(page.locator('h1.card-header')).toHaveCSS('padding-bottom', '0px')
+  await expect(page.locator('h1.card-header'))
+    .toHaveText('My Weather')
+  await expect(page.locator('h1.card-header'))
+    .toHaveCSS('padding-bottom', '0px')
 })
