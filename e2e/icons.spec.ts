@@ -28,7 +28,8 @@ for (const state of supportedWeatherStates) {
       weather: { state },
       sunState: 'above_horizon',
     })
-    await expect(page.locator('clock-weather-card')).toHaveScreenshot()
+    await expect(page.locator('clock-weather-card'))
+      .toHaveScreenshot()
   })
 }
 
@@ -38,7 +39,8 @@ for (const state of supportedWeatherStates) {
       weather: { state },
       sunState: 'below_horizon',
     })
-    await expect(page.locator('clock-weather-card')).toHaveScreenshot()
+    await expect(page.locator('clock-weather-card'))
+      .toHaveScreenshot()
   })
 }
 
@@ -46,16 +48,18 @@ test('fill fog day', async ({ page }) => {
   await setupCardTest(page, {
     weather: { state: 'fog' },
     sunState: 'above_horizon',
-    cardConfig: `weather_icon_type: fill`,
+    cardConfig: 'weather_icon_type: fill',
   })
-  await expect(page.locator('clock-weather-card')).toHaveScreenshot()
+  await expect(page.locator('clock-weather-card'))
+    .toHaveScreenshot()
 })
 
 test('monochrome fog day', async ({ page }) => {
   await setupCardTest(page, {
     weather: { state: 'fog' },
     sunState: 'above_horizon',
-    cardConfig: `weather_icon_type: monochrome`,
+    cardConfig: 'weather_icon_type: monochrome',
   })
-  await expect(page.locator('clock-weather-card')).toHaveScreenshot()
+  await expect(page.locator('clock-weather-card'))
+    .toHaveScreenshot()
 })

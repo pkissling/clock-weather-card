@@ -79,5 +79,6 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
   await page.goto(`/${TEST_DASHBOARD}/0`)
 
   // Wait for the card to render
-  await page.locator('clock-weather-card').waitFor({ state: 'visible' })
+  await page.locator('clock-weather-card')
+    .waitFor({ state: 'visible' })
 }
