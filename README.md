@@ -100,18 +100,156 @@ title: Home
 sun_entity: sun.sun
 weather_icon_type: line
 animated_icon: true
+rows:
+  - segments:
+      - type: icon
+        icon: mdi:thermometer
+      - type: weather
+        attribute: temperature
+      - type: spacer
+      - type: weather
+      - type: icon
+        icon: mdi:weather-partly-cloudy
+  - font_size: 4rem
+    segments:
+      - type: spacer
+      - type: time
+        time_pattern: HH:mm
+      - type: spacer
+  - segments:
+      - type: spacer
+      - type: icon
+        icon: mdi:calendar
+      - type: date
+        date_pattern: EEEE, dd MMMM
+      - type: spacer
 ```
 
-### Options
+### Card Options
 
-| Name               | Type                              | Requirement  | Description                                                                                                        | Default   |
-| ------------------ | --------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------ | --------- |
-| type               | string                            | **Required** | `custom:clock-weather-card`                                                                                        |           |
-| entity             | string                            | **Required** | Entity ID of your weather provider                                                                                 |           |
-| title              | string                            | **Optional** | Title displayed at the top of the card                                                                             | `null`    |
-| sun_entity         | string                            | **Optional** | Entity ID of the sun entity, used to determine day/night icons. If the sun integration is not enabled, the day icon is shown | `sun.sun` |
-| weather_icon_type  | `line` \| `fill` \| `monochrome`  | **Optional** | Visual style of the large weather icon                                                                             | `line`    |
-| animated_icon      | boolean                           | **Optional** | Whether the large weather icon should be animated                                                                  | `true`    |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `entity` | string | **yes** | - | Entity ID of your weather provider |
+| `title` | string | no | `null` | Title displayed at the top of the card |
+| `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
+| `weather_icon_type` | `line` \| `fill` \| `monochrome` | no | `line` | Visual style of the large weather icon |
+| `animated_icon` | boolean | no | `true` | Whether the large weather icon should be animated |
+| `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
+
+### Row Options
+
+Each row is a horizontal line of segments.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `segments` | list | **yes** | - | List of segments in this row |
+| `font_size` | string | no | inherited | CSS font-size (e.g. `14px`, `3rem`) |
+
+### Segment Types
+
+#### `time`
+
+Displays the current time, auto-updating every second.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `time` |
+| `time_pattern` | string | no | `HH:mm:ss` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) time format pattern |
+
+#### `date`
+
+Displays the current date.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `date` |
+| `date_pattern` | string | no | `EEEE, dd MMMM yyyy` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) date format pattern |
+
+#### `weather`
+
+Displays the current weather state (localized) or a specific weather entity attribute.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `weather` |
+| `attribute` | string | no | - | Weather entity attribute (e.g. `temperature`, `humidity`). If omitted, shows the localized weather state text. |
+
+#### `entity`
+
+Displays a Home Assistant entity's state and unit.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `entity` |
+| `entity_id` | string | **yes** | - | Entity ID (e.g. `sensor.temperature`) |
+| `attribute` | string | no | - | Entity attribute to display. If omitted, shows the entity state + unit. |
+
+#### `icon`
+
+Displays an MDI icon.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `icon` |
+| `icon` | string | **yes** | - | MDI icon name (e.g. `mdi:thermometer`, `mdi:calendar`) |
+
+#### `spacer`
+
+A flexible spacer that fills remaining horizontal space. Use spacers to control alignment within a row.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `spacer` |
+
+**Alignment examples using spacers:**
+
+```yaml
+# Center content
+- segments:
+    - type: spacer
+    - type: time
+    - type: spacer
+
+# Right-align content
+- segments:
+    - type: spacer
+    - type: time
+
+# Space between two groups
+- segments:
+    - type: weather
+      attribute: temperature
+    - type: spacer
+    - type: weather
+```
+
+### Default Rows
+
+When no `rows` are configured, the card displays the following default layout:
+
+```yaml
+rows:
+  - segments:
+      - type: icon
+        icon: mdi:thermometer
+      - type: weather
+        attribute: temperature
+      - type: spacer
+      - type: weather
+      - type: icon
+        icon: mdi:weather-partly-cloudy
+  - font_size: 4rem
+    segments:
+      - type: spacer
+      - type: time
+      - type: spacer
+  - segments:
+      - type: spacer
+      - type: icon
+        icon: mdi:calendar
+      - type: date
+      - type: spacer
+```
 
 ## Translations
 

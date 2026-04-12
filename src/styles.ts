@@ -18,31 +18,6 @@ export default css`
   }
 
   clock-weather-card-icon {
-    width: 100%;
-    height: auto;
-  }
-
-  clock-weather-card-today-details {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  clock-weather-card-time {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .time {
-    white-space: nowrap;
-    line-height: 1;
-    font-weight: 500;
-  }
-
-  clock-weather-card-icon {
     position: relative;
     width: 100%;
     margin-top: -10%;
@@ -51,4 +26,37 @@ export default css`
     margin-right: -20%;
     right: -20%;
   }
+
+  clock-weather-card-today-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  clock-weather-card-today-details-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  clock-weather-card-spacer-segment {
+    flex: 1;
+  }
+
+  clock-weather-card-time-segment,
+  clock-weather-card-date-segment,
+  clock-weather-card-weather-segment,
+  clock-weather-card-entity-segment {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+  }
+
+  clock-weather-card-icon-segment {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+
 `

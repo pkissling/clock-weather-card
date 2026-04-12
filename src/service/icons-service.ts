@@ -18,16 +18,17 @@ class IconsService {
       import: 'default'
     }) as Record<string, string>
 
-    this.index = Object.entries(modules).reduce((acc, [path, url]) => {
+    this.index = Object.entries(modules)
+      .reduce((acc, [path, url]) => {
       // path example: ../icons/line/svg/clear-day.svg
-      const match = path.match(/\.\.\/icons\/(fill|line|monochrome)\/(svg|svg-static)\/([^/]+)\.svg$/)
-      if (!match) return acc
-      const [, type, kind, name] = match as unknown as [string, WeatherIconType, IconKind, string]
-      if (!acc[type]) acc[type] = {}
-      if (!acc[type][kind]) acc[type][kind] = new Map<string, string>()
+        const match = path.match(/\.\.\/icons\/(fill|line|monochrome)\/(svg|svg-static)\/([^/]+)\.svg$/)
+        if (!match) return acc
+        const [, type, kind, name] = match as unknown as [string, WeatherIconType, IconKind, string]
+        if (!acc[type]) acc[type] = {}
+        if (!acc[type][kind]) acc[type][kind] = new Map<string, string>()
       acc[type][kind]!.set(name, url)
       return acc
-    }, {} as IconIndex)
+      }, {} as IconIndex)
   }
 
   public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string {

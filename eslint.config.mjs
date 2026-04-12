@@ -45,6 +45,7 @@ export default [
       semi: ['error', 'never'],
       quotes: ['error', 'single'],
       indent: ['error', 2],
+      'newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'comma-spacing': ['error', { before: false, after: true }],
