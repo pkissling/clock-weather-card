@@ -22,7 +22,8 @@
     "preview": "vite preview",
     "lint": "eslint . --max-warnings 0 --fix",
     "test:e2e": "playwright install && playwright test",
-    "playwright-ui": "playwright test --ui"
+    "playwright-ui": "playwright test --ui",
+    "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/update-snapshots.sh"
   },
   "dependencies": {
     "custom-card-helpers": "2.0.0",
