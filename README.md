@@ -10,7 +10,7 @@ A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) ava
 ![Clock Weather Card](.github/assets/card.gif)
 [^1]
 
-Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/weather-icons).
+Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/meteocons) (MIT License).
 
 ## Migrating from v2 to v3
 
@@ -99,7 +99,6 @@ entity: weather.home
 title: Home
 sun_entity: sun.sun
 weather_icon_type: line
-animated_icon: true
 rows:
   - segments:
       - type: icon
@@ -132,8 +131,7 @@ rows:
 | `entity` | string | **yes** | - | Entity ID of your weather provider |
 | `title` | string | no | `null` | Title displayed at the top of the card |
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
-| `weather_icon_type` | `line` \| `fill` \| `monochrome` | no | `line` | Visual style of the large weather icon |
-| `animated_icon` | boolean | no | `true` | Whether the large weather icon should be animated |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon. Icons provided by [@meteocons/svg](https://github.com/basmilius/meteocons) |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
 
 ### Row Options
@@ -317,6 +315,10 @@ To regenerate screenshots after visual changes, either:
 
 - **CI:** Run the **Update Playwright Snapshots** workflow from the Actions tab. It updates snapshots in separate commits on the current branch.
 - **Locally:** Run `yarn test:e2e:update-snapshots` to regenerate snapshots. This builds a Docker image with the Playwright browsers and runs the tests inside it, writing updated snapshots back to `e2e/`. Requires Docker with access to the Docker socket (to spawn Home-Assistant in a dedicated Docker container).
+
+## License
+
+This project is licensed under the [MIT License](LICENSE.md).
 
 ## Footnotes
 

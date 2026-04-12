@@ -22,7 +22,6 @@ type MockOptions = undefined | {
 
 const DEFAULT_CARD_CONFIG = `
 entity: ${WEATHER_ENTITY}
-animated_icon: false
 weather_icon_type: line
 `
 
@@ -81,4 +80,46 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
   // Wait for the card to render
   await page.locator('clock-weather-card')
     .waitFor({ state: 'visible' })
+
+  // Freeze SMIL animations in SVG data URIs so screenshots are deterministic.
+  // Playwright's `animations: 'disabled'` only handles CSS animations, not SMIL.
+  await freezeSvgAnimations(page)
+}
+
+/**
+ * Strip SMIL animation elements from all SVG `<img>` data URIs in the page,
+ * including those inside shadow DOMs. This freezes animated SVGs so that
+ * consecutive screenshots are stable for visual comparison.
+ */
+async function freezeSvgAnimations (page: Page): Promise<void> {
+  await page.evaluate(() => {
+    const SMIL_TAGS = ['animate', 'animateTransform', 'animateMotion', 'set']
+
+    function processElement (root: Document | ShadowRoot): void {
+      for (const img of root.querySelectorAll('img')) {
+        const src = img.getAttribute('src') ?? ''
+        if (!src.startsWith('data:image/svg+xml')) continue
+
+        const commaIdx = src.indexOf(',')
+        if (commaIdx === -1) continue
+
+        const svgText = decodeURIComponent(src.slice(commaIdx + 1))
+        const doc = new DOMParser()
+          .parseFromString(svgText, 'image/svg+xml')
+        const smilElements = doc.querySelectorAll(SMIL_TAGS.join(','))
+        if (smilElements.length === 0) continue
+
+        smilElements.forEach(el => el.remove())
+        const frozen = new XMLSerializer()
+          .serializeToString(doc)
+        img.src = 'data:image/svg+xml,' + encodeURIComponent(frozen)
+      }
+
+      for (const el of root.querySelectorAll('*')) {
+        if (el.shadowRoot) processElement(el.shadowRoot)
+      }
+    }
+
+    processElement(document)
+  })
 }

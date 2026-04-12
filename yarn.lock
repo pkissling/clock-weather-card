@@ -406,6 +406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@meteocons/svg@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@meteocons/svg@npm:0.1.0"
+  checksum: 10c0/3c236ad16386436dd5c760e6324854ff58709bf65ae93e7bfdf316851858a0ad749e146671ad6c667a2e48baafd4d6fe70778b820d5a59ec2549e16447a3aa53
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^4.0.0":
   version: 4.0.0
   resolution: "@npmcli/agent@npm:4.0.0"
@@ -907,6 +914,7 @@ __metadata:
   dependencies:
     "@eslint/compat": "npm:^1.2.7"
     "@eslint/js": "npm:^9.23.0"
+    "@meteocons/svg": "npm:^0.1.0"
     "@playwright/test": "npm:^1.55.0"
     "@types/luxon": "npm:^3.4.0"
     "@types/node": "npm:^24.3.3"

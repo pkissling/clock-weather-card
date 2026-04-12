@@ -18,48 +18,22 @@ export const supportedWeatherStates = [
   'snowy-rainy',
   'sunny',
   'windy',
-  'windy-exceptional',
+  'windy-variant',
   'exceptional'
 ] as const
 
-for (const state of supportedWeatherStates) {
-  test(`line ${state} day`, async ({ page }) => {
-    await setupCardTest(page, {
-      weather: { state },
-      sunState: 'above_horizon',
-    })
-    await expect(page.locator('clock-weather-card'))
-      .toHaveScreenshot()
-  })
+for (const day of ['day', 'night']) {
+  for (const variant of ['fill', 'flat', 'line', 'monochrome']) {
+    for (const state of supportedWeatherStates) {
+      test(`${variant} ${state} ${day}`, async ({ page }) => {
+        await setupCardTest(page, {
+          weather: { state },
+          sunState: day === 'day' ? 'above_horizon' : 'below_horizon',
+          cardConfig: `weather_icon_type: ${variant}`
+        })
+        await expect(page.locator('clock-weather-card'))
+          .toHaveScreenshot({ animations: 'disabled' })
+      })
+    }
+  }
 }
-
-for (const state of supportedWeatherStates) {
-  test(`line ${state} night`, async ({ page }) => {
-    await setupCardTest(page, {
-      weather: { state },
-      sunState: 'below_horizon',
-    })
-    await expect(page.locator('clock-weather-card'))
-      .toHaveScreenshot()
-  })
-}
-
-test('fill fog day', async ({ page }) => {
-  await setupCardTest(page, {
-    weather: { state: 'fog' },
-    sunState: 'above_horizon',
-    cardConfig: 'weather_icon_type: fill',
-  })
-  await expect(page.locator('clock-weather-card'))
-    .toHaveScreenshot()
-})
-
-test('monochrome fog day', async ({ page }) => {
-  await setupCardTest(page, {
-    weather: { state: 'fog' },
-    sunState: 'above_horizon',
-    cardConfig: 'weather_icon_type: monochrome',
-  })
-  await expect(page.locator('clock-weather-card'))
-    .toHaveScreenshot()
-})

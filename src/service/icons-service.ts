@@ -1,11 +1,7 @@
 import type { WeatherIconType } from '@/types'
 
-type IconKind = 'svg' | 'svg-static'
-
 interface IconIndex {
-  [type: string]: {
-    [kind in IconKind]?: Map<string, string>
-  }
+  [type: string]: Map<string, string>
 }
 
 class IconsService {
@@ -13,37 +9,33 @@ class IconsService {
 
   constructor() {
     // Eagerly import all SVGs so the URLs are available synchronously
-    const modules = import.meta.glob('../icons/*/{svg,svg-static}/*.svg', {
+    const modules = import.meta.glob('/node_modules/@meteocons/svg/{fill,flat,line,monochrome}/*.svg', {
       eager: true,
       import: 'default'
     }) as Record<string, string>
 
     this.index = Object.entries(modules)
       .reduce((acc, [path, url]) => {
-      // path example: ../icons/line/svg/clear-day.svg
-        const match = path.match(/\.\.\/icons\/(fill|line|monochrome)\/(svg|svg-static)\/([^/]+)\.svg$/)
+        const match = path.match(/\/@meteocons\/svg\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
         if (!match) return acc
-        const [, type, kind, name] = match as unknown as [string, WeatherIconType, IconKind, string]
-        if (!acc[type]) acc[type] = {}
-        if (!acc[type][kind]) acc[type][kind] = new Map<string, string>()
-      acc[type][kind]!.set(name, url)
-      return acc
+        const [, type, name] = match as unknown as [string, WeatherIconType, string]
+        if (!acc[type]) acc[type] = new Map<string, string>()
+        acc[type].set(name, url)
+        return acc
       }, {} as IconIndex)
   }
 
-  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string {
-    const kind: IconKind = type === 'monochrome' ? 'svg-static' : (animated ? 'svg' : 'svg-static')
-
+  public getWeatherIcon(type: WeatherIconType, weatherState: string, isNight: boolean): string {
     const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)
-    const bucket = this.index[type]?.[kind]
+    const bucket = this.index[type]
     if (bucket?.has(iconFileName)) {
       return bucket.get(iconFileName)!
     }
 
-    // TODO test!
-    throw new Error(`Icon for weather state "${weatherState}" (${iconFileName}) not found in type "${type}" (${kind})`)
+    throw new Error(`Icon for weather state "${weatherState}" (${iconFileName}) not found in type "${type}"`)
   }
 
+  // TODO: Review mapping between HA weather states and meteocons icon names — there may be more suitable icons available.
   private mapWeatherStateToIconFileName(state: string, isNight: boolean): string {
     const s = state.toLowerCase()
     const dn = isNight ? 'night' : 'day'
@@ -76,6 +68,7 @@ class IconsService {
     case 'snowy-rainy':
       return 'sleet'
     case 'windy':
+    case 'windy-variant':
     case 'windy-exceptional':
       return 'windsock'
     case 'exceptional':
