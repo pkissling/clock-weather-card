@@ -15,7 +15,8 @@ type MockOptions = undefined | {
 
 export const toHaveScreenshot = async (page: Page): Promise<void> => {
   const clockWeatherCard = page.locator('clock-weather-card-dev')
-  await expect(clockWeatherCard).toHaveScreenshot({ maxDiffPixelRatio: 0.001 })
+  await expect(clockWeatherCard)
+    .toHaveScreenshot()
 }
 
 export const mockClockWeatherCardState = async (page: Page, opts: MockOptions): Promise<void> => {
