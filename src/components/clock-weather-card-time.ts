@@ -4,12 +4,8 @@ import { customElement, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 
-@customElement(ClockWeatherCardTime.customElementName)
+@customElement('clock-weather-card-time')
 class ClockWeatherCardTime extends AbstractClockWeatherCardComponent {
-  protected static override getCustomElementName(): string {
-    return 'clock-weather-card-time'
-  }
-
   @state() private date = new Date()
   private _intervalId: number | null = null
   private _timeoutId: number | null = null
