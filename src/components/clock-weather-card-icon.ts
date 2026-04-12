@@ -6,12 +6,8 @@ import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weath
 import iconsService from '@/service/icons-service'
 import type { WeatherIconType } from '@/types'
 
-@customElement(ClockWeatherCardIcon.customElementName)
+@customElement('clock-weather-card-icon')
 class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
-  protected static override getCustomElementName(): string {
-    return 'clock-weather-card-icon'
-  }
-
   @property() public weatherState!: string
   @property() public isNight!: boolean
   @property() public animatedIcon!: boolean
