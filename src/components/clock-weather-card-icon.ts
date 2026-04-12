@@ -10,7 +10,6 @@ import type { WeatherIconType } from '@/types'
 class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property() public weatherState!: string
   @property() public isNight!: boolean
-  @property() public animatedIcon!: boolean
   @property() public weatherIconType!: WeatherIconType
 
   public render(): TemplateResult {
@@ -20,7 +19,7 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   }
 
   private _src(): string {
-    return iconsService.getWeatherIcon(this.weatherIconType, this.animatedIcon, this.weatherState, this.isNight)
+    return iconsService.getWeatherIcon(this.weatherIconType, this.weatherState, this.isNight)
   }
 }
 

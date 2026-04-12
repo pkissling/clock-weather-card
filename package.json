@@ -26,6 +26,7 @@
     "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/update-snapshots.sh"
   },
   "dependencies": {
+    "@meteocons/svg": "^0.1.0",
     "custom-card-helpers": "2.0.0",
     "lit": "^2.8.0",
     "luxon": "^3.4.0"
