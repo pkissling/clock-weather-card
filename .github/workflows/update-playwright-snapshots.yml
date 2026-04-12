@@ -1,0 +1,56 @@
+name: Update Playwright Snapshots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-snapshots:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Enable Corepack
+      run: corepack enable
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Set up Docker (macOS)
+      if: runner.os == 'macOS'
+      uses: docker/setup-docker-action@v4
+
+    - name: Pull HA Docker image
+      run: docker pull ghcr.io/home-assistant/home-assistant:stable
+
+    - name: Install Playwright Browsers
+      run: yarn playwright install --with-deps
+
+    - name: Update snapshots
+      run: yarn playwright test --update-snapshots
+      env:
+        PLAYWRIGHT_HTML_OPEN: never
+
+    - name: Pull latest changes
+      run: git pull --rebase
+
+    - name: Commit updated snapshots
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add e2e/**/*-snapshots/
+        if git diff --staged --quiet; then
+          echo "No snapshot changes to commit"
+        else
+          git commit -m "chore: update ${{ runner.os }} playwright snapshots"
+          git push
+        fi

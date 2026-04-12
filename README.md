@@ -251,20 +251,68 @@ rows:
       - type: spacer
 ```
 
-## Translations
+## Development
 
-The card is available in multiple languages. Translation files are located in the [`src/locales/`](src/locales/) directory, with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`).
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS)
+- [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) (for E2E tests)
+
+### Setup
+
+```bash
+git clone https://github.com/pkissling/clock-weather-card.git
+cd clock-weather-card
+yarn install
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `yarn dev` | Start the Vite dev server on `http://localhost:5173` |
+| `yarn build` | Type-check and build the production bundle |
+| `yarn lint` | Run ESLint with auto-fix |
+| `yarn test:e2e` | Run Playwright E2E tests against a real HA instance |
+| `yarn playwright-ui` | Open the Playwright UI for interactive test debugging |
+
+### E2E tests
+
+E2E tests use Playwright and run the card inside a real Home Assistant Docker container. The test setup (`e2e/ha-setup.ts`) automatically:
+
+1. Builds the card
+2. Starts a Home Assistant container with the card installed
+3. Completes onboarding and configures test dashboards
+4. Runs the tests
+5. Tears down the container
+
+A custom `mock_weather` integration (`e2e/ha-config/custom_components/mock_weather/`) provides a controllable weather entity. Tests set weather state, forecasts, and sun position via the HA REST API before each test.
+
+> **Note:** Docker must be running before executing `yarn test:e2e`.
+
+<!-- TODO: Add instructions for manual testing against a local HA instance (e.g. via docker-compose with hot-reload) -->
+
+## Contributions
+
+### Translations
+
+The card is available in multiple languages. Translation files are located in [`src/locales/`](src/locales/), with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`).
 
 The card automatically picks the language configured in your Home Assistant instance. If no matching translation is found, it falls back to English.
 
-### Contributing translations
-
-To add a new language or improve an existing translation, submit a pull request:
+To add a new language or improve an existing translation:
 
 1. **New language:** Copy `src/locales/en.json` to `src/locales/<language-code>.json` and translate the values.
 2. **Update existing translation:** Edit the corresponding file in `src/locales/`.
 
 Use lowercase [BCP 47 language tags](https://en.wikipedia.org/wiki/IETF_language_tag) for the filename (e.g. `pt-br.json`, `zh-cn.json`).
+
+### Playwright screenshots
+
+E2E tests run against a real Home Assistant instance via Docker. Visual regression tests use Playwright screenshots to verify the card renders correctly.
+
+To regenerate screenshots after visual changes, run the **Update Playwright Snapshots** workflow from the Actions tab. It updates snapshots for both Linux and macOS in separate commits on the current branch.
 
 ## Footnotes
 

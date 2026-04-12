@@ -1,0 +1,39 @@
+set_weather:
+  name: Set weather state
+  description: Set the mock weather entity state and forecast data for testing.
+  fields:
+    condition:
+      name: Condition
+      description: Weather condition (e.g. sunny, rainy, cloudy)
+      example: sunny
+      selector:
+        text:
+    temperature:
+      name: Temperature
+      description: Current temperature
+      example: 21.0
+      selector:
+        number:
+          min: -50
+          max: 60
+          step: 0.1
+    humidity:
+      name: Humidity
+      description: Current humidity percentage
+      example: 50
+      selector:
+        number:
+          min: 0
+          max: 100
+    forecast_daily:
+      name: Daily Forecast
+      description: List of daily forecast entries
+      example: "[{\"datetime\": \"2024-01-02T00:00:00+00:00\", \"condition\": \"sunny\", \"temperature\": 21, \"templow\": 11}]"
+      selector:
+        object:
+    forecast_hourly:
+      name: Hourly Forecast
+      description: List of hourly forecast entries
+      example: "[{\"datetime\": \"2024-01-02T12:00:00+00:00\", \"condition\": \"sunny\", \"temperature\": 21}]"
+      selector:
+        object:
