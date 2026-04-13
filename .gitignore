@@ -13,4 +13,4 @@ node_modules/
 /playwright/.cache/
 
 # Claude
-.claude/
+.claude/worktrees/
