@@ -224,7 +224,7 @@ export class ClockWeatherCard extends LitElement {
     this.clearDisplayCycleInterval()
     this.showClock = true
     const cycleDuration = this.config.cycle_display
-    if (cycleDuration > 0) {
+    if (!this.config.hide_clock && cycleDuration > 0) {
       this.intervalID = window.setInterval(() => {
         this.showClock = !this.showClock
       }, cycleDuration * 1000)
@@ -301,12 +301,12 @@ export class ClockWeatherCard extends LitElement {
           <clock-weather-card-today-right-wrap-top>
             ${this.config.hide_clock ? weatherString : localizedDisplayedTemp ? `${weatherString}, ${localizedDisplayedTemp}` : weatherString}
             ${showApparent && localizedApparent ? html`, ${apparentString}: ${localizedApparent}` : ''}
-            ${showOutdoor && localizedOutdoor ? html`, Outdoor: ${localizedOutdoor}` : ''}
+            ${showOutdoor && localizedOutdoor ? html`, ${this.localize('misc.outdoor')}: ${localizedOutdoor}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`, <aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
-            ${this.showClock ? this.time() : localizedDisplayedTemp ?? 'n/a'}
+            ${this.config.hide_clock ? localizedDisplayedTemp ?? 'n/a' : this.showClock ? this.time() : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
             ${this.config.hide_date ? '' : this.date()}
