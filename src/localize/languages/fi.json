@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "kosteus",
-    "feels-like": "Tuntuu kuin"
+    "feels-like": "Tuntuu kuin",
+    "outdoor": "Outdoor"
   }
 }

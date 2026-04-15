@@ -113,6 +113,10 @@ export class ClockWeatherCard extends LitElement {
       throw this.createError('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
     }
 
+    if (config.displayed_temperature === 'outdoor' && !config.outdoor_temp_sensor) {
+      throw this.createError('Attribute "outdoor_temp_sensor" must be set when "displayed_temperature" is "outdoor".')
+    }
+
     this.config = this.mergeConfig(config)
   }
 
@@ -306,7 +310,7 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
-            ${this.config.hide_clock ? localizedDisplayedTemp ?? 'n/a' : this.showClock ? this.time() : localizedDisplayedTemp ?? 'n/a'}
+            ${(!this.config.hide_clock && this.showClock) ? this.time() : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
           <clock-weather-card-today-right-wrap-bottom>
             ${this.config.hide_date ? '' : this.date()}
@@ -568,9 +572,7 @@ export class ClockWeatherCard extends LitElement {
         return this.toConfiguredTempWithoutUnit(unit, outtemp)
       }
     }
-
-    // return weather temperature if above code could not extract temperature from temperature_sensor
-    return this.getWeather().attributes.temperature ?? null
+    return null
   }
 
   private getCurrentTemperature (): number | null {
