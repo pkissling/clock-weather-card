@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig, type Plugin } from 'vite'
 import compression from 'vite-plugin-compression2'
+import zipPack from 'vite-plugin-zip-pack'
 
 const CUSTOM_ELEMENT_PREFIX = 'clock-weather-card'
 const DEV_SUFFIX = '-dev'
@@ -56,7 +57,16 @@ export default defineConfig(({ command }) => ({
   plugins: [
     customElementDevSuffixPlugin(),
     // Emit only gzip bundles for production; no Brotli
-    compression({ algorithms: ['gzip'] })
+    compression({ algorithms: ['gzip'] }),
+    // Pack the dist into a single zip for HACS distribution
+    ...(command === 'build'
+      ? [zipPack({
+        inDir: 'dist',
+        outDir: 'dist',
+        outFileName: 'clock-weather-card.zip',
+        filter: (fileName) => fileName.endsWith('.js'),
+      })]
+      : []),
   ],
   build: {
     target: 'es2019',
@@ -68,7 +78,14 @@ export default defineConfig(({ command }) => ({
       output: {
         // Keep other assets (svg, translations) under assets/
         assetFileNames: 'assets/[name]-[hash][extname]',
-        chunkFileNames: 'assets/[name]-[hash].js',
+        // Chunks sit at the dist root so HACS's flat install layout
+        // can resolve dynamic imports like ./static-icons.js
+        chunkFileNames: '[name].js',
+        manualChunks (id: string) {
+          if (id.includes('@meteocons/svg-static/')) return 'static-icons'
+          if (id.includes('@meteocons/svg/')) return 'animated-icons'
+          return undefined
+        },
       },
     },
   },

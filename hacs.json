@@ -1,5 +1,6 @@
 {
     "name": "Clock Weather Card",
     "render_readme": true,
-    "filename": "clock-weather-card.js"
+    "filename": "clock-weather-card.js",
+    "zip_release": true
 }

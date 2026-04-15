@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import { parse as parseYaml } from 'yaml'
 
-import type { WeatherForecast } from '../../src/types'
+import type { ClockWeatherCardConfig, WeatherForecast } from '../../src/types'
 import { HAApi } from './ha-api'
 import { TEST_DASHBOARD } from './ha-setup'
 
@@ -50,8 +50,8 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
   const api = new HAApi()
 
   // Parse YAML card config, merging with defaults
-  const defaults = parseYaml(DEFAULT_CARD_CONFIG) as Record<string, unknown>
-  const overrides = opts?.cardConfig ? parseYaml(opts.cardConfig) as Record<string, unknown> : {}
+  const defaults = parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
+  const overrides = opts?.cardConfig ? parseYaml(opts.cardConfig) as Partial<ClockWeatherCardConfig> : {}
   const cardConfig = { ...defaults, ...overrides }
 
   // Set dashboard card config via HA websocket
@@ -83,7 +83,10 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
 
   // Freeze SMIL animations in SVG data URIs so screenshots are deterministic.
   // Playwright's `animations: 'disabled'` only handles CSS animations, not SMIL.
-  await freezeSvgAnimations(page)
+  // Only needed for animated icons — static SVGs have no SMIL elements.
+  if (cardConfig.animated_icon !== false) {
+    await freezeSvgAnimations(page)
+  }
 }
 
 /**

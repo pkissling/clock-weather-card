@@ -36,6 +36,7 @@ class ConfigService {
       title: config.title ?? null,
       sun_entity: config.sun_entity ?? 'sun.sun',
       weather_icon_type: config.weather_icon_type ?? 'line',
+      animated_icon: config.animated_icon ?? true,
       rows: config.rows ?? DEFAULT_ROWS
     }
   }
