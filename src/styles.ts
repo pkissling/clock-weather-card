@@ -18,9 +18,9 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
+    flex-direction: column;
     width: var(--today-left-width, 35%);
     align-items: center;
-    justify-content: center;
   }
 
   .grow-img {
@@ -29,9 +29,20 @@ export default css`
   }
 
   .today-main-icon {
+    flex: 1;
+    min-height: 0;
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
     opacity: var(--today-icon-opacity, 1);
+  }
+
+  .today-date {
+    width: 100%;
+    text-align: start;
+    font-size: 0.85rem;
+    padding: 0 0 0.15rem 0.1rem;
+    white-space: nowrap;
   }
 
   clock-weather-card-today-right {
@@ -62,11 +73,6 @@ export default css`
     align-items: center;
     justify-content: center;
     transition: opacity 0.5s ease;
-  }
-
-  clock-weather-card-today-right-wrap-bottom {
-    display: flex;
-    justify-content: start;
   }
 
   clock-weather-card-forecast {
