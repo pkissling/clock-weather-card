@@ -4,6 +4,8 @@ import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { createStateFilePath } from './ha-state.js'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -12,7 +14,6 @@ const HA_CONTAINER_NAME = 'ha-e2e-test'
 const HA_IMAGE = 'ghcr.io/home-assistant/home-assistant:stable'
 const HA_CONFIG_DIR = path.join(__dirname, 'ha-config')
 const DIST_DIR = path.join(__dirname, '..', '..', 'dist')
-const STATE_FILE = path.join(os.tmpdir(), 'ha-e2e-state.json')
 
 export const TEST_DASHBOARD = 'clock-weather-card'
 
@@ -57,13 +58,15 @@ export default async function globalSetup(): Promise<void> {
   console.log('[HA Setup] Completing onboarding...')
   const token = await completeOnboarding(`http://127.0.0.1:${HA_PORT}`)
 
-  // Save state for tests
+  // Unique path per run — a stale file owned by a different user (e.g. root in
+  // Docker vs. host user) can't block this write.
+  const stateFile = createStateFilePath()
   const state = {
     haUrl: `http://127.0.0.1:${HA_PORT}`,
     haToken: token,
     tmpDir,
   }
-  writeFileSync(STATE_FILE, JSON.stringify(state))
+  writeFileSync(stateFile, JSON.stringify(state))
 
   console.log('[HA Setup] Home Assistant is ready!')
 }

@@ -1,8 +1,6 @@
 import { readFileSync } from 'fs'
-import os from 'os'
-import path from 'path'
 
-const STATE_FILE = path.join(os.tmpdir(), 'ha-e2e-state.json')
+import { getStateFilePath } from './ha-state.js'
 
 interface HAState {
   haUrl: string
@@ -15,7 +13,7 @@ export class HAApi {
   private token: string
 
   constructor() {
-    const state: HAState = JSON.parse(readFileSync(STATE_FILE, 'utf-8'))
+    const state: HAState = JSON.parse(readFileSync(getStateFilePath(), 'utf-8'))
     this.baseUrl = state.haUrl
     this.token = state.haToken
   }
