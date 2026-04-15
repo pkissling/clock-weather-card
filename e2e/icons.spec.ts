@@ -22,18 +22,27 @@ export const supportedWeatherStates = [
   'exceptional'
 ] as const
 
-for (const day of ['day', 'night']) {
-  for (const variant of ['fill', 'flat', 'line', 'monochrome']) {
-    for (const state of supportedWeatherStates) {
-      test(`${variant} ${state} ${day}`, async ({ page }) => {
-        await setupCardTest(page, {
-          weather: { state },
-          sunState: day === 'day' ? 'above_horizon' : 'below_horizon',
-          cardConfig: `weather_icon_type: ${variant}`
-        })
-        await expect(page.locator('clock-weather-card'))
-          .toHaveScreenshot({ animations: 'disabled' })
-      })
-    }
-  }
+
+const iconPermutations = (): { animated: string; daytime: string; iconVariant: string; state: typeof supportedWeatherStates[number] }[] =>
+  ['animated', 'static'].flatMap(animated =>
+    ['day', 'night'].flatMap(daytime =>
+      ['fill', 'flat', 'line', 'monochrome'].flatMap(iconVariant =>
+        supportedWeatherStates.map(state => ({ animated, daytime, iconVariant, state }))
+      )
+    )
+  )
+
+for (const { animated, daytime, iconVariant, state } of iconPermutations()) {
+  test(`${animated} ${iconVariant} ${state} ${daytime}`, async ({ page }) => {
+    await setupCardTest(page, {
+      weather: { state },
+      sunState: daytime === 'day' ? 'above_horizon' : 'below_horizon',
+      cardConfig: `
+        weather_icon_type: ${iconVariant}
+        animated_icon: ${animated === 'animated' ? 'true' : 'false'}
+      `
+    })
+    await expect(page.locator('clock-weather-card'))
+      .toHaveScreenshot()
+  })
 }

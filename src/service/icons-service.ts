@@ -1,38 +1,55 @@
 import type { WeatherIconType } from '@/types'
 
+type IconLoader = () => Promise<string>
+
 interface IconIndex {
-  [type: string]: Map<string, string>
+  [type: string]: Map<string, IconLoader>
 }
 
 class IconsService {
-  private index: IconIndex
+  private staticIndex: IconIndex
+  private animatedIndex: IconIndex
+  private cache = new Map<string, Promise<string>>()
 
   constructor() {
-    // Eagerly import all SVGs so the URLs are available synchronously
-    const modules = import.meta.glob('/node_modules/@meteocons/svg/{fill,flat,line,monochrome}/*.svg', {
-      eager: true,
+    const staticModules = import.meta.glob('/node_modules/@meteocons/svg-static/{fill,flat,line,monochrome}/*.svg', {
       import: 'default'
-    }) as Record<string, string>
+    }) as Record<string, IconLoader>
+    this.staticIndex = this.buildIndex(staticModules, /\/@meteocons\/svg-static\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
 
-    this.index = Object.entries(modules)
-      .reduce((acc, [path, url]) => {
-        const match = path.match(/\/@meteocons\/svg\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
+    const animatedModules = import.meta.glob('/node_modules/@meteocons/svg/{fill,flat,line,monochrome}/*.svg', {
+      import: 'default'
+    }) as Record<string, IconLoader>
+    this.animatedIndex = this.buildIndex(animatedModules, /\/@meteocons\/svg\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
+  }
+
+  private buildIndex(modules: Record<string, IconLoader>, pattern: RegExp): IconIndex {
+    return Object.entries(modules)
+      .reduce((acc, [path, loader]) => {
+        const match = path.match(pattern)
         if (!match) return acc
         const [, type, name] = match as unknown as [string, WeatherIconType, string]
-        if (!acc[type]) acc[type] = new Map<string, string>()
-        acc[type].set(name, url)
+        if (!acc[type]) acc[type] = new Map<string, IconLoader>()
+        acc[type].set(name, loader)
         return acc
       }, {} as IconIndex)
   }
 
-  public getWeatherIcon(type: WeatherIconType, weatherState: string, isNight: boolean): string {
+  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): Promise<string> {
     const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)
-    const bucket = this.index[type]
-    if (bucket?.has(iconFileName)) {
-      return bucket.get(iconFileName)!
+    const cacheKey = `${animated ? 'a' : 's'}/${type}/${iconFileName}`
+    const cached = this.cache.get(cacheKey)
+    if (cached) return cached
+
+    const index = animated ? this.animatedIndex : this.staticIndex
+    const loader = index[type]?.get(iconFileName)
+    if (!loader) {
+      return Promise.reject(new Error(`Icon for weather state "${weatherState}" (${iconFileName}) not found in type "${type}"`))
     }
 
-    throw new Error(`Icon for weather state "${weatherState}" (${iconFileName}) not found in type "${type}"`)
+    const promise = loader()
+    this.cache.set(cacheKey, promise)
+    return promise
   }
 
   // TODO: Review mapping between HA weather states and meteocons icon names — there may be more suitable icons available.

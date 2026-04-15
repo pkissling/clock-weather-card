@@ -29,8 +29,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/clock-weather-card.js
-          asset_name: clock-weather-card.js
+          file: dist/clock-weather-card.zip
+          asset_name: clock-weather-card.zip
           tag: ${{ github.ref }}
           overwrite: true
 

@@ -12,9 +12,15 @@ A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) ava
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/meteocons) (MIT License).
 
-## Migrating from v2 to v3
+## What's new in v3
 
-<!-- TODO: Document migration guide for v2 to v3 -->
+- **Customizable layout** — fixed today/forecast layout replaced with composable `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `spacer`).
+- **Two new icon styles** — `flat` and `monochrome` join `line` and `fill`, courtesy of [meteocons v3](https://github.com/basmilius/meteocons).
+- **Animated icons toggle** — new `animated_icon` option (default `true`).
+- **Performance — smaller bundle** — bundle splitting drops the initial JS from ~302 KB to **~98 KB** gzip; static and animated icons stream in as separate chunks on demand. Keeps the main thread responsive on low-power devices (e.g. NSPanel Pro).
+- **Performance — isolated re-renders** — the v2 monolith (one 800-line LitElement) is split into ~15 sub-components, so a clock tick or single-entity update only re-renders the affected piece (e.g. just the time segment) instead of the whole card.
+- **DX: real-HA e2e** — Playwright + screenshot tests against a real Home Assistant container catch visual regressions across every weather state × icon style × day/night × animated/static.
+- **DX: dev + prod side-by-side** — the dev build registers as `clock-weather-card-dev` so you can keep the production card installed and iterate on the dev one in the same dashboard without conflicts.
 
 ## FAQ
 
@@ -131,7 +137,8 @@ rows:
 | `entity` | string | **yes** | - | Entity ID of your weather provider |
 | `title` | string | no | `null` | Title displayed at the top of the card |
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
-| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon. Icons provided by [@meteocons/svg](https://github.com/basmilius/meteocons) |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). |
+| `animated_icon` | boolean | no | `true` | Whether the large weather icon should be animated or not |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
 
 ### Row Options
