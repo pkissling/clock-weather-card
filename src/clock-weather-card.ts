@@ -275,17 +275,15 @@ export class ClockWeatherCard extends LitElement {
 
   private getTodayLayoutVars (): string {
     const oversized = this.config.oversized
-    const todayIconScale = oversized ? 1.5 : 1
     const todayCenterHeight = oversized ? 8 : 4
     const todayCenterFontSize = oversized ? 7 : 3.5
 
     return [
-      `--today-left-width: ${oversized ? '25%' : '35%'}`,
-      `--today-right-width: ${oversized ? '75%' : '65%'}`,
+      `--today-left-width: ${oversized ? '45%' : '35%'}`,
+      `--today-right-width: ${oversized ? '55%' : '65%'}`,
       `--today-center-height: ${todayCenterHeight.toFixed(2)}rem`,
       `--today-center-font-size: ${todayCenterFontSize.toFixed(2)}rem`,
-      `--today-icon-scale: ${todayIconScale.toFixed(2)}`,
-      `--today-icon-opacity: ${oversized ? 0.8 : 1}`
+      `--today-icon-opacity: ${oversized ? 0.9 : 1}`
     ].join('; ')
   }
 
@@ -328,6 +326,7 @@ export class ClockWeatherCard extends LitElement {
     return html`
       <clock-weather-card-today-left style="${layoutVars}">
         <img class="today-main-icon" src=${icon} />
+        ${this.config.hide_date ? '' : html`<div class="today-date">${this.date()}</div>`}
       </clock-weather-card-today-left>
       <clock-weather-card-today-right style="${layoutVars}">
         <clock-weather-card-today-right-wrap>
@@ -341,9 +340,6 @@ export class ClockWeatherCard extends LitElement {
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
             ${(!this.config.hide_clock && this.showClock) ? this.time() : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
-          <clock-weather-card-today-right-wrap-bottom>
-            ${this.config.hide_date ? '' : this.date()}
-          </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`
   }

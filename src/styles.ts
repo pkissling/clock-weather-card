@@ -3,8 +3,13 @@ import { css } from 'lit'
 export default css`
 
   ha-card {
-    --bar-height: 1.5rem;
+    --bar-height: 1.2rem;
     height: 100%;
+  }
+
+  .card-content {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
 
   clock-weather-card-today {
@@ -27,8 +32,6 @@ export default css`
     max-width: 100%;
     max-height: 100%;
     opacity: var(--today-icon-opacity, 1);
-    transform: scale(var(--today-icon-scale, 1));
-    transform-origin: center;
   }
 
   clock-weather-card-today-right {
@@ -74,7 +77,7 @@ export default css`
     display: grid;
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
-    grid-gap: 0.5rem;
+    grid-gap: 0.2rem;
   }
 
   forecast-text {
