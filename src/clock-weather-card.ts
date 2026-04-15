@@ -69,13 +69,12 @@ export class ClockWeatherCard extends LitElement {
   @state() private error?: TemplateResult
   private forecastSubscriber?: () => Promise<void>
   private forecastSubscriberLock = false
+  private clockIntervalID?: ReturnType<typeof setInterval>
+  private clockTimeoutID?: ReturnType<typeof setTimeout>
 
   constructor () {
     super()
     this.currentDate = DateTime.now()
-    const msToNextSecond = (1000 - this.currentDate.millisecond)
-    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
-    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
@@ -126,7 +125,7 @@ export class ClockWeatherCard extends LitElement {
       return false
     }
 
-    if (changedProps.has('forecasts')) {
+    if (changedProps.has('forecasts') || changedProps.has('showClock') || changedProps.has('currentDate')) {
       return true
     }
 
@@ -200,11 +199,15 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private intervalID?: number;
+  private _cachedForecastRows?: TemplateResult[]
+  private _cachedForecastsRef?: WeatherForecast[]
+  private _cachedForecastWeatherState?: string
 
   @state() private showClock = true;
 
   public connectedCallback(): void {
     super.connectedCallback()
+    this.startClockInterval()
     if (this.hasUpdated) {
       void this.subscribeForecastEvents()
     }
@@ -215,6 +218,24 @@ export class ClockWeatherCard extends LitElement {
     super.disconnectedCallback()
     void this.unsubscribeForecastEvents()
     this.clearDisplayCycleInterval()
+    this.stopClockInterval()
+  }
+
+  private startClockInterval (): void {
+    this.stopClockInterval()
+    const msToNextSecond = 1000 - DateTime.now().millisecond
+    this.clockTimeoutID = setTimeout(() => {
+      this.currentDate = DateTime.now()
+      this.clockIntervalID = setInterval(() => { this.currentDate = DateTime.now() }, 1000)
+      this.clockTimeoutID = undefined
+    }, msToNextSecond)
+  }
+
+  private stopClockInterval (): void {
+    clearInterval(this.clockIntervalID)
+    clearTimeout(this.clockTimeoutID)
+    this.clockIntervalID = undefined
+    this.clockTimeoutID = undefined
   }
 
   private clearDisplayCycleInterval (): void {
@@ -323,6 +344,12 @@ export class ClockWeatherCard extends LitElement {
     if (!this.forecasts || this.forecasts.length === 0) {
       return [html`<div>No forecast data available</div>`];
     }
+    const weatherState = this.getWeather().state
+    if (this._cachedForecastRows &&
+        this._cachedForecastsRef === this.forecasts &&
+        this._cachedForecastWeatherState === weatherState) {
+      return this._cachedForecastRows
+    }
     const weather = this.getWeather()
     const currentTemp = roundIfNotNull(this.getCurrentTemperature())
     const maxRowsCount = this.config.forecast_rows
@@ -345,7 +372,11 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    const rows = forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    this._cachedForecastRows = rows
+    this._cachedForecastsRef = this.forecasts
+    this._cachedForecastWeatherState = weatherState
+    return rows
   }
 
   private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
