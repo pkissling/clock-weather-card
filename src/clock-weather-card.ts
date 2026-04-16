@@ -283,7 +283,8 @@ export class ClockWeatherCard extends LitElement {
       `--today-right-width: ${oversized ? '55%' : '65%'}`,
       `--today-center-height: ${todayCenterHeight.toFixed(2)}rem`,
       `--today-center-font-size: ${todayCenterFontSize.toFixed(2)}rem`,
-      `--today-icon-opacity: ${oversized ? 0.9 : 1}`
+      `--today-icon-scale: ${oversized ? 1.5 : 1}`,
+      `--today-icon-opacity: ${oversized ? 0.8 : 1}`
     ].join('; ')
   }
 
@@ -326,7 +327,6 @@ export class ClockWeatherCard extends LitElement {
     return html`
       <clock-weather-card-today-left style="${layoutVars}">
         <img class="today-main-icon" src=${icon} />
-        ${this.config.hide_date ? '' : html`<div class="today-date">${this.date()}</div>`}
       </clock-weather-card-today-left>
       <clock-weather-card-today-right style="${layoutVars}">
         <clock-weather-card-today-right-wrap>
@@ -336,6 +336,7 @@ export class ClockWeatherCard extends LitElement {
             ${showOutdoor && localizedOutdoor ? html`, ${this.localize('misc.outdoor')}: ${localizedOutdoor}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`, <aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
+            ${!this.config.hide_date ? html` · ${this.date()}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
             ${(!this.config.hide_clock && this.showClock) ? this.time() : localizedDisplayedTemp ?? 'n/a'}

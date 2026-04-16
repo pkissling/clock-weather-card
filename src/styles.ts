@@ -29,20 +29,12 @@ export default css`
   }
 
   .today-main-icon {
-    flex: 1;
-    min-height: 0;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: calc(var(--today-center-height, 4rem) + 1rem);
     object-fit: contain;
     opacity: var(--today-icon-opacity, 1);
-  }
-
-  .today-date {
-    width: 100%;
-    text-align: start;
-    font-size: 0.85rem;
-    padding: 0 0 0.15rem 0.1rem;
-    white-space: nowrap;
+    transform: scale(var(--today-icon-scale, 1));
+    transform-origin: center;
   }
 
   clock-weather-card-today-right {
