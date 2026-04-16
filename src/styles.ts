@@ -28,6 +28,15 @@ export default css`
     max-height: 100%;
   }
 
+  .today-date {
+    width: 100%;
+    text-align: start;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    padding-left: 0.1rem;
+    opacity: 0.75;
+  }
+
   .today-main-icon {
     width: 100%;
     height: calc(var(--today-center-height, 4rem) + 1rem);
@@ -40,13 +49,13 @@ export default css`
   clock-weather-card-today-right {
     display: flex;
     width: var(--today-right-width, 65%);
-    justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
   }
 
   clock-weather-card-today-right-wrap {
     display: flex;
     flex-direction: column;
+    width: 100%;
     z-index: 3;
   }
 
@@ -59,7 +68,8 @@ export default css`
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: var(--today-center-height, 4rem);
+    flex: 1;
+    min-height: var(--today-center-height, 4rem);
     font-size: var(--today-center-font-size, 3.5rem);
     white-space: nowrap;
     align-items: center;

@@ -326,6 +326,7 @@ export class ClockWeatherCard extends LitElement {
 
     return html`
       <clock-weather-card-today-left style="${layoutVars}">
+        ${!this.config.hide_date ? html`<div class="today-date">${this.date()}</div>` : ''}
         <img class="today-main-icon" src=${icon} />
       </clock-weather-card-today-left>
       <clock-weather-card-today-right style="${layoutVars}">
@@ -336,7 +337,6 @@ export class ClockWeatherCard extends LitElement {
             ${showOutdoor && localizedOutdoor ? html`, ${this.localize('misc.outdoor')}: ${localizedOutdoor}` : ''}
             ${this.config.aqi_sensor && aqi !== null ? html`, <aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
-            ${!this.config.hide_date ? html` · ${this.date()}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
             ${(!this.config.hide_clock && this.showClock) ? this.time() : localizedDisplayedTemp ?? 'n/a'}
