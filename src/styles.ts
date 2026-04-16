@@ -31,10 +31,11 @@ export default css`
   .today-date {
     width: 100%;
     text-align: start;
-    font-size: 0.9rem;
+    display: block;
+    z-index: 3;
     white-space: nowrap;
     padding-left: 0.1rem;
-    opacity: 0.88;
+  #  opacity: 0.88;
   }
 
   .today-main-icon {
