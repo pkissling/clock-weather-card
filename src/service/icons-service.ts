@@ -12,12 +12,18 @@ class IconsService {
   private cache = new Map<string, Promise<string>>()
 
   constructor() {
+    // `?inline` makes Vite emit each SVG as a base64 data URI in both dev and prod.
+    // Without it, dev mode returns a path-only URL that the browser resolves against
+    // the page origin — breaking when the page is served from a different host
+    // (e.g. Home Assistant) than the dev server.
     const staticModules = import.meta.glob('/node_modules/@meteocons/svg-static/{fill,flat,line,monochrome}/*.svg', {
+      query: '?inline',
       import: 'default'
     }) as Record<string, IconLoader>
     this.staticIndex = this.buildIndex(staticModules, /\/@meteocons\/svg-static\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
 
     const animatedModules = import.meta.glob('/node_modules/@meteocons/svg/{fill,flat,line,monochrome}/*.svg', {
+      query: '?inline',
       import: 'default'
     }) as Record<string, IconLoader>
     this.animatedIndex = this.buildIndex(animatedModules, /\/@meteocons\/svg\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)

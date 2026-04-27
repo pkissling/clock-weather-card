@@ -1,6 +1,4 @@
-import { expect, test } from '@playwright/test'
-
-import { setupCardTest } from './utils/test-utils'
+import { expect, test } from './utils/fixtures'
 
 export const supportedWeatherStates = [
   'rainy',
@@ -22,7 +20,6 @@ export const supportedWeatherStates = [
   'exceptional'
 ] as const
 
-
 const iconPermutations = (): { animated: string; daytime: string; iconVariant: string; state: typeof supportedWeatherStates[number] }[] =>
   ['animated', 'static'].flatMap(animated =>
     ['day', 'night'].flatMap(daytime =>
@@ -33,8 +30,8 @@ const iconPermutations = (): { animated: string; daytime: string; iconVariant: s
   )
 
 for (const { animated, daytime, iconVariant, state } of iconPermutations()) {
-  test(`${animated} ${iconVariant} ${state} ${daytime}`, async ({ page }) => {
-    await setupCardTest(page, {
+  test(`${animated} ${iconVariant} ${state} ${daytime}`, async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
       weather: { state },
       sunState: daytime === 'day' ? 'above_horizon' : 'below_horizon',
       cardConfig: `
@@ -42,7 +39,7 @@ for (const { animated, daytime, iconVariant, state } of iconPermutations()) {
         animated_icon: ${animated === 'animated' ? 'true' : 'false'}
       `
     })
-    await expect(page.locator('clock-weather-card'))
+    await expect(clockWeatherCard)
       .toHaveScreenshot()
   })
 }

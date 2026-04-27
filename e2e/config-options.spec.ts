@@ -1,12 +1,10 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './utils/fixtures'
 
-import { setupCardTest } from './utils/test-utils'
-
-test('with title', async ({ page }) => {
-  await setupCardTest(page, {
+test('with title', async ({ clockWeatherCard, setupCard }) => {
+  await setupCard({
     cardConfig: 'title: My Weather',
   })
 
-  await expect(page.locator('h1.card-header'))
+  await expect(clockWeatherCard.locator('h1.card-header'))
     .toHaveText('My Weather')
 })

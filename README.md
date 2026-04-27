@@ -22,6 +22,11 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 - **DX: real-HA e2e** — Playwright + screenshot tests against a real Home Assistant container catch visual regressions across every weather state × icon style × day/night × animated/static.
 - **DX: dev + prod side-by-side** — the dev build registers as `clock-weather-card-dev` so you can keep the production card installed and iterate on the dev one in the same dashboard without conflicts.
 
+## Breaking changes from v2
+
+- **`time_format` removed.** Use `time_pattern` on a `time` segment instead. For 24-hour clocks use `HH:mm` (or `HH:mm:ss`), for 12-hour use `hh:mm a` (or `h:mm a`). Full token reference: [Luxon formatting tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+- **Default `time_pattern` / `date_pattern` are now locale-aware.** When you omit `time_pattern` or `date_pattern`, the segment renders using Luxon's locale defaults (`DateTime.TIME_SIMPLE` / `DateTime.DATE_FULL`) — e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 always rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old behavior.
+
 ## FAQ
 
 <details>
@@ -105,6 +110,7 @@ entity: weather.home
 title: Home
 sun_entity: sun.sun
 weather_icon_type: line
+time_zone: Europe/Berlin
 rows:
   - segments:
       - type: icon
@@ -139,6 +145,7 @@ rows:
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). |
 | `animated_icon` | boolean | no | `true` | Whether the large weather icon should be animated or not |
+| `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
 
 ### Row Options
@@ -159,7 +166,7 @@ Displays the current time, auto-updating every second.
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `time` |
-| `time_pattern` | string | no | `HH:mm:ss` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) time format pattern |
+| `time_pattern` | string | no | locale default (`DateTime.TIME_SIMPLE`) | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) time format pattern |
 
 #### `date`
 
@@ -168,7 +175,7 @@ Displays the current date.
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `date` |
-| `date_pattern` | string | no | `EEEE, dd MMMM yyyy` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) date format pattern |
+| `date_pattern` | string | no | locale default (`DateTime.DATE_FULL`) | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) date format pattern |
 
 #### `weather`
 

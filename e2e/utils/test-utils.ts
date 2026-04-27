@@ -7,7 +7,7 @@ import { TEST_DASHBOARD } from './ha-setup'
 
 const WEATHER_ENTITY = 'weather.mock_weather'
 
-type MockOptions = undefined | {
+export type MockOptions = undefined | {
   weather?: {
     state?: string
     temperature?: number
@@ -81,22 +81,44 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
   await page.locator('clock-weather-card')
     .waitFor({ state: 'visible' })
 
-  // Freeze SMIL animations in SVG data URIs so screenshots are deterministic.
-  // Playwright's `animations: 'disabled'` only handles CSS animations, not SMIL.
-  // Only needed for animated icons — static SVGs have no SMIL elements.
+  // For animated icons: the icon loads asynchronously (static first, then animated
+  // replaces it). Wait until the animated variant is in the <img> src, then strip
+  // SMIL so screenshots are deterministic. Playwright's `animations: 'disabled'`
+  // only handles CSS animations, not SMIL.
   if (cardConfig.animated_icon !== false) {
+    await waitForAnimatedIcon(page)
     await freezeSvgAnimations(page)
   }
 }
 
-/**
- * Strip SMIL animation elements from all SVG `<img>` data URIs in the page,
- * including those inside shadow DOMs. This freezes animated SVGs so that
- * consecutive screenshots are stable for visual comparison.
- */
+const SMIL_PATTERN = /<(animate|animateTransform|animateMotion|set)\b/
+
+async function waitForAnimatedIcon (page: Page): Promise<void> {
+  // Best effort: some animated meteocons variants (e.g. plain sun) contain no SMIL,
+  // in which case there's nothing to wait for. Swallow the timeout.
+  await page.waitForFunction((smilPatternSrc: string) => {
+    const smilPattern = new RegExp(smilPatternSrc)
+
+    function hasAnimatedSvg (root: Document | ShadowRoot): boolean {
+      for (const img of root.querySelectorAll('img')) {
+        const src = img.getAttribute('src') ?? ''
+        if (!src.startsWith('data:image/svg+xml')) continue
+        if (smilPattern.test(decodeURIComponent(src))) return true
+      }
+      for (const el of root.querySelectorAll('*')) {
+        if (el.shadowRoot && hasAnimatedSvg(el.shadowRoot)) return true
+      }
+      return false
+    }
+
+    return hasAnimatedSvg(document)
+  }, SMIL_PATTERN.source, { timeout: 2000 })
+    .catch(() => undefined)
+}
+
 async function freezeSvgAnimations (page: Page): Promise<void> {
-  await page.evaluate(() => {
-    const SMIL_TAGS = ['animate', 'animateTransform', 'animateMotion', 'set']
+  await page.evaluate(async (smilTags: string[]) => {
+    const pending: Promise<unknown>[] = []
 
     function processElement (root: Document | ShadowRoot): void {
       for (const img of root.querySelectorAll('img')) {
@@ -109,13 +131,17 @@ async function freezeSvgAnimations (page: Page): Promise<void> {
         const svgText = decodeURIComponent(src.slice(commaIdx + 1))
         const doc = new DOMParser()
           .parseFromString(svgText, 'image/svg+xml')
-        const smilElements = doc.querySelectorAll(SMIL_TAGS.join(','))
+        const smilElements = doc.querySelectorAll(smilTags.join(','))
         if (smilElements.length === 0) continue
 
         smilElements.forEach(el => el.remove())
         const frozen = new XMLSerializer()
           .serializeToString(doc)
         img.src = 'data:image/svg+xml,' + encodeURIComponent(frozen)
+        // Wait for the browser to decode the replaced src so the screenshot
+        // captures the frozen frame, not the still-animating previous one.
+        pending.push(img.decode()
+          .catch(() => undefined))
       }
 
       for (const el of root.querySelectorAll('*')) {
@@ -124,5 +150,6 @@ async function freezeSvgAnimations (page: Page): Promise<void> {
     }
 
     processElement(document)
-  })
+    await Promise.all(pending)
+  }, ['animate', 'animateTransform', 'animateMotion', 'set'])
 }
