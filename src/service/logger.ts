@@ -21,6 +21,8 @@ class Logger {
 
   public debug = (msg: string, ...optionalParams: unknown[]): void => {
     if (isDev) {
+      console.log(this.logMessagePrefix, msg, ...optionalParams)
+    } else {
       console.debug(this.logMessagePrefix, msg, ...optionalParams)
     }
   }

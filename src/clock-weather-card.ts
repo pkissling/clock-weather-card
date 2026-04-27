@@ -1,16 +1,18 @@
 import '@/components/clock-weather-card-today'
 
 import type { HomeAssistant } from 'custom-card-helpers'
-import type { CSSResultGroup, TemplateResult } from 'lit'
+import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
 import { LitElement } from 'lit'
 import { html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import { DateTime } from 'luxon'
 
 import configService from '@/service/config-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
-import type { ClockWeatherCardConfig, MergedClockWeatherCardConfig, WeatherForecastEvent } from '@/types'
+import type { ClockHandle, ClockWeatherCardConfig, WeatherForecastEvent } from '@/types'
+import { computeNow, configNeedsSeconds, startClock } from '@/utils/clock'
 import { isDev } from '@/utils/development'
 
 // eslint-disable-next-line no-restricted-imports
@@ -35,12 +37,11 @@ console.info(
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
-  @property({ attribute: false }) public hass!: HomeAssistant
-  @state() private config!: MergedClockWeatherCardConfig
-  @state() private currentDate = new Date()
+  @property({ attribute: false }) public hass?: HomeAssistant
+  @state() private config?: ClockWeatherCardConfig
+  @state() private currentDate: DateTime = DateTime.now()
   private forecastSubscription: (() => Promise<void>) | null = null
-  private _clockIntervalId: number | null = null
-  private _clockTimeoutId: number | null = null
+  private _clock: ClockHandle | null = null
 
   protected render (): TemplateResult {
     if (!this.hass || !this.config) {
@@ -48,9 +49,10 @@ export class ClockWeatherCard extends LitElement {
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
 
+    const title = configService.getTitle(this.config)
     return html`
       <ha-card>
-        ${this.config.title ? html`<h1 class="card-header">${this.config.title}</h1>` : ''}
+        ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
           <clock-weather-card-today
             .hass=${this.hass}
@@ -65,7 +67,7 @@ export class ClockWeatherCard extends LitElement {
   public setConfig(config: ClockWeatherCardConfig): void {
     // TODO null check?
     // TODO validation
-    this.config = configService.mergeWithDefaultConfig(config)
+    this.config = config
   }
 
   public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
@@ -75,8 +77,7 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback()
-    this._startClock()
-    this.trySubscribeToForecastEvents()
+    this._tryStart()
   }
 
   public disconnectedCallback(): void {
@@ -85,33 +86,35 @@ export class ClockWeatherCard extends LitElement {
     this.tryUnsubscribeForecastEvents()
   }
 
-  public updated(): void {
-    this.trySubscribeToForecastEvents()
+  public willUpdate(changed: PropertyValues): void {
+    // Config change can affect tick interval (HH:mm vs HH:mm:ss) — restart.
+    if (changed.has('config')) this._stopClock()
+    this._tryStart()
   }
 
-  private _startClock(): void {
-    const msToNextSecond = 1000 - (Date.now() % 1000)
-    this._clockTimeoutId = window.setTimeout(() => {
-      this.currentDate = new Date()
-      this._clockIntervalId = window.setInterval(() => {
-        this.currentDate = new Date()
-      }, 1000)
-    }, msToNextSecond)
+  // Idempotent — safe to call from any lifecycle hook.
+  private _tryStart(): void {
+    if (!this.hass || !this.config) return
+    if (this._clock === null) {
+      this._clock = startClock(configNeedsSeconds(this.config), () => {
+        // hass/config are set when the clock starts and only cleared via
+        // disconnectedCallback (which stops the clock first), so reading
+        // them live keeps locale/timezone updates reactive.
+        this.currentDate = computeNow(this.hass!, this.config!)
+      })
+    }
+    if (!this.forecastSubscription) {
+      void this.trySubscribeToForecastEvents(this.hass, this.config)
+    }
   }
 
   private _stopClock(): void {
-    if (this._clockTimeoutId !== null) {
-      clearTimeout(this._clockTimeoutId)
-      this._clockTimeoutId = null
-    }
-    if (this._clockIntervalId !== null) {
-      clearInterval(this._clockIntervalId)
-      this._clockIntervalId = null
-    }
+    this._clock?.stop()
+    this._clock = null
   }
 
-  private async trySubscribeToForecastEvents(): Promise<void> {
-    if (this.forecastSubscription || !this.hass || !this.config) return
+  private async trySubscribeToForecastEvents(hass: HomeAssistant, config: ClockWeatherCardConfig): Promise<void> {
+    if (this.forecastSubscription) return
 
     try {
       const callback = (_: WeatherForecastEvent): void => {
@@ -121,9 +124,9 @@ export class ClockWeatherCard extends LitElement {
       const message = {
         type: 'weather/subscribe_forecast',
         forecast_type: 'daily', // TODO
-        entity_id: this.config.entity
+        entity_id: configService.getEntity(config)
       }
-      this.forecastSubscription = await this.hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
+      this.forecastSubscription = await hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, options)
       logger.debug('Subscribed to weather forecast')
     } catch (e: unknown) {
       logger.error('Error subscribing to weather forecast', e)

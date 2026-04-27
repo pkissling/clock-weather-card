@@ -1,9 +1,7 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './utils/fixtures'
 
-import { setupCardTest } from './utils/test-utils'
-
-test('title reduces bottom padding of card header', async ({ page }) => {
-  await setupCardTest(page, {
+test('title reduces bottom padding of card header', async ({ page, setupCard }) => {
+  await setupCard({
     cardConfig: 'title: My Weather',
   })
 

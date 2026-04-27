@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { cpSync, mkdirSync, mkdtempSync, writeFileSync } from 'fs'
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, unlinkSync, writeFileSync } from 'fs'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -40,6 +40,14 @@ export default async function globalSetup(): Promise<void> {
     execSync(`docker rm -f ${HA_CONTAINER_NAME}`, { stdio: 'ignore' })
   } catch {
     // Container didn't exist, that's fine
+  }
+
+  // Remove stale state files from previous interrupted runs so /tmp doesn't fill up.
+  // The active run uses a unique path (createStateFilePath) so this never races.
+  for (const file of readdirSync(os.tmpdir())) {
+    if (file.startsWith('ha-e2e-state-') && file.endsWith('.json')) {
+      try { unlinkSync(path.join(os.tmpdir(), file)) } catch { /* ignore */ }
+    }
   }
 
   console.log('[HA Setup] Starting Home Assistant container...')

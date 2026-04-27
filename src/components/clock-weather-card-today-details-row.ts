@@ -9,17 +9,17 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import { DEFAULT_DATE_PATTERN, DEFAULT_TIME_PATTERN } from '@/constants'
-import type { MergedClockWeatherCardConfig, RowConfig, SegmentConfig } from '@/types'
+import type { RowConfig, SegmentConfig } from '@/types'
 
 @customElement('clock-weather-card-today-details-row')
 class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public hass!: HomeAssistant
-  @property({ attribute: false }) public config!: MergedClockWeatherCardConfig
   @property({ attribute: false }) public rowConfig!: RowConfig
-  @property({ attribute: false }) public currentDate!: Date
+  @property({ attribute: false }) public currentDate!: DateTime
+  @property({ attribute: false }) public entity!: string
 
   public render (): TemplateResult {
     return html`${this.rowConfig.segments.map(seg => this.renderSegment(seg))}`
@@ -29,20 +29,18 @@ class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent 
     switch (segment.type) {
     case 'time':
       return html`<clock-weather-card-time-segment
-          .hass=${this.hass}
           .currentDate=${this.currentDate}
-          .pattern=${segment.time_pattern ?? DEFAULT_TIME_PATTERN}
+          .timePattern=${segment.time_pattern}
         ></clock-weather-card-time-segment>`
     case 'date':
       return html`<clock-weather-card-date-segment
-          .hass=${this.hass}
           .currentDate=${this.currentDate}
-          .pattern=${segment.date_pattern ?? DEFAULT_DATE_PATTERN}
+          .datePattern=${segment.date_pattern}
         ></clock-weather-card-date-segment>`
     case 'weather':
       return html`<clock-weather-card-weather-segment
           .hass=${this.hass}
-          .entity=${this.config.entity}
+          .entity=${this.entity}
           .attribute=${segment.attribute}
           .showUnit=${segment.show_unit ?? true}
         ></clock-weather-card-weather-segment>`

@@ -22,5 +22,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/custom.d.ts", "e2e"]
+  "include": ["src", "src/custom.d.ts", "e2e", "test"]
 }

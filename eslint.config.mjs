@@ -93,9 +93,21 @@ export default [
     },
   },
 
+  // Unit tests (node globals, relaxed rules)
+  {
+    files: ['test/**/*.ts'],
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      'no-console': 'off',
+      'no-restricted-imports': 'off',
+    },
+  },
+
   // Tooling configs (Node env)
   {
-    files: ['vite.config.ts', 'playwright.config.ts'],
+    files: ['vite.config.ts', 'vitest.config.ts', 'playwright.config.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },

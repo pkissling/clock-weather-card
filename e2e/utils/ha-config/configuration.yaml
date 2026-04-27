@@ -1,4 +1,5 @@
 homeassistant:
+  time_zone: Europe/Berlin
   auth_providers:
     - type: trusted_networks
       trusted_networks:

@@ -76,16 +76,8 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   sun_entity?: string
   weather_icon_type?: WeatherIconType
   animated_icon?: boolean
+  time_zone?: string
   rows?: RowConfig[]
-}
-
-export interface MergedClockWeatherCardConfig {
-  entity: string
-  title: string | null
-  sun_entity: string
-  weather_icon_type: WeatherIconType
-  animated_icon: boolean
-  rows: RowConfig[]
 }
 
 export const enum WeatherEntityFeature {
@@ -152,3 +144,7 @@ export interface WeatherForecastEvent {
 }
 
 export type WeatherIconType = 'fill' | 'flat' | 'line' | 'monochrome'
+
+export interface ClockHandle {
+  stop: () => void
+}

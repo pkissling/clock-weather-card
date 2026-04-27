@@ -5,27 +5,29 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
+import configService from '@/service/config-service'
 import hassService from '@/service/hass-service'
-import type { MergedClockWeatherCardConfig } from '@/types'
+import type { ClockWeatherCardConfig } from '@/types'
 
 @customElement('clock-weather-card-today')
 class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public hass!: HomeAssistant
-  @property({ attribute: false }) public config!: MergedClockWeatherCardConfig
-  @property({ attribute: false }) public currentDate!: Date
+  @property({ attribute: false }) public config!: ClockWeatherCardConfig
+  @property({ attribute: false }) public currentDate!: DateTime
 
   public render (): TemplateResult {
-    const weatherState = hassService.getWeatherState(this.hass.states, this.config.entity)
-    const isNight = hassService.isNight(this.hass.states, this.config.sun_entity)
+    const weatherState = hassService.getWeatherState(this.hass.states, configService.getEntity(this.config))
+    const isNight = hassService.isNight(this.hass.states, configService.getSunEntity(this.config))
 
     return html`
       <clock-weather-card-icon
         .weatherState=${weatherState}
         .isNight=${isNight}
-        .animatedIcon=${this.config.animated_icon}
-        .weatherIconType=${this.config.weather_icon_type}
+        .animatedIcon=${configService.getAnimatedIcon(this.config)}
+        .weatherIconType=${configService.getWeatherIconType(this.config)}
       ></clock-weather-card-icon>
       <clock-weather-card-today-details
         .hass=${this.hass}
