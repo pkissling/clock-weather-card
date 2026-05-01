@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.9.3](https://github.com/pkissling/clock-weather-card/compare/v2.9.2...v2.9.3) (2026-04-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency custom-card-helpers to v2 ([#663](https://github.com/pkissling/clock-weather-card/issues/663)) ([de52a84](https://github.com/pkissling/clock-weather-card/commit/de52a847d8d170a676103f7c82838c7543b2fd5e))
+* Hourly forecast dot sometimes not rendering ([#668](https://github.com/pkissling/clock-weather-card/issues/668)) ([e53730d](https://github.com/pkissling/clock-weather-card/commit/e53730d805e8cdfa218f020af031ca547805e347))
+* Update Danish translations for weather terms ([#675](https://github.com/pkissling/clock-weather-card/issues/675)) ([b21353a](https://github.com/pkissling/clock-weather-card/commit/b21353a42a4a38aa208385ced757b16b64379f04))
+
 ## [2.9.2](https://github.com/pkissling/clock-weather-card/compare/v2.9.1...v2.9.2) (2025-12-23)
 
 

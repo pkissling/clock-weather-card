@@ -1,5 +1,4 @@
 import { LitElement, html, type TemplateResult, type PropertyValues, type CSSResultGroup } from 'lit'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customElement, property, state } from 'lit/decorators.js'
 import {
   type HomeAssistant,
@@ -41,8 +40,9 @@ console.info(
 );
 
 // This puts your card into the UI card picker dialog
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).customCards = (window as any).customCards || [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
@@ -349,7 +349,7 @@ export class ClockWeatherCard extends LitElement {
 
   private createGradientString (minTempDay: number, maxTempDay: number, temperatureUnit: TemperatureUnit): string {
     function linearizeColor (temp: number, [tempLeft, colorLeft]: [number, Rgb], [tempRight, colorRight]: [number, Rgb]): Rgb {
-      const ratio = Math.max(Math.min((temp - tempLeft) / (tempRight - tempLeft), 100.0), 0.0)
+      const ratio = Math.max(Math.min((temp - tempLeft) / (tempRight - tempLeft), 1.0), 0.0)
       return new Rgb(
         Math.round(colorLeft.r + ratio * (colorRight.r - colorLeft.r)),
         Math.round(colorLeft.g + ratio * (colorRight.g - colorLeft.g)),
@@ -359,6 +359,20 @@ export class ClockWeatherCard extends LitElement {
 
     const minTempDayCelsius = this.toCelsius(temperatureUnit, minTempDay)
     const maxTempDayCelsius = this.toCelsius(temperatureUnit, maxTempDay)
+
+    if (minTempDayCelsius === maxTempDayCelsius) {
+      const entries = [...gradientMap.entries()]
+      let color: Rgb
+      if (minTempDayCelsius <= entries[0][0]) {
+        color = entries[0][1]
+      } else if (minTempDayCelsius >= entries[entries.length - 1][0]) {
+        color = entries[entries.length - 1][1]
+      } else {
+        const upperIndex = entries.findIndex(([temp]) => temp >= minTempDayCelsius)
+        color = linearizeColor(minTempDayCelsius, entries[upperIndex - 1], entries[upperIndex])
+      }
+      return `${color.toRgbString()} 0%, ${color.toRgbString()} 100%`
+    }
 
     const outputGradient = ([...gradientMap.entries()]
       .reduce((gradient, [temp, color], index, arr) => {
@@ -466,7 +480,7 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getWeather (): Weather {
-    const weather = this.hass.states[this.config.entity] as Weather | undefined
+    const weather = this.hass.states[this.config.entity] as unknown as Weather | undefined
     if (!weather) {
       throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
     }
