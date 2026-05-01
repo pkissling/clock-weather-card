@@ -9,6 +9,9 @@ declare global {
   }
 }
 
+export type TemperatureUnit = '°C' | '°F'
+export type TemperatureUnitInput = TemperatureUnit | 'C' | 'F'
+
 export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   entity: string
   title?: string
@@ -19,6 +22,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon?: boolean
   forecast_rows?: number
   locale?: string
+  temperature_unit?: TemperatureUnitInput
   time_format?: '12' | '24'
   time_pattern?: string
   date_pattern?: string
@@ -45,6 +49,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   animated_icon: boolean
   forecast_rows: number
   locale?: string
+  temperature_unit?: TemperatureUnit
   time_format?: '12' | '24'
   time_pattern?: string
   date_pattern: string
@@ -78,8 +83,6 @@ export interface Weather extends HassEntity {
     supported_features: WeatherEntityFeature
   }
 }
-
-export type TemperatureUnit = '°C' | '°F'
 
 export interface WeatherForecast {
   datetime: string
