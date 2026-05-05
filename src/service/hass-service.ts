@@ -1,39 +1,49 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 
+import type { WeatherForecastEvent } from '@/types'
+
 class HassService {
 
-  public getWeatherState(states: HomeAssistant['states'], weatherEntityId: string): string {
-    const entity = states[weatherEntityId]
-    if (!entity) {
-      throw new Error(`Entity ${weatherEntityId} not found`)
-    }
-    return entity.state
-  }
-
-  public isNight(states: HomeAssistant['states'], sunEntityId: string): boolean {
-    // TODO throw error if not found?
-    const sun = states[sunEntityId]
+  public isNight(hass: HomeAssistant, sunEntityId: string): boolean {
+    const sun = hass.states[sunEntityId]
     return sun?.state === 'below_horizon'
   }
 
   public getLocale(hass: HomeAssistant): string {
-    // TODO throw error if not found?
-    return hass.locale?.language ?? hass.language ?? 'en'
+    return hass.language
   }
 
-  public getEntityState(states: HomeAssistant['states'], entityId: string): string | undefined {
-    // TODO throw error if not found?
-    return states[entityId]?.state
+  public getTimeZone(hass: HomeAssistant): string | undefined {
+    // TODO: decide what to do when hass.config.time_zone is missing.
+    return hass.config.time_zone
   }
 
-  public getEntityAttribute(states: HomeAssistant['states'], entityId: string, attribute: string): unknown {
-    // TODO throw error if not found?
-    return states[entityId]?.attributes[attribute]
+  public getEntityState(hass: HomeAssistant, entityId: string): string | null {
+    // TODO: decide what to do when entityId is missing from hass.states.
+    // Currently returns null.
+    return hass.states[entityId]?.state ?? null
   }
 
-  public getEntityUnitOfMeasurement(states: HomeAssistant['states'], entityId: string): string {
-    // TODO throw error if not found?
-    return (states[entityId]?.attributes.unit_of_measurement as string) ?? ''
+  public getEntityAttribute(hass: HomeAssistant, entityId: string, attribute: string): unknown {
+    // TODO: decide what to do when entityId or attribute is missing.
+    // Currently returns undefined.
+    return hass.states[entityId]?.attributes[attribute]
+  }
+
+  public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {
+    // TODO: decide what to do when unit_of_measurement is missing or non-string.
+    // Currently returns null.
+    const attr = this.getEntityAttribute(hass, entityId, 'unit_of_measurement')
+    return typeof attr === 'string' ? attr : null
+  }
+
+  public async subscribeForecast(hass: HomeAssistant, entityId: string, callback: (event: WeatherForecastEvent) => void): Promise<() => Promise<void>> {
+    const message = {
+      type: 'weather/subscribe_forecast',
+      forecast_type: 'daily', // TODO: support hourly and twice_daily forecast types
+      entity_id: entityId
+    }
+    return hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, { resubscribe: false })
   }
 
 }

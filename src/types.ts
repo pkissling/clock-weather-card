@@ -77,6 +77,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   weather_icon_type?: WeatherIconType
   animated_icon?: boolean
   time_zone?: string
+  locale?: string
   rows?: RowConfig[]
 }
 

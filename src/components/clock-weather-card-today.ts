@@ -17,10 +17,11 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public hass!: HomeAssistant
   @property({ attribute: false }) public config!: ClockWeatherCardConfig
   @property({ attribute: false }) public currentDate!: DateTime
+  @property({ attribute: false }) public locale!: string
 
   public render (): TemplateResult {
-    const weatherState = hassService.getWeatherState(this.hass.states, configService.getEntity(this.config))
-    const isNight = hassService.isNight(this.hass.states, configService.getSunEntity(this.config))
+    const weatherState = hassService.getEntityState(this.hass, configService.getEntity(this.config))
+    const isNight = hassService.isNight(this.hass, configService.getSunEntity(this.config))
 
     return html`
       <clock-weather-card-icon
@@ -33,6 +34,7 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
         .hass=${this.hass}
         .config=${this.config}
         .currentDate=${this.currentDate}
+        .locale=${this.locale}
       ></clock-weather-card-today-details>
     `
   }

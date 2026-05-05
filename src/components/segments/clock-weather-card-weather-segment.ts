@@ -11,24 +11,23 @@ import translationsService from '@/service/translations-service'
 class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public hass!: HomeAssistant
   @property() public entity!: string
+  @property({ attribute: false }) public locale!: string
   @property() public attribute?: string
   @property({ type: Boolean }) public showUnit = true
 
   public render (): TemplateResult {
-    const locale = hassService.getLocale(this.hass)
-
     if (this.attribute) {
-      const value = hassService.getEntityAttribute(this.hass.states, this.entity, this.attribute)
+      const value = hassService.getEntityAttribute(this.hass, this.entity, this.attribute)
       if (value === undefined || value === null) return html``
       const unit = this.showUnit
-        ? hassService.getEntityAttribute(this.hass.states, this.entity, `${this.attribute}_unit`) ?? ''
+        ? hassService.getEntityAttribute(this.hass, this.entity, `${this.attribute}_unit`) ?? ''
         : ''
       return html`<span>${value}${unit}</span>`
     }
 
-    const state = hassService.getEntityState(this.hass.states, this.entity)
+    const state = hassService.getEntityState(this.hass, this.entity)
     if (!state) return html``
-    const translated = translationsService.t(locale, `weather.${state}`)
+    const translated = translationsService.t(this.locale, `weather.${state}`)
     return html`<span>${translated}</span>`
   }
 }

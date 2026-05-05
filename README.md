@@ -111,6 +111,7 @@ title: Home
 sun_entity: sun.sun
 weather_icon_type: line
 time_zone: Europe/Berlin
+locale: en-GB
 rows:
   - segments:
       - type: icon
@@ -146,6 +147,7 @@ rows:
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). |
 | `animated_icon` | boolean | no | `true` | Whether the large weather icon should be animated or not |
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
+| `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
 
 ### Row Options
