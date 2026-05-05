@@ -2,7 +2,6 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime } from 'luxon'
 
 import configService from '@/service/config-service'
-import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 
@@ -14,11 +13,11 @@ const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
 
 export function computeNow(hass: HomeAssistant, config: ClockWeatherCardConfig): DateTime {
   let now = DateTime.now()
-    .setLocale(hassService.getLocale(hass))
+    .setLocale(configService.getLocale(config, hass))
   const tz = configService.getTimeZone(config, hass)
   const zoned = now.setZone(tz)
   if (!zoned.isValid) {
-    logger.warn(`Invalid time zone "${tz}", falling back to local time`)
+    logger.warn(`Invalid time zone "${tz}", falling back to browser time`)
     return now
   }
   return zoned

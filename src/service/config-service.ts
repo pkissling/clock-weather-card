@@ -1,5 +1,8 @@
 import type { HomeAssistant } from 'custom-card-helpers'
+import { DateTime } from 'luxon'
 
+import hassService from '@/service/hass-service'
+import logger from '@/service/logger'
 import type { ClockWeatherCardConfig, RowConfig, WeatherIconType } from '@/types'
 
 const DEFAULT_SUN_ENTITY = 'sun.sun'
@@ -48,15 +51,41 @@ class ConfigService {
   }
 
   public getWeatherIconType(config: ClockWeatherCardConfig): WeatherIconType {
-    return config.weather_icon_type ?? DEFAULT_WEATHER_ICON_TYPE
+    return config.weather_icon_type || DEFAULT_WEATHER_ICON_TYPE
   }
 
   public getAnimatedIcon(config: ClockWeatherCardConfig): boolean {
     return config.animated_icon ?? DEFAULT_ANIMATED_ICON
   }
 
-  public getTimeZone(config: ClockWeatherCardConfig, hass: HomeAssistant): string {
-    return config.time_zone ?? hass.config.time_zone
+  public getTimeZone(config: ClockWeatherCardConfig, hass: HomeAssistant): string | undefined {
+    const fallback = hassService.getTimeZone(hass)
+    if (!config.time_zone) return fallback
+    if (!DateTime.now()
+      .setZone(config.time_zone).isValid) {
+      // TODO populate error instead of falling back?
+      logger.warn(`Invalid time zone "${config.time_zone}", falling back to "${fallback}"`)
+      return fallback
+    }
+    return config.time_zone
+  }
+
+  public getLocale(config: ClockWeatherCardConfig, hass: HomeAssistant): string {
+    const fallback = hassService.getLocale(hass)
+    // TODO populate error instead of falling back?
+    if (!config.locale) return fallback
+    // Luxon defers locale validation until the first format call — a malformed
+    // tag throws RangeError there. Well-formed but unsupported tags don't throw
+    // (Intl falls back silently).
+    try {
+      DateTime.now()
+        .setLocale(config.locale)
+        .toFormat('cccc')
+      return config.locale
+    } catch {
+      logger.warn(`Invalid locale "${config.locale}", falling back to "${fallback}"`)
+      return fallback
+    }
   }
 
   public getRows(config: ClockWeatherCardConfig): RowConfig[] {

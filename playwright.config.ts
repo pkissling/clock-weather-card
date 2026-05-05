@@ -5,13 +5,15 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './e2e',
-  /* Tests must run serially — they share a single HA entity state */
-  fullyParallel: false,
+  /* fullyParallel enables test-level distribution for `--shard=N/M` (otherwise
+     Playwright shards by file, putting all 270+ icon snapshot tests in one shard).
+     workers: 1 still forces serial execution within a shard — required because
+     the test suite shares a single HA Docker container per shard. */
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* No retries */
   retries: 0,
-  /* Single worker — tests share a single HA instance and entity state */
   workers: 1,
   /* Timeout for each test — increased for HA page loads */
   timeout: 30_000,

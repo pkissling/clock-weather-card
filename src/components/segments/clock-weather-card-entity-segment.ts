@@ -5,6 +5,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import hassService from '@/service/hass-service'
+import logger from '@/service/logger'
 
 @customElement('clock-weather-card-entity-segment')
 class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
@@ -16,7 +17,7 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
 
   public render (): TemplateResult {
     if (this.attribute) {
-      const value = hassService.getEntityAttribute(this.hass.states, this.entityId, this.attribute)
+      const value = hassService.getEntityAttribute(this.hass, this.entityId, this.attribute)
       if (value === undefined || value === null) return html``
       const unit = this.showUnit
         ? this.resolveUnit()
@@ -24,7 +25,7 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
       return html`<span>${value}${unit}</span>`
     }
 
-    const state = hassService.getEntityState(this.hass.states, this.entityId)
+    const state = hassService.getEntityState(this.hass, this.entityId)
     if (!state) return html``
     const unit = this.showUnit
       ? this.resolveUnit()
@@ -34,9 +35,19 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
 
   private resolveUnit (): string {
     if (this.unitAttribute) {
-      return String(hassService.getEntityAttribute(this.hass.states, this.entityId, this.unitAttribute) ?? '')
+      const unit = hassService.getEntityAttribute(this.hass, this.entityId, this.unitAttribute)
+      if (unit === undefined || unit === null) {
+        logger.warn(`Unit attribute "${this.unitAttribute}" not found for entity "${this.entityId}"`)
+        return ''
+      }
+      return String(unit)
     }
-    return hassService.getEntityUnitOfMeasurement(this.hass.states, this.entityId)
+    const unit = hassService.getEntityUnitOfMeasurement(this.hass, this.entityId)
+    if (!unit) {
+      logger.warn(`Unit attribute "unit_of_measurement" not found for entity "${this.entityId}"`)
+      return ''
+    }
+    return unit
   }
 }
 

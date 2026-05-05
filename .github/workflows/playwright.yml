@@ -10,35 +10,43 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    name: Playwright Tests (${{ matrix.shard }}/${{ strategy.job-total }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
 
     steps:
     - uses: actions/checkout@v6
 
-    - uses: actions/setup-node@v6
-      with:
-        node-version: 24
-
-    - name: Enable Corepack
-      run: corepack enable
-
-    - name: Install dependencies
-      run: yarn install
-
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
 
-    - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
-
+    # Run tests inside the same image used to generate snapshots
+    # (.github/playwright-snapshots-helper/Dockerfile pins this same tag).
+    # Pre-installed fonts on the GitHub-hosted runner alter font-fallback
+    # resolution and cause sub-pixel differences vs the snapshots; running
+    # in the snapshot image makes the CI render byte-identical.
+    # --network=host so the HA container we launch via the mounted socket
+    # is reachable on 127.0.0.1:8123 from inside this container.
     - name: Run Playwright tests
-      run: yarn playwright test
+      run: |
+        docker run --rm \
+          --network host \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v "$(which docker):/usr/bin/docker:ro" \
+          -v /tmp:/tmp \
+          -v "$PWD:/work" \
+          -w /work \
+          -e PLAYWRIGHT_HTML_OPEN=never \
+          mcr.microsoft.com/playwright:v1.59.1-jammy@sha256:8a0360d39d1973be506dd59002904a774f6d697d4946c94063b3fd006461c8ff \
+          bash -lc "corepack enable && yarn install --immutable && yarn playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}"
 
     - uses: actions/upload-artifact@v6
       if: failure()
       with:
-        name: playwright-report
+        name: playwright-report-${{ matrix.shard }}
         path: playwright-report/
         retention-days: 7

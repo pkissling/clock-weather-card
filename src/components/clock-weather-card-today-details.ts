@@ -15,6 +15,7 @@ class ClockWeatherCardTodayDetails extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public hass!: HomeAssistant
   @property({ attribute: false }) public config!: ClockWeatherCardConfig
   @property({ attribute: false }) public currentDate!: DateTime
+  @property({ attribute: false }) public locale!: string
 
   public render (): TemplateResult {
     const entity = configService.getEntity(this.config)
@@ -26,6 +27,7 @@ class ClockWeatherCardTodayDetails extends AbstractClockWeatherCardComponent {
           .entity=${entity}
           .rowConfig=${rowConfig}
           .currentDate=${this.currentDate}
+          .locale=${this.locale}
         ></clock-weather-card-today-details-row>
       `)}`
   }
