@@ -10,13 +10,9 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright Tests (${{ matrix.shard }}/${{ strategy.job-total }})
+    name: Playwright Tests
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4]
+    timeout-minutes: 45
 
     steps:
     - uses: actions/checkout@v6
@@ -42,11 +38,11 @@ jobs:
           -w /work \
           -e PLAYWRIGHT_HTML_OPEN=never \
           mcr.microsoft.com/playwright:v1.59.1-jammy@sha256:8a0360d39d1973be506dd59002904a774f6d697d4946c94063b3fd006461c8ff \
-          bash -lc "corepack enable && yarn install --immutable && yarn playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}"
+          bash -lc "corepack enable && yarn install --immutable && yarn playwright test"
 
     - uses: actions/upload-artifact@v6
       if: failure()
       with:
-        name: playwright-report-${{ matrix.shard }}
+        name: playwright-report
         path: playwright-report/
         retention-days: 7
