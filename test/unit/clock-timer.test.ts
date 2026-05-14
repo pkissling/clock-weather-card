@@ -63,7 +63,7 @@ describe('ClockWeatherCard timer behavior', () => {
     card.hass = {
       config: { time_zone: hassTimeZone, unit_system: { temperature: '°C' } },
       locale: { language: 'en-GB', time_format: '24' },
-      states: {},
+      states: { 'weather.home': { state: 'sunny' } },
       connection: { subscribeMessage: async (): Promise<() => Promise<void>> => async (): Promise<void> => {} },
     }
 

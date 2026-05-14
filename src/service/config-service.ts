@@ -1,9 +1,9 @@
 import type { HomeAssistant } from 'custom-card-helpers'
-import { DateTime } from 'luxon'
 
 import hassService from '@/service/hass-service'
-import logger from '@/service/logger'
 import type { ClockWeatherCardConfig, RowConfig, WeatherIconType } from '@/types'
+import { entityNotFound, invalidConfigValue } from '@/utils/errors'
+import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
 
 const DEFAULT_SUN_ENTITY = 'sun.sun'
 const DEFAULT_WEATHER_ICON_TYPE: WeatherIconType = 'line'
@@ -42,6 +42,30 @@ class ConfigService {
     return config.entity
   }
 
+  public validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): void {
+    const entity = this.getEntity(config)
+    if (!hassService.getEntityState(hass, entity)) {
+      throw entityNotFound(entity)
+    }
+
+    if (config.time_zone && !isValidTimeZone(config.time_zone)) {
+      throw invalidConfigValue('time_zone', config.time_zone)
+    }
+
+    if (config.locale && !isValidLocale(config.locale)) {
+      throw invalidConfigValue('locale', config.locale)
+    }
+  }
+
+  public isValidConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): boolean {
+    try {
+      this.validateConfig(config, hass)
+      return true
+    } catch {
+      return false
+    }
+  }
+
   public getTitle(config: ClockWeatherCardConfig): string | null {
     return config.title ?? null
   }
@@ -58,34 +82,12 @@ class ConfigService {
     return config.animated_icon ?? DEFAULT_ANIMATED_ICON
   }
 
-  public getTimeZone(config: ClockWeatherCardConfig, hass: HomeAssistant): string | undefined {
-    const fallback = hassService.getTimeZone(hass)
-    if (!config.time_zone) return fallback
-    if (!DateTime.now()
-      .setZone(config.time_zone).isValid) {
-      // TODO populate error instead of falling back?
-      logger.warn(`Invalid time zone "${config.time_zone}", falling back to "${fallback}"`)
-      return fallback
-    }
-    return config.time_zone
+  public getTimeZone(config: ClockWeatherCardConfig, hass: HomeAssistant): string {
+    return config.time_zone || hassService.getTimeZone(hass)
   }
 
   public getLocale(config: ClockWeatherCardConfig, hass: HomeAssistant): string {
-    const fallback = hassService.getLocale(hass)
-    // TODO populate error instead of falling back?
-    if (!config.locale) return fallback
-    // Luxon defers locale validation until the first format call — a malformed
-    // tag throws RangeError there. Well-formed but unsupported tags don't throw
-    // (Intl falls back silently).
-    try {
-      DateTime.now()
-        .setLocale(config.locale)
-        .toFormat('cccc')
-      return config.locale
-    } catch {
-      logger.warn(`Invalid locale "${config.locale}", falling back to "${fallback}"`)
-      return fallback
-    }
+    return config.locale || hassService.getLocale(hass)
   }
 
   public getRows(config: ClockWeatherCardConfig): RowConfig[] {

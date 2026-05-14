@@ -1,3 +1,4 @@
+import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-today'
 
 import type { HomeAssistant } from 'custom-card-helpers'
@@ -13,8 +14,9 @@ import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, WeatherForecastEvent } from '@/types'
-import { computeNow, configNeedsSeconds, startClock } from '@/utils/clock'
 import { isDev } from '@/utils/development'
+import { requiredConfigMissing } from '@/utils/errors'
+import { computeNow, configNeedsSeconds, startClock } from '@/utils/luxon'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
@@ -44,21 +46,37 @@ export class ClockWeatherCard extends LitElement {
   private forecastSubscription: (() => Promise<void>) | null = null
   private _clock: ClockHandle | null = null
 
-  protected render (): TemplateResult {
+  protected render(): TemplateResult {
     if (!this.hass || !this.config) {
       // TODO
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
 
-    const title = configService.getTitle(this.config)
-    const locale = configService.getLocale(this.config, this.hass)
+    try {
+      return this._renderCard(this.hass, this.config)
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e)
+      return html`
+        <clock-weather-card-error
+          .message=${message}
+          .hass=${this.hass}
+          .config=${this.config}
+        ></clock-weather-card-error>
+      `
+    }
+  }
+
+  private _renderCard(hass: HomeAssistant, config: ClockWeatherCardConfig): TemplateResult {
+    configService.validateConfig(config, hass)
+    const title = configService.getTitle(config)
+    const locale = configService.getLocale(config, hass)
     return html`
       <ha-card>
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
           <clock-weather-card-today
-            .hass=${this.hass}
-            .config=${this.config}
+            .hass=${hass}
+            .config=${config}
             .currentDate=${this.currentDate}
             .locale=${locale}
           ></clock-weather-card-today>
@@ -68,10 +86,8 @@ export class ClockWeatherCard extends LitElement {
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
-    // TODO null check?
-    // TODO validation
     if (!config?.entity) {
-      throw new Error('entity is required')
+      throw requiredConfigMissing('entity')
     }
     this.config = config
   }
@@ -95,12 +111,13 @@ export class ClockWeatherCard extends LitElement {
   public willUpdate(changed: PropertyValues): void {
     // Config change can affect tick interval (HH:mm vs HH:mm:ss) — restart.
     if (changed.has('config')) this._stopClock()
-    this._tryStart()
+    if (changed.has('config') || changed.has('hass')) this._tryStart()
   }
 
   // Idempotent — safe to call from any lifecycle hook.
   private _tryStart(): void {
     if (!this.hass || !this.config) return
+    if (!configService.isValidConfig(this.config, this.hass)) return
     if (this._clock === null) {
       this._clock = startClock(configNeedsSeconds(this.config), () => {
         // hass/config are set when the clock starts and only cleared via

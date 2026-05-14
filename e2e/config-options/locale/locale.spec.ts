@@ -1,5 +1,5 @@
 import { expect, test } from '../../utils/fixtures'
-import { updateCard } from '../../utils/test-utils'
+import { cardErrorMessage, updateCard } from '../../utils/test-utils'
 
 test.describe('locale', () => {
 
@@ -105,7 +105,7 @@ test.describe('locale', () => {
       .toContainText('Sunny')
   })
 
-  test('malformed locale falls back to HA language', async ({ setupCard, clockWeatherCard }) => {
+  test('renders an error card when configured locale is malformed', async ({ setupCard, page }) => {
     await setupCard({
       language: 'es',
       cardConfig: `
@@ -117,8 +117,8 @@ test.describe('locale', () => {
       weather: { state: 'sunny' },
     })
 
-    await expect(clockWeatherCard)
-      .toContainText('Soleado')
+    expect(await cardErrorMessage(page))
+      .toContain('Config option "locale" has invalid value "D"')
   })
 
   test('updates the locale at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

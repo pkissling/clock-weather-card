@@ -8,6 +8,8 @@ Use `yarn` (not `npm`) for all dependency and script commands.
 
 **MANDATORY: Every new feature, bug fix, or behavioral change MUST include tests. Changes without adequate test coverage will not be accepted.**
 
+**Prefer E2E tests over unit tests.** Only write a unit test when the behavior cannot reasonably be covered by an E2E test (e.g. pure logic with many branches/edge cases that would be impractical to exercise through the UI). If it can be tested end-to-end, it should be.
+
 ### Unit Tests (Vitest)
 
 ```
@@ -34,11 +36,11 @@ yarn playwright-ui      # interactive Playwright UI
 
 ### What to test
 
-When adding new functionality:
+When adding new functionality, prefer E2E coverage and fall back to unit tests only for behavior that can't be exercised end-to-end:
 
-1. **Unit tests** — cover all branches and edge cases of new/changed functions and services.
-2. **Component tests** — verify the component integrates the new logic correctly (timer behavior, config merging, rendering).
-3. **E2E tests** — verify the feature works end-to-end in a browser with the built card against a live HA instance.
+1. **E2E tests (preferred)** — verify the feature works end-to-end in a browser with the built card against a live HA instance. This is the default choice.
+2. **Unit tests (fallback)** — only when the behavior cannot reasonably be covered by an E2E test (e.g. pure logic with many branches/edge cases that would be impractical to exercise through the UI). Cover all branches and edge cases of the new/changed functions and services.
+3. **Component tests (fallback)** — when integration logic (timer behavior, config merging, rendering) cannot be verified via E2E, fall back to component-level tests.
 
 ## Verification after changes
 

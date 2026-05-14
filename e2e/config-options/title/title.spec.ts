@@ -13,7 +13,7 @@ test.describe('title', () => {
 
   test('does not render the card header when title is an empty string', async ({ clockWeatherCard, setupCard }) => {
     await setupCard({
-      cardConfig: "title: ''",
+      cardConfig: 'title: \'\'',
     })
 
     await expect(clockWeatherCard.locator('h1.card-header'))
