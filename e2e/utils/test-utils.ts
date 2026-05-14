@@ -47,20 +47,7 @@ const DEFAULT_FORECAST_DAILY: WeatherForecast[] = [
   },
 ]
 
-export const cardErrorMessage = (page: Page): Promise<string | null> =>
-  page.locator('hui-error-card')
-    .evaluate(el => (el as { _config?: { message?: string } })._config?.message ?? null)
-
-// Update the dashboard card config without reloading the page. HA pushes the
-// new config to the live card so its setConfig fires in place — used by tests
-// that assert the card reacts to runtime config changes.
-export const updateCard = async (cardConfig?: string): Promise<void> => {
-  const defaults = parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
-  const overrides = cardConfig ? parseYaml(cardConfig) as Partial<ClockWeatherCardConfig> : {}
-  await api.setDashboardConfig(TEST_DASHBOARD, { ...defaults, ...overrides })
-}
-
-export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void> => {
+export const setupCard = async (page: Page, opts: MockOptions): Promise<void> => {
   // Parse YAML card config, merging with defaults
   const defaults = opts?.cardConfig === null ? {} : parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
   const overrides = opts?.cardConfig ? parseYaml(opts.cardConfig) as Partial<ClockWeatherCardConfig> : {}
@@ -90,8 +77,11 @@ export const setupCardTest = async (page: Page, opts: MockOptions): Promise<void
   await api.setLanguage(opts?.language ?? 'en')
   await api.setTimeZone(opts?.timeZone ?? 'Europe/Berlin')
 
-  // Navigate to the test dashboard
-  await page.goto(`/${TEST_DASHBOARD}/0`)
+  // Skip goto on follow-up calls so HA's live WS push hits the mounted card without a reload.
+  if (!page.url()
+    .includes(`/${TEST_DASHBOARD}/`)) {
+    await page.goto(`/${TEST_DASHBOARD}/0`)
+  }
 
   // Wait until the dashboard has rendered something for our card slot — either
   // the card itself, or HA's hui-error-card wrapper if setConfig threw.

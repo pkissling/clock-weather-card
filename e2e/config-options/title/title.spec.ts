@@ -1,5 +1,4 @@
 import { expect, test } from '../../utils/fixtures'
-import { updateCard } from '../../utils/test-utils'
 
 test.describe('title', () => {
   test('renders the configured title in the card header', async ({ clockWeatherCard, setupCard }) => {
@@ -32,7 +31,7 @@ test.describe('title', () => {
     await expect(clockWeatherCard.locator('h1.card-header'))
       .toHaveText('Initial')
 
-    await updateCard('title: Updated')
+    await setupCard({ cardConfig: 'title: Updated' })
 
     await expect(clockWeatherCard.locator('h1.card-header'))
       .toHaveText('Updated')

@@ -1,5 +1,4 @@
 import { expect, test } from '../../utils/fixtures'
-import { updateCard } from '../../utils/test-utils'
 
 test.describe('animated_icon', () => {
   test('animated_icon: false renders a static SVG without SMIL animation tags', async ({ setupCard, clockWeatherCard }) => {
@@ -45,7 +44,7 @@ test.describe('animated_icon', () => {
     const staticSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
       .getAttribute('src')
 
-    await updateCard('animated_icon: true')
+    await setupCard({ cardConfig: 'animated_icon: true' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-icon img'))
       .not.toHaveAttribute('src', staticSrc!)

@@ -1,6 +1,5 @@
 import { expect, test } from '../../utils/fixtures'
 import api from '../../utils/ha-api'
-import { updateCard } from '../../utils/test-utils'
 
 // TODO: cover more rows variations — empty rows, font_size, mixed segment types per row,
 // reordering segments within a row, missing optional segment fields.
@@ -89,12 +88,14 @@ test.describe('rows', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
       .toHaveCount(0)
 
-    await updateCard(`
-      rows:
-        - segments:
-            - type: date
-              date_pattern: yyyy-MM-dd
-    `)
+    await setupCard({
+      cardConfig: `
+        rows:
+          - segments:
+              - type: date
+                date_pattern: yyyy-MM-dd
+      `,
+    })
 
     // After update: the time segment is gone; a date segment appears.
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
