@@ -14,8 +14,7 @@ test.describe('entity', () => {
       .toContainText('Rainy')
   })
 
-  // TODO i think in this case we should also render an error message to avoid confiusion
-  test('renders the card without crashing when the configured entity does not exist', async ({ setupCard, clockWeatherCard }) => {
+  test('renders an error card when the configured entity does not exist', async ({ setupCard, clockWeatherCard, page }) => {
     await setupCard({
       cardConfig: `
         entity: weather.does_not_exist
@@ -23,11 +22,8 @@ test.describe('entity', () => {
       weather: { state: 'sunny' },
     })
 
-    await expect(clockWeatherCard)
-      .toBeVisible()
-    await expect(clockWeatherCard)
-      .toContainText(/\d{1,2}:\d{2}/)
-    // Weather state from the seeded mock_weather entity is not picked up.
+    expect(await cardErrorMessage(page))
+      .toContain('Referenced entity weather.does_not_exist does not exist')
     await expect(clockWeatherCard)
       .not.toContainText('Sunny')
   })
@@ -40,7 +36,7 @@ test.describe('entity', () => {
     })
 
     expect(await cardErrorMessage(page))
-      .toContain('entity is required')
+      .toContain('Config option "entity" is required')
     await expect(clockWeatherCard)
       .toHaveCount(0)
   })
@@ -51,34 +47,44 @@ test.describe('entity', () => {
     })
 
     expect(await cardErrorMessage(page))
-      .toContain('entity is required')
+      .toContain('Config option "entity" is required')
     await expect(clockWeatherCard)
       .toHaveCount(0)
   })
 
-  test('updates the entity at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('swaps to the error card when the configured entity is replaced with a non-existing one (no reload)', async ({ setupCard, clockWeatherCard, page }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
-        rows:
-          - segments:
-              - type: weather
       `,
       weather: { state: 'sunny' },
     })
     await expect(clockWeatherCard)
       .toContainText('Sunny')
 
-    // Switch the configured entity to one that doesn't exist; the weather text should disappear.
     await updateCard(`
       entity: weather.does_not_exist
-      animated_icon: false
-      rows:
-        - segments:
-            - type: weather
+    `)
+
+    await expect.poll(() => cardErrorMessage(page))
+      .toContain('Referenced entity weather.does_not_exist does not exist')
+  })
+
+  test('recovers from the error card when the configured entity is replaced with an existing one (no reload)', async ({ setupCard, clockWeatherCard, page }) => {
+    await setupCard({
+      cardConfig: `
+        entity: weather.does_not_exist
+      `,
+      weather: { state: 'sunny' },
+    })
+    expect(await cardErrorMessage(page))
+      .toContain('Referenced entity weather.does_not_exist does not exist')
+
+    await updateCard(`
+      entity: weather.mock_weather
     `)
 
     await expect(clockWeatherCard)
-      .not.toContainText('Sunny')
+      .toContainText('Sunny')
   })
 })

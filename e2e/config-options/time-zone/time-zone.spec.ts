@@ -1,5 +1,5 @@
 import { expect, test } from '../../utils/fixtures'
-import { updateCard } from '../../utils/test-utils'
+import { cardErrorMessage, updateCard } from '../../utils/test-utils'
 
 test.describe('time_zone', () => {
 
@@ -37,15 +37,15 @@ test.describe('time_zone', () => {
       .toContainText('2:00 PM')
   })
 
-  test('falls back to HA time zone when configured time_zone is invalid', async ({ setupCard, clockWeatherCard }) => {
+  test('renders an error card when configured time_zone is invalid', async ({ setupCard, page }) => {
     await setupCard({
       timeZone: 'Europe/Berlin',
       cardConfig: 'time_zone: NotARealTimeZone',
       date: new Date('2025-06-15T12:00:00Z'),
     })
 
-    await expect(clockWeatherCard)
-      .toContainText('2:00 PM')
+    expect(await cardErrorMessage(page))
+      .toContain('Config option "time_zone" has invalid value "NotARealTimeZone"')
   })
 
   test('date segment respects configured time_zone', async ({ setupCard, clockWeatherCard }) => {

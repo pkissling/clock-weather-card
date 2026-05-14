@@ -13,8 +13,7 @@ class HassService {
     return hass.language
   }
 
-  public getTimeZone(hass: HomeAssistant): string | undefined {
-    // TODO: decide what to do when hass.config.time_zone is missing.
+  public getTimeZone(hass: HomeAssistant): string {
     return hass.config.time_zone
   }
 

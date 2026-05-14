@@ -2,7 +2,6 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime } from 'luxon'
 
 import configService from '@/service/config-service'
-import logger from '@/service/logger'
 import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 
 // Two fixed reference points that differ only in their second component.
@@ -12,15 +11,9 @@ const SECOND_0 = DateTime.local(2000, 1, 1, 12, 0, 0)
 const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
 
 export function computeNow(hass: HomeAssistant, config: ClockWeatherCardConfig): DateTime {
-  let now = DateTime.now()
+  return DateTime.now()
     .setLocale(configService.getLocale(config, hass))
-  const tz = configService.getTimeZone(config, hass)
-  const zoned = now.setZone(tz)
-  if (!zoned.isValid) {
-    logger.warn(`Invalid time zone "${tz}", falling back to browser time`)
-    return now
-  }
-  return zoned
+    .setZone(configService.getTimeZone(config, hass))
 }
 
 export function configNeedsSeconds(config: ClockWeatherCardConfig): boolean {
@@ -52,5 +45,20 @@ export function startClock(needsSeconds: boolean, onTick: () => void): ClockHand
       clearTimeout(timeoutId)
       if (intervalId !== null) clearInterval(intervalId)
     }
+  }
+}
+
+export const isValidTimeZone = (timeZone: string): boolean =>
+  DateTime.now()
+    .setZone(timeZone).isValid
+
+export const isValidLocale = (locale: string): boolean => {
+  try {
+    DateTime.now()
+      .setLocale(locale)
+      .toFormat('cccc')
+    return true
+  } catch {
+    return false
   }
 }
