@@ -31,7 +31,7 @@ yarn playwright-ui      # interactive Playwright UI
 - Location: `e2e/`
 - Config: `playwright.config.ts`
 - Tests run against a real Home Assistant instance (Docker-based, managed by global setup/teardown).
-- Uses `setupCardTest()` from `e2e/utils/test-utils.ts` for card config and state setup.
+- Uses `setupCard()` from `e2e/utils/test-utils.ts` for card config and state setup.
 - **ALWAYS run `yarn test:e2e` — the suite is fully self-contained.** The global setup spins up its own Home Assistant Docker container and tears it down afterwards. There are no external services, accounts, or manual prerequisites. Never skip the e2e run.
 
 ### What to test

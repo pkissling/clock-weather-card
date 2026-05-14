@@ -1,5 +1,4 @@
 import { expect, test } from '../../utils/fixtures'
-import { cardErrorMessage, updateCard } from '../../utils/test-utils'
 
 test.describe('time_zone', () => {
 
@@ -37,14 +36,14 @@ test.describe('time_zone', () => {
       .toContainText('2:00 PM')
   })
 
-  test('renders an error card when configured time_zone is invalid', async ({ setupCard, page }) => {
+  test('renders an error card when configured time_zone is invalid', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       timeZone: 'Europe/Berlin',
       cardConfig: 'time_zone: NotARealTimeZone',
       date: new Date('2025-06-15T12:00:00Z'),
     })
 
-    expect(await cardErrorMessage(page))
+    expect(await cardErrorMessage())
       .toContain('Config option "time_zone" has invalid value "NotARealTimeZone"')
   })
 
@@ -69,7 +68,7 @@ test.describe('time_zone', () => {
     await expect(clockWeatherCard)
       .toContainText('8:00 AM')
 
-    await updateCard('time_zone: Asia/Tokyo')
+    await setupCard({ cardConfig: 'time_zone: Asia/Tokyo' })
 
     // UTC 12:00 → Tokyo 21:00
     await expect(clockWeatherCard)

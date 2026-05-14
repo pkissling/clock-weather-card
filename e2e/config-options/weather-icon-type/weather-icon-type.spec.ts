@@ -1,5 +1,4 @@
 import { expect, test } from '../../utils/fixtures'
-import { updateCard } from '../../utils/test-utils'
 
 const ICON_TYPES = ['fill', 'flat', 'line', 'monochrome'] as const
 
@@ -66,7 +65,7 @@ test.describe('weather_icon_type', () => {
     const lineSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
       .getAttribute('src')
 
-    await updateCard('weather_icon_type: fill')
+    await setupCard({ cardConfig: 'weather_icon_type: fill' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-icon img'))
       .not.toHaveAttribute('src', lineSrc!)
