@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "Luftfeuchtigkeit",
-    "feels-like": "Gefühlt"
+    "feels-like": "Gefühlt",
+    "now": "Jetzt"
   }
 }

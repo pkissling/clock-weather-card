@@ -36,4 +36,11 @@ test.describe('title', () => {
     await expect(clockWeatherCard.locator('h1.card-header'))
       .toHaveText('Updated')
   })
+
+  test('reduces bottom padding of card header', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: 'title: My Weather' })
+
+    await expect(clockWeatherCard.locator('h1.card-header'))
+      .toHaveCSS('padding-bottom', '0px')
+  })
 })

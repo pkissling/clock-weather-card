@@ -1,5 +1,6 @@
 import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-today'
+import '@/components/clock-weather-card-hourly-forecast'
 
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
@@ -9,11 +10,9 @@ import { customElement, property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import configService from '@/service/config-service'
-import hassService from '@/service/hass-service'
-import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
-import type { ClockHandle, ClockWeatherCardConfig, WeatherForecastEvent } from '@/types'
+import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
 import { computeNow, configNeedsSeconds, startClock } from '@/utils/luxon'
@@ -43,7 +42,6 @@ export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass?: HomeAssistant
   @state() private config?: ClockWeatherCardConfig
   @state() private currentDate: DateTime = DateTime.now()
-  private forecastSubscription: (() => Promise<void>) | null = null
   private _clock: ClockHandle | null = null
 
   protected render(): TemplateResult {
@@ -70,6 +68,7 @@ export class ClockWeatherCard extends LitElement {
     configService.validateConfig(config, hass)
     const title = configService.getTitle(config)
     const locale = configService.getLocale(config, hass)
+    const hourlyHidden = configService.isHourlyForecastHidden(config)
     return html`
       <ha-card>
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
@@ -80,6 +79,13 @@ export class ClockWeatherCard extends LitElement {
             .currentDate=${this.currentDate}
             .locale=${locale}
           ></clock-weather-card-today>
+          ${hourlyHidden ? '' : html`
+            <clock-weather-card-hourly-forecast
+              .hass=${hass}
+              .config=${config}
+              .locale=${locale}
+            ></clock-weather-card-hourly-forecast>
+          `}
         </div>
       </ha-card>
       `
@@ -105,7 +111,6 @@ export class ClockWeatherCard extends LitElement {
   public disconnectedCallback(): void {
     super.disconnectedCallback()
     this._stopClock()
-    this.tryUnsubscribeForecastEvents()
   }
 
   public willUpdate(changed: PropertyValues): void {
@@ -126,41 +131,11 @@ export class ClockWeatherCard extends LitElement {
         this.currentDate = computeNow(this.hass!, this.config!)
       })
     }
-    if (!this.forecastSubscription) {
-      void this.trySubscribeToForecastEvents(this.hass, this.config)
-    }
   }
 
   private _stopClock(): void {
     this._clock?.stop()
     this._clock = null
-  }
-
-  private async trySubscribeToForecastEvents(hass: HomeAssistant, config: ClockWeatherCardConfig): Promise<void> {
-    if (this.forecastSubscription) return
-
-    try {
-      const callback = (_: WeatherForecastEvent): void => {
-        // this.forecasts = event.forecast
-      }
-      this.forecastSubscription = await hassService.subscribeForecast(hass, configService.getEntity(config), callback)
-      logger.debug('Subscribed to weather forecast')
-    } catch (e: unknown) {
-      logger.error('Error subscribing to weather forecast', e)
-    }
-  }
-
-  private async tryUnsubscribeForecastEvents (): Promise<void> {
-    if (this.forecastSubscription) {
-      try {
-        await this.forecastSubscription()
-        logger.debug('Unsubscribed from weather forecast')
-      } catch (_: unknown) {
-        // swallow error, as this means that connection was closed already
-      } finally {
-        this.forecastSubscription = null
-      }
-    }
   }
 
   public static getConfigForm(): Object {

@@ -7,6 +7,9 @@ import { TEST_DASHBOARD } from './ha-setup'
 
 const WEATHER_ENTITY = 'weather.mock_weather'
 
+// Bit values match HA's WeatherEntityFeature enum (daily=1, hourly=2, twice_daily=4).
+export const SUPPORTS_DAILY_AND_HOURLY = 3
+
 export type MockOptions = undefined | {
   weather?: {
     state?: string
@@ -14,8 +17,16 @@ export type MockOptions = undefined | {
     humidity?: number
     forecast_daily?: WeatherForecast[]
     forecast_hourly?: WeatherForecast[]
+    supportedFeatures?: number
   }
-  sunState?: 'above_horizon' | 'below_horizon'
+  sun?: {
+    state?: 'above_horizon' | 'below_horizon'
+    attributes?: {
+      elevation?: number
+      next_rising?: string
+      next_setting?: string
+    }
+  }
   cardConfig?: string | null
   date?: Date
   language?: string
@@ -27,51 +38,57 @@ entity: ${WEATHER_ENTITY}
 `
 
 const DEFAULT_FORECAST_DAILY: WeatherForecast[] = [
-  {
-    datetime: '2024-01-02T00:00:00+00:00',
-    condition: 'sunny',
-    temperature: 21,
-    templow: 11,
-    precipitation: 0,
-    precipitation_probability: 0,
-    humidity: null,
-  },
-  {
-    datetime: '2024-01-03T00:00:00+00:00',
-    condition: 'cloudy',
-    temperature: 19,
-    templow: 9,
-    precipitation: 1,
-    precipitation_probability: 30,
-    humidity: null,
-  },
+  { datetime: '2024-01-02T00:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 0 },
+  { datetime: '2024-01-03T00:00:00+00:00', condition: 'cloudy', temperature: 19, precipitation_probability: 30 },
 ]
+
+const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
+
+// 24 hourly entries starting at the hour boundary just before `now`, so the first entry feeds the
+// strip's "Now" column. All entries carry precipitation probability > 0 except the 2nd and 3rd,
+// which exercise the "non-zero alongside zero" rendering path.
+const defaultForecastHourly = (now: Date): WeatherForecast[] => {
+  const start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), 0, 0)
+  const conditions = ['sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'rainy', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'cloudy', 'partlycloudy']
+  return Array.from({ length: 24 }, (_, i) => ({
+    datetime: new Date(start + i * 60 * 60 * 1000)
+      .toISOString(),
+    condition: conditions[i],
+    temperature: 22 - Math.abs(i - 4) % 14,
+    precipitation_probability: i === 1 || i === 2 ? 0 : (i >= 6 && i <= 8 ? 60 : 20),
+  }))
+}
 
 export const setupCard = async (page: Page, opts: MockOptions): Promise<void> => {
   // Parse YAML card config, merging with defaults
   const defaults = opts?.cardConfig === null ? {} : parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
   const overrides = opts?.cardConfig ? parseYaml(opts.cardConfig) as Partial<ClockWeatherCardConfig> : {}
   const cardConfig = { ...defaults, ...overrides }
+  const date = opts?.date ?? DEFAULT_DATE
 
   // Set dashboard card config via HA websocket
   await api.setDashboardConfig(TEST_DASHBOARD, cardConfig)
 
-  // Set weather state via mock_weather service
-  await api.callService('mock_weather', 'set_weather', {
+  // Set weather state via mock_weather service. Always pass supported_features so
+  // tests that mutate it can't leak state to the next test.
+  await api.setMockWeather({
     condition: opts?.weather?.state ?? 'sunny',
     temperature: opts?.weather?.temperature ?? 21,
     humidity: opts?.weather?.humidity ?? 50,
     forecast_daily: opts?.weather?.forecast_daily ?? DEFAULT_FORECAST_DAILY,
-    forecast_hourly: opts?.weather?.forecast_hourly ?? [],
+    forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
+    supported_features: opts?.weather?.supportedFeatures ?? SUPPORTS_DAILY_AND_HOURLY,
   })
 
   // Set sun entity state via REST API
-  await api.setEntityState('sun.sun', opts?.sunState ?? 'above_horizon', {
-    elevation: opts?.sunState === 'below_horizon' ? -10 : 30,
+  const sunState = opts?.sun?.state ?? 'above_horizon'
+  await api.setEntityState('sun.sun', sunState, {
+    elevation: sunState === 'below_horizon' ? -10 : 30,
+    ...(opts?.sun?.attributes ?? {}),
   })
 
   // Mock the browser clock
-  await page.clock.setFixedTime(opts?.date ?? new Date('2025-09-14T14:20:59+00:00'))
+  await page.clock.setFixedTime(date)
 
   // Reset HA-global state to defaults so tests don't leak language/tz across runs.
   await api.setLanguage(opts?.language ?? 'en')

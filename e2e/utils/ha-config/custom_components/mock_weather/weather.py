@@ -20,22 +20,27 @@ async def async_setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the Mock Weather platform."""
-    entity = MockWeatherEntity()
-    hass.data[DOMAIN]["entity"] = entity
-    async_add_entities([entity])
+    primary = MockWeatherEntity(name="Mock Weather", unique_id="mock_weather_test")
+    secondary = MockWeatherEntity(name="Mock Weather 2", unique_id="mock_weather_test_2")
+    hass.data[DOMAIN]["entities"] = {
+        "weather.mock_weather": primary,
+        "weather.mock_weather_2": secondary,
+    }
+    async_add_entities([primary, secondary])
 
 
 class MockWeatherEntity(WeatherEntity):
     """A controllable weather entity for testing."""
 
-    _attr_name = "Mock Weather"
-    _attr_unique_id = "mock_weather_test"
-    _attr_supported_features = (
+    _DEFAULT_FEATURES = (
         WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY
     )
 
-    def __init__(self) -> None:
+    def __init__(self, name: str, unique_id: str) -> None:
         """Initialize the mock weather entity."""
+        self._attr_name = name
+        self._attr_unique_id = unique_id
+        self._attr_supported_features = self._DEFAULT_FEATURES
         self._condition: str = "sunny"
         self._temperature: float = 21.0
         self._humidity: int = 50

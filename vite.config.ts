@@ -39,7 +39,7 @@ const customElementDevSuffixPlugin = (): Plugin => {
 
       const normalizedId = id.replace(/\\/g, '/')
       if (normalizedId.endsWith('/src/styles.ts')) {
-        const cssSelectorPattern = new RegExp(`(${CUSTOM_ELEMENT_PREFIX}(?:-[a-z0-9-]+)?)(?=\\s*\\{)`, 'g')
+        const cssSelectorPattern = new RegExp(`(${CUSTOM_ELEMENT_PREFIX}(?:-[a-z0-9-]+)?)(?![a-z0-9-])`, 'g')
         transformed = transformed.replace(cssSelectorPattern, (name: string) => appendSuffix(name))
       }
 
