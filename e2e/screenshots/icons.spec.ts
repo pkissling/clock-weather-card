@@ -10,8 +10,6 @@ export const supportedWeatherStates = [
   'lightning',
   'lightning-rainy',
   'pouring',
-  'raindrop',
-  'raindrops',
   'snowy',
   'snowy-rainy',
   'sunny',
