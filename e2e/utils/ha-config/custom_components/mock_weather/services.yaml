@@ -2,6 +2,20 @@ set_weather:
   name: Set weather state
   description: Set the mock weather entity state and forecast data for testing.
   fields:
+    entity_id:
+      name: Entity ID
+      description: Which mock weather entity to update (defaults to weather.mock_weather).
+      example: weather.mock_weather_2
+      selector:
+        text:
+    supported_features:
+      name: Supported features
+      description: Bitmask for WeatherEntityFeature (1=daily, 2=hourly, 4=twice_daily).
+      example: 3
+      selector:
+        number:
+          min: 0
+          max: 7
     condition:
       name: Condition
       description: Weather condition (e.g. sunny, rainy, cloudy)

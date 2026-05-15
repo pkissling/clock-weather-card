@@ -33,7 +33,7 @@ for (const { animated, daytime, iconVariant, state } of iconPermutations()) {
   test(`${animated} ${iconVariant} ${state} ${daytime}`, async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { state },
-      sunState: daytime === 'day' ? 'above_horizon' : 'below_horizon',
+      sun: { state: daytime === 'day' ? 'above_horizon' : 'below_horizon' },
       cardConfig: `
         weather_icon_type: ${iconVariant}
         animated_icon: ${animated === 'animated' ? 'true' : 'false'}

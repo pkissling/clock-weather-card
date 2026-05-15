@@ -10,7 +10,7 @@ test.describe('weather_icon_type', () => {
         cardConfig: `weather_icon_type: ${type}`,
         weather: { state: 'sunny' },
       })
-      srcs[type] = await clockWeatherCard.locator('clock-weather-card-icon img')
+      srcs[type] = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
         .getAttribute('src')
       expect(srcs[type], `weather_icon_type: ${type} produced no src`)
         .toBeTruthy()
@@ -25,13 +25,13 @@ test.describe('weather_icon_type', () => {
       cardConfig: 'weather_icon_type: line',
       weather: { state: 'sunny' },
     })
-    const explicitLineSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const explicitLineSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       weather: { state: 'sunny' },
     })
-    const omittedSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const omittedSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     expect(omittedSrc)
@@ -43,18 +43,30 @@ test.describe('weather_icon_type', () => {
       cardConfig: 'weather_icon_type: line',
       weather: { state: 'sunny' },
     })
-    const explicitLineSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const explicitLineSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       cardConfig: 'weather_icon_type: \'\'',
       weather: { state: 'sunny' },
     })
-    const emptySrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const emptySrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     expect(emptySrc)
       .toBe(explicitLineSrc)
+  })
+
+  test('rejects values that are not one of the supported icon types', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: 'weather_icon_type: gradient',
+      weather: { state: 'sunny' },
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "weather_icon_type" has invalid value "gradient"')
+    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+      .toHaveCount(0)
   })
 
   test('updates the icon type at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
@@ -62,12 +74,12 @@ test.describe('weather_icon_type', () => {
       cardConfig: 'weather_icon_type: line',
       weather: { state: 'sunny' },
     })
-    const lineSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const lineSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({ cardConfig: 'weather_icon_type: fill' })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-icon img'))
+    await expect(clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img'))
       .not.toHaveAttribute('src', lineSrc!)
   })
 })

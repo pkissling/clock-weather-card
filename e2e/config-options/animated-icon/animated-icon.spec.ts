@@ -6,7 +6,7 @@ test.describe('animated_icon', () => {
       cardConfig: 'animated_icon: false',
       weather: { state: 'sunny' },
     })
-    const src = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const src = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
     expect(src)
       .toBeTruthy()
@@ -19,14 +19,14 @@ test.describe('animated_icon', () => {
       cardConfig: 'animated_icon: false',
       weather: { state: 'rainy' },
     })
-    const staticSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       cardConfig: 'animated_icon: true',
       weather: { state: 'rainy' },
     })
-    const animatedSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const animatedSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     expect(staticSrc)
@@ -41,12 +41,12 @@ test.describe('animated_icon', () => {
       cardConfig: 'animated_icon: false',
       weather: { state: 'rainy' },
     })
-    const staticSrc = await clockWeatherCard.locator('clock-weather-card-icon img')
+    const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({ cardConfig: 'animated_icon: true' })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-icon img'))
+    await expect(clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img'))
       .not.toHaveAttribute('src', staticSrc!)
   })
 })

@@ -10,5 +10,8 @@ export const requiredConfigMissing = (attribute: ConfigAttribute): Error =>
 export const entityNotFound = (entityId: string): Error =>
   new Error(`Referenced entity ${entityId} does not exist`)
 
-export const invalidConfigValue = (attribute: ConfigAttribute, value: string): Error =>
+export const invalidConfigValue = (attribute: ConfigAttribute | string, value: string): Error =>
   new Error(`Config option "${attribute}" has invalid value "${value}"`)
+
+export const hourlyForecastNotSupported = (entityId: string): Error =>
+  new Error(`Entity "${entityId}" does not support hourly forecasts`)

@@ -110,6 +110,7 @@ entity: weather.home
 title: Home
 sun_entity: sun.sun
 weather_icon_type: line
+animated_icon: true
 time_zone: Europe/Berlin
 locale: en-GB
 rows:
@@ -135,6 +136,14 @@ rows:
       - type: date
         date_pattern: EEEE, dd MMMM
       - type: spacer
+sections:
+  hourly_forecast:
+    hide: false
+    weather_entity: weather.home
+    hours: 24
+    animated_icons: false
+    round_temperatures: true
+    weather_icon_type: line
 ```
 
 ### Card Options
@@ -149,6 +158,24 @@ rows:
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display |
+| `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
+
+### Sections Options
+
+#### `hourly_forecast`
+
+Renders a horizontally scrolling strip of upcoming hours (time, weather icon, temperature, precipitation probability) below the main section. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` supported feature — if the selected entity does not, the section renders an inline warning instead.
+
+The first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
+| `weather_entity` | string | no | top-level `entity` | Weather entity whose hourly forecast is displayed. Falls back to the card's main `entity` when not set. |
+| `hours` | number | no | `24` | Maximum number of columns to render, including the leading "Now" entry. Fewer are shown if the provider returns less. |
+| `animated_icons` | boolean | no | `false` | Whether the per-hour weather icons should be animated. Defaults to `false` independently of the top-level `animated_icon` to keep the strip lightweight. |
+| `round_temperatures` | boolean | no | `true` | When `true`, temperatures in the strip are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the hourly strip. Falls back to the card's main `weather_icon_type` when unset. |
 
 ### Row Options
 

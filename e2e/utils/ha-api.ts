@@ -103,6 +103,10 @@ class HaApi {
       throw new Error(`Failed to call service ${domain}.${service}: ${response.status} ${text}`)
     }
   }
+
+  async setMockWeather(data: Record<string, unknown>): Promise<void> {
+    return this.callService('mock_weather', 'set_weather', data)
+  }
 }
 
 export default new HaApi()
