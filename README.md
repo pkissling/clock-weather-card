@@ -118,6 +118,7 @@ time_zone: null
 show_decimal: false
 apparent_sensor: sensor.real_feel_temperature
 aqi_sensor: sensor.air_quality_index
+summary_sensor: sensor.sydney_extended_text_0
 ```
 
 ### Options
@@ -148,6 +149,8 @@ aqi_sensor: sensor.air_quality_index
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 | aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+| hide_summary_section  | boolean          | **Optional** | Hides the cards summary section, containing the forecasted weather text.                                                                                                                                                          | `true`    |
+| summary_sensor        | string           | **Optional** | ID of the summary text sensor entity. It is used to show the summary text for a days weather based on a sensor and will only show it if value is provided.                                                                        | `''`      |
 
 ## Footnotes
 
