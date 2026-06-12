@@ -113,6 +113,10 @@ export class ClockWeatherCard extends LitElement {
       throw this.createError('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
     }
 
+    if (config.precipitation_precision !== undefined && (!Number.isInteger(config.precipitation_precision) || config.precipitation_precision < 0)) {
+      throw this.createError('Attribute "precipitation_precision" must be an integer greater than or equal to 0.')
+    }
+
     this.config = this.mergeConfig(config)
   }
 
@@ -270,21 +274,30 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    const precipitationTexts = this.config.show_precipitation
+      ? forecasts.map(f => this.toConfiguredPrecipitationWithUnit(f.precipitation))
+      : forecasts.map(() => null)
+    const maxPrecipitationChars = this.config.show_precipitation && precipitationTexts.length
+      ? max(precipitationTexts.map(t => t?.length ?? 0))
+      : 0
+
+    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars, precipitationTexts[i], maxPrecipitationChars)))
   }
 
-  private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
+  private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number, precipitationText: string | null, maxPrecipitationChars: number): TemplateResult {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
     const tempUnit = this.getWeather().attributes.temperature_unit
     const isNow = hourly ? DateTime.now().hour === forecast.datetime.hour : DateTime.now().day === forecast.datetime.day
     const minTempDay = Math.round(isNow && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow)
     const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature)
+    const showPrecipitation = this.config.show_precipitation && precipitationText !== null
 
     return html`
-      <clock-weather-card-forecast-row style="--col-one-size: ${(maxColOneChars * 0.5)}rem;">
+      <clock-weather-card-forecast-row class=${showPrecipitation ? 'with-precipitation' : ''} style="--col-one-size: ${(maxColOneChars * 0.5)}rem; --col-precipitation-size: ${(maxPrecipitationChars * 0.55)}rem;">
         ${this.renderText(displayText)}
         ${this.renderIcon(weatherIcon)}
+        ${showPrecipitation ? this.renderText(precipitationText, 'right') : ''}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, minTempDay), 'right')}
         ${this.renderForecastTemperatureBar(minTemp, maxTemp, minTempDay, maxTempDay, isNow, currentTemp, temperatureUnit)}
         ${this.renderText(this.toConfiguredTempWithUnit(tempUnit, maxTempDay))}
@@ -466,7 +479,10 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      show_precipitation: config.show_precipitation ?? false,
+      precipitation_precision: config.precipitation_precision ?? 0,
+      precipitation_units: config.precipitation_units ?? ''
     }
   }
 
@@ -607,6 +623,12 @@ export class ClockWeatherCard extends LitElement {
   private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number): string {
     const convertedTemp = this.toConfiguredTempWithoutUnit(unit, temp)
     return convertedTemp + this.getConfiguredTemperatureUnit()
+  }
+
+  private toConfiguredPrecipitationWithUnit (precipitation: number): string {
+    const value = precipitation.toFixed(this.config.precipitation_precision)
+    const units = this.config.precipitation_units
+    return units ? `${value}${units}` : value
   }
 
   private toConfiguredTempWithoutUnit (unit: TemperatureUnit, temp: number): number {
