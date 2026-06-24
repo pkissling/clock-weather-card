@@ -23,13 +23,17 @@ jobs:
           yarn install
           yarn build
 
+      - name: Package release zip
+        run: |
+          cd /home/runner/work/clock-weather-card/clock-weather-card/dist
+          zip clock-weather-card.zip clock-weather-card.js animated-icons.js
+
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
-
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.js
-          asset_name: clock-weather-card.js
+          file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.zip
+          asset_name: clock-weather-card.zip
           tag: ${{ github.ref }}
           overwrite: true
 
