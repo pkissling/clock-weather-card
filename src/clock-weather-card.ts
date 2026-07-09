@@ -46,7 +46,14 @@ console.info(
 (window as any).customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
-  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.'
+  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
+  getEntitySuggestion: (_hass: HomeAssistant, entityId: string): { config: Record<string, unknown> } | null => {
+    if (entityId.split('.')[0] !== 'weather') {
+      return null
+    }
+
+    return { config: { type: 'custom:clock-weather-card', entity: entityId } }
+  }
 })
 
 const gradientMap: Map<number, Rgb> = new Map()
