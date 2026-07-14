@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "空氣品質",
     "humidity": "濕度",
-    "feels-like": "體感溫度"
+    "feels-like": "體感溫度",
+    "outdoor": "Outdoor"
   }
 }
