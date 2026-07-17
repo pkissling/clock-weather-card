@@ -118,6 +118,8 @@ time_zone: null
 show_decimal: false
 apparent_sensor: sensor.real_feel_temperature
 aqi_sensor: sensor.air_quality_index
+aqi_min: 0
+aqi_max: 300
 ```
 
 ### Options
@@ -148,6 +150,8 @@ aqi_sensor: sensor.air_quality_index
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 | aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+| aqi_min       | number           | **Optional** | Minimum AQI value used for color gradient calculation. Adjust this to match your region's AQI scale.                                                                           | `0`      |
+| aqi_max       | number           | **Optional** | Maximum AQI value used for color gradient calculation. Adjust this to match your region's AQI scale (e.g., 50 for Montreal, 300 for EPA/AirNow).                                                                           | `300`      |
 
 ## Footnotes
 
