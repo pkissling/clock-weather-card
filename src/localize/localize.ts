@@ -17,6 +17,7 @@ import * as hr from './languages/hr.json'
 import * as id from './languages/id.json'
 import * as is from './languages/is.json'
 import * as it from './languages/it.json'
+import * as ja from './languages/ja.json'
 import * as ko from './languages/ko.json'
 import * as lb from './languages/lb.json'
 import * as lt from './languages/lt.json'
@@ -61,6 +62,7 @@ const languages: any = {
   id,
   is,
   it,
+  ja,
   ko,
   lb,
   lt,

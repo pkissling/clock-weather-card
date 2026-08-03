@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.4](https://github.com/pkissling/clock-weather-card/compare/v2.9.3...v2.9.4) (2026-07-15)
+
+
+### Bug Fixes
+
+* Add Japanese translation ([#706](https://github.com/pkissling/clock-weather-card/issues/706)) ([023f4bd](https://github.com/pkissling/clock-weather-card/commit/023f4bd2a9a3f3bc16001d28dfb0111c23f97862))
+
 ## [2.9.3](https://github.com/pkissling/clock-weather-card/compare/v2.9.2...v2.9.3) (2026-04-09)
 
 

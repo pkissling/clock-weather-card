@@ -1,0 +1,33 @@
+{
+  "weather": {
+    "clear-night": "晴れ",
+    "cloudy": "曇り",
+    "fog": "霧",
+    "hail": "ひょう",
+    "lightning": "雷",
+    "lightning-rainy": "雷雨",
+    "partlycloudy": "晴れ時々曇り",
+    "pouring": "大雨",
+    "rainy": "雨",
+    "snowy": "雪",
+    "snowy-rainy": "みぞれ",
+    "sunny": "晴れ",
+    "windy": "強風",
+    "windy-variant": "強風と曇り",
+    "exceptional": "異常気象"
+  },
+  "day": {
+    "1": "月",
+    "2": "火",
+    "3": "水",
+    "4": "木",
+    "5": "金",
+    "6": "土",
+    "7": "日"
+  },
+  "misc": {
+    "aqi": "AQI",
+    "humidity": "湿度",
+    "feels-like": "体感温度"
+  }
+}
