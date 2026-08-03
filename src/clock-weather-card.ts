@@ -274,10 +274,14 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    const precipitationTexts = this.config.show_precipitation
+    const rawPrecipitationTexts = this.config.show_precipitation
       ? forecasts.map(f => this.toConfiguredPrecipitationWithUnit(f.precipitation))
       : forecasts.map(() => null)
-    const maxPrecipitationChars = this.config.show_precipitation && precipitationTexts.length
+    const anyPrecipitation = rawPrecipitationTexts.some(t => t !== null)
+    const precipitationTexts = anyPrecipitation
+      ? rawPrecipitationTexts.map(t => t ?? '')
+      : rawPrecipitationTexts
+    const maxPrecipitationChars = anyPrecipitation
       ? max(precipitationTexts.map(t => t?.length ?? 0))
       : 0
 
@@ -625,8 +629,11 @@ export class ClockWeatherCard extends LitElement {
     return convertedTemp + this.getConfiguredTemperatureUnit()
   }
 
-  private toConfiguredPrecipitationWithUnit (precipitation: number): string {
+  private toConfiguredPrecipitationWithUnit (precipitation: number): string | null {
     const value = precipitation.toFixed(this.config.precipitation_precision)
+    if (parseFloat(value) === 0) {
+      return null
+    }
     const units = this.config.precipitation_units
     return units ? `${value}${units}` : value
   }
