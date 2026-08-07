@@ -3,6 +3,9 @@ name: Release
 on:
   release:
     types: [published]
+  # Dispatched by release-please.yaml with the release tag as ref
+  # (releases created with GITHUB_TOKEN don't trigger release events).
+  workflow_dispatch:
 
 jobs:
   release:

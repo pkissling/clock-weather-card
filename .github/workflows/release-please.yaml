@@ -10,12 +10,20 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v5
+        id: release
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: node
+      # Releases created with GITHUB_TOKEN don't trigger release-published
+      # workflows, so dispatch the release asset build explicitly.
+      - name: Trigger release asset build
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run release.yml -R ${{ github.repository }} --ref ${{ steps.release.outputs.tag_name }}
