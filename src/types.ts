@@ -38,6 +38,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   aqi_sensor?: string
   cycle_display?: number; // 0 disables cycling, otherwise specifies seconds for cycling
   outdoor_temp_sensor?: string
+  home_temp_sensor?: string // indoor/home temperature; joins the center display cycle (replaces clock when hide_clock)
   displayed_temperature?: 'current' | 'apparent' | 'outdoor';
   oversized?: boolean
 }
@@ -68,6 +69,7 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   aqi_sensor?: string
   cycle_display: number
   outdoor_temp_sensor?: string
+  home_temp_sensor?: string
   displayed_temperature: 'current' | 'apparent' | 'outdoor'
   oversized: boolean
 }

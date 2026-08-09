@@ -29,6 +29,7 @@ import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
 import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
 import { staticIcons } from './images'
+import homeIcon from './icons/home.svg'
 import type { animatedIcons as AnimatedIconsType } from './animatedImages'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
@@ -133,7 +134,7 @@ export class ClockWeatherCard extends LitElement {
       return false
     }
 
-    if (changedProps.has('forecasts') || changedProps.has('showClock') || changedProps.has('currentDate')) {
+    if (changedProps.has('forecasts') || changedProps.has('displayIndex') || changedProps.has('currentDate')) {
       return true
     }
 
@@ -211,7 +212,7 @@ export class ClockWeatherCard extends LitElement {
   private _cachedForecastsRef?: WeatherForecast[]
   private _cachedForecastWeatherState?: string
 
-  @state() private showClock = true;
+  @state() private displayIndex = 0;
 
   public connectedCallback(): void {
     super.connectedCallback()
@@ -255,13 +256,25 @@ export class ClockWeatherCard extends LitElement {
 
   private setupDisplayCycleInterval (): void {
     this.clearDisplayCycleInterval()
-    this.showClock = true
+    this.displayIndex = 0
     const cycleDuration = this.config.cycle_display
-    if (!this.config.hide_clock && cycleDuration > 0) {
+    if (this.getCycleItems().length > 1 && cycleDuration > 0) {
       this.intervalID = window.setInterval(() => {
-        this.showClock = !this.showClock
+        this.displayIndex = (this.displayIndex + 1) % this.getCycleItems().length
       }, cycleDuration * 1000)
     }
+  }
+
+  // Items rotated through the big center display. The clock participates
+  // unless hide_clock; the home temperature joins when home_temp_sensor is
+  // set - so hide_clock + home_temp_sensor swaps the clock for the home
+  // temperature while keeping the weather-temperature alternation.
+  private getCycleItems (): Array<'clock' | 'temp' | 'home'> {
+    const items: Array<'clock' | 'temp' | 'home'> = []
+    if (!this.config.hide_clock) items.push('clock')
+    items.push('temp')
+    if (this.config.home_temp_sensor) items.push('home')
+    return items
   }
 
   private getDisplayedTemperature(): number | null {
@@ -307,6 +320,12 @@ export class ClockWeatherCard extends LitElement {
       this.config.outdoor_temp_sensor &&
       this.config.displayed_temperature !== 'outdoor'
 
+    const homeTemp = this.getHomeTemperature()
+    const roundedHomeTemp = homeTemp !== null ? (this.config.show_decimal ? homeTemp : Math.round(homeTemp)) : null
+    const localizedHomeTemp = roundedHomeTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, roundedHomeTemp) : null
+    const cycleItems = this.getCycleItems()
+    const centerItem = cycleItems[this.displayIndex % cycleItems.length]
+
     const aqi = this.getAqi()
     const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
     const aqiTextColor = this.getAqiTextColor(aqi)
@@ -327,7 +346,7 @@ export class ClockWeatherCard extends LitElement {
     return html`
       <clock-weather-card-today-left style="${layoutVars}">
         ${!this.config.hide_date ? html`<div class="today-date">${this.date()}</div>` : ''}
-        <img class="today-main-icon" src=${icon} />
+        <img class="today-main-icon" src=${centerItem === 'home' ? homeIcon : icon} />
       </clock-weather-card-today-left>
       <clock-weather-card-today-right style="${layoutVars}">
         <clock-weather-card-today-right-wrap>
@@ -339,7 +358,11 @@ export class ClockWeatherCard extends LitElement {
             ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
           <clock-weather-card-today-right-wrap-center style="${layoutVars}">
-            ${(!this.config.hide_clock && this.showClock) ? this.time() : localizedDisplayedTemp ?? 'n/a'}
+            ${centerItem === 'clock'
+              ? this.time()
+              : centerItem === 'home'
+                ? localizedHomeTemp ?? 'n/a'
+                : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`
@@ -581,7 +604,8 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      home_temp_sensor: config.home_temp_sensor ?? undefined
     }
   }
 
@@ -606,6 +630,18 @@ export class ClockWeatherCard extends LitElement {
       const unit = outdoorTempSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
       if (outtemp !== undefined && !isNaN(outtemp)) {
         return this.toConfiguredTempWithoutUnit(unit, outtemp)
+      }
+    }
+    return null
+  }
+
+  private getHomeTemperature (): number | null {
+    if (this.config.home_temp_sensor) {
+      const homeTempSensor = this.hass.states[this.config.home_temp_sensor] as TemperatureSensor | undefined
+      const temp = homeTempSensor?.state ? parseFloat(homeTempSensor.state) : undefined
+      const unit = homeTempSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
+      if (temp !== undefined && !isNaN(temp)) {
+        return this.toConfiguredTempWithoutUnit(unit, temp)
       }
     }
     return null
