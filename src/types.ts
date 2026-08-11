@@ -33,6 +33,9 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   show_decimal?: boolean
   apparent_sensor?: string
   aqi_sensor?: string
+  show_precipitation?: boolean
+  precipitation_precision?: number
+  precipitation_units?: string
 }
 
 export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
@@ -59,6 +62,9 @@ export interface MergedClockWeatherCardConfig extends LovelaceCardConfig {
   show_decimal: boolean
   apparent_sensor?: string
   aqi_sensor?: string
+  show_precipitation: boolean
+  precipitation_precision: number
+  precipitation_units: string
 }
 
 export const enum WeatherEntityFeature {
