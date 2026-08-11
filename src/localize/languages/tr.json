@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "nem",
-    "feels-like": "Hissedilen"
+    "feels-like": "Hissedilen",
+    "outdoor": "Outdoor"
   }
 }

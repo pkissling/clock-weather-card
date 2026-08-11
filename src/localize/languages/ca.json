@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "humitat",
-    "feels-like": "Sensació tèrmica"
+    "feels-like": "Sensació tèrmica",
+    "outdoor": "Outdoor"
   }
 }

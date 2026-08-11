@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "niiskus",
-    "feels-like": "Tundub nagu"
+    "feels-like": "Tundub nagu",
+    "outdoor": "Outdoor"
   }
 }

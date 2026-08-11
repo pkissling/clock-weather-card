@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "vlažnost",
-    "feels-like": "Osjet temperature"
+    "feels-like": "Osjet temperature",
+    "outdoor": "Outdoor"
   }
 }
