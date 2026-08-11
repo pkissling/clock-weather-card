@@ -606,7 +606,12 @@ export class ClockWeatherCard extends LitElement {
 
   private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number): string {
     const convertedTemp = this.toConfiguredTempWithoutUnit(unit, temp)
-    return convertedTemp + this.getConfiguredTemperatureUnit()
+    return convertedTemp + this.getDisplayTemperatureUnit()
+  }
+
+  private getDisplayTemperatureUnit (): string {
+    const unit = this.getConfiguredTemperatureUnit()
+    return this.config.hide_temperature_unit ? unit.charAt(0) : unit
   }
 
   private toConfiguredTempWithoutUnit (unit: TemperatureUnit, temp: number): number {
