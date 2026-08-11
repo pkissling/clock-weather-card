@@ -28,7 +28,8 @@ import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
 import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
-import { animatedIcons, staticIcons } from './images'
+import { staticIcons } from './images'
+import type { animatedIcons as AnimatedIconsType } from './animatedImages'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
@@ -69,6 +70,7 @@ export class ClockWeatherCard extends LitElement {
   @state() private error?: TemplateResult
   private forecastSubscriber?: () => Promise<void>
   private forecastSubscriberLock = false
+  private _animatedIcons?: typeof AnimatedIconsType
 
   constructor () {
     super()
@@ -114,6 +116,12 @@ export class ClockWeatherCard extends LitElement {
     }
 
     this.config = this.mergeConfig(config)
+    if (config.animated_icon !== false) {
+      void import('./animatedImages').then(m => {
+        this._animatedIcons = m.animatedIcons
+        this.requestUpdate()
+      })
+    }
   }
 
   // https://lit.dev/docs/components/lifecycle/#reactive-update-cycle-performing
@@ -472,7 +480,7 @@ export class ClockWeatherCard extends LitElement {
 
   private toIcon (weatherState: string, type: 'fill' | 'line', forceDay: boolean, kind: 'static' | 'animated'): string {
     const daytime = forceDay ? 'day' : this.getSun()?.state === 'below_horizon' ? 'night' : 'day'
-    const iconMap = kind === 'animated' ? animatedIcons : staticIcons
+    const iconMap = (kind === 'animated' && this._animatedIcons) ? this._animatedIcons : staticIcons
     const icon = iconMap[type][weatherState]
     return icon?.[daytime] || icon
   }
