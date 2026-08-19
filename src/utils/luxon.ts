@@ -1,4 +1,3 @@
-import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime } from 'luxon'
 
 import configService from '@/service/config-service'
@@ -9,12 +8,6 @@ import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 // without re-implementing Luxon's token parser (handles macro tokens and quoted literals).
 const SECOND_0 = DateTime.local(2000, 1, 1, 12, 0, 0)
 const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
-
-export function computeNow(hass: HomeAssistant, config: ClockWeatherCardConfig): DateTime {
-  return DateTime.now()
-    .setLocale(configService.getLocale(config, hass))
-    .setZone(configService.getTimeZone(config, hass))
-}
 
 export function configNeedsSeconds(config: ClockWeatherCardConfig): boolean {
   return configService.getRows(config)

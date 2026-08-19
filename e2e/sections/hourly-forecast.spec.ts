@@ -1,4 +1,5 @@
 import type { WeatherForecast } from '../../src/types'
+import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
 
 test.describe('hourly_forecast section', () => {
@@ -87,7 +88,7 @@ test.describe('hourly_forecast section', () => {
       },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-divider[orientation="horizontal"]'))
+    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast > clock-weather-card-divider[orientation="horizontal"]'))
       .toHaveCount(1)
   })
 
@@ -157,7 +158,7 @@ test.describe('hourly_forecast section', () => {
         forecast_hourly: [
           { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
         ],
-        supportedFeatures: 1, // FORECAST_DAILY only
+        supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
       },
     })
 
@@ -165,7 +166,7 @@ test.describe('hourly_forecast section', () => {
     await expect(section)
       .toBeVisible()
     await expect(section)
-      .toContainText('does not support hourly forecasts')
+      .toContainText('Entity "weather.mock_weather" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-today'))

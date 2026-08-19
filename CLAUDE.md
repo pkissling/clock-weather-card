@@ -60,3 +60,7 @@ If Playwright snapshots need to be updated, always regenerate them via `yarn tes
 ## README maintenance
 
 After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change (e.g. new/changed configuration options, behavior, usage instructions, screenshots). If it does, update it as part of the same change.
+
+## Config validation
+
+When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/service/config-service.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.

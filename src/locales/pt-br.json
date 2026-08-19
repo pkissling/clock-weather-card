@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "umidade",
     "feels-like": "Sensação térmica",
-    "now": "Agora"
+    "now": "Agora",
+    "today": "Hoje"
   }
 }

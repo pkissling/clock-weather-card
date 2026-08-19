@@ -1,13 +1,14 @@
+import type { WeatherForecast } from '../../../../src/types'
+import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 import api from '../../../utils/ha-api'
 
-// Default mock clock is 14:20:59Z — the 14:00 entry becomes "Now" and the rest are future hours.
-const PRIMARY_HOURLY = [
+const PRIMARY_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
   { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 0 },
   { datetime: '2025-09-14T16:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },
 ]
-const SECONDARY_HOURLY = [
+const SECONDARY_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T14:00:00+00:00', condition: 'rainy', temperature: 12, precipitation_probability: 85 },
   { datetime: '2025-09-14T15:00:00+00:00', condition: 'rainy', temperature: 11, precipitation_probability: 90 },
   { datetime: '2025-09-14T16:00:00+00:00', condition: 'rainy', temperature: 10, precipitation_probability: 95 },
@@ -16,7 +17,6 @@ const SECONDARY_HOURLY = [
 
 test.describe('sections.hourly_forecast.weather_entity', () => {
   test('renders forecasts from the override entity when configured', async ({ setupCard, clockWeatherCard }) => {
-    // Seed the override entity before mounting the card so the WS subscription delivers its forecast on first emit.
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
       forecast_hourly: SECONDARY_HOURLY,
@@ -33,7 +33,6 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(SECONDARY_HOURLY.length)
-    // Index 0 is the "Now" entry — sourced from the override entity's 14:00 forecast (12°C), NOT the primary's 20°C.
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
       .first()
       .locator('.temperature'))
@@ -80,18 +79,16 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(SECONDARY_HOURLY.length)
-    // First column (Now) is sourced from the override entity's 14:00 forecast.
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
       .first())
       .toContainText('12')
   })
 
   test('replaces the warning with the strip when the override entity flips to one that supports hourly (no reload)', async ({ setupCard, clockWeatherCard }) => {
-    // Seed the override entity with DAILY-only support and some forecast data that would render if it were supported.
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
       forecast_hourly: SECONDARY_HOURLY,
-      supported_features: 1, // FORECAST_DAILY only
+      supported_features: WeatherEntityFeature.FORECAST_DAILY,
     })
 
     await setupCard({
@@ -106,11 +103,10 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
 
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
     await expect(section)
-      .toContainText('does not support hourly forecasts')
+      .toContainText('Entity "weather.mock_weather_2" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
 
-    // Swap the override back to the primary entity (which supports hourly) at runtime.
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
@@ -128,11 +124,10 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
   })
 
   test('replaces the strip with the warning when the override entity flips to one that does not support hourly (no reload)', async ({ setupCard, clockWeatherCard }) => {
-    // Seed the secondary entity as DAILY-only so swapping to it triggers the warning branch.
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
       forecast_hourly: SECONDARY_HOURLY,
-      supported_features: 1, // FORECAST_DAILY only
+      supported_features: WeatherEntityFeature.FORECAST_DAILY,
     })
 
     await setupCard({
@@ -145,7 +140,6 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
     await expect(section)
       .not.toContainText('does not support hourly forecasts')
 
-    // Swap to the DAILY-only override at runtime.
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
@@ -157,7 +151,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
     })
 
     await expect(section)
-      .toContainText('does not support hourly forecasts')
+      .toContainText('Entity "weather.mock_weather_2" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
   })

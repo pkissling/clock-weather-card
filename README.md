@@ -144,6 +144,23 @@ sections:
     animated_icons: false
     round_temperatures: true
     weather_icon_type: line
+  daily_forecast:
+    hide: false
+    weather_entity: weather.home
+    rows: 5
+    row_height: 28px
+    bar_height_ratio: 0.6
+    hide_current_temp_indicator: false
+    animated_icons: false
+    round_temperatures: true
+    weather_icon_type: line
+    gradient:
+      -10: "#78A2CC"
+      0: "#A4C3D2"
+      10: "#79D2B3"
+      20: "#FCF570"
+      30: "#FF964F"
+      40: "#FFC09F"
 ```
 
 ### Card Options
@@ -176,6 +193,37 @@ The first column is labeled "Now" and is sourced from the most recent forecast e
 | `animated_icons` | boolean | no | `false` | Whether the per-hour weather icons should be animated. Defaults to `false` independently of the top-level `animated_icon` to keep the strip lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, temperatures in the strip are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the hourly strip. Falls back to the card's main `weather_icon_type` when unset. |
+
+#### `daily_forecast`
+
+Renders a vertical list of upcoming days below the hourly section. Each row shows the day name, a weather icon, the day's low and high temperatures, and a horizontal temperature bar. All bars share a single axis from the lowest low to the highest high across the visible days, and each bar's gradient covers the configured color ramp clipped to that day's range. Today's row is labeled "Today" (localized) and shows a dot indicator at the current temperature on its bar.
+
+Requires a weather entity that advertises the `FORECAST_DAILY` supported feature — if the selected entity does not, the section renders an inline warning instead.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
+| `weather_entity` | string | no | top-level `entity` | Weather entity whose daily forecast is displayed. Falls back to the card's main `entity` when not set. |
+| `rows` | number | no | `5` | Maximum number of day rows to render, starting from today. Fewer are shown if the provider returns less. |
+| `row_height` | string | no | `28px` | CSS length controlling the height of each day row. Drives both the icon size and the row's minimum height. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%`. |
+| `bar_height_ratio` | number | no | `0.6` | Bar height as a fraction (0–1) of `row_height`. Larger values produce a chunkier bar and reduce the visible gap between adjacent rows; smaller values produce a thinner bar with more whitespace. |
+| `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row is not rendered. |
+| `animated_icons` | boolean | no | `false` | Whether the per-day weather icons should be animated. Defaults to `false` independently of the top-level `animated_icon` to keep the section lightweight. |
+| `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values. |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the daily section. Falls back to the card's main `weather_icon_type` when unset. |
+| `gradient` | map | no | built-in ramp (see below) | Map of temperature (in °C, regardless of the weather entity's unit) → CSS color (hex recommended) used to colorize the bars. Colors are linearly interpolated between adjacent stops. |
+
+The built-in gradient is:
+
+```yaml
+gradient:
+  -10: "#78A2CC"  # darker blue
+  0:   "#A4C3D2"  # light blue
+  10:  "#79D2B3"  # turquoise
+  20:  "#FCF570"  # yellow
+  30:  "#FF964F"  # orange
+  40:  "#FFC09F"  # red-ish
+```
 
 ### Row Options
 

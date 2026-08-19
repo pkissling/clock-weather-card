@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "Kelembapan",
     "feels-like": "Terasa seperti",
-    "now": "Sekarang"
+    "now": "Sekarang",
+    "today": "Hari ini"
   }
 }

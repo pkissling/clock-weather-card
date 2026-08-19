@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "raki",
     "feels-like": "Feels like",
-    "now": "Núna"
+    "now": "Núna",
+    "today": "Í dag"
   }
 }

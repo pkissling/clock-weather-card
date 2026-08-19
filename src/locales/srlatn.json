@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "Vlažnost",
     "feels-like": "Feels like",
-    "now": "Sada"
+    "now": "Sada",
+    "today": "Danas"
   }
 }

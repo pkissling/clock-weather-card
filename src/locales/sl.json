@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "vlažnost",
     "feels-like": "Občutek temperature",
-    "now": "Zdaj"
+    "now": "Zdaj",
+    "today": "Danes"
   }
 }

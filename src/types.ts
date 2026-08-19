@@ -87,6 +87,18 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
     }
+    daily_forecast?: {
+      hide?: boolean
+      weather_entity?: string
+      rows?: number
+      row_height?: string
+      bar_height_ratio?: number
+      hide_current_temp_indicator?: boolean
+      animated_icons?: boolean
+      round_temperatures?: boolean
+      weather_icon_type?: WeatherIconType
+      gradient?: Record<number, string>
+    }
   }
 }
 
@@ -131,6 +143,27 @@ export interface HourlyForecastItem {
   temperatureUnit: string | null
   precipitationProbability: number | null
   showPrecipitation: boolean
+}
+
+export interface GradientStop {
+  percent: number
+  color: string
+}
+
+export interface DailyForecastItem {
+  label: string
+  condition: string
+  isNight: boolean
+  animatedIcon: boolean
+  weatherIconType: WeatherIconType
+  temperatureLow: number | string
+  temperatureHigh: number | string
+  temperatureUnit: string | null
+  barLowPercent: number
+  barHighPercent: number
+  gradientStops: GradientStop[]
+  showCurrentIndicator: boolean
+  currentTempPercent: number
 }
 
 

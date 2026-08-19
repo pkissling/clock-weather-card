@@ -1,6 +1,7 @@
 import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-today'
 import '@/components/clock-weather-card-hourly-forecast'
+import '@/components/clock-weather-card-daily-forecast'
 
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
@@ -15,7 +16,7 @@ import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
-import { computeNow, configNeedsSeconds, startClock } from '@/utils/luxon'
+import { configNeedsSeconds, startClock } from '@/utils/luxon'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
@@ -68,7 +69,10 @@ export class ClockWeatherCard extends LitElement {
     configService.validateConfig(config, hass)
     const title = configService.getTitle(config)
     const locale = configService.getLocale(config, hass)
-    const hourlyHidden = configService.isHourlyForecastHidden(config)
+    const hourlyHidden = configService.getHourly(config)
+      .isHidden()
+    const dailyHidden = configService.getDaily(config)
+      .isHidden()
     return html`
       <ha-card>
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
@@ -83,8 +87,17 @@ export class ClockWeatherCard extends LitElement {
             <clock-weather-card-hourly-forecast
               .hass=${hass}
               .config=${config}
+              .currentDate=${this.currentDate}
               .locale=${locale}
             ></clock-weather-card-hourly-forecast>
+          `}
+          ${dailyHidden ? '' : html`
+            <clock-weather-card-daily-forecast
+              .hass=${hass}
+              .config=${config}
+              .currentDate=${this.currentDate}
+              .locale=${locale}
+            ></clock-weather-card-daily-forecast>
           `}
         </div>
       </ha-card>
@@ -128,7 +141,9 @@ export class ClockWeatherCard extends LitElement {
         // hass/config are set when the clock starts and only cleared via
         // disconnectedCallback (which stops the clock first), so reading
         // them live keeps locale/timezone updates reactive.
-        this.currentDate = computeNow(this.hass!, this.config!)
+        this.currentDate = DateTime.now()
+          .setLocale(configService.getLocale(this.config!, this.hass!))
+          .setZone(configService.getTimeZone(this.config!, this.hass!))
       })
     }
   }

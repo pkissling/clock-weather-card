@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "vlhkosť",
     "feels-like": "pocitová teplota",
-    "now": "Teraz"
+    "now": "Teraz",
+    "today": "Dnes"
   }
 }

@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "luftfugtighed",
     "feels-like": "Føles som",
-    "now": "Nu"
+    "now": "Nu",
+    "today": "I dag"
   }
 }

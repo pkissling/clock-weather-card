@@ -29,6 +29,7 @@
     "aqi": "空氣品質",
     "humidity": "濕度",
     "feels-like": "體感溫度",
-    "now": "現在"
+    "now": "現在",
+    "today": "今天"
   }
 }

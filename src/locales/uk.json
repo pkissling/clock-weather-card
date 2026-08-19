@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "вологість",
     "feels-like": "Feels like",
-    "now": "Зараз"
+    "now": "Зараз",
+    "today": "Сьогодні"
   }
 }

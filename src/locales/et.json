@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "niiskus",
     "feels-like": "Tundub nagu",
-    "now": "Praegu"
+    "now": "Praegu",
+    "today": "Täna"
   }
 }
