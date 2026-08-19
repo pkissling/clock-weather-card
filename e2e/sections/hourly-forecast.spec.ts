@@ -151,6 +151,27 @@ test.describe('hourly_forecast section', () => {
       .toHaveCount(3)
   })
 
+  test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: {
+        forecast_hourly: [
+          { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
+        ],
+        supportedFeatures: 1, // FORECAST_DAILY only
+      },
+    })
+
+    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
+    await expect(section)
+      .toBeVisible()
+    await expect(section)
+      .toContainText('does not support hourly forecasts')
+    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+      .toHaveCount(0)
+    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+      .toHaveCount(1)
+  })
+
   test('formats hourly time labels in the configured locale (en-US shows "2 PM", not "14")', async ({ setupCard, clockWeatherCard }) => {
     const forecasts: WeatherForecast[] = [
       { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
