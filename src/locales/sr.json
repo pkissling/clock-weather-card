@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "Влажност",
     "feels-like": "Feels like",
-    "now": "Сада"
+    "now": "Сада",
+    "today": "Данас"
   }
 }

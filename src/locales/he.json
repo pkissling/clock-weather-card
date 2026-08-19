@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "לחות",
     "feels-like": "מרגיש כמו",
-    "now": "כעת"
+    "now": "כעת",
+    "today": "היום"
   }
 }

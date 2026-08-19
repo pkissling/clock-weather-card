@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "نمی",
     "feels-like": "Feels like",
-    "now": "ابھی"
+    "now": "ابھی",
+    "today": "آج"
   }
 }

@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "drėgmė",
     "feels-like": "Feels like",
-    "now": "Dabar"
+    "now": "Dabar",
+    "today": "Šiandien"
   }
 }

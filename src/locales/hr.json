@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "vlažnost",
     "feels-like": "Osjet temperature",
-    "now": "Sada"
+    "now": "Sada",
+    "today": "Danas"
   }
 }

@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "nem",
     "feels-like": "Hissedilen",
-    "now": "Şimdi"
+    "now": "Şimdi",
+    "today": "Bugün"
   }
 }

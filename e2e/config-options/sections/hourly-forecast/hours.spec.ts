@@ -48,8 +48,6 @@ test.describe('sections.hourly_forecast.hours', () => {
       weather: { forecast_hourly: makeHourly(5) },
     })
 
-    // makeHourly(5) emits hours 12..16 UTC; the default mocked clock is 14:20 UTC so the
-    // filter retains 15 and 16 UTC. "Now" + 2 future = 3 items rendered.
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(3)
   })

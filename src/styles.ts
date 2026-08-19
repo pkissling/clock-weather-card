@@ -103,6 +103,10 @@ export default css`
     padding: 4px 6px;
   }
 
+  clock-weather-card-hourly-forecast-item:first-of-type {
+    padding-left: 0;
+  }
+
   clock-weather-card-hourly-forecast-item .time {
     font-size: 0.8rem;
     opacity: 0.7;
@@ -149,6 +153,92 @@ export default css`
   clock-weather-card-hourly-forecast-item .precipitation ha-icon {
     --mdc-icon-size: 1em;
     display: inline-flex;
+  }
+
+  clock-weather-card-daily-forecast {
+    display: block;
+  }
+
+  clock-weather-card-daily-forecast .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  clock-weather-card-daily-forecast-item {
+    display: grid;
+    grid-template-columns: 2.5rem var(--cwc-daily-row-height, 28px) 2.5rem 1fr 2.5rem;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    line-height: 1;
+    min-height: var(--cwc-daily-row-height, auto);
+  }
+
+  clock-weather-card-daily-forecast-item .day-label {
+    font-weight: 500;
+    opacity: 0.9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  clock-weather-card-daily-forecast-item clock-weather-card-icon {
+    position: static;
+    width: var(--cwc-daily-row-height, 28px);
+    height: var(--cwc-daily-row-height, 28px);
+    margin: 0;
+    right: 0;
+    display: block;
+  }
+
+  clock-weather-card-daily-forecast-item clock-weather-card-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  clock-weather-card-daily-forecast-item .temperature-low,
+  clock-weather-card-daily-forecast-item .temperature-high {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+    line-height: 1;
+  }
+
+  clock-weather-card-daily-forecast-item .temperature-low {
+    text-align: right;
+  }
+
+  clock-weather-card-daily-forecast-item .temperature-high {
+    text-align: left;
+  }
+
+  clock-weather-card-daily-forecast-item .bar-track {
+    position: relative;
+    height: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6));
+    min-height: 8px;
+    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    border-radius: 999px;
+  }
+
+  clock-weather-card-daily-forecast-item .bar-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+  }
+
+  clock-weather-card-daily-forecast-item .dot {
+    position: absolute;
+    top: 50%;
+    width: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6) + 8px);
+    height: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6) + 8px);
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 50%;
+    background: var(--card-background-color, var(--ha-card-background, #fff));
+    border: 2px solid var(--primary-text-color, currentColor);
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
   }
 
 `

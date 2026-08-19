@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "độ ẩm",
     "feels-like": "Cảm giác như",
-    "now": "Bây giờ"
+    "now": "Bây giờ",
+    "today": "Hôm nay"
   }
 }

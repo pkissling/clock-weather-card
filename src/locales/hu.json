@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "páratartalom",
     "feels-like": "Hőérzet",
-    "now": "Most"
+    "now": "Most",
+    "today": "Ma"
   }
 }

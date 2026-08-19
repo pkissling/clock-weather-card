@@ -29,6 +29,7 @@
     "aqi": "MAA",
     "humidity": "Lleithder",
     "feels-like": "Teimlo fel",
-    "now": "Nawr"
+    "now": "Nawr",
+    "today": "Heddiw"
   }
 }

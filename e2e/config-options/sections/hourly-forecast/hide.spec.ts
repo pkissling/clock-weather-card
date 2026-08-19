@@ -1,7 +1,8 @@
+import type { WeatherForecast } from '../../../../src/types'
+import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 
-// Default mock clock is 14:20:59Z — the 14:00 entry becomes "Now" and the rest are future hours.
-const FORECAST_HOURLY = [
+const FORECAST_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },
   { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 10 },
   { datetime: '2025-09-14T16:00:00+00:00', condition: 'cloudy', temperature: 20, precipitation_probability: 30 },
@@ -41,14 +42,14 @@ test.describe('sections.hourly_forecast.hide', () => {
     await setupCard({
       weather: {
         forecast_hourly: FORECAST_HOURLY,
-        supportedFeatures: 1, // FORECAST_DAILY only
+        supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
       },
     })
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
     await expect(section)
       .toBeVisible()
     await expect(section)
-      .toContainText('does not support hourly forecasts')
+      .toContainText('Entity "weather.mock_weather" does not support hourly forecasts')
 
     await setupCard({
       cardConfig: `
@@ -59,7 +60,7 @@ test.describe('sections.hourly_forecast.hide', () => {
       `,
       weather: {
         forecast_hourly: FORECAST_HOURLY,
-        supportedFeatures: 1,
+        supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
       },
     })
 

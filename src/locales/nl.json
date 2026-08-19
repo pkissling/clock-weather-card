@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "Vochtigheid",
     "feels-like": "Gevoelstemperatuur",
-    "now": "Nu"
+    "now": "Nu",
+    "today": "Vandaag"
   }
 }

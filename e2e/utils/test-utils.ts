@@ -1,23 +1,26 @@
 import { expect, type Page } from '@playwright/test'
 import { parse as parseYaml } from 'yaml'
 
-import type { ClockWeatherCardConfig, WeatherForecast } from '../../src/types'
+import type { ClockWeatherCardConfig, DailyWeatherForecast, WeatherForecast } from '../../src/types'
+import { WeatherEntityFeature } from '../../src/types'
 import api from './ha-api'
 import { TEST_DASHBOARD } from './ha-setup'
 
 const WEATHER_ENTITY = 'weather.mock_weather'
 
-// Bit values match HA's WeatherEntityFeature enum (daily=1, hourly=2, twice_daily=4).
-export const SUPPORTS_DAILY_AND_HOURLY = 3
+const DEFAULT_SUPPORTED_FEATURES: WeatherEntityFeature[] = [
+  WeatherEntityFeature.FORECAST_DAILY,
+  WeatherEntityFeature.FORECAST_HOURLY,
+]
 
 export type MockOptions = undefined | {
   weather?: {
     state?: string
     temperature?: number
     humidity?: number
-    forecast_daily?: WeatherForecast[]
+    forecast_daily?: DailyWeatherForecast[]
     forecast_hourly?: WeatherForecast[]
-    supportedFeatures?: number
+    supportedFeatures?: WeatherEntityFeature[]
   }
   sun?: {
     state?: 'above_horizon' | 'below_horizon'
@@ -39,27 +42,65 @@ const DEFAULT_CARD_CONFIG = `
 entity: ${WEATHER_ENTITY}
 `
 
-const DEFAULT_FORECAST_DAILY: WeatherForecast[] = [
-  { datetime: '2024-01-02T00:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 0 },
-  { datetime: '2024-01-03T00:00:00+00:00', condition: 'cloudy', temperature: 19, precipitation_probability: 30 },
+export const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
+
+// The `datetime`/`condition` computed by the series builder win over anything `entry` returns,
+// so callers can feed whole row records without accidentally overriding the schedule.
+const forecastSeries = <T extends object>(
+  startMs: number,
+  stepMs: number,
+  conditions: readonly string[],
+  entry: (index: number) => T,
+): (T & { datetime: string, condition: string })[] =>
+    conditions.map((condition, i) => ({
+      ...entry(i),
+      datetime: new Date(startMs + i * stepMs)
+        .toISOString(),
+      condition,
+    }))
+
+// One entry per condition, daily from midnight UTC of `now`'s date, so today is the first row
+// regardless of when the test runs.
+export const dailyForecast = (
+  now: Date,
+  conditions: readonly string[],
+  entry: (index: number) => Omit<DailyWeatherForecast, 'datetime' | 'condition'>,
+): DailyWeatherForecast[] =>
+  forecastSeries(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0),
+    24 * 60 * 60 * 1000,
+    conditions,
+    entry,
+  )
+
+// Default daily fixture: comfortably more entries than the default `rows` cap (5), so row-count
+// behavior is driven by the config knob, not by fixture length. Conditions/temps cover the
+// visual variants the section needs to render.
+const DEFAULT_DAILY_ROWS = [
+  { condition: 'sunny', templow: 15, temperature: 24, precipitation_probability: 10 },
+  { condition: 'partlycloudy', templow: 13, temperature: 22, precipitation_probability: 20 },
+  { condition: 'cloudy', templow: 12, temperature: 20, precipitation_probability: 40 },
+  { condition: 'rainy', templow: 10, temperature: 18, precipitation_probability: 80 },
+  { condition: 'sunny', templow: 14, temperature: 23, precipitation_probability: 5 },
+  { condition: 'partlycloudy', templow: 12, temperature: 21, precipitation_probability: 15 },
+  { condition: 'cloudy', templow: 11, temperature: 19, precipitation_probability: 30 },
 ]
 
-export const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
+const defaultForecastDaily = (now: Date): DailyWeatherForecast[] =>
+  dailyForecast(now, DEFAULT_DAILY_ROWS.map(r => r.condition), i => DEFAULT_DAILY_ROWS[i])
 
 // One entry per condition, hourly from the hour boundary just before `now` ("Now" column).
 export const hourlyForecast = (
   now: Date,
   conditions: readonly string[],
   entry: (index: number) => Omit<WeatherForecast, 'datetime' | 'condition'>,
-): WeatherForecast[] => {
-  const start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), 0, 0)
-  return conditions.map((condition, i) => ({
-    datetime: new Date(start + i * 60 * 60 * 1000)
-      .toISOString(),
-    condition,
-    ...entry(i),
-  }))
-}
+): WeatherForecast[] =>
+  forecastSeries(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), 0, 0),
+    60 * 60 * 1000,
+    conditions,
+    entry,
+  )
 
 // 24 hourly entries. All carry precipitation probability > 0 except the 2nd and 3rd,
 // which exercise the "non-zero alongside zero" rendering path.
@@ -89,9 +130,10 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     condition: opts?.weather?.state ?? 'sunny',
     temperature: opts?.weather?.temperature ?? 21,
     humidity: opts?.weather?.humidity ?? 50,
-    forecast_daily: opts?.weather?.forecast_daily ?? DEFAULT_FORECAST_DAILY,
+    forecast_daily: opts?.weather?.forecast_daily ?? defaultForecastDaily(date),
     forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
-    supported_features: opts?.weather?.supportedFeatures ?? SUPPORTS_DAILY_AND_HOURLY,
+    supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
+      .reduce((acc, f) => acc | f, 0),
   })
 
   // Set sun entity state via REST API

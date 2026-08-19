@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "kosteus",
     "feels-like": "Tuntuu kuin",
-    "now": "Nyt"
+    "now": "Nyt",
+    "today": "Tänään"
   }
 }

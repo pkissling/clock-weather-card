@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "umiditate",
     "feels-like": "Temp. resimțită",
-    "now": "Acum"
+    "now": "Acum",
+    "today": "Azi"
   }
 }

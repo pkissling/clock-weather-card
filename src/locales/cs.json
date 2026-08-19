@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "vlhkost",
     "feels-like": "pocitová teplota",
-    "now": "Nyní"
+    "now": "Nyní",
+    "today": "Dnes"
   }
 }

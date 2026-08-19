@@ -1,6 +1,7 @@
+import type { WeatherForecast } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 
-const FORECAST_HOURLY = [
+const FORECAST_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T15:00:00+00:00', condition: 'rainy', temperature: 12, precipitation_probability: 50 },
 ]
 

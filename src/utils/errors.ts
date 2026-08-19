@@ -1,4 +1,4 @@
-import type { ClockWeatherCardConfig } from '@/types'
+import type { ClockWeatherCardConfig, ForecastType } from '@/types'
 
 type ConfigAttribute = keyof {
   [K in keyof ClockWeatherCardConfig as string extends K ? never : K]: unknown
@@ -13,5 +13,5 @@ export const entityNotFound = (entityId: string): Error =>
 export const invalidConfigValue = (attribute: ConfigAttribute | string, value: string): Error =>
   new Error(`Config option "${attribute}" has invalid value "${value}"`)
 
-export const hourlyForecastNotSupported = (entityId: string): Error =>
-  new Error(`Entity "${entityId}" does not support hourly forecasts`)
+export const forecastNotSupported = (entityId: string, kind: ForecastType): Error =>
+  new Error(`Entity "${entityId}" does not support ${kind} forecasts`)

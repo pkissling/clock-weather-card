@@ -29,6 +29,7 @@
     "aqi": "AQI",
     "humidity": "Loftfiichtegkeet",
     "feels-like": "Gefillt",
-    "now": "Elo"
+    "now": "Elo",
+    "today": "Haut"
   }
 }
