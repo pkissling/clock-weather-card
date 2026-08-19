@@ -121,34 +121,27 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const cardConfig = { ...defaults, ...overrides }
   const date = opts?.date ?? DEFAULT_DATE
 
-  // Set dashboard card config via HA websocket
-  await api.setDashboardConfig(TEST_DASHBOARD, cardConfig)
-
-  // Set weather state via mock_weather service. Always pass supported_features so
-  // tests that mutate it can't leak state to the next test.
-  await api.setMockWeather({
-    condition: opts?.weather?.state ?? 'sunny',
-    temperature: opts?.weather?.temperature ?? 21,
-    humidity: opts?.weather?.humidity ?? 50,
-    forecast_daily: opts?.weather?.forecast_daily ?? defaultForecastDaily(date),
-    forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
-    supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
-      .reduce((acc, f) => acc | f, 0),
-  })
-
-  // Set sun entity state via REST API
   const sunState = opts?.sun?.state ?? 'above_horizon'
-  await api.setEntityState('sun.sun', sunState, {
-    elevation: sunState === 'below_horizon' ? -10 : 30,
-    ...(opts?.sun?.attributes ?? {}),
-  })
-
-  // Mock the browser clock
-  await page.clock.setFixedTime(date)
-
-  // Reset HA-global state to defaults so tests don't leak language/tz across runs.
-  await api.setLanguage(opts?.language ?? 'en')
-  await api.setTimeZone(opts?.timeZone ?? 'Europe/Berlin')
+  // Independent state writes — run concurrently.
+  await Promise.all([
+    api.setDashboardConfig(TEST_DASHBOARD, cardConfig),
+    api.setMockWeather({
+      condition: opts?.weather?.state ?? 'sunny',
+      temperature: opts?.weather?.temperature ?? 21,
+      humidity: opts?.weather?.humidity ?? 50,
+      forecast_daily: opts?.weather?.forecast_daily ?? defaultForecastDaily(date),
+      forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
+      supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
+        .reduce((acc, f) => acc | f, 0),
+    }),
+    api.setEntityState('sun.sun', sunState, {
+      elevation: sunState === 'below_horizon' ? -10 : 30,
+      ...(opts?.sun?.attributes ?? {}),
+    }),
+    page.clock.setFixedTime(date),
+    api.setLanguage(opts?.language ?? 'en'),
+    api.setTimeZone(opts?.timeZone ?? 'Europe/Berlin'),
+  ])
 
   // Skip goto on follow-up calls so HA's live WS push hits the mounted card without a reload.
   if (!page.url()

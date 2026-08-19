@@ -27,8 +27,8 @@ export default defineConfig({
        HA_URL takes precedence there too. */
     baseURL: process.env.HA_URL || 'http://127.0.0.1:8123',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'retain-on-failure': 'on',
+    /* Trace export on passing icon-heavy tests takes 30s+ and blows the test timeout. */
+    trace: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */

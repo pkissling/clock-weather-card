@@ -68,7 +68,10 @@ test.describe('time_zone', () => {
     await expect(clockWeatherCard)
       .toContainText('8:00 AM')
 
-    await setupCard({ cardConfig: 'time_zone: Asia/Tokyo' })
+    await setupCard({
+      cardConfig: 'time_zone: Asia/Tokyo',
+      date: new Date('2025-06-15T12:00:00Z'),
+    })
 
     // UTC 12:00 → Tokyo 21:00
     await expect(clockWeatherCard)

@@ -99,7 +99,6 @@ test.describe('sections.hourly_forecast.weather_icon_type', () => {
       { datetime: '2025-09-14T20:00:00+00:00', condition: 'rainy', temperature: 17, precipitation_probability: 80 },
     ]
 
-    // Baseline: icon type `line` keeps the info-color (blue).
     await setupCard({
       date: new Date('2025-09-14T18:30:00+00:00'),
       cardConfig: `
@@ -115,7 +114,6 @@ test.describe('sections.hourly_forecast.weather_icon_type', () => {
       .first()
       .evaluate(el => getComputedStyle(el).color)
 
-    // Monochrome inherits the surrounding text color (matches the temperature label).
     await setupCard({
       date: new Date('2025-09-14T18:30:00+00:00'),
       cardConfig: `
