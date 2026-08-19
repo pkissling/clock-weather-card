@@ -21,7 +21,10 @@ export default defineConfig({
   reporter: [['list'], ['html']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
+    /* Base URL to use in actions like `await page.goto('/')`. The HA container
+       gets a random host port picked in globalSetup, so the effective baseURL
+       is resolved per-run by a fixture override in e2e/utils/fixtures.ts;
+       HA_URL takes precedence there too. */
     baseURL: process.env.HA_URL || 'http://127.0.0.1:8123',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */

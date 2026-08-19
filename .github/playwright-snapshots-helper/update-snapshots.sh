@@ -5,7 +5,12 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 echo "Building Playwright image..."
-docker build -t clock-weather-card-e2e -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_DIR"
+# Unique per-process tag so concurrent sessions (e.g. in different worktrees)
+# can't re-tag the image out from under each other. Untagged again after the
+# run — the Docker build cache keeps rebuilds fast.
+IMAGE_TAG="clock-weather-card-e2e-$$"
+trap 'docker rmi "$IMAGE_TAG" >/dev/null 2>&1 || true' EXIT
+docker build -t "$IMAGE_TAG" -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_DIR"
 
 echo "Running Playwright tests in Docker to update snapshots..."
 docker run --rm \
@@ -14,4 +19,4 @@ docker run --rm \
   -v "$(which docker):/usr/bin/docker:ro" \
   -v /tmp:/tmp \
   -v "$PROJECT_DIR/e2e:/work/e2e" \
-  clock-weather-card-e2e
+  "$IMAGE_TAG"

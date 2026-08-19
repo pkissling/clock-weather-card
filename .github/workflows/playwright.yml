@@ -26,7 +26,8 @@ jobs:
     # resolution and cause sub-pixel differences vs the snapshots; running
     # in the snapshot image makes the CI render byte-identical.
     # --network=host so the HA container we launch via the mounted socket
-    # is reachable on 127.0.0.1:8123 from inside this container.
+    # is reachable on its randomly mapped 127.0.0.1 port from inside this
+    # container.
     - name: Run Playwright tests
       run: |
         docker run --rm \
