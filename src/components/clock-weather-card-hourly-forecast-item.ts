@@ -26,8 +26,8 @@ class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardCompone
       ></clock-weather-card-icon>
       <span class="temperature">${temperature}${temperatureUnit}</span>
       ${showPrecipitation
-        ? html`<span class=${precipClass}>${hasPrecip ? html`<ha-icon icon="mdi:water"></ha-icon>${precipitationProbability}%` : nothing}</span>`
-        : nothing}
+    ? html`<span class=${precipClass}>${hasPrecip ? html`<ha-icon icon="mdi:water"></ha-icon>${precipitationProbability}%` : nothing}</span>`
+    : nothing}
     `
   }
 }
