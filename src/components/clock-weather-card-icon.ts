@@ -13,6 +13,8 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property() public animatedIcon!: boolean
   @property() public weatherIconType!: WeatherIconType
   @state() private _src?: string
+  // Reflected so e2e tests can wait for the final (static or animated) src.
+  @property({ type: Boolean, reflect: true, attribute: 'data-settled' }) private _settled = false
   private _loadId = 0
 
   public render(): TemplateResult {
@@ -34,6 +36,7 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
     // Bump per-load id so a stale resolution from a previous prop set
     // can't overwrite the current icon.
     const id = ++this._loadId
+    this._settled = false
     const { weatherIconType, weatherState, isNight, animatedIcon } = this
 
     try {
@@ -43,14 +46,16 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
       // fall through to animated attempt; if both fail we keep the previous src
     }
 
-    if (!animatedIcon) return
-
-    try {
-      const animatedUrl = await iconsService.getWeatherIcon(weatherIconType, true, weatherState, isNight)
-      if (id === this._loadId) this._src = animatedUrl
-    } catch {
-      // keep static fallback
+    if (animatedIcon) {
+      try {
+        const animatedUrl = await iconsService.getWeatherIcon(weatherIconType, true, weatherState, isNight)
+        if (id === this._loadId) this._src = animatedUrl
+      } catch {
+        // keep static fallback
+      }
     }
+
+    if (id === this._loadId) this._settled = true
   }
 }
 

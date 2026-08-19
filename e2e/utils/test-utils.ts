@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 import { parse as parseYaml } from 'yaml'
 
 import type { ClockWeatherCardConfig, WeatherForecast } from '../../src/types'
@@ -31,6 +31,8 @@ export type MockOptions = undefined | {
   date?: Date
   language?: string
   timeZone?: string
+  /** Icons that must finish loading before setup completes (default 1). */
+  expectedIcons?: number
 }
 
 const DEFAULT_CARD_CONFIG = `
@@ -42,22 +44,34 @@ const DEFAULT_FORECAST_DAILY: WeatherForecast[] = [
   { datetime: '2024-01-03T00:00:00+00:00', condition: 'cloudy', temperature: 19, precipitation_probability: 30 },
 ]
 
-const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
+export const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
 
-// 24 hourly entries starting at the hour boundary just before `now`, so the first entry feeds the
-// strip's "Now" column. All entries carry precipitation probability > 0 except the 2nd and 3rd,
-// which exercise the "non-zero alongside zero" rendering path.
-const defaultForecastHourly = (now: Date): WeatherForecast[] => {
+// One entry per condition, hourly from the hour boundary just before `now` ("Now" column).
+export const hourlyForecast = (
+  now: Date,
+  conditions: readonly string[],
+  entry: (index: number) => Omit<WeatherForecast, 'datetime' | 'condition'>,
+): WeatherForecast[] => {
   const start = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), 0, 0)
-  const conditions = ['sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'rainy', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'cloudy', 'partlycloudy']
-  return Array.from({ length: 24 }, (_, i) => ({
+  return conditions.map((condition, i) => ({
     datetime: new Date(start + i * 60 * 60 * 1000)
       .toISOString(),
-    condition: conditions[i],
-    temperature: 22 - Math.abs(i - 4) % 14,
-    precipitation_probability: i === 1 || i === 2 ? 0 : (i >= 6 && i <= 8 ? 60 : 20),
+    condition,
+    ...entry(i),
   }))
 }
+
+// 24 hourly entries. All carry precipitation probability > 0 except the 2nd and 3rd,
+// which exercise the "non-zero alongside zero" rendering path.
+const defaultForecastHourly = (now: Date): WeatherForecast[] =>
+  hourlyForecast(
+    now,
+    ['sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'rainy', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'clear-night', 'sunny', 'sunny', 'partlycloudy', 'partlycloudy', 'cloudy', 'cloudy', 'rainy', 'cloudy', 'partlycloudy'],
+    i => ({
+      temperature: 22 - Math.abs(i - 4) % 14,
+      precipitation_probability: i === 1 || i === 2 ? 0 : (i >= 6 && i <= 8 ? 60 : 20),
+    }),
+  )
 
 export const setupCard = async (page: Page, opts: MockOptions): Promise<void> => {
   // Parse YAML card config, merging with defaults
@@ -107,44 +121,33 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     .first()
     .waitFor({ state: 'visible' })
 
-  // For animated icons: the icon loads asynchronously (static first, then animated
-  // replaces it). Wait until the animated variant is in the <img> src, then strip
-  // SMIL so screenshots are deterministic. Playwright's `animations: 'disabled'`
-  // only handles CSS animations, not SMIL.
-  if (cardConfig.animated_icon !== false) {
-    await waitForAnimatedIcon(page)
-    await freezeSvgAnimations(page)
-  }
+  // Wait until every icon has committed its final src, then strip SMIL so screenshots
+  // are deterministic (Playwright's `animations: 'disabled'` only covers CSS animations).
+  await waitForIconsSettled(page, opts?.expectedIcons ?? 1)
+  await freezeSvgAnimations(page)
 }
 
-const SMIL_PATTERN = /<(animate|animateTransform|animateMotion|set)\b/
-
-async function waitForAnimatedIcon (page: Page): Promise<void> {
-  // Best effort: some animated meteocons variants (e.g. plain sun) contain no SMIL,
-  // in which case there's nothing to wait for. Swallow the timeout.
-  await page.waitForFunction((smilPatternSrc: string) => {
-    const smilPattern = new RegExp(smilPatternSrc)
-
-    function hasAnimatedSvg (root: Document | ShadowRoot): boolean {
-      for (const img of root.querySelectorAll('img')) {
-        const src = img.getAttribute('src') ?? ''
-        if (!src.startsWith('data:image/svg+xml')) continue
-        if (smilPattern.test(decodeURIComponent(src))) return true
+async function waitForIconsSettled (page: Page, minIcons: number): Promise<void> {
+  // A config error renders an error card and no icons at all — pass in that case.
+  await expect
+    .poll(async () => {
+      const total = await page.locator('clock-weather-card-icon')
+        .count()
+      if (total === 0) {
+        return await page.locator('hui-error-card, clock-weather-card-error')
+          .count() > 0
       }
-      for (const el of root.querySelectorAll('*')) {
-        if (el.shadowRoot && hasAnimatedSvg(el.shadowRoot)) return true
-      }
-      return false
-    }
-
-    return hasAnimatedSvg(document)
-  }, SMIL_PATTERN.source, { timeout: 2000 })
-    .catch(() => undefined)
+      const settled = await page.locator('clock-weather-card-icon[data-settled]')
+        .count()
+      return total >= minIcons && settled === total
+    }, { timeout: 15_000 })
+    .toBe(true)
 }
 
 async function freezeSvgAnimations (page: Page): Promise<void> {
   await page.evaluate(async (smilTags: string[]) => {
     const pending: Promise<unknown>[] = []
+    const smilPattern = new RegExp(`<(${smilTags.join('|')})\\b`)
 
     function processElement (root: Document | ShadowRoot): void {
       for (const img of root.querySelectorAll('img')) {
@@ -155,6 +158,8 @@ async function freezeSvgAnimations (page: Page): Promise<void> {
         if (commaIdx === -1) continue
 
         const svgText = decodeURIComponent(src.slice(commaIdx + 1))
+        if (!smilPattern.test(svgText)) continue
+
         const doc = new DOMParser()
           .parseFromString(svgText, 'image/svg+xml')
         const smilElements = doc.querySelectorAll(smilTags.join(','))

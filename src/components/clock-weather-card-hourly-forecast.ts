@@ -93,19 +93,19 @@ class ClockWeatherCardHourlyForecast extends AbstractClockWeatherCardComponent {
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
       <div class="strip">
         ${visible.map(({ forecast, at }) => {
-      const item: HourlyForecastItem = {
-        label: at <= now ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
-        condition: forecast.condition,
-        isNight: hassService.isNight(this.hass, sunEntityId, at),
-        animatedIcon,
-        weatherIconType,
-        temperature: round ? Math.round(forecast.temperature) : forecast.temperature,
-        temperatureUnit,
-        precipitationProbability: forecast.precipitation_probability ?? null,
-        showPrecipitation,
-      }
-      return html`<clock-weather-card-hourly-forecast-item .item=${item}></clock-weather-card-hourly-forecast-item>`
-    })}
+    const item: HourlyForecastItem = {
+      label: at <= now ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
+      condition: forecast.condition,
+      isNight: hassService.isNight(this.hass, sunEntityId, at),
+      animatedIcon,
+      weatherIconType,
+      temperature: round ? Math.round(forecast.temperature) : forecast.temperature,
+      temperatureUnit,
+      precipitationProbability: forecast.precipitation_probability ?? null,
+      showPrecipitation,
+    }
+    return html`<clock-weather-card-hourly-forecast-item .item=${item}></clock-weather-card-hourly-forecast-item>`
+  })}
       </div>
     `
   }
