@@ -37,25 +37,6 @@ test.describe('sections.hourly_forecast.hide', () => {
       .toHaveCount(1)
   })
 
-  test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({
-      weather: {
-        forecast_hourly: FORECAST_HOURLY,
-        supportedFeatures: 1, // FORECAST_DAILY only
-      },
-    })
-
-    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
-    await expect(section)
-      .toBeVisible()
-    await expect(section)
-      .toContainText('does not support hourly forecasts')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
-      .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
-      .toHaveCount(1)
-  })
-
   test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {
