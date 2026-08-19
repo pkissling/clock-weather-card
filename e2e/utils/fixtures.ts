@@ -1,5 +1,6 @@
 import { type Locator, test as base } from '@playwright/test'
 
+import { readHaState } from './ha-state'
 import { type MockOptions, setupCard as setupCardTest } from './test-utils'
 
 type ClockWeatherCardFixtures = {
@@ -10,6 +11,13 @@ type ClockWeatherCardFixtures = {
 }
 
 export const test = base.extend<ClockWeatherCardFixtures>({
+  // The HA container's host port is chosen dynamically in globalSetup — after
+  // playwright.config.ts is evaluated — so resolve baseURL from the state file
+  // here. An explicit HA_URL still takes precedence (matching the config).
+  baseURL: async ({}, use) => {
+    await use(process.env.HA_URL ?? readHaState().haUrl)
+  },
+
   clockWeatherCard: async ({ page }, use) => {
     await use(page.locator('clock-weather-card'))
   },

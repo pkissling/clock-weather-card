@@ -1,27 +1,27 @@
 import { execSync } from 'child_process'
-import { readFileSync, rmSync } from 'fs'
+import { rmSync } from 'fs'
 
-const HA_CONTAINER_NAME = 'ha-e2e-test'
+import { readHaState } from './ha-state.js'
 
 export default async function globalTeardown(): Promise<void> {
   console.log('[HA Teardown] Stopping Home Assistant container...')
+
+  // Only remove this run's own artifacts (identified via the per-run state
+  // file) — other sessions may be running concurrently.
   try {
-    execSync(`docker rm -f ${HA_CONTAINER_NAME}`, { stdio: 'ignore' })
+    const state = readHaState()
+    try {
+      execSync(`docker rm -f ${state.containerName}`, { stdio: 'ignore' })
+    } catch {
+      // Container may already be stopped
+    }
+    rmSync(state.tmpDir, { recursive: true, force: true })
   } catch {
-    // Container may already be stopped
+    // State file may not exist (setup failed before writing it)
   }
 
-  // Clean up temp directory and state file
   const stateFile = process.env.HA_E2E_STATE_FILE
   if (stateFile) {
-    try {
-      const state = JSON.parse(readFileSync(stateFile, 'utf-8'))
-      if (state.tmpDir) {
-        rmSync(state.tmpDir, { recursive: true, force: true })
-      }
-    } catch {
-      // State file may not exist (setup failed before writing it)
-    }
     try {
       rmSync(stateFile, { force: true })
     } catch {

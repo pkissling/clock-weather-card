@@ -1,16 +1,21 @@
 import { execSync } from 'child_process'
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, unlinkSync, writeFileSync } from 'fs'
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { createStateFilePath } from './ha-state.js'
+import {
+  createContainerName,
+  createStateFilePath,
+  E2E_ARTIFACT_NAME,
+  isStaleCreatedAt,
+  isStaleHaTempEntry,
+  writeHaState,
+} from './ha-state.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const HA_PORT = 8123
-const HA_CONTAINER_NAME = 'ha-e2e-test'
 const HA_IMAGE = 'ghcr.io/home-assistant/home-assistant:stable'
 const HA_CONFIG_DIR = path.join(__dirname, 'ha-config')
 const DIST_DIR = path.join(__dirname, '..', '..', 'dist')
@@ -22,7 +27,7 @@ export default async function globalSetup(): Promise<void> {
   execSync('yarn build', { cwd: path.join(__dirname, '..', '..'), stdio: 'inherit' })
 
   console.log('[HA Setup] Preparing HA config directory...')
-  const tmpDir = mkdtempSync(path.join(os.tmpdir(), 'ha-e2e-'))
+  const tmpDir = mkdtempSync(path.join(os.tmpdir(), `${E2E_ARTIFACT_NAME}-`))
 
   // Copy HA config fixtures (configuration.yaml + custom_components)
   cpSync(HA_CONFIG_DIR, tmpDir, { recursive: true })
@@ -35,48 +40,95 @@ export default async function globalSetup(): Promise<void> {
   mkdirSync(wwwDir, { recursive: true })
   cpSync(DIST_DIR, wwwDir, { recursive: true })
 
-  // Stop any existing container
-  try {
-    execSync(`docker rm -f ${HA_CONTAINER_NAME}`, { stdio: 'ignore' })
-  } catch {
-    // Container didn't exist, that's fine
-  }
+  // Remove leftovers of crashed runs (containers, state files, tmp dirs).
+  // Everything is age-gated so artifacts of concurrently running sessions
+  // are never touched — each session only removes its own in teardown.
+  removeStaleContainers()
+  removeStaleTempEntries()
 
-  // Remove stale state files from previous interrupted runs so /tmp doesn't fill up.
-  // The active run uses a unique path (createStateFilePath) so this never races.
-  for (const file of readdirSync(os.tmpdir())) {
-    if (file.startsWith('ha-e2e-state-') && file.endsWith('.json')) {
-      try { unlinkSync(path.join(os.tmpdir(), file)) } catch { /* ignore */ }
-    }
-  }
-
-  console.log('[HA Setup] Starting Home Assistant container...')
+  const containerName = createContainerName()
+  console.log(`[HA Setup] Starting Home Assistant container ${containerName}...`)
+  // `-p 127.0.0.1::8123` lets Docker pick a free host port, so concurrent
+  // sessions never race for the same port.
   execSync(
-    `docker run -d --name ${HA_CONTAINER_NAME} ` +
-    `-p ${HA_PORT}:8123 ` +
+    `docker run -d --name ${containerName} ` +
+    `--label ${E2E_ARTIFACT_NAME} ` +
+    '-p 127.0.0.1::8123 ' +
     `-v ${tmpDir}:/config ` +
     '-e TZ=UTC ' +
     `${HA_IMAGE}`,
     { stdio: 'inherit' },
   )
 
-  console.log('[HA Setup] Waiting for Home Assistant to start...')
-  await waitForHA(`http://127.0.0.1:${HA_PORT}`)
+  try {
+    const haUrl = `http://127.0.0.1:${getMappedPort(containerName)}`
 
-  console.log('[HA Setup] Completing onboarding...')
-  const token = await completeOnboarding(`http://127.0.0.1:${HA_PORT}`)
+    console.log(`[HA Setup] Waiting for Home Assistant on ${haUrl}...`)
+    await waitForHA(haUrl)
 
-  // Unique path per run — a stale file owned by a different user (e.g. root in
-  // Docker vs. host user) can't block this write.
-  const stateFile = createStateFilePath()
-  const state = {
-    haUrl: `http://127.0.0.1:${HA_PORT}`,
-    haToken: token,
-    tmpDir,
+    console.log('[HA Setup] Completing onboarding...')
+    const token = await completeOnboarding(haUrl)
+
+    // Unique path per run — a stale file owned by a different user (e.g. root in
+    // Docker vs. host user) can't block this write.
+    createStateFilePath()
+    writeHaState({ haUrl, haToken: token, tmpDir, containerName })
+  } catch (err) {
+    // globalTeardown doesn't run when globalSetup throws — clean up here so a
+    // failed setup doesn't leak a running container.
+    try { execSync(`docker rm -f ${containerName}`, { stdio: 'ignore' }) } catch { /* ignore */ }
+    try { rmSync(tmpDir, { recursive: true, force: true }) } catch { /* ignore */ }
+    throw err
   }
-  writeFileSync(stateFile, JSON.stringify(state))
 
   console.log('[HA Setup] Home Assistant is ready!')
+}
+
+function removeStaleContainers(): void {
+  let ids: string[]
+  try {
+    ids = execSync(`docker ps -aq --filter label=${E2E_ARTIFACT_NAME}`, { encoding: 'utf-8' })
+      .split('\n')
+      .filter(Boolean)
+  } catch {
+    return
+  }
+
+  for (const id of ids) {
+    try {
+      const created = execSync(`docker inspect -f '{{.Created}}' ${id}`, { encoding: 'utf-8' })
+        .trim()
+      if (isStaleCreatedAt(created, Date.now())) {
+        console.log(`[HA Setup] Removing stale HA container ${id}...`)
+        execSync(`docker rm -f ${id}`, { stdio: 'ignore' })
+      }
+    } catch { /* container vanished in the meantime, ignore */ }
+  }
+}
+
+function removeStaleTempEntries(): void {
+  const now = Date.now()
+  for (const entry of readdirSync(os.tmpdir())) {
+    if (!entry.startsWith(`${E2E_ARTIFACT_NAME}-`)) continue // skip the stat for unrelated /tmp entries
+    try {
+      const entryPath = path.join(os.tmpdir(), entry)
+      if (isStaleHaTempEntry(entry, statSync(entryPath).mtimeMs, now)) {
+        rmSync(entryPath, { recursive: true, force: true })
+      }
+    } catch { /* ignore — cleanup is best-effort */ }
+  }
+}
+
+function getMappedPort(containerName: string): number {
+  // Output is e.g. "127.0.0.1:49153"
+  const output = execSync(`docker port ${containerName} 8123`, { encoding: 'utf-8' })
+    .trim()
+  const port = Number(output.split('\n')[0].split(':')
+    .pop())
+  if (!Number.isInteger(port) || port <= 0) {
+    throw new Error(`Could not determine mapped HA port from "${output}"`)
+  }
+  return port
 }
 
 function generateStorageFiles(configDir: string): void {

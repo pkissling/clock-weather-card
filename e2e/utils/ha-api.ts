@@ -1,12 +1,4 @@
-import { readFileSync } from 'fs'
-
-import { getStateFilePath } from './ha-state.js'
-
-interface HaState {
-  haUrl: string
-  haToken: string
-  tmpDir: string
-}
+import { type HaState, readHaState } from './ha-state.js'
 
 class HaApi {
   private _state?: HaState
@@ -14,7 +6,7 @@ class HaApi {
   // Read lazily so importing this module (e.g. during `playwright test --list`)
   // doesn't require globalSetup to have already written the state file.
   private get state(): HaState {
-    return this._state ??= JSON.parse(readFileSync(getStateFilePath(), 'utf-8')) as HaState
+    return this._state ??= readHaState()
   }
 
   private get baseUrl(): string { return this.state.haUrl }
