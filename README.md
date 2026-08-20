@@ -185,6 +185,8 @@ Renders a horizontally scrolling strip of upcoming hours (time, weather icon, te
 
 The first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
+When the configured hours do not fit the card width, the strip scrolls horizontally (swipe, trackpad, Shift + mouse wheel, or the thin scrollbar below the strip).
+
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
