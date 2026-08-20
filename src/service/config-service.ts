@@ -56,16 +56,10 @@ class ConfigService {
       if (value === undefined) return
       if (!Number.isInteger(value) || value <= 0) throw invalidConfigValue(path, String(value))
     }
-    // YAML configs can violate the declared types at runtime, so both helpers re-check with typeof.
+    // YAML configs can violate the declared types at runtime, so re-check with typeof.
     const assertCssLength = (path: string, value: unknown): void => {
       if (value === undefined) return
       if (typeof value !== 'string' || !/^\d+(\.\d+)?(px|rem|em|vh|vw|%)$/i.test(value.trim())) {
-        throw invalidConfigValue(path, String(value))
-      }
-    }
-    const assertRatio = (path: string, value: unknown): void => {
-      if (value === undefined) return
-      if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0 || value > 1) {
         throw invalidConfigValue(path, String(value))
       }
     }
@@ -83,7 +77,7 @@ class ConfigService {
     assertPositiveInteger('sections.daily_forecast.rows', config.sections?.daily_forecast?.rows)
 
     assertCssLength('sections.daily_forecast.row_height', config.sections?.daily_forecast?.row_height)
-    assertRatio('sections.daily_forecast.bar_height_ratio', config.sections?.daily_forecast?.bar_height_ratio)
+    assertCssLength('sections.daily_forecast.bar_thickness', config.sections?.daily_forecast?.bar_thickness)
 
     const gradient = config.sections?.daily_forecast?.gradient
     if (gradient !== undefined) {
@@ -160,7 +154,7 @@ class ConfigService {
       isHidden: () => section?.hide ?? false,
       getEntity: () => section?.weather_entity ?? this.getEntity(config),
       getRowHeight: () => section?.row_height ?? null,
-      getBarHeightRatio: () => section?.bar_height_ratio ?? 0.6,
+      getBarThickness: () => section?.bar_thickness ?? '60%',
       getRows: () => section?.rows ?? 5,
       isCurrentTempIndicatorHidden: () => section?.hide_current_temp_indicator ?? false,
       getAnimatedIcons: () => section?.animated_icons ?? false,
@@ -184,7 +178,7 @@ export interface DailyForecastConfig {
   isHidden: () => boolean
   getEntity: () => string
   getRowHeight: () => string | null
-  getBarHeightRatio: () => number
+  getBarThickness: () => string
   getRows: () => number
   isCurrentTempIndicatorHidden: () => boolean
   getAnimatedIcons: () => boolean

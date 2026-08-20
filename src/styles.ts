@@ -166,6 +166,7 @@ export default css`
   }
 
   clock-weather-card-daily-forecast-item {
+    --_bar-thickness: var(--cwc-daily-bar-thickness, calc(var(--cwc-daily-row-height, 28px) * 0.6));
     display: contents;
   }
 
@@ -207,7 +208,7 @@ export default css`
 
   clock-weather-card-daily-forecast-item .bar-track {
     position: relative;
-    height: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6));
+    height: var(--_bar-thickness);
     min-height: 8px;
     background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
     border-radius: 999px;
@@ -223,8 +224,8 @@ export default css`
   clock-weather-card-daily-forecast-item .dot {
     position: absolute;
     top: 50%;
-    width: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6) + 8px);
-    height: calc(var(--cwc-daily-row-height, 28px) * var(--cwc-daily-bar-ratio, 0.6) + 8px);
+    width: calc(var(--_bar-thickness) + 8px);
+    height: calc(var(--_bar-thickness) + 8px);
     min-width: 14px;
     min-height: 14px;
     border-radius: 50%;

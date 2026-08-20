@@ -149,7 +149,7 @@ sections:
     weather_entity: weather.home
     rows: 5
     row_height: 28px
-    bar_height_ratio: 0.6
+    bar_thickness: 60%
     hide_current_temp_indicator: false
     animated_icons: false
     round_temperatures: true
@@ -208,7 +208,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` supported feature
 | `weather_entity` | string | no | top-level `entity` | Weather entity whose daily forecast is displayed. Falls back to the card's main `entity` when not set. |
 | `rows` | number | no | `5` | Maximum number of day rows to render, starting from today. Fewer are shown if the provider returns less. |
 | `row_height` | string | no | `28px` | CSS length controlling the height of each day row. Drives both the icon size and the row's minimum height. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%`. |
-| `bar_height_ratio` | number | no | `0.6` | Bar height as a fraction (0–1) of `row_height`. Larger values produce a chunkier bar and reduce the visible gap between adjacent rows; smaller values produce a thinner bar with more whitespace. |
+| `bar_thickness` | string | no | `60%` | CSS length controlling the thickness of the temperature bar. A percentage is relative to `row_height` (so the bar scales with the row); absolute units (`px`, `rem`, `em`, `vh`, `vw`) set a fixed thickness. The current-temperature dot scales with it. Thicker bars reduce the visible gap between adjacent rows. |
 | `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row is not rendered. |
 | `animated_icons` | boolean | no | `false` | Whether the per-day weather icons should be animated. Defaults to `false` independently of the top-level `animated_icon` to keep the section lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values. |
