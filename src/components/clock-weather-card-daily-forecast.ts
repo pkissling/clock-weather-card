@@ -15,6 +15,17 @@ import type { DailyForecastItem, DailyWeatherForecast, ForecastType } from '@/ty
 import { forecastNotSupported } from '@/utils/errors'
 import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gradient'
 
+/**
+ * A percentage `bar_thickness` is relative to the row height (a CSS `%` height would resolve against
+ * the grid area instead), so translate it into a `calc()` on the row-height variable.
+ */
+const toBarThicknessCss = (thickness: string): string => {
+  const percent = /^(\d+(?:\.\d+)?)%$/.exec(thickness.trim())
+  return percent
+    ? `calc(var(--cwc-daily-row-height, 28px) * ${Number(percent[1]) / 100})`
+    : thickness
+}
+
 @customElement('clock-weather-card-daily-forecast')
 class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeatherForecast> {
   protected readonly forecastType: ForecastType = 'daily'
@@ -94,10 +105,9 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
     const todayLabel = translationsService.t(this.locale, 'misc.today')
 
     const rowHeight = dailyConfig.getRowHeight()
-    const barRatio = dailyConfig.getBarHeightRatio()
     const rowsStyle = [
       rowHeight ? `--cwc-daily-row-height: ${rowHeight}` : null,
-      `--cwc-daily-bar-ratio: ${barRatio}`,
+      `--cwc-daily-bar-thickness: ${toBarThicknessCss(dailyConfig.getBarThickness())}`,
     ].filter(Boolean)
       .join('; ')
 

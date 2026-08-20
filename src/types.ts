@@ -92,7 +92,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       weather_entity?: string
       rows?: number
       row_height?: string
-      bar_height_ratio?: number
+      bar_thickness?: string
       hide_current_temp_indicator?: boolean
       animated_icons?: boolean
       round_temperatures?: boolean

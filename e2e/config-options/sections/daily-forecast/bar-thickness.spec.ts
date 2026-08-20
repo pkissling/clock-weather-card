@@ -6,8 +6,10 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 4, temperature: 12, precipitation_probability: 0 },
 ]
 
-test.describe('sections.daily_forecast.bar_height_ratio', () => {
-  test('uses 0.6 by default — bar is 60% of row_height', async ({ setupCard, clockWeatherCard }) => {
+const BAR_TRACK = 'clock-weather-card-daily-forecast-item .bar-track'
+
+test.describe('sections.daily_forecast.bar_thickness', () => {
+  test('uses 60% of row_height by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
@@ -18,7 +20,7 @@ test.describe('sections.daily_forecast.bar_height_ratio', () => {
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
-    const trackHeight = await clockWeatherCard.locator('clock-weather-card-daily-forecast-item .bar-track')
+    const trackHeight = await clockWeatherCard.locator(BAR_TRACK)
       .first()
       .evaluate(el => parseFloat(getComputedStyle(el).height))
     expect(trackHeight)
@@ -27,19 +29,19 @@ test.describe('sections.daily_forecast.bar_height_ratio', () => {
       .toBeLessThanOrEqual(62)
   })
 
-  test('honors a custom ratio', async ({ setupCard, clockWeatherCard }) => {
+  test('resolves a percentage relative to row_height', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
           daily_forecast:
             row_height: 100px
-            bar_height_ratio: 0.3
+            bar_thickness: 30%
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
-    const trackHeight = await clockWeatherCard.locator('clock-weather-card-daily-forecast-item .bar-track')
+    const trackHeight = await clockWeatherCard.locator(BAR_TRACK)
       .first()
       .evaluate(el => parseFloat(getComputedStyle(el).height))
     expect(trackHeight)
@@ -48,46 +50,65 @@ test.describe('sections.daily_forecast.bar_height_ratio', () => {
       .toBeLessThanOrEqual(32)
   })
 
-  test('rejects values outside (0, 1]', async ({ setupCard, cardErrorMessage }) => {
-    await setupCard({
-      cardConfig: `
-        entity: weather.mock_weather
-        sections:
-          daily_forecast:
-            bar_height_ratio: 1.5
-      `,
-    })
-
-    expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.bar_height_ratio" has invalid value "1.5"')
-  })
-
-  test('rejects non-number values', async ({ setupCard, cardErrorMessage }) => {
-    await setupCard({
-      cardConfig: `
-        entity: weather.mock_weather
-        sections:
-          daily_forecast:
-            bar_height_ratio: "half"
-      `,
-    })
-
-    expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.bar_height_ratio" has invalid value "half"')
-  })
-
-  test('updates the ratio at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('applies an absolute CSS length independently of row_height', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
           daily_forecast:
             row_height: 100px
-            bar_height_ratio: 0.2
+            bar_thickness: 20px
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
-    const thin = await clockWeatherCard.locator('clock-weather-card-daily-forecast-item .bar-track')
+
+    const trackHeight = await clockWeatherCard.locator(BAR_TRACK)
+      .first()
+      .evaluate(el => parseFloat(getComputedStyle(el).height))
+    expect(trackHeight)
+      .toBe(20)
+  })
+
+  test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        entity: weather.mock_weather
+        sections:
+          daily_forecast:
+            bar_thickness: "thick"
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.daily_forecast.bar_thickness" has invalid value "thick"')
+  })
+
+  test('rejects unitless numbers', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        entity: weather.mock_weather
+        sections:
+          daily_forecast:
+            bar_thickness: 0.6
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.daily_forecast.bar_thickness" has invalid value "0.6"')
+  })
+
+  test('updates the thickness at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        entity: weather.mock_weather
+        sections:
+          daily_forecast:
+            row_height: 100px
+            bar_thickness: 20%
+      `,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+    const thin = await clockWeatherCard.locator(BAR_TRACK)
       .first()
       .evaluate(el => parseFloat(getComputedStyle(el).height))
     expect(thin)
@@ -99,11 +120,11 @@ test.describe('sections.daily_forecast.bar_height_ratio', () => {
         sections:
           daily_forecast:
             row_height: 100px
-            bar_height_ratio: 0.8
+            bar_thickness: 80%
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
-    const thick = await clockWeatherCard.locator('clock-weather-card-daily-forecast-item .bar-track')
+    const thick = await clockWeatherCard.locator(BAR_TRACK)
       .first()
       .evaluate(el => parseFloat(getComputedStyle(el).height))
     expect(thick)
