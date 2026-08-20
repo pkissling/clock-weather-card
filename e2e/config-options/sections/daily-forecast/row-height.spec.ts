@@ -9,7 +9,7 @@ const DAILY: DailyWeatherForecast[] = [
 const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
 
 test.describe('sections.daily_forecast.row_height', () => {
-  test('applies the configured row height to the icon and the row min-height', async ({ setupCard, clockWeatherCard }) => {
+  test('applies the configured row height to the icon and the row', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
@@ -28,11 +28,11 @@ test.describe('sections.daily_forecast.row_height', () => {
     expect(iconBox?.height)
       .toBeLessThanOrEqual(49)
 
-    const item = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
-      .first()
-    const itemMinHeight = await item.evaluate(el => getComputedStyle(el).minHeight)
-    expect(itemMinHeight)
-      .toBe('48px')
+    // Rows are laid out on a shared grid; each row must be at least row_height tall.
+    const rowTops = await clockWeatherCard.locator(DAILY_ICON)
+      .evaluateAll(els => els.map(el => el.getBoundingClientRect().top))
+    expect(rowTops[1] - rowTops[0])
+      .toBeGreaterThanOrEqual(48)
   })
 
   test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
