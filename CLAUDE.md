@@ -8,7 +8,11 @@ Use `yarn` (not `npm`) for all dependency and script commands.
 
 **MANDATORY: Every new feature, bug fix, or behavioral change MUST include tests. Changes without adequate test coverage will not be accepted.**
 
-**Prefer E2E tests over unit tests.** Only write a unit test when the behavior cannot reasonably be covered by an E2E test (e.g. pure logic with many branches/edge cases that would be impractical to exercise through the UI). If it can be tested end-to-end, it should be.
+**Prefer E2E tests.** Fall back only when the behavior cannot reasonably be exercised through the UI:
+
+1. **E2E (default)** — verify the feature in a browser with the built card against a live HA instance.
+2. **Unit tests (fallback)** — pure logic with many branches/edge cases that would be impractical to drive through the UI. Cover all branches of the new/changed functions and services.
+3. **Component tests (fallback)** — integration logic (timer behavior, config merging, rendering) that can't be verified via E2E. These run in jsdom and mock Lit/HA dependencies.
 
 ### Unit Tests (Vitest)
 
@@ -19,38 +23,35 @@ yarn test:unit:watch    # watch mode
 
 - Location: `test/unit/`
 - Config: `vitest.config.ts` (inherits path aliases from `vite.config.ts`)
-- Component-level tests use jsdom (`// @vitest-environment jsdom` at top of file) and mock Lit/HA dependencies.
+- Component-level tests need `// @vitest-environment jsdom` at the top of the file.
 
 ### E2E Tests (Playwright)
 
 ```
-yarn test:e2e           # run Playwright with live HA Docker instance
-yarn playwright-ui      # interactive Playwright UI
+yarn test:e2e                                   # full suite
+yarn test:e2e e2e/sections/daily-forecast.spec.ts   # single spec while iterating
+yarn playwright-ui                              # interactive Playwright UI
 ```
 
-- Location: `e2e/`
 - Config: `playwright.config.ts`
-- Tests run against a real Home Assistant instance (Docker-based, managed by global setup/teardown).
-- Uses `setupCard()` from `e2e/utils/test-utils.ts` for card config and state setup.
-- **ALWAYS run `yarn test:e2e` — the suite is fully self-contained.** The global setup spins up its own Home Assistant Docker container and tears it down afterwards. There are no external services, accounts, or manual prerequisites. Never skip the e2e run.
-
-### What to test
-
-When adding new functionality, prefer E2E coverage and fall back to unit tests only for behavior that can't be exercised end-to-end:
-
-1. **E2E tests (preferred)** — verify the feature works end-to-end in a browser with the built card against a live HA instance. This is the default choice.
-2. **Unit tests (fallback)** — only when the behavior cannot reasonably be covered by an E2E test (e.g. pure logic with many branches/edge cases that would be impractical to exercise through the UI). Cover all branches and edge cases of the new/changed functions and services.
-3. **Component tests (fallback)** — when integration logic (timer behavior, config merging, rendering) cannot be verified via E2E, fall back to component-level tests.
+- Layout:
+  - `e2e/config-options/<option>/` — behavior of a single top-level config option
+  - `e2e/sections/` — behavior of a card section (hourly/daily forecast, ...)
+  - `e2e/screenshots/` — visual regression snapshots. Keep these minimal; prefer DOM assertions. Screenshot tests are slow and are the main driver of suite runtime.
+- Use `setupCard(page, opts)` from `e2e/utils/test-utils.ts` to set the card config and weather/sun state in one step. State is backed by the `mock_weather` custom integration in `e2e/ha-config/custom_components/mock_weather/` — extend it if a test needs a new mockable attribute.
+- The suite is self-contained: global setup (`e2e/utils/ha-setup.ts`) builds the card, starts its own Home Assistant Docker container and tears it down afterwards. The only prerequisite is a running Docker daemon — no external services or accounts.
+- Concurrent runs are safe: each run gets a uniquely named container on a random free host port and its own state file, so parallel `yarn test:e2e` invocations (e.g. in different worktrees) don't interfere with each other.
+- **ALWAYS run the full `yarn test:e2e` before reporting a task as done.** Iterate on a single spec while developing, but never skip the full run.
 
 ## Verification after changes
 
-After every change, run the following commands to verify:
+After every change, run these in order (cheapest first; `lint` auto-fixes files, so it must run before the tests see the final code):
 
 ```
+yarn lint
+yarn build
 yarn test:unit
 yarn test:e2e
-yarn build
-yarn lint
 ```
 
 ## Playwright snapshots
@@ -59,8 +60,12 @@ If Playwright snapshots need to be updated, always regenerate them via `yarn tes
 
 ## README maintenance
 
-After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change (e.g. new/changed configuration options, behavior, usage instructions, screenshots). If it does, update it as part of the same change.
+After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change. Config options are documented in the `Card Options`, `Sections Options`, `Row Options` and `Segment Types` tables; also check the `Full configuration` example, behavior descriptions, usage instructions and screenshots. If anything is affected, update it as part of the same change.
 
 ## Config validation
 
-When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/service/config-service.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.
+When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/service/config-service.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` (from `src/utils/errors.ts`) so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.
+
+## Translations
+
+User-facing strings live in `src/locales/<lang>.json`. Add new strings to `en.json` (the fallback); other locales may be left untranslated and will fall back to English.

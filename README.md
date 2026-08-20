@@ -369,7 +369,7 @@ yarn install
 
 ### E2E tests
 
-E2E tests use Playwright and run the card inside a real Home Assistant Docker container. The test setup (`e2e/ha-setup.ts`) automatically:
+E2E tests use Playwright and run the card inside a real Home Assistant Docker container. The test setup (`e2e/utils/ha-setup.ts`) automatically:
 
 1. Builds the card
 2. Starts a Home Assistant container with the card installed
