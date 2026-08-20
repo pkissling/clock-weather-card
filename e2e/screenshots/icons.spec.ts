@@ -47,8 +47,8 @@ for (const animated of ['animated', 'static'] as const) {
         await setupCard({
           weather: {
             state: todayState,
-            forecast_hourly: hourlyForecast(DEFAULT_DATE, hourlyStates, () => ({ temperature: 20 })),
-            forecast_daily: dailyForecast(DEFAULT_DATE, dailyStates, () => ({ templow: 15, temperature: 25, precipitation_probability: 0 })),
+            forecast_hourly: hourlyForecast(DEFAULT_DATE, hourlyStates, i => ({ temperature: 20 + i })),
+            forecast_daily: dailyForecast(DEFAULT_DATE, dailyStates, i => ({ templow: 15 + i, temperature: 25 + i, precipitation_probability: 0 })),
           },
           sun: isDay ? DAY_SUN : NIGHT_SUN,
           cardConfig: `
