@@ -1,3 +1,5 @@
+import type { Locator } from '@playwright/test'
+
 import type { DailyWeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
@@ -200,5 +202,67 @@ test.describe('daily_forecast section', () => {
       .first()
       .locator('.day-label'))
       .toHaveText('Today')
+  })
+})
+
+// Every text column (label, low, high) must be exactly as wide as its widest cell: no fixed
+// width that either wastes space for short text or clips long text.
+test.describe('daily_forecast column sizing', () => {
+  const DAILY_ITEM = 'clock-weather-card-daily-forecast-item'
+
+  // Cell width and intrinsic text width of every cell in a column.
+  const measureColumn = (cells: Locator): Promise<{ cell: number, text: number }[]> => cells.evaluateAll(els => els.map(el => {
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    return { cell: el.getBoundingClientRect().width, text: range.getBoundingClientRect().width }
+  }))
+
+  for (const column of ['.day-label', '.temperature-low', '.temperature-high']) {
+    test(`sizes the ${column} column to its widest text`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        date: TODAY,
+        // "Aujourd'hui" is far wider than any weekday abbreviation; -10 / 105 make wide temperatures.
+        language: 'fr',
+        weather: {
+          temperature: 9,
+          forecast_daily: [
+            { ...DAILY[0], templow: -10, temperature: 105 },
+            ...DAILY.slice(1),
+          ],
+        },
+      })
+
+      const widths = await measureColumn(clockWeatherCard.locator(`${DAILY_ITEM} ${column}`))
+      const widest = Math.max(...widths.map(w => w.text))
+      expect(widest)
+        .toBeGreaterThan(0)
+      for (const { cell, text } of widths) {
+        // Column is shared across rows, so every cell is as wide as the widest text ...
+        expect(Math.abs(cell - widest))
+          .toBeLessThan(1)
+        // ... and no cell's text is clipped.
+        expect(text)
+          .toBeLessThanOrEqual(cell + 0.5)
+      }
+    })
+  }
+
+  test('keeps icons and bars vertically aligned across rows', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      date: TODAY,
+      language: 'fr',
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+
+    for (const selector of ['clock-weather-card-icon', '.bar-track']) {
+      const lefts = await clockWeatherCard.locator(`${DAILY_ITEM} ${selector}`)
+        .evaluateAll(els => els.map(el => el.getBoundingClientRect().left))
+      expect(lefts)
+        .toHaveLength(DAILY.length)
+      for (const left of lefts) {
+        expect(Math.abs(left - lefts[0]))
+          .toBeLessThan(1)
+      }
+    }
   })
 })

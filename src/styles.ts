@@ -154,26 +154,24 @@ export default css`
     display: block;
   }
 
+  /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
   clock-weather-card-daily-forecast .rows {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: max-content var(--cwc-daily-row-height, 28px) max-content 1fr max-content;
+    grid-auto-rows: minmax(var(--cwc-daily-row-height, auto), auto);
+    align-items: center;
+    column-gap: 8px;
+    font-size: 0.9rem;
+    line-height: 1;
   }
 
   clock-weather-card-daily-forecast-item {
-    display: grid;
-    grid-template-columns: 2.5rem var(--cwc-daily-row-height, 28px) 2.5rem 1fr 2.5rem;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    line-height: 1;
-    min-height: var(--cwc-daily-row-height, auto);
+    display: contents;
   }
 
   clock-weather-card-daily-forecast-item .day-label {
     font-weight: 500;
     opacity: 0.9;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
