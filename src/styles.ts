@@ -86,12 +86,7 @@ export default css`
     gap: 2px;
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  clock-weather-card-hourly-forecast .strip::-webkit-scrollbar {
-    display: none;
+    scrollbar-width: thin;
   }
 
   clock-weather-card-hourly-forecast-item {

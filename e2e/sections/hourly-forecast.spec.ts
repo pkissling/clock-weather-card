@@ -199,4 +199,17 @@ test.describe('hourly_forecast section', () => {
       .locator('.time'))
       .toHaveText('2 PM')
   })
+
+  test('scrolls horizontally when the hours exceed the card width', async ({ setupCard, clockWeatherCard, page }) => {
+    await setupCard({ expectedIcons: 20 })
+    const strip = clockWeatherCard.locator('clock-weather-card-hourly-forecast .strip')
+    const metrics = await strip.evaluate(el => ({ scrollWidth: el.scrollWidth, clientWidth: el.clientWidth }))
+    expect(metrics.scrollWidth)
+      .toBeGreaterThan(metrics.clientWidth)
+
+    await strip.hover()
+    await page.mouse.wheel(120, 0)
+    await expect.poll(() => strip.evaluate(el => el.scrollLeft))
+      .toBeGreaterThan(0)
+  })
 })
