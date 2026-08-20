@@ -83,7 +83,6 @@ export default css`
 
   clock-weather-card-hourly-forecast .strip {
     display: flex;
-    gap: 2px;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
@@ -91,11 +90,11 @@ export default css`
 
   clock-weather-card-hourly-forecast-item {
     flex: 0 0 auto;
-    min-width: 48px;
+    min-width: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4px 6px;
+    padding: 4px 7px;
   }
 
   clock-weather-card-hourly-forecast-item:first-of-type {

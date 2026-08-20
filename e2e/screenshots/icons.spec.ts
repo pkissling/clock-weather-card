@@ -22,7 +22,7 @@ export const supportedWeatherStates = [
 
 // A single screenshot covers all states: the first via the large today icon, the next
 // HOURLY_COLUMNS as hourly forecast items, the remaining ones as daily rows.
-const HOURLY_COLUMNS = 7 // as many hourly items as fit the default card width
+const HOURLY_COLUMNS = 8 // as many hourly items as fit the default card width
 const [todayState, ...forecastStates] = supportedWeatherStates
 const hourlyStates = forecastStates.slice(0, HOURLY_COLUMNS)
 const dailyStates = forecastStates.slice(HOURLY_COLUMNS)
