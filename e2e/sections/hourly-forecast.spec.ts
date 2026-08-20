@@ -212,4 +212,17 @@ test.describe('hourly_forecast section', () => {
     await expect.poll(() => strip.evaluate(el => el.scrollLeft))
       .toBeGreaterThan(0)
   })
+
+  test('packs hourly columns tightly (at most 58px per column for typical content)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+
+    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    // Distance between the left edges of two neighbouring non-"Now" columns (the "Now" column has no left padding).
+    const second = await items.nth(1)
+      .boundingBox()
+    const third = await items.nth(2)
+      .boundingBox()
+    expect(third!.x - second!.x)
+      .toBeLessThanOrEqual(58)
+  })
 })
