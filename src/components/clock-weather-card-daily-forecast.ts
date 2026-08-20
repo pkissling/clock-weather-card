@@ -119,7 +119,8 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
     const item: DailyForecastItem = {
       label: isToday ? todayLabel : translationsService.t(this.locale, `day.${at.weekday}`),
       condition: forecast.condition,
-      isNight: hassService.isNight(this.hass, sunEntityId, at),
+      // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
+      isNight: isToday && hassService.isNight(this.hass, sunEntityId),
       animatedIcon,
       weatherIconType,
       temperatureLow: round ? Math.round(lowRaw) : lowRaw,
