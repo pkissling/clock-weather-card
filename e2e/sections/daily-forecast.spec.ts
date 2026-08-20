@@ -3,6 +3,7 @@ import type { Locator } from '@playwright/test'
 import type { DailyWeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
+import api from '../utils/ha-api'
 
 const TODAY = new Date('2025-09-14T14:20:59+00:00')
 
@@ -202,6 +203,35 @@ test.describe('daily_forecast section', () => {
       .first()
       .locator('.day-label'))
       .toHaveText('Today')
+  })
+
+  test('uses the night icon only on today\'s row, driven by the live sun entity state', async ({ setupCard, clockWeatherCard }) => {
+    const allSunny: DailyWeatherForecast[] = DAILY.slice(0, 3)
+      .map(f => ({ ...f, condition: 'sunny' }))
+    await setupCard({
+      date: TODAY,
+      sun: { state: 'above_horizon' },
+      weather: { state: 'sunny', forecast_daily: allSunny },
+    })
+
+    // The inlined meteocons SVGs carry their icon name as an element id.
+    const rows = clockWeatherCard.locator('clock-weather-card-daily-forecast-item clock-weather-card-icon img')
+    await expect(rows)
+      .toHaveCount(3)
+    await expect(rows.nth(0))
+      .toHaveAttribute('src', /clear-day/)
+    await expect(rows.nth(1))
+      .toHaveAttribute('src', /clear-day/)
+    await expect(rows.nth(2))
+      .toHaveAttribute('src', /clear-day/)
+
+    await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+    await expect(rows.nth(0))
+      .toHaveAttribute('src', /clear-night/)
+    await expect(rows.nth(1))
+      .toHaveAttribute('src', /clear-day/)
+    await expect(rows.nth(2))
+      .toHaveAttribute('src', /clear-day/)
   })
 })
 

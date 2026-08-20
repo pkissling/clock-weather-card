@@ -8,26 +8,27 @@ export const supportedWeatherStates = [
   'cloudy',
   'clear-night',
   'fog',
-  'hail',
+  'sunny',
   'lightning',
   'lightning-rainy',
   'pouring',
   'snowy',
   'snowy-rainy',
-  'sunny',
+  'hail',
   'windy',
   'windy-variant',
   'exceptional'
 ] as const
 
 // A single screenshot covers all states: the first via the large today icon, the next
-// HOURLY_COLUMNS as hourly forecast items, the remaining ones as daily rows.
+// HOURLY_COLUMNS as hourly forecast items, the remaining ones as daily rows. Future daily rows
+// always use the day icon, so states with a distinct night variant must sit in the earlier slots.
 const HOURLY_COLUMNS = 8 // as many hourly items as fit the default card width
 const [todayState, ...forecastStates] = supportedWeatherStates
 const hourlyStates = forecastStates.slice(0, HOURLY_COLUMNS)
 const dailyStates = forecastStates.slice(HOURLY_COLUMNS)
 
-// The sections derive day/night per entry from the sun times: sunrise at local midnight and
+// The hourly section derives day/night per entry from the sun times: sunrise at local midnight and
 // sunset at 23:59:59 (Europe/Berlin) make every hour a day hour — swapped, a night hour.
 const DAY_SUN = {
   state: 'above_horizon' as const,
