@@ -71,7 +71,9 @@ export interface Weather extends HassEntity {
   state: string
   attributes: {
     temperature?: number
-    temperature_unit: TemperatureUnit
+    // Can be undefined when the weather entity is unavailable/unknown, as HA
+    // strips entity attributes in those states.
+    temperature_unit?: TemperatureUnit
     humidity?: number
     precipitation_unit: string
     forecast?: WeatherForecast[]

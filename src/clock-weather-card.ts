@@ -210,7 +210,7 @@ export class ClockWeatherCard extends LitElement {
     const weather = this.getWeather()
     const state = weather.state
     const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
-    const tempUnit = weather.attributes.temperature_unit
+    const tempUnit = this.getWeatherTemperatureUnit()
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const aqi = this.getAqi()
     const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
@@ -248,11 +248,10 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private renderForecast (): TemplateResult[] {
-    const weather = this.getWeather()
     const currentTemp = roundIfNotNull(this.getCurrentTemperature())
     const maxRowsCount = this.config.forecast_rows
     const hourly = this.config.hourly_forecast
-    const temperatureUnit = weather.attributes.temperature_unit
+    const temperatureUnit = this.getWeatherTemperatureUnit()
 
     const forecasts = this.mergeForecasts(maxRowsCount, hourly)
 
@@ -276,7 +275,7 @@ export class ClockWeatherCard extends LitElement {
   private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
     const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
     const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
-    const tempUnit = this.getWeather().attributes.temperature_unit
+    const tempUnit = this.getWeatherTemperatureUnit()
     const isNow = hourly ? DateTime.now().hour === forecast.datetime.hour : DateTime.now().day === forecast.datetime.day
     const minTempDay = Math.round(isNow && currentTemp !== null ? Math.min(currentTemp, forecast.templow) : forecast.templow)
     const maxTempDay = Math.round(isNow && currentTemp !== null ? Math.max(currentTemp, forecast.temperature) : forecast.temperature)
@@ -602,6 +601,13 @@ export class ClockWeatherCard extends LitElement {
 
   private getConfiguredTemperatureUnit (): TemperatureUnit {
     return this.hass.config.unit_system.temperature as TemperatureUnit
+  }
+
+  private getWeatherTemperatureUnit (): TemperatureUnit {
+    // When the weather entity is unavailable/unknown, HA strips its attributes,
+    // so temperature_unit can be undefined. Fall back to the configured unit to
+    // avoid an erroneous °F → °C conversion on values that are already Celsius.
+    return this.getWeather().attributes.temperature_unit ?? this.getConfiguredTemperatureUnit()
   }
 
   private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number): string {
