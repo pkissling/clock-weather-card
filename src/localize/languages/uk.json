@@ -28,6 +28,6 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "вологість",
-    "feels-like": "Feels like"
+    "feels-like": "Відчувається як"
   }
 }
