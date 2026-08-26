@@ -66,6 +66,10 @@ export default css`
     grid-gap: 0.5rem;
   }
 
+  clock-weather-card-forecast-row.with-precipitation {
+    grid-template-columns: var(--col-one-size) 2rem var(--col-precipitation-size, 2.5rem) 2.1rem auto 2.1rem;
+  }
+
   forecast-text {
     text-align: var(--text-align);
     white-space: nowrap;
