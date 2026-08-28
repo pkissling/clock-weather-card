@@ -152,6 +152,49 @@ test.describe('hourly_forecast section', () => {
       .toHaveCount(3)
   })
 
+  test('rounds precipitation probabilities to the nearest 10%', async ({ setupCard, clockWeatherCard }) => {
+    const forecasts: WeatherForecast[] = [
+      { datetime: '2025-09-14T13:00:00+00:00', condition: 'rainy', temperature: 20, precipitation_probability: 34 },
+      { datetime: '2025-09-14T14:00:00+00:00', condition: 'rainy', temperature: 19, precipitation_probability: 35 },
+      { datetime: '2025-09-14T15:00:00+00:00', condition: 'pouring', temperature: 18, precipitation_probability: 97 },
+      { datetime: '2025-09-14T16:00:00+00:00', condition: 'cloudy', temperature: 18, precipitation_probability: 5 },
+    ]
+    await setupCard({
+      date: new Date('2025-09-14T13:30:00+00:00'),
+      timeZone: 'UTC',
+      weather: { forecast_hourly: forecasts },
+    })
+
+    const precip = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    await expect(precip)
+      .toHaveCount(4)
+    await expect(precip.nth(0))
+      .toHaveText('30%')
+    await expect(precip.nth(1))
+      .toHaveText('40%')
+    await expect(precip.nth(2))
+      .toHaveText('100%')
+    await expect(precip.nth(3))
+      .toHaveText('10%')
+  })
+
+  test('hides the precipitation row when every probability rounds down to 0%', async ({ setupCard, clockWeatherCard }) => {
+    const forecasts: WeatherForecast[] = [
+      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 4 },
+      { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 2 },
+    ]
+    await setupCard({
+      date: new Date('2025-09-14T13:30:00+00:00'),
+      timeZone: 'UTC',
+      weather: { forecast_hourly: forecasts },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+      .toHaveCount(2)
+    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation'))
+      .toHaveCount(0)
+  })
+
   test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {

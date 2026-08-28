@@ -70,11 +70,8 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     const start = Math.max(0, firstFutureIdx - 1)
     const visible = parsed.slice(start, start + hours)
 
-    // Drop the precipitation row entirely when no visible item has a non-zero probability — avoids
-    // a column of empty placeholders for providers that always report 0% or omit the field.
-    const showPrecipitation = visible.some(({ forecast }) =>
-      (forecast.precipitation_probability ?? 0) > 0,
-    )
+    // Drop the precipitation row entirely if rounded precipitation never above 0%
+    const showPrecipitation = visible.some(({ forecast }) => (roundToTens(forecast.precipitation_probability) ?? 0) > 0)
 
     return html`
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
@@ -88,7 +85,7 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
       weatherIconType,
       temperature: round ? Math.round(forecast.temperature) : forecast.temperature,
       temperatureUnit,
-      precipitationProbability: forecast.precipitation_probability ?? null,
+      precipitationProbability: roundToTens(forecast.precipitation_probability),
       showPrecipitation,
     }
     return html`<clock-weather-card-hourly-forecast-item .item=${item}></clock-weather-card-hourly-forecast-item>`
@@ -97,5 +94,8 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     `
   }
 }
+
+const roundToTens = (value: number | null | undefined): number | null =>
+  value === null || value === undefined ? null : Math.round(value / 10) * 10
 
 export default ClockWeatherCardHourlyForecast

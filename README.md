@@ -181,7 +181,7 @@ sections:
 
 #### `hourly_forecast`
 
-Renders a horizontally scrolling strip of upcoming hours (time, weather icon, temperature, precipitation probability) below the main section. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` supported feature — if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (time, weather icon, temperature, precipitation probability) below the main section. Precipitation probabilities are rounded to the nearest 10%; the row is hidden entirely when every visible hour rounds to 0%. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` supported feature — if the selected entity does not, the section renders an inline warning instead.
 
 The first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
