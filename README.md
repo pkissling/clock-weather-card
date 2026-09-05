@@ -113,6 +113,7 @@ show_humidity: false
 hide_clock: false
 hide_date: false
 hourly_forecast: false
+forecast_layout: rows
 use_browser_time: false
 time_zone: null
 show_decimal: false
@@ -143,6 +144,7 @@ aqi_sensor: sensor.air_quality_index
 | hide_clock            | boolean          | **Optional** | Hides the clock from the today section and prominently displays the current temperature instead                                                                                                                                   | `false`   |
 | hide_date             | boolean          | **Optional** | Hides the date from the today section                                                                                                                                                                                             | `false`   |
 | hourly_forecast       | boolean          | **Optional** | Displays an hourly forecast instead of daily                                                                                                                                                                                      | `false`   |
+| forecast_layout       | string           | **Optional** | Layout of the forecast section. `rows` renders one row per period; `horizontal` renders a single strip of columns (label, icon, temperature), which is much shorter vertically. Independent of `hourly_forecast`, which selects the data.                                        | `rows`    |
 | use_browser_time      | boolean          | **Optional** | Uses the time from your browser to indicate the current time. If not provided, uses the [time_zone](https://www.home-assistant.io/blog/2015/05/09/utc-time-zone-awareness/#setting-up-your-time-zone) configured in HA            | `false`   |
 | time_zone             | string           | **Optional** | Uses the given [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to indicate the current date and time. If not provided, uses the time zone configured in HA                                              | `null`    |
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
