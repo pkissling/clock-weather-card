@@ -28,7 +28,8 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "Luftfeuchtigkeit",
-    "feels-like": "Gefühlt"
+    "feels-like": "Gefühlt",
+    "outdoor": "Outdoor"
   }
 }
 

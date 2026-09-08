@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "MAA",
     "humidity": "Lleithder",
-    "feels-like": "Teimlo fel"
+    "feels-like": "Teimlo fel",
+    "outdoor": "Outdoor"
   }
 }
