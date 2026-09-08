@@ -270,7 +270,29 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
+    if (this.config.forecast_layout === 'horizontal') {
+      return [safeRender(() => this.renderForecastStrip(forecasts, temperatureUnit, displayTexts))]
+    }
+
     return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+  }
+
+  private renderForecastStrip (forecasts: MergedWeatherForecast[], temperatureUnit: TemperatureUnit, displayTexts: string[]): TemplateResult {
+    return html`
+      <clock-weather-card-forecast-strip>
+        ${forecasts.map((forecast, i) => {
+          const weatherState = forecast.condition === 'pouring' ? 'raindrops' : forecast.condition === 'rainy' ? 'raindrop' : forecast.condition
+          const weatherIcon = this.toIcon(weatherState, 'fill', true, 'static')
+          const temp = this.toConfiguredTempWithUnit(temperatureUnit, Math.round(forecast.temperature))
+          return html`
+            <clock-weather-card-forecast-slot>
+              <forecast-slot-text>${displayTexts[i]}</forecast-slot-text>
+              <forecast-slot-icon><img class="grow-img" src=${weatherIcon} /></forecast-slot-icon>
+              <forecast-slot-text>${temp}</forecast-slot-text>
+            </clock-weather-card-forecast-slot>`
+        })}
+      </clock-weather-card-forecast-strip>
+    `
   }
 
   private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
@@ -453,6 +475,7 @@ export class ClockWeatherCard extends LitElement {
       weather_icon_type: config.weather_icon_type ?? 'line',
       forecast_rows: config.forecast_rows ?? 5,
       hourly_forecast: config.hourly_forecast ?? false,
+      forecast_layout: config.forecast_layout ?? 'rows',
       animated_icon: config.animated_icon ?? true,
       time_format: config.time_format?.toString() as '12' | '24' | undefined,
       time_pattern: config.time_pattern ?? undefined,
