@@ -69,13 +69,12 @@ export class ClockWeatherCard extends LitElement {
   @state() private error?: TemplateResult
   private forecastSubscriber?: () => Promise<void>
   private forecastSubscriberLock = false
+  private clockAlignTimer?: ReturnType<typeof setTimeout>
+  private clockTimer?: ReturnType<typeof setInterval>
 
   constructor () {
     super()
     this.currentDate = DateTime.now()
-    const msToNextSecond = (1000 - this.currentDate.millisecond)
-    setTimeout(() => setInterval(() => { this.currentDate = DateTime.now() }, 1000), msToNextSecond)
-    setTimeout(() => { this.currentDate = DateTime.now() }, msToNextSecond)
   }
 
   public static getStubConfig (_hass: HomeAssistant, entities: string[], entitiesFallback: string[]): Record<string, unknown> {
@@ -189,6 +188,7 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback (): void {
     super.connectedCallback()
+    this.startClock()
     if (this.hasUpdated) {
       void this.subscribeForecastEvents()
     }
@@ -196,7 +196,27 @@ export class ClockWeatherCard extends LitElement {
 
   public disconnectedCallback (): void {
     super.disconnectedCallback()
+    this.stopClock()
     void this.unsubscribeForecastEvents()
+  }
+
+  // Tied to connect/disconnect rather than the constructor: HA discards cards on every
+  // dashboard change, and a timer nobody clears keeps each discarded card rendering forever.
+  private startClock (): void {
+    this.stopClock()
+    this.currentDate = DateTime.now()
+    const msToNextSecond = (1000 - this.currentDate.millisecond)
+    this.clockAlignTimer = setTimeout(() => {
+      this.currentDate = DateTime.now()
+      this.clockTimer = setInterval(() => { this.currentDate = DateTime.now() }, 1000)
+    }, msToNextSecond)
+  }
+
+  private stopClock (): void {
+    clearTimeout(this.clockAlignTimer)
+    clearInterval(this.clockTimer)
+    this.clockAlignTimer = undefined
+    this.clockTimer = undefined
   }
 
   protected willUpdate (changedProps: PropertyValues): void {
