@@ -3,6 +3,9 @@ name: Release
 on:
   release:
     types: [published]
+  # Dispatched by release-please.yaml with the release tag as ref
+  # (releases created with GITHUB_TOKEN don't trigger release events).
+  workflow_dispatch:
 
 jobs:
   release:
@@ -10,7 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
 
       - name: Build the file
         run: |
