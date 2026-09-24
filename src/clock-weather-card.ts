@@ -71,8 +71,8 @@ export class ClockWeatherCard extends LitElement {
   @state() private error?: TemplateResult
   private forecastSubscriber?: () => Promise<void>
   private forecastSubscriberLock = false
-  private clockIntervalID?: ReturnType<typeof setInterval>
-  private clockTimeoutID?: ReturnType<typeof setTimeout>
+  private clockAlignTimer?: ReturnType<typeof setTimeout>
+  private clockTimer?: ReturnType<typeof setInterval>
   private _animatedIcons?: typeof AnimatedIconsType
 
   constructor () {
@@ -216,7 +216,7 @@ export class ClockWeatherCard extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback()
-    this.startClockInterval()
+    this.startClock()
     if (this.hasUpdated) {
       void this.subscribeForecastEvents()
     }
@@ -225,26 +225,28 @@ export class ClockWeatherCard extends LitElement {
 
   public disconnectedCallback(): void {
     super.disconnectedCallback()
+    this.stopClock()
     void this.unsubscribeForecastEvents()
     this.clearDisplayCycleInterval()
-    this.stopClockInterval()
   }
 
-  private startClockInterval (): void {
-    this.stopClockInterval()
-    const msToNextSecond = 1000 - DateTime.now().millisecond
-    this.clockTimeoutID = setTimeout(() => {
+  // Tied to connect/disconnect rather than the constructor: HA discards cards on every
+  // dashboard change, and a timer nobody clears keeps each discarded card rendering forever.
+  private startClock (): void {
+    this.stopClock()
+    this.currentDate = DateTime.now()
+    const msToNextSecond = (1000 - this.currentDate.millisecond)
+    this.clockAlignTimer = setTimeout(() => {
       this.currentDate = DateTime.now()
-      this.clockIntervalID = setInterval(() => { this.currentDate = DateTime.now() }, 1000)
-      this.clockTimeoutID = undefined
+      this.clockTimer = setInterval(() => { this.currentDate = DateTime.now() }, 1000)
     }, msToNextSecond)
   }
 
-  private stopClockInterval (): void {
-    clearInterval(this.clockIntervalID)
-    clearTimeout(this.clockTimeoutID)
-    this.clockIntervalID = undefined
-    this.clockTimeoutID = undefined
+  private stopClock (): void {
+    clearTimeout(this.clockAlignTimer)
+    clearInterval(this.clockTimer)
+    this.clockAlignTimer = undefined
+    this.clockTimer = undefined
   }
 
   private clearDisplayCycleInterval (): void {
