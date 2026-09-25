@@ -258,11 +258,20 @@ export class ClockWeatherCard extends LitElement {
 
   private setupDisplayCycleInterval (): void {
     this.clearDisplayCycleInterval()
-    this.displayIndex = 0
     const cycleDuration = this.config.cycle_display
-    if (this.getCycleItems().length > 1 && cycleDuration > 0) {
+    const itemCount = this.getCycleItems().length
+    if (itemCount > 1 && cycleDuration > 0) {
+      // Index derived from the wall clock rather than an incrementing counter.
+      // HA destroys and recreates cards on every view change, and kiosk panels
+      // (NSPanel Pro, Fully Kiosk) do that more often than the cycle duration --
+      // a counter reset in connectedCallback never survived to its first tick, so
+      // the card sat on item 0 forever. Deriving from the clock makes remounts
+      // harmless and keeps every instance of the card in sync.
+      const indexFromClock = (): number =>
+        Math.floor(Date.now() / (cycleDuration * 1000)) % itemCount
+      this.displayIndex = indexFromClock()
       this.intervalID = window.setInterval(() => {
-        this.displayIndex = (this.displayIndex + 1) % this.getCycleItems().length
+        this.displayIndex = indexFromClock()
       }, cycleDuration * 1000)
     }
   }
@@ -326,7 +335,19 @@ export class ClockWeatherCard extends LitElement {
     const roundedHomeTemp = homeTemp !== null ? (this.config.show_decimal ? homeTemp : Math.round(homeTemp)) : null
     const localizedHomeTemp = roundedHomeTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, roundedHomeTemp) : null
     const cycleItems = this.getCycleItems()
-    const centerItem = cycleItems[this.displayIndex % cycleItems.length]
+    // Derived from the wall clock on every render instead of from a counter
+    // advanced by setInterval. Kiosk-style clients recreate the whole WebView
+    // activity when the screen wakes (observed as WebViewActivity.onCreate on
+    // NSPanel Pro running the HA companion app), so a card-local interval is
+    // unreliable there -- the card stayed on item 0 indefinitely while the same
+    // dashboard cycled fine in a desktop browser. startClock() already refreshes
+    // currentDate every second and shouldUpdate lets that through, so renders are
+    // frequent enough without a dedicated timer. Side effect: every instance of
+    // the card shows the same item at the same moment.
+    const cycleSeconds = this.config.cycle_display
+    const centerItem = (cycleSeconds > 0 && cycleItems.length > 1)
+      ? cycleItems[Math.floor(Date.now() / (cycleSeconds * 1000)) % cycleItems.length]
+      : cycleItems[0]
 
     const aqi = this.getAqi()
     const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
