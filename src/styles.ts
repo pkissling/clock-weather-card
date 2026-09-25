@@ -130,4 +130,40 @@ export default css`
     padding: 2px;
     border-radius: 5px;
   }
+
+  clock-weather-card-forecast-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  clock-weather-card-forecast-slot {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.15rem;
+  }
+
+  forecast-slot-text {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  forecast-slot-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  forecast-slot-icon img {
+    width: 100%;
+    max-width: 2.5rem;
+    height: auto;
+  }
 `
