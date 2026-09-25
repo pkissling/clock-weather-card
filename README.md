@@ -110,6 +110,9 @@ date_pattern: ccc, d.MM.yy
 hide_today_section: false
 hide_forecast_section: false
 show_humidity: false
+show_precipitation: true
+precipitation_precision: 0
+precipitation_units: " mm"
 hide_clock: false
 hide_date: false
 hourly_forecast: false
@@ -148,6 +151,9 @@ aqi_sensor: sensor.air_quality_index
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
 | aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+| show_precipitation    | boolean          | **Optional** | Displays an additional column in the forecast section, between the weather icon and the minimum temperature, showing the expected precipitation for each row                                                                      | `false`   |
+| precipitation_precision | number         | **Optional** | Number of decimal places to use when displaying the precipitation value (e.g. `0`, `1`, `2`). Only used if `show_precipitation` is set to `true`                                                                                  | `0`       |
+| precipitation_units   | string           | **Optional** | Unit string to display right after the precipitation value (e.g. `mm`). If empty, no unit is shown. Only used if `show_precipitation` is set to `true`                                                                            | `''`      |
 
 ## Footnotes
 
