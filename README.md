@@ -118,6 +118,10 @@ time_zone: null
 show_decimal: false
 apparent_sensor: sensor.real_feel_temperature
 aqi_sensor: sensor.air_quality_index
+displayed_temperature: current
+outdoor_temp_sensor: sensor.outdoor_temperature
+cycle_display: 0
+oversized: false
 ```
 
 ### Options
@@ -147,7 +151,11 @@ aqi_sensor: sensor.air_quality_index
 | time_zone             | string           | **Optional** | Uses the given [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to indicate the current date and time. If not provided, uses the time zone configured in HA                                              | `null`    |
 | show_decimal          | boolean          | **Optional** | Displays main temperature without rounding                                                                                                                                                                                        | `false`   |
 | apparent_sensor       | string           | **Optional** | ID of the apparent temperature sensor entity. It is used to show the apparent temperature based on a sensor and will only show it if value is provided.                                                                           | `''`      |
-| aqi_sensor       | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+| aqi_sensor            | string           | **Optional** | ID of the Air Quality Index sensor entity. It is used to show the AQI based on a sensor and will only show it if value is provided.                                                                           | `''`      |
+| displayed_temperature | `current` \| `apparent` \| `outdoor` | **Optional** | Selects the temperature shown as primary temperature in the today section.                                                                                                                                        | `current` |
+| outdoor_temp_sensor   | string           | **Optional** | ID of an outdoor temperature sensor entity used when `displayed_temperature` is set to `outdoor`.                                                                                                                | `''`      |
+| cycle_display         | number           | **Optional** | When greater than `0`, alternates the center display between time and primary temperature every N seconds. Set `0` to disable cycling.                                                                            | `0`       |
+| oversized         | boolean          | **Optional** | Turns oversized icon and center text on or off. Set `true` for larger layout, `false` for classic size.                                                                                                            | `false`   |
 
 ## Footnotes
 

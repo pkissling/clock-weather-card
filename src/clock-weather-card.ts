@@ -28,7 +28,9 @@ import { actionHandler } from './action-handler-directive'
 import { localize } from './localize/localize'
 import { type HassEntity, type HassEntityBase } from 'home-assistant-js-websocket'
 import { extractMostOccuring, max, min, roundIfNotNull, roundUp } from './utils'
-import { animatedIcons, staticIcons } from './images'
+import { staticIcons } from './images'
+import homeIcon from './icons/home.svg'
+import type { animatedIcons as AnimatedIconsType } from './animatedImages'
 import { version } from '../package.json'
 import { safeRender } from './helpers'
 import { DateTime } from 'luxon'
@@ -71,6 +73,7 @@ export class ClockWeatherCard extends LitElement {
   private forecastSubscriberLock = false
   private clockAlignTimer?: ReturnType<typeof setTimeout>
   private clockTimer?: ReturnType<typeof setInterval>
+  private _animatedIcons?: typeof AnimatedIconsType
 
   constructor () {
     super()
@@ -112,7 +115,17 @@ export class ClockWeatherCard extends LitElement {
       throw this.createError('Attributes "hide_today_section" and "hide_forecast_section" must not enabled at the same time.')
     }
 
+    if (config.displayed_temperature === 'outdoor' && !config.outdoor_temp_sensor) {
+      throw this.createError('Attribute "outdoor_temp_sensor" must be set when "displayed_temperature" is "outdoor".')
+    }
+
     this.config = this.mergeConfig(config)
+    if (config.animated_icon !== false) {
+      void import('./animatedImages').then(m => {
+        this._animatedIcons = m.animatedIcons
+        this.requestUpdate()
+      })
+    }
   }
 
   // https://lit.dev/docs/components/lifecycle/#reactive-update-cycle-performing
@@ -121,7 +134,7 @@ export class ClockWeatherCard extends LitElement {
       return false
     }
 
-    if (changedProps.has('forecasts')) {
+    if (changedProps.has('forecasts') || changedProps.has('displayIndex') || changedProps.has('currentDate')) {
       return true
     }
 
@@ -137,10 +150,18 @@ export class ClockWeatherCard extends LitElement {
     return hasConfigOrEntityChanged(this, changedProps, false)
   }
 
+  protected willUpdate (changedProps: PropertyValues): void {
+    super.willUpdate(changedProps)
+    if (!this.forecastSubscriber) {
+      void this.subscribeForecastEvents()
+    }
+  }
+
   protected updated (changedProps: PropertyValues): void {
     super.updated(changedProps)
     if (changedProps.has('config')) {
       void this.subscribeForecastEvents()
+      this.setupDisplayCycleInterval()
     }
   }
 
@@ -186,18 +207,27 @@ export class ClockWeatherCard extends LitElement {
     `
   }
 
-  public connectedCallback (): void {
+  private intervalID?: number;
+  private _cachedForecastRows?: TemplateResult[]
+  private _cachedForecastsRef?: WeatherForecast[]
+  private _cachedForecastWeatherState?: string
+
+  @state() private displayIndex = 0;
+
+  public connectedCallback(): void {
     super.connectedCallback()
     this.startClock()
     if (this.hasUpdated) {
       void this.subscribeForecastEvents()
     }
+    this.setupDisplayCycleInterval()
   }
 
-  public disconnectedCallback (): void {
+  public disconnectedCallback(): void {
     super.disconnectedCallback()
     this.stopClock()
     void this.unsubscribeForecastEvents()
+    this.clearDisplayCycleInterval()
   }
 
   // Tied to connect/disconnect rather than the constructor: HA discards cards on every
@@ -219,55 +249,158 @@ export class ClockWeatherCard extends LitElement {
     this.clockTimer = undefined
   }
 
-  protected willUpdate (changedProps: PropertyValues): void {
-    super.willUpdate(changedProps)
-    if (!this.forecastSubscriber) {
-      void this.subscribeForecastEvents()
+  private clearDisplayCycleInterval (): void {
+    if (this.intervalID !== undefined) {
+      clearInterval(this.intervalID)
+      this.intervalID = undefined
     }
+  }
+
+  private setupDisplayCycleInterval (): void {
+    this.clearDisplayCycleInterval()
+    const cycleDuration = this.config.cycle_display
+    const itemCount = this.getCycleItems().length
+    if (itemCount > 1 && cycleDuration > 0) {
+      // Index derived from the wall clock rather than an incrementing counter.
+      // HA destroys and recreates cards on every view change, and kiosk panels
+      // (NSPanel Pro, Fully Kiosk) do that more often than the cycle duration --
+      // a counter reset in connectedCallback never survived to its first tick, so
+      // the card sat on item 0 forever. Deriving from the clock makes remounts
+      // harmless and keeps every instance of the card in sync.
+      const indexFromClock = (): number =>
+        Math.floor(Date.now() / (cycleDuration * 1000)) % itemCount
+      this.displayIndex = indexFromClock()
+      this.intervalID = window.setInterval(() => {
+        this.displayIndex = indexFromClock()
+      }, cycleDuration * 1000)
+    }
+  }
+
+  // Items rotated through the big center display. The clock participates
+  // unless hide_clock; the home temperature joins when home_temp_sensor is
+  // set - so hide_clock + home_temp_sensor swaps the clock for the home
+  // temperature while keeping the weather-temperature alternation.
+  private getCycleItems (): Array<'clock' | 'temp' | 'home'> {
+    const items: Array<'clock' | 'temp' | 'home'> = []
+    if (!this.config.hide_clock) items.push('clock')
+    items.push('temp')
+    if (this.config.home_temp_sensor) items.push('home')
+    return items
+  }
+
+  private getDisplayedTemperature(): number | null {
+    switch (this.config.displayed_temperature) {
+      case 'apparent': return this.getApparentTemperature();
+      case 'outdoor': return this.getOutdoorTemperature();
+      default:
+        return this.getCurrentTemperature();
+    }
+  }
+
+  private getTodayLayoutVars (): string {
+    const oversized = this.config.oversized
+    const todayCenterHeight = oversized ? 8 : 4
+    const todayCenterFontSize = oversized ? 7 : 3.5
+
+    return [
+      `--today-left-width: ${oversized ? '45%' : '35%'}`,
+      `--today-right-width: ${oversized ? '55%' : '65%'}`,
+      `--today-center-height: ${todayCenterHeight.toFixed(2)}rem`,
+      `--today-center-font-size: ${todayCenterFontSize.toFixed(2)}rem`,
+      `--today-icon-scale: ${oversized ? 1.5 : 1}`,
+      `--today-icon-opacity: ${oversized ? 0.8 : 1}`
+    ].join('; ')
   }
 
   private renderToday (): TemplateResult {
     const weather = this.getWeather()
     const state = weather.state
-    const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
+    const apparentTemp = this.getApparentTemperature()
+    const outdoorTemp = this.getOutdoorTemperature()
     const tempUnit = weather.attributes.temperature_unit
-    const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
+    const displayedTemp = this.config.show_decimal ? this.getDisplayedTemperature() : roundIfNotNull(this.getDisplayedTemperature())
+    const localizedDisplayedTemp = displayedTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, displayedTemp) : null
+
+    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+    const localizedOutdoor = outdoorTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, outdoorTemp) : null
+
+    const showApparent =
+      this.config.apparent_sensor &&
+      this.config.displayed_temperature !== 'apparent'
+    const showOutdoor =
+      this.config.outdoor_temp_sensor &&
+      this.config.displayed_temperature !== 'outdoor'
+
+    const homeTemp = this.getHomeTemperature()
+    const roundedHomeTemp = homeTemp !== null ? (this.config.show_decimal ? homeTemp : Math.round(homeTemp)) : null
+    const localizedHomeTemp = roundedHomeTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, roundedHomeTemp) : null
+    const cycleItems = this.getCycleItems()
+    // Derived from the wall clock on every render instead of from a counter
+    // advanced by setInterval. Kiosk-style clients recreate the whole WebView
+    // activity when the screen wakes (observed as WebViewActivity.onCreate on
+    // NSPanel Pro running the HA companion app), so a card-local interval is
+    // unreliable there -- the card stayed on item 0 indefinitely while the same
+    // dashboard cycled fine in a desktop browser. startClock() already refreshes
+    // currentDate every second and shouldUpdate lets that through, so renders are
+    // frequent enough without a dedicated timer. Side effect: every instance of
+    // the card shows the same item at the same moment.
+    const cycleSeconds = this.config.cycle_display
+    const centerItem = (cycleSeconds > 0 && cycleItems.length > 1)
+      ? cycleItems[Math.floor(Date.now() / (cycleSeconds * 1000)) % cycleItems.length]
+      : cycleItems[0]
+
     const aqi = this.getAqi()
     const aqiBackgroundColor = this.getAqiBackgroundColor(aqi)
     const aqiTextColor = this.getAqiTextColor(aqi)
     const humidity = roundIfNotNull(this.getCurrentHumidity())
     const iconType = this.config.weather_icon_type
-    const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
+    const icon = this.toIcon(
+      state,
+      iconType,
+      false,
+      this.getIconAnimationKind()
+    )
     const weatherString = this.localize(`weather.${state}`)
-    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
-    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
+    const layoutVars = this.getTodayLayoutVars()
 
     return html`
-      <clock-weather-card-today-left>
-        <img class="grow-img" src=${icon} />
+      <clock-weather-card-today-left style="${layoutVars}">
+        ${!this.config.hide_date ? html`<div class="today-date">${this.date()}</div>` : ''}
+        <img class="today-main-icon" src=${centerItem === 'home' ? homeIcon : icon} />
       </clock-weather-card-today-left>
-      <clock-weather-card-today-right>
+      <clock-weather-card-today-right style="${layoutVars}">
         <clock-weather-card-today-right-wrap>
           <clock-weather-card-today-right-wrap-top>
-            ${this.config.hide_clock ? weatherString : localizedTemp ? `${weatherString}, ${localizedTemp}` : weatherString}
-            ${this.config.show_humidity && localizedHumidity ? html`<br>${localizedHumidity}` : ''}
-            ${this.config.apparent_sensor && apparentTemp ? html`<br>${apparentString}: ${localizedApparent}` : ''}
-            ${this.config.aqi_sensor && aqi !== null ? html`<br><aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+            ${this.config.hide_clock ? weatherString : localizedDisplayedTemp ? `${weatherString}, ${localizedDisplayedTemp}` : weatherString}
+            ${showApparent && localizedApparent ? html`, ${apparentString}: ${localizedApparent}` : ''}
+            ${showOutdoor && localizedOutdoor ? html`, ${this.localize('misc.outdoor')}: ${localizedOutdoor}` : ''}
+            ${this.config.aqi_sensor && aqi !== null ? html`, <aqi style="background-color: ${aqiBackgroundColor}; color: ${aqiTextColor};">${aqi} ${aqiString}</aqi>` : ''}
+            ${this.config.show_humidity && localizedHumidity ? html`, ${localizedHumidity}` : ''}
           </clock-weather-card-today-right-wrap-top>
-          <clock-weather-card-today-right-wrap-center>
-            ${this.config.hide_clock ? localizedTemp ?? 'n/a' : this.time()}
+          <clock-weather-card-today-right-wrap-center style="${layoutVars}">
+            ${centerItem === 'clock'
+              ? this.time()
+              : centerItem === 'home'
+                ? localizedHomeTemp ?? 'n/a'
+                : localizedDisplayedTemp ?? 'n/a'}
           </clock-weather-card-today-right-wrap-center>
-          <clock-weather-card-today-right-wrap-bottom>
-            ${this.config.hide_date ? '' : this.date()}
-          </clock-weather-card-today-right-wrap-bottom>
         </clock-weather-card-today-right-wrap>
       </clock-weather-card-today-right>`
   }
 
   private renderForecast (): TemplateResult[] {
+    if (!this.forecasts || this.forecasts.length === 0) {
+      return [html`<div>No forecast data available</div>`];
+    }
+    const weatherState = this.getWeather().state
+    if (this._cachedForecastRows &&
+        this._cachedForecastsRef === this.forecasts &&
+        this._cachedForecastWeatherState === weatherState) {
+      return this._cachedForecastRows
+    }
     const weather = this.getWeather()
     const currentTemp = roundIfNotNull(this.getCurrentTemperature())
     const maxRowsCount = this.config.forecast_rows
@@ -290,7 +423,11 @@ export class ClockWeatherCard extends LitElement {
       .map(d => hourly ? this.time(d) : this.localize(`day.${d.weekday}`))
     const maxColOneChars = displayTexts.length ? max(displayTexts.map(t => t.length)) : 0
 
-    return forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    const rows = forecasts.map((forecast, i) => safeRender(() => this.renderForecastItem(forecast, minTemp, maxTemp, currentTemp, temperatureUnit, hourly, displayTexts[i], maxColOneChars)))
+    this._cachedForecastRows = rows
+    this._cachedForecastsRef = this.forecasts
+    this._cachedForecastWeatherState = weatherState
+    return rows
   }
 
   private renderForecastItem (forecast: MergedWeatherForecast, minTemp: number, maxTemp: number, currentTemp: number | null, temperatureUnit: TemperatureUnit, hourly: boolean, displayText: string, maxColOneChars: number): TemplateResult {
@@ -467,6 +604,10 @@ export class ClockWeatherCard extends LitElement {
   private mergeConfig (config: ClockWeatherCardConfig): MergedClockWeatherCardConfig {
     return {
       ...config,
+      displayed_temperature: config.displayed_temperature ?? 'current',
+      cycle_display: config.cycle_display ?? 0,
+      oversized: config.oversized ?? false,
+      outdoor_temp_sensor: config.outdoor_temp_sensor,
       sun_entity: config.sun_entity ?? 'sun.sun',
       temperature_sensor: config.temperature_sensor,
       humidity_sensor: config.humidity_sensor,
@@ -486,13 +627,14 @@ export class ClockWeatherCard extends LitElement {
       time_zone: config.time_zone ?? undefined,
       show_decimal: config.show_decimal ?? false,
       apparent_sensor: config.apparent_sensor ?? undefined,
-      aqi_sensor: config.aqi_sensor ?? undefined
+      aqi_sensor: config.aqi_sensor ?? undefined,
+      home_temp_sensor: config.home_temp_sensor ?? undefined
     }
   }
 
   private toIcon (weatherState: string, type: 'fill' | 'line', forceDay: boolean, kind: 'static' | 'animated'): string {
     const daytime = forceDay ? 'day' : this.getSun()?.state === 'below_horizon' ? 'night' : 'day'
-    const iconMap = kind === 'animated' ? animatedIcons : staticIcons
+    const iconMap = (kind === 'animated' && this._animatedIcons) ? this._animatedIcons : staticIcons
     const icon = iconMap[type][weatherState]
     return icon?.[daytime] || icon
   }
@@ -503,6 +645,29 @@ export class ClockWeatherCard extends LitElement {
       throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
     }
     return weather
+  }
+  private getOutdoorTemperature (): number | null {
+    if (this.config.outdoor_temp_sensor) {
+      const outdoorTempSensor = this.hass.states[this.config.outdoor_temp_sensor] as TemperatureSensor | undefined
+      const outtemp = outdoorTempSensor?.state ? parseFloat(outdoorTempSensor.state) : undefined
+      const unit = outdoorTempSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
+      if (outtemp !== undefined && !isNaN(outtemp)) {
+        return this.toConfiguredTempWithoutUnit(unit, outtemp)
+      }
+    }
+    return null
+  }
+
+  private getHomeTemperature (): number | null {
+    if (this.config.home_temp_sensor) {
+      const homeTempSensor = this.hass.states[this.config.home_temp_sensor] as TemperatureSensor | undefined
+      const temp = homeTempSensor?.state ? parseFloat(homeTempSensor.state) : undefined
+      const unit = homeTempSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
+      if (temp !== undefined && !isNaN(temp)) {
+        return this.toConfiguredTempWithoutUnit(unit, temp)
+      }
+    }
+    return null
   }
 
   private getCurrentTemperature (): number | null {

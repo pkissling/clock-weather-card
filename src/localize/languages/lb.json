@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "Loftfiichtegkeet",
-    "feels-like": "Gefillt"
+    "feels-like": "Gefillt",
+    "outdoor": "Outdoor"
   }
 }
