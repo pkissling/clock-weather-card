@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto'
+import { createHash, randomBytes } from 'crypto'
 import { readFileSync, writeFileSync } from 'fs'
 import os from 'os'
 import path from 'path'
@@ -48,12 +48,12 @@ export function readHaState(): HaState {
   return JSON.parse(readFileSync(getStateFilePath(), 'utf-8')) as HaState
 }
 
-// The process id is unique among live sessions, so concurrent runs never
-// clash on (or kill) each other's container. A recycled pid could collide
-// with a crashed run's leftover container, but with pid_max in the millions
-// that is negligible — and `docker run` fails loudly if it ever happens.
-export function createContainerName(): string {
-  return `${E2E_ARTIFACT_PREFIX}${process.pid}`
+// Derived from the host worktree path (as is the runner's in run-in-docker.sh) so a worktree can only run one e2e session at a time.
+export function createContainerName(projectDir: string): string {
+  return `${E2E_ARTIFACT_PREFIX}${createHash('sha256')
+    .update(projectDir)
+    .digest('hex')
+    .slice(0, 12)}-ha`
 }
 
 export function isStaleHaTempEntry(name: string, mtimeMs: number, nowMs: number): boolean {
