@@ -90,7 +90,7 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_strip.round_temperatures" has invalid value "fals", expected true or false')
   })
 })

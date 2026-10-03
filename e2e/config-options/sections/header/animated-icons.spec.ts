@@ -59,7 +59,7 @@ test.describe('sections.header.animated_icons', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.header.animated_icons" has invalid value "fals", expected true or false')
   })
 })

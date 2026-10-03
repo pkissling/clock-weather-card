@@ -78,7 +78,7 @@ test.describe('sections.forecast_list.hide', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.hide" has invalid value "fals", expected true or false')
   })
 })
