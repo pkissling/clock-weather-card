@@ -14,10 +14,10 @@ test.describe('sections.header.rows', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-header-details-row'))
       .toHaveCount(3)
 
-    // Row 1: thermometer icon, temperature, spacer, weather state, weather-cloudy icon.
+    // Row 1: thermometer icon, temperature, spacer, weather state, weather icon.
     await expect(clockWeatherCard.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:thermometer"]'))
       .toHaveCount(1)
-    await expect(clockWeatherCard.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:weather-partly-cloudy"]'))
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-icon-segment ha-icon[icon="mdi:weather-sunny"]'))
       .toHaveCount(1)
     await expect(clockWeatherCard)
       .toContainText('21')
@@ -90,7 +90,7 @@ test.describe('sections.header.rows', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "spacer"')
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
@@ -308,6 +308,68 @@ test.describe('sections.header.rows', () => {
 
       await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
         .toHaveText('7')
+    })
+  })
+
+  test.describe('weather_icon segment', () => {
+    const weatherIcon = 'clock-weather-card-weather-icon-segment ha-icon'
+    const configWith = (extra = ''): string => `
+      sections:
+        header:
+          rows:
+            - segments:
+                - type: weather_icon
+                  ${extra}
+    `
+    const config = configWith()
+
+    test('renders the MDI icon of the current weather state', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({ cardConfig: config, weather: { state: 'fog' } })
+
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-fog')
+    })
+
+    test('follows the weather state at runtime (no reload)', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({ cardConfig: config, weather: { state: 'rainy' } })
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-rainy')
+
+      await setupCard({ cardConfig: config, weather: { state: 'snowy' } })
+
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-snowy')
+    })
+
+    test('switches to the night variant when the sun sets', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({ cardConfig: config, weather: { state: 'partlycloudy' }, sun: { state: 'above_horizon' } })
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-partly-cloudy')
+
+      await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-night-partly-cloudy')
+    })
+
+    test('uses the configured entity_id instead of the card entity', async ({ setupCard, clockWeatherCard }) => {
+      await api.setMockWeather({ entity_id: 'weather.mock_weather_2', condition: 'hail' })
+      await setupCard({
+        cardConfig: configWith('entity_id: weather.mock_weather_2'),
+        weather: { state: 'sunny' },
+      })
+
+      await expect(clockWeatherCard.locator(weatherIcon))
+        .toHaveAttribute('icon', 'mdi:weather-hail')
+    })
+
+    test('rejects an entity_id that does not exist', async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({
+        cardConfig: configWith('entity_id: weather.does_not_exist'),
+      })
+
+      await cardErrorMessage()
+        .toContain('Referenced entity "weather.does_not_exist" does not exist')
     })
   })
 })

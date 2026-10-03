@@ -14,7 +14,7 @@ const DEFAULT_ROWS: RowConfig[] = [
       { type: 'weather', attribute: 'temperature' },
       { type: 'spacer' },
       { type: 'weather' },
-      { type: 'icon', icon: 'mdi:weather-partly-cloudy' }
+      { type: 'weather_icon' }
     ]
   },
   {
@@ -81,6 +81,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   config.sections?.header?.rows?.forEach((row, i) => {
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
+      if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
       if ('show_unit' in segment) assertBoolean(`sections.header.rows[${i}].segments[${j}].show_unit`, segment.show_unit)
     })
   })

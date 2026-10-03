@@ -2,6 +2,8 @@ import type { WeatherIconType } from '@/types'
 
 type IconLoader = () => Promise<string>
 
+const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
+
 interface IconIndex {
   [type: string]: Map<string, IconLoader>
 }
@@ -56,6 +58,17 @@ class IconsService {
     const promise = loader()
     this.cache.set(cacheKey, promise)
     return promise
+  }
+
+  public getWeatherMdiIcon(weatherState: string, isNight: boolean): string {
+    const s = weatherState.toLowerCase()
+    if (s === 'clear-night') return 'mdi:weather-night'
+    if (s === 'sunny' || s === 'clear') return isNight ? 'mdi:weather-night' : 'mdi:weather-sunny'
+    if (s === 'partlycloudy') return isNight ? 'mdi:weather-night-partly-cloudy' : 'mdi:weather-partly-cloudy'
+    if (s === 'windy-exceptional') return 'mdi:weather-windy'
+    if (s === 'exceptional') return 'mdi:alert-circle-outline'
+    if (MDI_WEATHER_STATES.has(s)) return `mdi:weather-${s}`
+    return 'mdi:weather-cloudy-alert'
   }
 
   // TODO: Review mapping between HA weather states and meteocons icon names — there may be more suitable icons available.
