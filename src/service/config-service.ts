@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, RowConfig, WeatherIconType } from '@/types'
-import { WEATHER_ICON_TYPES } from '@/types'
+import { SEGMENT_TYPES, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
@@ -49,17 +49,20 @@ class ConfigService {
     }
     const assertEnumValue = (path: string, value: string | undefined, allowed: readonly string[]): void => {
       if (!value) return
-      if (!allowed.includes(value)) throw invalidConfigValue(path, value)
+      if (allowed.includes(value)) return
+      const allowedList = allowed.map(a => `"${a}"`)
+        .join(', ')
+      throw invalidConfigValue(path, value, `one of ${allowedList}`)
     }
     const assertPositiveInteger = (path: string, value: number | undefined): void => {
       if (value === undefined) return
-      if (!Number.isInteger(value) || value <= 0) throw invalidConfigValue(path, String(value))
+      if (!Number.isInteger(value) || value <= 0) throw invalidConfigValue(path, String(value), 'a positive integer')
     }
     // YAML configs can violate the declared types at runtime, so re-check with typeof.
     const assertCssLength = (path: string, value: unknown): void => {
       if (value === undefined) return
       if (typeof value !== 'string' || !/^\d+(\.\d+)?(px|rem|em|vh|vw|%)$/i.test(value.trim())) {
-        throw invalidConfigValue(path, String(value))
+        throw invalidConfigValue(path, String(value), 'a CSS length in px, rem, em, vh, vw or %')
       }
     }
 
@@ -74,6 +77,11 @@ class ConfigService {
     assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
     assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, ['hourly'])
     assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, ['daily'])
+    config.sections?.header?.rows?.forEach((row, i) => {
+      row.segments?.forEach((segment, j) => {
+        assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
+      })
+    })
 
     assertPositiveInteger('sections.forecast_strip.count', config.sections?.forecast_strip?.count)
     assertPositiveInteger('sections.forecast_list.count', config.sections?.forecast_list?.count)
@@ -84,20 +92,20 @@ class ConfigService {
     const gradient = config.sections?.forecast_list?.gradient
     if (gradient !== undefined) {
       if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
-        throw invalidConfigValue('sections.forecast_list.gradient', String(gradient))
+        throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of percentages to colors')
       }
       for (const [k, v] of Object.entries(gradient)) {
-        if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key "${k}"`)
-        if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at "${k}"`)
+        if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key "${k}"`, 'numeric percentage keys')
+        if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at "${k}"`, 'non-empty color strings')
       }
     }
 
     if (config.time_zone && !isValidTimeZone(config.time_zone)) {
-      throw invalidConfigValue('time_zone', config.time_zone)
+      throw invalidConfigValue('time_zone', config.time_zone, 'an IANA time zone such as "Europe/Berlin"')
     }
 
     if (config.locale && !isValidLocale(config.locale)) {
-      throw invalidConfigValue('locale', config.locale)
+      throw invalidConfigValue('locale', config.locale, 'a BCP 47 language tag such as "en-US"')
     }
   }
 

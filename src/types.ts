@@ -63,6 +63,8 @@ export type SegmentConfig =
   | IconSegmentConfig
   | SpacerSegmentConfig
 
+export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
+
 export interface RowConfig {
   segments: SegmentConfig[]
   font_size?: string

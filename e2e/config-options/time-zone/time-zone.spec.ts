@@ -44,7 +44,7 @@ test.describe('time_zone', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "time_zone" has invalid value "NotARealTimeZone"')
+      .toContain('Config option "time_zone" has invalid value "NotARealTimeZone", expected an IANA time zone such as "Europe/Berlin"')
   })
 
   test('date segment respects configured time_zone', async ({ setupCard, clockWeatherCard }) => {

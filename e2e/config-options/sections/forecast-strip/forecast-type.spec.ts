@@ -24,7 +24,7 @@ test.describe('sections.forecast_strip.forecast_type', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_strip.forecast_type" has invalid value "daily"')
+      .toContain('Config option "sections.forecast_strip.forecast_type" has invalid value "daily", expected one of "hourly"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -41,6 +41,6 @@ test.describe('sections.forecast_strip.forecast_type', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_strip.forecast_type" has invalid value "daily"')
+      .toContain('Config option "sections.forecast_strip.forecast_type" has invalid value "daily", expected one of "hourly"')
   })
 })

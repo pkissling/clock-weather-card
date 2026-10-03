@@ -80,7 +80,7 @@ test.describe('sections.forecast_list.bar_thickness', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "thick"')
+      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "thick", expected a CSS length in px, rem, em, vh, vw or %')
   })
 
   test('rejects unitless numbers', async ({ setupCard, cardErrorMessage }) => {
@@ -94,7 +94,7 @@ test.describe('sections.forecast_list.bar_thickness', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "0.6"')
+      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "0.6", expected a CSS length in px, rem, em, vh, vw or %')
   })
 
   test('updates the thickness at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

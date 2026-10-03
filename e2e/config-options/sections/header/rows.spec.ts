@@ -75,6 +75,26 @@ test.describe('sections.header.rows', () => {
       .toContainText('21')
   })
 
+  test('rejects an unknown segment type', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: time
+              - segments:
+                  - type: spacer
+                  - type: clock
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "spacer"')
+    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+      .toHaveCount(0)
+  })
+
   test('updates rows at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
