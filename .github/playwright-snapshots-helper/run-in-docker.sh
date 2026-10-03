@@ -13,10 +13,8 @@ if [ -n "$(docker ps -aq --filter "name=^${RUNNER_NAME}$")" ]; then
 fi
 
 echo "Building Playwright image..."
-# Unique per-process tag so concurrent sessions in different worktrees
-# can't re-tag the image out from under each other. Untagged again after the
-# run — the Docker build cache keeps rebuilds fast.
-IMAGE_TAG="clock-weather-card-e2e-$$"
+# Per-worktree tag, so a rebuild replaces any image a killed run left behind.
+IMAGE_TAG="clock-weather-card-e2e-$WORKTREE_ID"
 trap 'docker rmi "$IMAGE_TAG" >/dev/null 2>&1 || true' EXIT
 docker build -t "$IMAGE_TAG" -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_DIR"
 
