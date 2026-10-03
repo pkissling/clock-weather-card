@@ -150,6 +150,7 @@ sections:
     animated_icons: false
     round_temperatures: true
     weather_icon_type: line
+    hide_sunrise_sunset: false
   forecast_list:
     hide: false
     weather_entity: weather.home
@@ -203,6 +204,8 @@ Renders a horizontally scrolling strip of upcoming hours (time, weather icon, te
 
 The first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
+When the next sunrise or sunset (taken from `sun_entity`) falls within the visible hours, an extra column with its exact time and an up (sunrise) or down (sunset) arrow is inserted at the matching position. These columns count toward `count`.
+
 When the configured columns do not fit the card width, the strip scrolls horizontally (swipe, trackpad, Shift + mouse wheel, or the thin scrollbar below the strip).
 
 | Option | Type | Required | Default | Description |
@@ -210,10 +213,11 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
 | `weather_entity` | string | no | top-level `entity` | Weather entity whose hourly forecast is displayed. Falls back to the card's main `entity` when not set. |
 | `forecast_type` | `hourly` | no | `hourly` | Forecast data shown in the strip. Only `hourly` is supported currently. |
-| `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now" entry. Fewer are shown if the provider returns less. |
+| `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
 | `animated_icons` | boolean | no | `false` | Whether the per-hour weather icons should be animated. Defaults to `false` to keep the strip lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, temperatures in the strip are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
+| `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
 
 #### `forecast_list`
 

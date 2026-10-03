@@ -1,5 +1,5 @@
 import type { HomeAssistant } from 'custom-card-helpers'
-import { DateTime } from 'luxon'
+import { DateTime, type Zone } from 'luxon'
 
 import type { ForecastType, SunEntity, WeatherForecastEvent } from '@/types'
 import { WeatherEntityFeature } from '@/types'
@@ -16,7 +16,20 @@ class HassService {
     const sun = hass.states[sunEntityId] as SunEntity | undefined
     if (!sun) return false
     if (at === undefined) return sun.state === 'below_horizon'
-    return this.isNightAt(sun, at)
+    const { sunrise, sunset } = this.getNextSunEvents(hass, sunEntityId, at.zone)
+    if (!sunrise || !sunset) return false
+    const timeOfDay = (dt: DateTime): number => dt.hour * 3600 + dt.minute * 60 + dt.second
+    const atSec = timeOfDay(at)
+    return atSec < timeOfDay(sunrise) || atSec >= timeOfDay(sunset)
+  }
+
+  public getNextSunEvents(hass: HomeAssistant, sunEntityId: string, zone: Zone | string): { sunrise: DateTime | null, sunset: DateTime | null } {
+    const parse = (attribute: string): DateTime | null => {
+      const iso = this.getEntityAttributeString(hass, sunEntityId, attribute)
+      const dt = iso === null ? null : DateTime.fromISO(iso, { zone })
+      return dt?.isValid ? dt : null
+    }
+    return { sunrise: parse('next_rising'), sunset: parse('next_setting') }
   }
 
   public getLocale(hass: HomeAssistant): string {
@@ -62,22 +75,6 @@ class HassService {
       entity_id: entityId
     }
     return hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, { resubscribe: false })
-  }
-
-  private isNightAt(sun: SunEntity, at: DateTime): boolean {
-    const rising = sun.attributes.next_rising
-    const setting = sun.attributes.next_setting
-    if (typeof rising !== 'string' || typeof setting !== 'string') {
-      return false
-    }
-    const nextRising = DateTime.fromISO(rising, { zone: at.zone })
-    const nextSetting = DateTime.fromISO(setting, { zone: at.zone })
-    if (!nextRising.isValid || !nextSetting.isValid) {
-      return false
-    }
-    const timeOfDay = (dt: DateTime): number => dt.hour * 3600 + dt.minute * 60 + dt.second
-    const atSec = timeOfDay(at)
-    return atSec < timeOfDay(nextRising) || atSec >= timeOfDay(nextSetting)
   }
 
 }

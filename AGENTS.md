@@ -70,4 +70,4 @@ When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/typ
 
 ## Translations
 
-User-facing strings live in `src/locales/<lang>.json`. Add new strings to `en.json` (the fallback); other locales may be left untranslated and will fall back to English.
+User-facing strings live in `src/locales/<lang>.json`. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).

@@ -30,6 +30,8 @@
     "humidity": "độ ẩm",
     "feels-like": "Cảm giác như",
     "now": "Bây giờ",
-    "today": "Hôm nay"
+    "today": "Hôm nay",
+    "sunrise": "Bình minh",
+    "sunset": "Hoàng hôn"
   }
 }

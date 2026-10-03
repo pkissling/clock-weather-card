@@ -30,6 +30,8 @@
     "humidity": "vlhkost",
     "feels-like": "pocitová teplota",
     "now": "Nyní",
-    "today": "Dnes"
+    "today": "Dnes",
+    "sunrise": "Východ slunce",
+    "sunset": "Západ slunce"
   }
 }

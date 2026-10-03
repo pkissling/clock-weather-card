@@ -30,6 +30,8 @@
     "humidity": "nem",
     "feels-like": "Hissedilen",
     "now": "Şimdi",
-    "today": "Bugün"
+    "today": "Bugün",
+    "sunrise": "Gün doğumu",
+    "sunset": "Gün batımı"
   }
 }

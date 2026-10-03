@@ -30,6 +30,8 @@
     "humidity": "вологість",
     "feels-like": "Feels like",
     "now": "Зараз",
-    "today": "Сьогодні"
+    "today": "Сьогодні",
+    "sunrise": "Схід сонця",
+    "sunset": "Захід сонця"
   }
 }

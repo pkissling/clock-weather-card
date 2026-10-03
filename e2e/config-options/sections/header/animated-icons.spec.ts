@@ -49,4 +49,17 @@ test.describe('sections.header.animated_icons', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img'))
       .not.toHaveAttribute('src', staticSrc!)
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            animated_icons: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.header.animated_icons" has invalid value "fals", expected true or false')
+  })
 })

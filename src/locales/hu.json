@@ -30,6 +30,8 @@
     "humidity": "páratartalom",
     "feels-like": "Hőérzet",
     "now": "Most",
-    "today": "Ma"
+    "today": "Ma",
+    "sunrise": "Napkelte",
+    "sunset": "Napnyugta"
   }
 }

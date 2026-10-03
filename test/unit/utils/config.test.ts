@@ -59,6 +59,7 @@ describe('resolveConfig', () => {
           animatedIcons: false,
           roundTemperatures: true,
           weatherIconType: 'line',
+          hideSunriseSunset: false,
         },
         forecastList: {
           hidden: false,
@@ -112,4 +113,5 @@ describe('resolveConfig', () => {
     expect(resolved.forecastList)
       .toMatchObject({ entity: 'weather.list', weatherIconType: 'monochrome', count: 3 })
   })
+
 })

@@ -30,6 +30,8 @@
     "humidity": "濕度",
     "feels-like": "體感溫度",
     "now": "現在",
-    "today": "今天"
+    "today": "今天",
+    "sunrise": "日出",
+    "sunset": "日落"
   }
 }

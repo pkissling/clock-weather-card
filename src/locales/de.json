@@ -30,6 +30,8 @@
     "humidity": "Luftfeuchtigkeit",
     "feels-like": "Gefühlt",
     "now": "Jetzt",
-    "today": "Heute"
+    "today": "Heute",
+    "sunrise": "Sonnenaufgang",
+    "sunset": "Sonnenuntergang"
   }
 }

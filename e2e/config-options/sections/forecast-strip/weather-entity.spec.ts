@@ -35,7 +35,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       .toHaveCount(SECONDARY_HOURLY.length)
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
       .first()
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('12°C')
   })
 

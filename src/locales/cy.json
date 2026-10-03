@@ -30,6 +30,8 @@
     "humidity": "Lleithder",
     "feels-like": "Teimlo fel",
     "now": "Nawr",
-    "today": "Heddiw"
+    "today": "Heddiw",
+    "sunrise": "Codiad haul",
+    "sunset": "Machlud haul"
   }
 }

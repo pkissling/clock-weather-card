@@ -30,6 +30,8 @@
     "humidity": "Vochtigheid",
     "feels-like": "Gevoelstemperatuur",
     "now": "Nu",
-    "today": "Vandaag"
+    "today": "Vandaag",
+    "sunrise": "Zonsopgang",
+    "sunset": "Zonsondergang"
   }
 }

@@ -30,6 +30,8 @@
     "humidity": "fuktighet",
     "feels-like": "Känns som",
     "now": "Nu",
-    "today": "Idag"
+    "today": "Idag",
+    "sunrise": "Soluppgång",
+    "sunset": "Solnedgång"
   }
 }

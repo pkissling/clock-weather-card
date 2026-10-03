@@ -30,6 +30,8 @@
     "humidity": "Humidity",
     "feels-like": "Feels like",
     "now": "Now",
-    "today": "Today"
+    "today": "Today",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset"
   }
 }

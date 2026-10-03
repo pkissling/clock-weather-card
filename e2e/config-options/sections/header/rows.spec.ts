@@ -95,6 +95,22 @@ test.describe('sections.header.rows', () => {
       .toHaveCount(0)
   })
 
+  test('rejects a non-boolean segment show_unit', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+                    show_unit: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.header.rows[0].segments[0].show_unit" has invalid value "fals", expected true or false')
+  })
+
   test('updates rows at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `

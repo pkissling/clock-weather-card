@@ -93,6 +93,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       animated_icons?: boolean
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
+      hide_sunrise_sunset?: boolean
     }
     forecast_list?: {
       hide?: boolean
@@ -136,9 +137,16 @@ export interface ResolvedForecastStripConfig {
   animatedIcons: boolean
   roundTemperatures: boolean
   weatherIconType: WeatherIconType
+  hideSunriseSunset: boolean
 }
 
-export interface ResolvedForecastListConfig extends ResolvedForecastStripConfig {
+export interface ResolvedForecastListConfig {
+  hidden: boolean
+  entity: string
+  count: number
+  animatedIcons: boolean
+  roundTemperatures: boolean
+  weatherIconType: WeatherIconType
   rowHeight: string | null
   barThickness: string
   hideCurrentTempIndicator: boolean
@@ -176,17 +184,18 @@ export interface DailyWeatherForecast extends WeatherForecast {
   templow: number
 }
 
-export interface HourlyForecastItem {
+export type HourlyForecastItem = {
   label: string
   condition: string
   isNight: boolean
   animatedIcon: boolean
   weatherIconType: WeatherIconType
-  temperature: number
-  temperatureUnit: string | null
   precipitationProbability: number | null
   showPrecipitation: boolean
-}
+} & (
+  | { temperature: number, temperatureUnit: string | null, sunEvent?: never }
+  | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureUnit?: never }
+)
 
 export interface GradientStop {
   percent: number

@@ -30,6 +30,8 @@
     "humidity": "vlažnost",
     "feels-like": "Občutek temperature",
     "now": "Zdaj",
-    "today": "Danes"
+    "today": "Danes",
+    "sunrise": "Sončni vzhod",
+    "sunset": "Sončni zahod"
   }
 }

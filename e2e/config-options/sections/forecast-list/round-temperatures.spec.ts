@@ -76,4 +76,17 @@ test.describe('sections.forecast_list.round_temperatures', () => {
     await expect(firstHigh)
       .toHaveText('15°C')
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            round_temperatures: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_list.round_temperatures" has invalid value "fals", expected true or false')
+  })
 })

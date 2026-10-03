@@ -30,6 +30,8 @@
     "humidity": "Влажност",
     "feels-like": "Feels like",
     "now": "Сада",
-    "today": "Данас"
+    "today": "Данас",
+    "sunrise": "Излазак сунца",
+    "sunset": "Залазак сунца"
   }
 }

@@ -43,7 +43,7 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     }
 
     const { sunEntity, timeZone, locale } = this.config
-    const { count, animatedIcons, weatherIconType, roundTemperatures } = this.config.forecastStrip
+    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset } = this.config.forecastStrip
     const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
 
     const now = this.currentDate
@@ -64,23 +64,48 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     // Drop the precipitation row entirely if rounded precipitation never above 0%
     const showPrecipitation = visible.some(({ forecast }) => (roundToTens(forecast.precipitation_probability) ?? 0) > 0)
 
+    const hourItems = visible.map(({ forecast, at }): { at: DateTime, item: HourlyForecastItem } => ({
+      at,
+      item: {
+        label: at <= now ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
+        condition: forecast.condition,
+        isNight: hassService.isNight(this.hass, sunEntity, at),
+        animatedIcon: animatedIcons,
+        weatherIconType,
+        temperature: roundTemperatures ? Math.round(forecast.temperature) : forecast.temperature,
+        temperatureUnit,
+        precipitationProbability: roundToTens(forecast.precipitation_probability),
+        showPrecipitation,
+      },
+    }))
+
+    const lastAt = visible[visible.length - 1].at
+    const { sunrise, sunset } = hideSunriseSunset
+      ? { sunrise: null, sunset: null }
+      : hassService.getNextSunEvents(this.hass, sunEntity, timeZone)
+    const sunItems = ([['sunrise', sunrise], ['sunset', sunset]] as const)
+      .flatMap(([kind, at]) => at && at.startOf('minute') >= now.startOf('minute') && at <= lastAt ? [{ kind, at }] : [])
+      .map(({ kind, at }): { at: DateTime, item: HourlyForecastItem } => ({
+        at,
+        item: {
+          label: at.toLocaleString(DateTime.TIME_SIMPLE, { locale }),
+          condition: kind,
+          isNight: false,
+          animatedIcon: animatedIcons,
+          weatherIconType,
+          sunEvent: { kind, label: translationsService.t(locale, kind === 'sunrise' ? 'misc.sunrise' : 'misc.sunset') },
+          precipitationProbability: null,
+          showPrecipitation,
+        },
+      }))
+
+    const items = [...hourItems, ...sunItems].sort((x, y) => x.at.toMillis() - y.at.toMillis())
+      .slice(0, count)
+
     return html`
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
       <div class="strip">
-        ${visible.map(({ forecast, at }) => {
-    const item: HourlyForecastItem = {
-      label: at <= now ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
-      condition: forecast.condition,
-      isNight: hassService.isNight(this.hass, sunEntity, at),
-      animatedIcon: animatedIcons,
-      weatherIconType,
-      temperature: roundTemperatures ? Math.round(forecast.temperature) : forecast.temperature,
-      temperatureUnit,
-      precipitationProbability: roundToTens(forecast.precipitation_probability),
-      showPrecipitation,
-    }
-    return html`<clock-weather-card-hourly-forecast-item .item=${item}></clock-weather-card-hourly-forecast-item>`
-  })}
+        ${items.map(({ item }) => html`<clock-weather-card-hourly-forecast-item .item=${item}></clock-weather-card-hourly-forecast-item>`)}
       </div>
     `
   }

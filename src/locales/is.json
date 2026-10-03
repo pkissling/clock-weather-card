@@ -30,6 +30,8 @@
     "humidity": "raki",
     "feels-like": "Feels like",
     "now": "Núna",
-    "today": "Í dag"
+    "today": "Í dag",
+    "sunrise": "Sólarupprás",
+    "sunset": "Sólsetur"
   }
 }

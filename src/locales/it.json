@@ -30,6 +30,8 @@
     "humidity": "umidità",
     "feels-like": "Percepita",
     "now": "Ora",
-    "today": "Oggi"
+    "today": "Oggi",
+    "sunrise": "Alba",
+    "sunset": "Tramonto"
   }
 }

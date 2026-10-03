@@ -78,8 +78,8 @@ test.describe('sun_entity', () => {
       },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
-    // "Now" (12:00) + two future forecasts (17:00 pre-sunset, 19:00 post-sunset).
+    // Hour columns only: the 18:00 sunset column sits between 17:00 and 19:00.
+    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:not(:has(.label ha-icon))')
     await expect(items)
       .toHaveCount(3)
 

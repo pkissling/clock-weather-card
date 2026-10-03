@@ -30,6 +30,8 @@
     "humidity": "kosteus",
     "feels-like": "Tuntuu kuin",
     "now": "Nyt",
-    "today": "Tänään"
+    "today": "Tänään",
+    "sunrise": "Auringonnousu",
+    "sunset": "Auringonlasku"
   }
 }

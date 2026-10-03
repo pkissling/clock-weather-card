@@ -44,4 +44,17 @@ test.describe('sections.header.hide', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            hide: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.header.hide" has invalid value "fals", expected true or false')
+  })
 })

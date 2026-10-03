@@ -30,6 +30,8 @@
     "humidity": "לחות",
     "feels-like": "מרגיש כמו",
     "now": "כעת",
-    "today": "היום"
+    "today": "היום",
+    "sunrise": "זריחה",
+    "sunset": "שקיעה"
   }
 }
