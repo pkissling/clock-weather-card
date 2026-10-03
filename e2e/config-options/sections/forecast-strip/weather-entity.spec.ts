@@ -49,8 +49,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
-      .toContain('Referenced entity weather.does_not_exist does not exist')
+    await cardErrorMessage()
+      .toContain('Referenced entity "weather.does_not_exist" does not exist')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
       .toHaveCount(0)
   })
@@ -84,7 +84,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       .toContainText('12')
   })
 
-  test('replaces the warning with the strip when the override entity flips to one that supports hourly (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('replaces the warning with the strip when the override entity flips to one that supports hourly (no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
       forecast_hourly: SECONDARY_HOURLY,
@@ -102,8 +102,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
     })
 
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather_2" does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather_2" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
 
@@ -117,13 +117,13 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    await expect(section)
-      .not.toContainText('does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBeNull()
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
   })
 
-  test('replaces the strip with the warning when the override entity flips to one that does not support hourly (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('replaces the strip with the warning when the override entity flips to one that does not support hourly (no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
       forecast_hourly: SECONDARY_HOURLY,
@@ -137,8 +137,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
-    await expect(section)
-      .not.toContainText('does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBeNull()
 
     await setupCard({
       cardConfig: `
@@ -150,8 +150,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather_2" does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather_2" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
   })

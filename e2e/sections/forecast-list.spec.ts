@@ -166,7 +166,7 @@ test.describe('forecast_list section', () => {
       .toHaveCount(2)
   })
 
-  test('renders an inline warning when the resolved entity does not advertise FORECAST_DAILY', async ({ setupCard, clockWeatherCard }) => {
+  test('renders an inline warning when the resolved entity does not advertise FORECAST_DAILY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
       date: TODAY,
       weather: {
@@ -178,8 +178,8 @@ test.describe('forecast_list section', () => {
     const section = clockWeatherCard.locator('clock-weather-card-daily-forecast')
     await expect(section)
       .toBeVisible()
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather" does not support daily forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather" does not support daily forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))

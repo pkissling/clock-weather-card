@@ -10,6 +10,10 @@ export default css`
     padding-bottom: 0px;
   }
 
+  clock-weather-card-error hui-error-card {
+    overflow-wrap: anywhere;
+  }
+
   clock-weather-card-header {
     display: grid;
     grid-template-columns: 50% 50%;

@@ -108,8 +108,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of percentages to colors')
     }
     for (const [k, v] of Object.entries(gradient)) {
-      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key "${k}"`, 'numeric percentage keys')
-      if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at "${k}"`, 'non-empty color strings')
+      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric percentage keys')
+      if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'non-empty color strings')
     }
   }
 

@@ -89,7 +89,7 @@ test.describe('sections.header.rows', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)

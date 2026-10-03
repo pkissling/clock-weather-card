@@ -128,7 +128,7 @@ test.describe('locale', () => {
       weather: { state: 'sunny' },
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "locale" has invalid value "D", expected a BCP 47 language tag such as "en-US"')
   })
 

@@ -196,7 +196,7 @@ test.describe('forecast_strip section', () => {
       .toHaveCount(0)
   })
 
-  test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
+  test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {
         forecast_hourly: [
@@ -209,8 +209,8 @@ test.describe('forecast_strip section', () => {
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
     await expect(section)
       .toBeVisible()
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather" does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))

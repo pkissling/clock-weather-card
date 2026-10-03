@@ -5,3 +5,4 @@ import type { ResolvedConfig } from '@/types'
 
 export const configContext = createContext<ResolvedConfig>(Symbol('clock-weather-card-config'))
 export const hassContext = createContext<HomeAssistant>(Symbol('clock-weather-card-hass'))
+export const errorMessageContext = createContext<boolean>(Symbol('clock-weather-card-error-message'))

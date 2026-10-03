@@ -1,12 +1,24 @@
-import { type Locator, test as base } from '@playwright/test'
+import { expect, type Locator, test as base } from '@playwright/test'
 
 import { readHaState } from './ha-state'
 import { type MockOptions, setupCard as setupCardTest } from './test-utils'
 
+// Our error component holds the plain message; HA's own hui-error-card (setConfig errors) only has it in _config.
+const readErrorMessage = async (scope: Locator): Promise<string | null> => {
+  const errorCard = scope.locator('clock-weather-card-error, hui-error-card')
+    .first()
+  if (await errorCard.count() === 0) return null
+  return errorCard.evaluate((el) => {
+    if (el.localName === 'clock-weather-card-error') return (el as { message?: string }).message ?? null
+    return (el as { _config?: { message?: string } })._config?.message ?? null
+  })
+}
+
+type ErrorMessagePoll = ReturnType<typeof expect.poll<string | null>>
+
 type ClockWeatherCardFixtures = {
   clockWeatherCard: Locator
-  // hui-error-card hides the message in non-visible DOM; _config.message is the only reliable read.
-  cardErrorMessage: () => Promise<string | null>
+  cardErrorMessage: (scope?: Locator) => ErrorMessagePoll
   setupCard: (opts?: MockOptions) => Promise<Locator>
 }
 
@@ -23,8 +35,7 @@ export const test = base.extend<ClockWeatherCardFixtures>({
   },
 
   cardErrorMessage: async ({ page }, use) => {
-    await use(() => page.locator('hui-error-card')
-      .evaluate(el => (el as { _config?: { message?: string } })._config?.message ?? null))
+    await use((scope = page.locator(':root')) => expect.poll(() => readErrorMessage(scope)))
   },
 
   setupCard: async ({ page, clockWeatherCard }, use) => {
@@ -35,4 +46,4 @@ export const test = base.extend<ClockWeatherCardFixtures>({
   },
 })
 
-export { expect } from '@playwright/test'
+export { expect }

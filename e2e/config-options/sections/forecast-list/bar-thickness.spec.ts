@@ -79,7 +79,7 @@ test.describe('sections.forecast_list.bar_thickness', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "thick", expected a CSS length in px, rem, em, vh, vw or %')
   })
 
@@ -93,7 +93,7 @@ test.describe('sections.forecast_list.bar_thickness', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "0.6", expected a CSS length in px, rem, em, vh, vw or %')
   })
 

@@ -21,8 +21,8 @@ test.describe('entity', () => {
       weather: { state: 'sunny' },
     })
 
-    expect(await cardErrorMessage())
-      .toContain('Referenced entity weather.does_not_exist does not exist')
+    await cardErrorMessage()
+      .toContain('Referenced entity "weather.does_not_exist" does not exist')
     await expect(clockWeatherCard)
       .not.toContainText('Sunny')
   })
@@ -34,7 +34,7 @@ test.describe('entity', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "entity" is required')
     await expect(clockWeatherCard)
       .toHaveCount(0)
@@ -45,7 +45,7 @@ test.describe('entity', () => {
       cardConfig: null,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "entity" is required')
     await expect(clockWeatherCard)
       .toHaveCount(0)
@@ -67,8 +67,8 @@ test.describe('entity', () => {
       `,
     })
 
-    await expect.poll(cardErrorMessage)
-      .toContain('Referenced entity weather.does_not_exist does not exist')
+    await cardErrorMessage()
+      .toContain('Referenced entity "weather.does_not_exist" does not exist')
   })
 
   test('recovers from the error card when the configured entity is replaced with an existing one (no reload)', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
@@ -78,8 +78,8 @@ test.describe('entity', () => {
       `,
       weather: { state: 'sunny' },
     })
-    expect(await cardErrorMessage())
-      .toContain('Referenced entity weather.does_not_exist does not exist')
+    await cardErrorMessage()
+      .toContain('Referenced entity "weather.does_not_exist" does not exist')
 
     await setupCard({
       cardConfig: `

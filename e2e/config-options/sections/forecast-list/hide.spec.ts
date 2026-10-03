@@ -27,15 +27,15 @@ test.describe('sections.forecast_list.hide', () => {
       .toHaveCount(1)
   })
 
-  test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
     })
     const section = clockWeatherCard.locator('clock-weather-card-daily-forecast')
     await expect(section)
       .toBeVisible()
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather" does not support daily forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather" does not support daily forecasts')
 
     await setupCard({
       cardConfig: `
