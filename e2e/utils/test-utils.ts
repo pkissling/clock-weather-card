@@ -1,4 +1,7 @@
+import { randomUUID } from 'node:crypto'
+
 import { expect, type Page } from '@playwright/test'
+import type { HomeAssistant } from 'custom-card-helpers'
 import { parse as parseYaml } from 'yaml'
 
 import type { ClockWeatherCardConfig, DailyWeatherForecast, WeatherForecast } from '../../src/types'
@@ -7,6 +10,8 @@ import api from './ha-api'
 import { TEST_DASHBOARD } from './ha-setup'
 
 const WEATHER_ENTITY = 'weather.mock_weather'
+const SYNC_ENTITY = 'sensor.e2e_sync'
+const STALE_ATTRIBUTE = 'data-e2e-stale'
 
 const DEFAULT_SUPPORTED_FEATURES: WeatherEntityFeature[] = [
   WeatherEntityFeature.FORECAST_DAILY,
@@ -122,6 +127,11 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const date = opts?.date ?? DEFAULT_DATE
 
   const sunState = opts?.sun?.state ?? 'above_horizon'
+
+  // HA replaces the card element on every dashboard save, so a fresh element proves the new config landed.
+  await page.locator('clock-weather-card, hui-error-card')
+    .evaluateAll((els, attribute) => els.forEach(el => el.setAttribute(attribute, '')), STALE_ATTRIBUTE)
+
   // Independent state writes — run concurrently.
   await Promise.all([
     api.setDashboardConfig(TEST_DASHBOARD, cardConfig),
@@ -142,6 +152,9 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     api.setLanguage(opts?.language ?? 'en'),
     api.setTimeZone(opts?.timeZone ?? 'Europe/Berlin'),
   ])
+  // HA pushes events to the browser in order, so once the card sees this token it has every update above.
+  const syncToken = randomUUID()
+  await api.setEntityState(SYNC_ENTITY, syncToken)
 
   // Skip goto on follow-up calls so HA's live WS push hits the mounted card without a reload.
   if (!page.url()
@@ -149,17 +162,18 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     await page.goto(`/${TEST_DASHBOARD}/0`)
   }
 
-  // Wait until the dashboard has rendered something for our card slot — either
-  // the card itself, or HA's hui-error-card wrapper if setConfig threw.
-  await page.locator('clock-weather-card')
-    .or(page.locator('hui-error-card'))
+  // Either the card itself, or HA's hui-error-card wrapper if setConfig threw.
+  const card = page.locator(`clock-weather-card:not([${STALE_ATTRIBUTE}]), hui-error-card:not([${STALE_ATTRIBUTE}])`)
     .first()
-    .waitFor({ state: 'visible' })
+  await card.waitFor({ state: 'visible' })
+  await expect
+    .poll(() => card.evaluate((el, [entity, token]) =>
+      el.localName === 'hui-error-card' || (el as unknown as { hass?: HomeAssistant }).hass?.states[entity]?.state === token, [SYNC_ENTITY, syncToken]))
+    .toBe(true)
+  await expect(card.locator('clock-weather-card-daily-forecast:not([data-loaded]), clock-weather-card-hourly-forecast:not([data-loaded])'))
+    .toHaveCount(0)
 
-  // Wait until every icon has committed its final src, then strip SMIL so screenshots
-  // are deterministic (Playwright's `animations: 'disabled'` only covers CSS animations).
   await waitForIconsSettled(page, opts?.expectedIcons ?? 1)
-  await freezeSvgAnimations(page)
 }
 
 async function waitForIconsSettled (page: Page, minIcons: number): Promise<void> {
@@ -177,45 +191,4 @@ async function waitForIconsSettled (page: Page, minIcons: number): Promise<void>
       return total >= minIcons && settled === total
     }, { timeout: 15_000 })
     .toBe(true)
-}
-
-async function freezeSvgAnimations (page: Page): Promise<void> {
-  await page.evaluate(async (smilTags: string[]) => {
-    const pending: Promise<unknown>[] = []
-    const smilPattern = new RegExp(`<(${smilTags.join('|')})\\b`)
-
-    function processElement (root: Document | ShadowRoot): void {
-      for (const img of root.querySelectorAll('img')) {
-        const src = img.getAttribute('src') ?? ''
-        if (!src.startsWith('data:image/svg+xml')) continue
-
-        const commaIdx = src.indexOf(',')
-        if (commaIdx === -1) continue
-
-        const svgText = decodeURIComponent(src.slice(commaIdx + 1))
-        if (!smilPattern.test(svgText)) continue
-
-        const doc = new DOMParser()
-          .parseFromString(svgText, 'image/svg+xml')
-        const smilElements = doc.querySelectorAll(smilTags.join(','))
-        if (smilElements.length === 0) continue
-
-        smilElements.forEach(el => el.remove())
-        const frozen = new XMLSerializer()
-          .serializeToString(doc)
-        img.src = 'data:image/svg+xml,' + encodeURIComponent(frozen)
-        // Wait for the browser to decode the replaced src so the screenshot
-        // captures the frozen frame, not the still-animating previous one.
-        pending.push(img.decode()
-          .catch(() => undefined))
-      }
-
-      for (const el of root.querySelectorAll('*')) {
-        if (el.shadowRoot) processElement(el.shadowRoot)
-      }
-    }
-
-    processElement(document)
-    await Promise.all(pending)
-  }, ['animate', 'animateTransform', 'animateMotion', 'set'])
 }

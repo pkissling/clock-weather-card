@@ -37,7 +37,11 @@ export default defineConfig({
   projects: [
     {
       name: 'Desktop Firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        // Freezes SMIL animations in the SVG icons at their first frame, so screenshots are deterministic.
+        launchOptions: { firefoxUserPrefs: { 'image.animation_mode': 'none' } },
+      },
     }
   ],
 
