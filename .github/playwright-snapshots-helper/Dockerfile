@@ -16,7 +16,6 @@ RUN corepack enable
 
 # Copy package manager files first to leverage Docker layer caching
 COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
 
 # Install dependencies inside the image (isolated from host)
 RUN yarn install --immutable
