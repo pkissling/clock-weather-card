@@ -1,4 +1,4 @@
-import '@/components/clock-weather-card-today-details-row'
+import '@/components/clock-weather-card-header-details-row'
 
 import { consume } from '@lit/context'
 import type { TemplateResult } from 'lit'
@@ -10,21 +10,21 @@ import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weath
 import { configContext } from '@/context'
 import type { ResolvedConfig } from '@/types'
 
-@customElement('clock-weather-card-today-details')
-class ClockWeatherCardTodayDetails extends AbstractClockWeatherCardComponent {
+@customElement('clock-weather-card-header-details')
+class ClockWeatherCardHeaderDetails extends AbstractClockWeatherCardComponent {
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
 
   public render (): TemplateResult {
     return html`${this.config.header.rows
       .map(rowConfig => html`
-        <clock-weather-card-today-details-row
+        <clock-weather-card-header-details-row
           style="font-size: ${rowConfig.font_size ?? ''}"
           .rowConfig=${rowConfig}
           .currentDate=${this.currentDate}
-        ></clock-weather-card-today-details-row>
+        ></clock-weather-card-header-details-row>
       `)}`
   }
 }
 
-export default ClockWeatherCardTodayDetails
+export default ClockWeatherCardHeaderDetails

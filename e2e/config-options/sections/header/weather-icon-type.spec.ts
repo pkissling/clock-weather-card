@@ -1,6 +1,6 @@
 import { expect, test } from '../../../utils/fixtures'
 
-const HEADER_ICON = 'clock-weather-card-today clock-weather-card-icon img'
+const HEADER_ICON = 'clock-weather-card-header clock-weather-card-icon img'
 
 test.describe('sections.header.weather_icon_type', () => {
   test('falls back to the top-level weather_icon_type by default', async ({ setupCard, clockWeatherCard }) => {
@@ -77,7 +77,7 @@ test.describe('sections.header.weather_icon_type', () => {
 
     expect(await cardErrorMessage())
       .toContain('Config option "sections.header.weather_icon_type" has invalid value "gradient", expected one of "fill", "flat", "line", "monochrome"')
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
 

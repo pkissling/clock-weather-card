@@ -85,7 +85,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
 
     expect(await cardErrorMessage())
       .toContain('Config option "sections.forecast_strip.weather_icon_type" has invalid value "gradient", expected one of "fill", "flat", "line", "monochrome"')
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
 

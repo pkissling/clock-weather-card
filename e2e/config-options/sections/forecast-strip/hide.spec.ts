@@ -34,7 +34,7 @@ test.describe('sections.forecast_strip.hide', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
       .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
   })
 

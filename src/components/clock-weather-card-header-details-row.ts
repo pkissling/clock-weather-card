@@ -13,8 +13,8 @@ import type { DateTime } from 'luxon'
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import type { RowConfig, SegmentConfig } from '@/types'
 
-@customElement('clock-weather-card-today-details-row')
-class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent {
+@customElement('clock-weather-card-header-details-row')
+class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public rowConfig!: RowConfig
   @property({ attribute: false }) public currentDate!: DateTime
 
@@ -56,4 +56,4 @@ class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent 
   }
 }
 
-export default ClockWeatherCardTodayDetailsRow
+export default ClockWeatherCardHeaderDetailsRow

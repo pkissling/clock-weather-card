@@ -4,7 +4,7 @@ test.describe('sections.header.hide', () => {
   test('renders the header section by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard()
 
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
   })
 
@@ -17,7 +17,7 @@ test.describe('sections.header.hide', () => {
       `,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
       .first())
@@ -30,7 +30,7 @@ test.describe('sections.header.hide', () => {
 
   test('removes the section at runtime when hide flips to true (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard()
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
 
     await setupCard({
@@ -41,7 +41,7 @@ test.describe('sections.header.hide', () => {
       `,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
 

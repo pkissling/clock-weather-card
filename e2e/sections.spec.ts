@@ -9,7 +9,7 @@ test.describe('sections', () => {
       .toHaveCount(3)
     expect(await sections.evaluateAll(els => els.map(el => el.localName)))
       .toEqual([
-        'clock-weather-card-today',
+        'clock-weather-card-header',
         'clock-weather-card-hourly-forecast',
         'clock-weather-card-daily-forecast',
       ])

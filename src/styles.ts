@@ -10,7 +10,7 @@ export default css`
     padding-bottom: 0px;
   }
 
-  clock-weather-card-today {
+  clock-weather-card-header {
     display: grid;
     grid-template-columns: 50% 50%;
     align-items: center;
@@ -27,13 +27,13 @@ export default css`
     right: -20%;
   }
 
-  clock-weather-card-today-details {
+  clock-weather-card-header-details {
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
-  clock-weather-card-today-details-row {
+  clock-weather-card-header-details-row {
     display: flex;
     align-items: center;
     gap: 8px;
