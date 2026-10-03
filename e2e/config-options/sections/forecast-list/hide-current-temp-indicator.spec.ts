@@ -67,7 +67,7 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.hide_current_temp_indicator" has invalid value "fals", expected true or false')
   })
 })

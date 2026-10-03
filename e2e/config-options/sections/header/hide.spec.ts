@@ -54,7 +54,7 @@ test.describe('sections.header.hide', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.header.hide" has invalid value "fals", expected true or false')
   })
 })

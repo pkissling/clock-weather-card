@@ -168,7 +168,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_strip.hide_sunrise_sunset" requires "sections.forecast_strip.forecast_type" to be "hourly"')
   })
 
@@ -181,7 +181,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_strip.hide_sunrise_sunset" has invalid value "fals", expected true or false')
   })
 })
