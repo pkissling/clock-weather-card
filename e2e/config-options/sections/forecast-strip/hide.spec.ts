@@ -9,7 +9,7 @@ const FORECAST_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T17:00:00+00:00', condition: 'rainy', temperature: 18, precipitation_probability: 80 },
 ]
 
-test.describe('sections.hourly_forecast.hide', () => {
+test.describe('sections.forecast_strip.hide', () => {
   test('renders the hourly forecast section by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -26,7 +26,7 @@ test.describe('sections.hourly_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             hide: true
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -55,7 +55,7 @@ test.describe('sections.hourly_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             hide: true
       `,
       weather: {
@@ -79,7 +79,7 @@ test.describe('sections.hourly_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             hide: true
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },

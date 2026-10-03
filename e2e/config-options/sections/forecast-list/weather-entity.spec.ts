@@ -13,7 +13,7 @@ const SECONDARY: DailyWeatherForecast[] = [
   { datetime: '2025-09-16T00:00:00+00:00', condition: 'snowy', templow: -6, temperature: -1, precipitation_probability: 95 },
 ]
 
-test.describe('sections.daily_forecast.weather_entity', () => {
+test.describe('sections.forecast_list.weather_entity', () => {
   test('renders forecasts from the override entity when configured', async ({ setupCard, clockWeatherCard }) => {
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
@@ -25,7 +25,7 @@ test.describe('sections.daily_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_daily: PRIMARY },
@@ -44,7 +44,7 @@ test.describe('sections.daily_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             weather_entity: weather.does_not_exist
       `,
     })
@@ -72,7 +72,7 @@ test.describe('sections.daily_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_daily: PRIMARY },

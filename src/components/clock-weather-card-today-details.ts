@@ -19,7 +19,8 @@ class ClockWeatherCardTodayDetails extends AbstractClockWeatherCardComponent {
 
   public render (): TemplateResult {
     const entity = configService.getEntity(this.config)
-    return html`${configService.getRows(this.config)
+    return html`${configService.getHeader(this.config)
+      .getRows()
       .map(rowConfig => html`
         <clock-weather-card-today-details-row
           style="font-size: ${rowConfig.font_size ?? ''}"

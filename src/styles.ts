@@ -70,6 +70,10 @@ export default css`
     height: 1px;
   }
 
+  .card-content > :first-child > clock-weather-card-divider:first-child {
+    display: none;
+  }
+
   clock-weather-card-divider[orientation="vertical"] {
     width: 1px;
     height: auto;

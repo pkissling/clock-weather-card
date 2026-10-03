@@ -8,7 +8,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 3.6, temperature: 12.2, precipitation_probability: 0 },
 ]
 
-test.describe('sections.daily_forecast.round_temperatures', () => {
+test.describe('sections.forecast_list.round_temperatures', () => {
   test('rounds temperatures by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: TODAY,
@@ -36,7 +36,7 @@ test.describe('sections.daily_forecast.round_temperatures', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             round_temperatures: false
       `,
       weather: { temperature: 10, forecast_daily: DAILY },
@@ -57,7 +57,7 @@ test.describe('sections.daily_forecast.round_temperatures', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             round_temperatures: false
       `,
       weather: { temperature: 10, forecast_daily: DAILY },

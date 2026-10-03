@@ -12,7 +12,7 @@ function makeHourly(count: number): WeatherForecast[] {
   }))
 }
 
-test.describe('sections.hourly_forecast.hours', () => {
+test.describe('sections.forecast_strip.count', () => {
   test('caps the rendered items to 24 by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { forecast_hourly: makeHourly(30) },
@@ -27,8 +27,8 @@ test.describe('sections.hourly_forecast.hours', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 3
+          forecast_strip:
+            count: 3
       `,
       weather: { forecast_hourly: makeHourly(10) },
     })
@@ -37,13 +37,13 @@ test.describe('sections.hourly_forecast.hours', () => {
       .toHaveCount(3)
   })
 
-  test('renders all items when hours exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
+  test('renders all items when count exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 10
+          forecast_strip:
+            count: 10
       `,
       weather: { forecast_hourly: makeHourly(5) },
     })
@@ -57,13 +57,13 @@ test.describe('sections.hourly_forecast.hours', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 0
+          forecast_strip:
+            count: 0
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.hourly_forecast.hours" has invalid value "0"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "0"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -73,13 +73,13 @@ test.describe('sections.hourly_forecast.hours', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: -1
+          forecast_strip:
+            count: -1
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.hourly_forecast.hours" has invalid value "-1"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "-1"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -89,24 +89,24 @@ test.describe('sections.hourly_forecast.hours', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 3.5
+          forecast_strip:
+            count: 3.5
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.hourly_forecast.hours" has invalid value "3.5"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "3.5"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
 
-  test('updates the rendered count at runtime when hours changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 4
+          forecast_strip:
+            count: 4
       `,
       weather: { forecast_hourly: makeHourly(10) },
     })
@@ -117,8 +117,8 @@ test.describe('sections.hourly_forecast.hours', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
-            hours: 7
+          forecast_strip:
+            count: 7
       `,
       weather: { forecast_hourly: makeHourly(10) },
     })

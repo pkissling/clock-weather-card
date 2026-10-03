@@ -10,7 +10,8 @@ const SECOND_0 = DateTime.local(2000, 1, 1, 12, 0, 0)
 const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
 
 export function configNeedsSeconds(config: ClockWeatherCardConfig): boolean {
-  return configService.getRows(config)
+  const header = configService.getHeader(config)
+  return !header.isHidden() && header.getRows()
     .some(row => row.segments.some(seg => seg.type === 'time' && patternNeedsSeconds(seg.time_pattern)))
 }
 

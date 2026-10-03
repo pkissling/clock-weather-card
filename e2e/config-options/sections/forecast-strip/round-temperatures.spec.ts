@@ -8,7 +8,7 @@ const FORECAST_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T21:00:00+00:00', condition: 'cloudy', temperature: 19.6, precipitation_probability: 0 },
 ]
 
-test.describe('sections.hourly_forecast.round_temperatures', () => {
+test.describe('sections.forecast_strip.round_temperatures', () => {
   test('rounds temperatures by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: FIXED_NOW,
@@ -35,7 +35,7 @@ test.describe('sections.hourly_forecast.round_temperatures', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             round_temperatures: false
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -61,7 +61,7 @@ test.describe('sections.hourly_forecast.round_temperatures', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             round_temperatures: false
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },

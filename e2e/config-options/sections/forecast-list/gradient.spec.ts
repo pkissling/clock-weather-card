@@ -11,20 +11,20 @@ const barFillStyle = (clockWeatherCard: Locator): Promise<string | null> =>
     .locator('.bar-fill')
     .getAttribute('style')
 
-test.describe('sections.daily_forecast.gradient', () => {
+test.describe('sections.forecast_list.gradient', () => {
   test('rejects non-string gradient values', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             gradient:
               0: 12345
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.gradient" has invalid value "value at "0""')
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at "0""')
   })
 
   test('swaps the gradient at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
@@ -35,7 +35,7 @@ test.describe('sections.daily_forecast.gradient', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             gradient:
               0: "#000000"
               30: "#ffffff"

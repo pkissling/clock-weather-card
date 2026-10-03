@@ -19,7 +19,7 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
   protected readonly forecastType: ForecastType = 'hourly'
 
   protected resolveEntityId(): string {
-    return configService.getHourly(this.config)
+    return configService.getForecastStrip(this.config)
       .getEntity()
   }
 
@@ -46,13 +46,13 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
       `
     }
 
-    const hourlyConfig = configService.getHourly(this.config)
-    const hours = hourlyConfig.getHours()
+    const stripConfig = configService.getForecastStrip(this.config)
+    const count = stripConfig.getCount()
     const sunEntityId = configService.getSunEntity(this.config)
     const timeZone = configService.getTimeZone(this.config, this.hass)
-    const animatedIcon = hourlyConfig.getAnimatedIcons()
-    const weatherIconType = hourlyConfig.getWeatherIconType()
-    const round = hourlyConfig.getRoundTemperatures()
+    const animatedIcon = stripConfig.getAnimatedIcons()
+    const weatherIconType = stripConfig.getWeatherIconType()
+    const round = stripConfig.getRoundTemperatures()
     const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
 
     const now = this.currentDate
@@ -68,7 +68,7 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     const firstFutureIdx = parsed.findIndex(({ at }) => at > now)
     if (firstFutureIdx === -1) return html``
     const start = Math.max(0, firstFutureIdx - 1)
-    const visible = parsed.slice(start, start + hours)
+    const visible = parsed.slice(start, start + count)
 
     // Drop the precipitation row entirely if rounded precipitation never above 0%
     const showPrecipitation = visible.some(({ forecast }) => (roundToTens(forecast.precipitation_probability) ?? 0) > 0)

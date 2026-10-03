@@ -1,9 +1,9 @@
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../../../utils/fixtures'
 
-test.describe('animated_icon', () => {
-  test('animated_icon: false renders a static SVG without SMIL animation tags', async ({ setupCard, clockWeatherCard }) => {
+test.describe('sections.header.animated_icons', () => {
+  test('animated_icons: false renders a static SVG without SMIL animation tags', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      cardConfig: 'animated_icon: false',
+      cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'sunny' },
     })
     const src = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
@@ -14,16 +14,16 @@ test.describe('animated_icon', () => {
     expect(svg).not.toMatch(/<animate(Transform|Motion)?\b/)
   })
 
-  test('animated_icon: true loads a different SVG asset than animated_icon: false', async ({ setupCard, clockWeatherCard }) => {
+  test('animated_icons: true loads a different SVG asset than animated_icons: false', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      cardConfig: 'animated_icon: false',
+      cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'rainy' },
     })
     const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
-      cardConfig: 'animated_icon: true',
+      cardConfig: 'sections: { header: { animated_icons: true } }',
       weather: { state: 'rainy' },
     })
     const animatedSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
@@ -36,15 +36,15 @@ test.describe('animated_icon', () => {
     expect(animatedSrc).not.toBe(staticSrc)
   })
 
-  test('updates animated_icon at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('updates animated_icons at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      cardConfig: 'animated_icon: false',
+      cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'rainy' },
     })
     const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
       .getAttribute('src')
 
-    await setupCard({ cardConfig: 'animated_icon: true' })
+    await setupCard({ cardConfig: 'sections: { header: { animated_icons: true } }' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img'))
       .not.toHaveAttribute('src', staticSrc!)

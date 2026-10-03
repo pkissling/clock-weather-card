@@ -69,21 +69,25 @@ export class ClockWeatherCard extends LitElement {
     configService.validateConfig(config, hass)
     const title = configService.getTitle(config)
     const locale = configService.getLocale(config, hass)
-    const hourlyHidden = configService.getHourly(config)
+    const headerHidden = configService.getHeader(config)
       .isHidden()
-    const dailyHidden = configService.getDaily(config)
+    const stripHidden = configService.getForecastStrip(config)
+      .isHidden()
+    const listHidden = configService.getForecastList(config)
       .isHidden()
     return html`
       <ha-card>
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
-          <clock-weather-card-today
-            .hass=${hass}
-            .config=${config}
-            .currentDate=${this.currentDate}
-            .locale=${locale}
-          ></clock-weather-card-today>
-          ${hourlyHidden ? '' : html`
+          ${headerHidden ? '' : html`
+            <clock-weather-card-today
+              .hass=${hass}
+              .config=${config}
+              .currentDate=${this.currentDate}
+              .locale=${locale}
+            ></clock-weather-card-today>
+          `}
+          ${stripHidden ? '' : html`
             <clock-weather-card-hourly-forecast
               .hass=${hass}
               .config=${config}
@@ -91,7 +95,7 @@ export class ClockWeatherCard extends LitElement {
               .locale=${locale}
             ></clock-weather-card-hourly-forecast>
           `}
-          ${dailyHidden ? '' : html`
+          ${listHidden ? '' : html`
             <clock-weather-card-daily-forecast
               .hass=${hass}
               .config=${config}

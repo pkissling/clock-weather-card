@@ -1,7 +1,7 @@
 import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 
-test.describe('sections.daily_forecast.hide', () => {
+test.describe('sections.forecast_list.hide', () => {
   test('renders the daily forecast section by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard()
 
@@ -16,7 +16,7 @@ test.describe('sections.daily_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             hide: true
       `,
     })
@@ -41,7 +41,7 @@ test.describe('sections.daily_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             hide: true
       `,
       weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
@@ -60,7 +60,7 @@ test.describe('sections.daily_forecast.hide', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             hide: true
       `,
     })
