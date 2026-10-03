@@ -43,7 +43,7 @@ test.describe('time_zone', () => {
       date: new Date('2025-06-15T12:00:00Z'),
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "time_zone" has invalid value "NotARealTimeZone", expected an IANA time zone such as "Europe/Berlin"')
   })
 

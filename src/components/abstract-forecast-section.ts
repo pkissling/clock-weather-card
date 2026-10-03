@@ -1,6 +1,10 @@
+import '@/components/clock-weather-card-divider'
+import '@/components/clock-weather-card-error'
+
 import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
-import type { PropertyValues } from 'lit'
+import type { PropertyValues, TemplateResult } from 'lit'
+import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
@@ -9,6 +13,7 @@ import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ForecastType, ResolvedConfig, WeatherForecast } from '@/types'
+import { forecastNotSupported } from '@/utils/errors'
 
 abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForecast> extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() protected hass!: HomeAssistant
@@ -22,11 +27,26 @@ abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForeca
 
   protected abstract readonly forecastType: ForecastType
   protected abstract resolveEntityId(): string
+  protected abstract renderForecast(entityId: string): TemplateResult
 
   // Hook for subclasses that need to massage the raw HA payload (e.g. normalize missing
   // precipitation_probability). Defaults to a passthrough cast.
   protected normalizeForecasts(raw: WeatherForecast[]): F[] {
     return raw as F[]
+  }
+
+  public render(): TemplateResult {
+    const entityId = this.resolveEntityId()
+    if (!hassService.supportsForecast(this.hass, entityId, this.forecastType)) {
+      return html`
+        <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+        <clock-weather-card-error
+          severity="warning"
+          .message=${forecastNotSupported(entityId, this.forecastType).message}
+        ></clock-weather-card-error>
+      `
+    }
+    return this.renderForecast(entityId)
   }
 
   public connectedCallback(): void {

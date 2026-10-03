@@ -23,7 +23,7 @@ test.describe('sections.forecast_list.forecast_type', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.forecast_type" has invalid value "hourly", expected one of "daily"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
@@ -40,7 +40,7 @@ test.describe('sections.forecast_list.forecast_type', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
+    await cardErrorMessage()
       .toContain('Config option "sections.forecast_list.forecast_type" has invalid value "hourly", expected one of "daily"')
   })
 })

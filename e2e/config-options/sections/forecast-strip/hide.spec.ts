@@ -38,7 +38,7 @@ test.describe('sections.forecast_strip.hide', () => {
       .toHaveCount(1)
   })
 
-  test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {
         forecast_hourly: FORECAST_HOURLY,
@@ -48,8 +48,8 @@ test.describe('sections.forecast_strip.hide', () => {
     const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
     await expect(section)
       .toBeVisible()
-    await expect(section)
-      .toContainText('Entity "weather.mock_weather" does not support hourly forecasts')
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather" does not support hourly forecasts')
 
     await setupCard({
       cardConfig: `

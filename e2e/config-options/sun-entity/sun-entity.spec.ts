@@ -50,8 +50,8 @@ test.describe('sun_entity', () => {
       `,
     })
 
-    expect(await cardErrorMessage())
-      .toContain('Referenced entity sun.does_not_exist does not exist')
+    await cardErrorMessage()
+      .toContain('Referenced entity "sun.does_not_exist" does not exist')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })

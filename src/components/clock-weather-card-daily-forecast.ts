@@ -1,6 +1,5 @@
 import '@/components/clock-weather-card-daily-forecast-item'
 import '@/components/clock-weather-card-divider'
-import '@/components/clock-weather-card-error'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
@@ -11,7 +10,6 @@ import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { DailyForecastItem, DailyWeatherForecast, ForecastType } from '@/types'
-import { forecastNotSupported } from '@/utils/errors'
 import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gradient'
 
 /**
@@ -33,20 +31,7 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
     return this.config.forecastList.entity
   }
 
-  public render(): TemplateResult {
-    const entityId = this.resolveEntityId()
-    const supported = hassService.supportsForecast(this.hass, entityId, this.forecastType)
-
-    if (!supported) {
-      return html`
-        <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
-        <clock-weather-card-error
-          severity="warning"
-          .message=${forecastNotSupported(entityId, this.forecastType).message}
-        ></clock-weather-card-error>
-      `
-    }
-
+  protected renderForecast(entityId: string): TemplateResult {
     const { sunEntity, timeZone, locale } = this.config
     const {
       count, animatedIcons, weatherIconType, roundTemperatures,

@@ -11,7 +11,7 @@ import { html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
-import { configContext, hassContext } from '@/context'
+import { configContext, errorMessageContext, hassContext } from '@/context'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
@@ -43,6 +43,7 @@ console.info(
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
   @provide({ context: hassContext }) @property({ attribute: false }) public hass!: HomeAssistant
+  @provide({ context: errorMessageContext }) @property({ type: Boolean }) public preview = false
   @state() private config?: ClockWeatherCardConfig
   @provide({ context: configContext }) @state() private resolved?: ResolvedConfig
   @state() private error?: string
