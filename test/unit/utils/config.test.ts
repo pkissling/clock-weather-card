@@ -40,7 +40,7 @@ describe('resolveConfig', () => {
                 { type: 'weather', attribute: 'temperature' },
                 { type: 'spacer' },
                 { type: 'weather' },
-                { type: 'icon', icon: 'mdi:weather-partly-cloudy' },
+                { type: 'weather_icon' },
               ],
             },
             {

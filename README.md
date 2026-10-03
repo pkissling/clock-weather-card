@@ -14,7 +14,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## What's new in v3
 
-- **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `spacer`).
+- **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `weather_icon`, `spacer`).
 - **Three independent sections** — `header` (clock, date, current weather), `forecast_strip` (horizontally scrolling columns) and `forecast_list` (vertical rows with temperature bars), each of which can be shown or hidden on its own via `hide`.
 - **Hourly or daily per section** — `forecast_type` selects whether the strip's columns and the list's rows show hourly or daily forecast data.
 - **Two new icon styles** — `flat` and `monochrome` join `line` and `fill`, courtesy of [meteocons v3](https://github.com/basmilius/meteocons).
@@ -127,8 +127,7 @@ sections:
             attribute: temperature
           - type: spacer
           - type: weather
-          - type: icon
-            icon: mdi:weather-partly-cloudy
+          - type: weather_icon
       - font_size: 4rem
         segments:
           - type: spacer
@@ -308,6 +307,15 @@ Displays an MDI icon.
 | `type` | string | **yes** | - | `icon` |
 | `icon` | string | **yes** | - | MDI icon name (e.g. `mdi:thermometer`, `mdi:calendar`) |
 
+#### `weather_icon`
+
+Displays an MDI icon matching the current state of a weather entity (e.g. `mdi:weather-rainy` when it rains). Uses night variants for `sunny` and `partlycloudy` while the sun entity is below the horizon.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `weather_icon` |
+| `entity_id` | string | no | card `entity` | Weather entity whose state drives the icon |
+
 #### `spacer`
 
 A flexible spacer that fills remaining horizontal space. Use spacers to control alignment within a row.
@@ -351,8 +359,7 @@ rows:
         attribute: temperature
       - type: spacer
       - type: weather
-      - type: icon
-        icon: mdi:weather-partly-cloudy
+      - type: weather_icon
   - font_size: 4rem
     segments:
       - type: spacer
