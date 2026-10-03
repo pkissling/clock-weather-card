@@ -229,7 +229,8 @@ export class ClockWeatherCard extends LitElement {
   private renderToday (): TemplateResult {
     const weather = this.getWeather()
     const state = weather.state
-    const temp = this.config.show_decimal ? this.getCurrentTemperature() : roundIfNotNull(this.getCurrentTemperature())
+    const currentTemperature = this.resolveCurrentTemperature()
+    const temp = this.config.show_decimal ? currentTemperature.value : roundIfNotNull(currentTemperature.value)
     const tempUnit = weather.attributes.temperature_unit
     const apparentTemp = this.config.show_decimal ? this.getApparentTemperature() : roundIfNotNull(this.getApparentTemperature())
     const aqi = this.getAqi()
@@ -239,9 +240,13 @@ export class ClockWeatherCard extends LitElement {
     const iconType = this.config.weather_icon_type
     const icon = this.toIcon(state, iconType, false, this.getIconAnimationKind())
     const weatherString = this.localize(`weather.${state}`)
-    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp) : null
+    const currentTempDigits = this.config.show_decimal ? this.displayFractionDigits(currentTemperature.entityId) : undefined
+    const apparentTempDigits = this.config.show_decimal && apparentTemp !== null && this.config.apparent_sensor !== undefined
+      ? this.displayFractionDigits(this.config.apparent_sensor)
+      : undefined
+    const localizedTemp = temp !== null ? this.toConfiguredTempWithUnit(tempUnit, temp, currentTempDigits) : null
     const localizedHumidity = humidity !== null ? `${humidity}% ${this.localize('misc.humidity')}` : null
-    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp) : null
+    const localizedApparent = apparentTemp !== null ? this.toConfiguredTempWithUnit(tempUnit, apparentTemp, apparentTempDigits) : null
     const apparentString = this.localize('misc.feels-like')
     const aqiString = this.localize('misc.aqi')
 
@@ -506,17 +511,48 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private getCurrentTemperature (): number | null {
+    return this.resolveCurrentTemperature().value
+  }
+
+  private resolveCurrentTemperature (): { value: number | null, entityId: string } {
     if (this.config.temperature_sensor) {
       const temperatureSensor = this.hass.states[this.config.temperature_sensor] as TemperatureSensor | undefined
       const temp = temperatureSensor?.state ? parseFloat(temperatureSensor.state) : undefined
       const unit = temperatureSensor?.attributes.unit_of_measurement ?? this.getConfiguredTemperatureUnit()
       if (temp !== undefined && !isNaN(temp)) {
-        return this.toConfiguredTempWithoutUnit(unit, temp)
+        return {
+          value: this.toConfiguredTempWithoutUnit(unit, temp),
+          entityId: this.config.temperature_sensor
+        }
       }
     }
 
     // return weather temperature if above code could not extract temperature from temperature_sensor
-    return this.getWeather().attributes.temperature ?? null
+    return {
+      value: this.getWeather().attributes.temperature ?? null,
+      entityId: this.config.entity
+    }
+  }
+
+  private displayFractionDigits (entityId: string): number | undefined {
+    const entities = (this.hass as HomeAssistant & {
+      entities?: Record<string, { display_precision?: unknown }>
+    }).entities
+    const displayPrecision = entities?.[entityId]?.display_precision
+    if (this.isNonNegativeInteger(displayPrecision)) {
+      return displayPrecision
+    }
+
+    const attributes = this.hass.states[entityId]?.attributes as { suggested_display_precision?: unknown } | undefined
+    const suggestedPrecision = attributes?.suggested_display_precision
+    if (this.isNonNegativeInteger(suggestedPrecision)) {
+      return suggestedPrecision
+    }
+    return undefined
+  }
+
+  private isNonNegativeInteger (value: unknown): value is number {
+    return typeof value === 'number' && Number.isInteger(value) && value >= 0
   }
 
   private getCurrentHumidity (): number | null {
@@ -624,9 +660,10 @@ export class ClockWeatherCard extends LitElement {
     return this.hass.config.unit_system.temperature as TemperatureUnit
   }
 
-  private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number): string {
+  private toConfiguredTempWithUnit (unit: TemperatureUnit, temp: number, fractionDigits?: number): string {
     const convertedTemp = this.toConfiguredTempWithoutUnit(unit, temp)
-    return convertedTemp + this.getConfiguredTemperatureUnit()
+    const renderedTemp = fractionDigits === undefined ? String(convertedTemp) : convertedTemp.toFixed(fractionDigits)
+    return renderedTemp + this.getConfiguredTemperatureUnit()
   }
 
   private toConfiguredTempWithoutUnit (unit: TemperatureUnit, temp: number): number {
