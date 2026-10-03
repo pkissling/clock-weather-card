@@ -22,14 +22,14 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
   public render (): TemplateResult {
     const weatherState = hassService.getEntityState(this.hass, configService.getEntity(this.config))
     const isNight = hassService.isNight(this.hass, configService.getSunEntity(this.config))
+    const headerConfig = configService.getHeader(this.config)
 
     return html`
       <clock-weather-card-icon
         .weatherState=${weatherState}
         .isNight=${isNight}
-        .animatedIcon=${configService.getHeader(this.config)
-    .getAnimatedIcons()}
-        .weatherIconType=${configService.getWeatherIconType(this.config)}
+        .animatedIcon=${headerConfig.getAnimatedIcons()}
+        .weatherIconType=${headerConfig.getWeatherIconType()}
       ></clock-weather-card-icon>
       <clock-weather-card-today-details
         .hass=${this.hass}

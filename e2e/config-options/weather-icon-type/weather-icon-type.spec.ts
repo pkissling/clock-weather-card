@@ -57,6 +57,44 @@ test.describe('weather_icon_type', () => {
       .toBe(explicitLineSrc)
   })
 
+  test('applies to all sections when set globally', async ({ setupCard, clockWeatherCard }) => {
+    const sectionIcons = {
+      header: 'clock-weather-card-today clock-weather-card-icon img',
+      forecast_strip: 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img',
+      forecast_list: 'clock-weather-card-daily-forecast-item clock-weather-card-icon img',
+    }
+    const readSrcs = async (): Promise<Record<string, string | null>> => Object.fromEntries(await Promise.all(
+      Object.entries(sectionIcons)
+        .map(async ([section, selector]) => [section, await clockWeatherCard.locator(selector)
+          .first()
+          .getAttribute('src')]),
+    ))
+
+    await setupCard({})
+    const defaultSrcs = await readSrcs()
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          header: { weather_icon_type: fill }
+          forecast_strip: { weather_icon_type: fill }
+          forecast_list: { weather_icon_type: fill }
+      `,
+    })
+    const perSectionFillSrcs = await readSrcs()
+
+    await setupCard({ cardConfig: 'weather_icon_type: fill' })
+    const globalFillSrcs = await readSrcs()
+
+    for (const section of Object.keys(sectionIcons)) {
+      expect(globalFillSrcs[section], `${section} produced no src`)
+        .toBeTruthy()
+      expect(globalFillSrcs[section], `${section} ignored the global weather_icon_type`).not.toBe(defaultSrcs[section])
+      expect(globalFillSrcs[section], `${section} differs from its explicit weather_icon_type: fill`)
+        .toBe(perSectionFillSrcs[section])
+    }
+  })
+
   test('rejects values that are not one of the supported icon types', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: 'weather_icon_type: gradient',

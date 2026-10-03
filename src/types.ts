@@ -80,6 +80,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
     header?: {
       hide?: boolean
       animated_icons?: boolean
+      weather_icon_type?: WeatherIconType
       rows?: RowConfig[]
     }
     forecast_strip?: {

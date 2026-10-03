@@ -69,6 +69,7 @@ class ConfigService {
     assertEntityExists(config.sections?.forecast_list?.weather_entity)
 
     assertEnumValue('weather_icon_type', config.weather_icon_type, WEATHER_ICON_TYPES)
+    assertEnumValue('sections.header.weather_icon_type', config.sections?.header?.weather_icon_type, WEATHER_ICON_TYPES)
     assertEnumValue('sections.forecast_strip.weather_icon_type', config.sections?.forecast_strip?.weather_icon_type, WEATHER_ICON_TYPES)
     assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
     assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, ['hourly'])
@@ -135,6 +136,7 @@ class ConfigService {
       isHidden: () => section?.hide ?? false,
       getRows: () => section?.rows ?? DEFAULT_ROWS,
       getAnimatedIcons: () => section?.animated_icons ?? true,
+      getWeatherIconType: () => section?.weather_icon_type ?? this.getWeatherIconType(config),
     }
   }
 
@@ -171,6 +173,7 @@ export interface HeaderConfig {
   isHidden: () => boolean
   getRows: () => RowConfig[]
   getAnimatedIcons: () => boolean
+  getWeatherIconType: () => WeatherIconType
 }
 
 export interface ForecastStripConfig {
