@@ -23,6 +23,8 @@ const DIST_DIR = path.join(__dirname, '..', '..', 'dist')
 export const TEST_DASHBOARD = 'clock-weather-card'
 
 export default async function globalSetup(): Promise<void> {
+  assertDockerRunning()
+
   console.log('[HA Setup] Building card...')
   execSync('yarn build', { cwd: path.join(__dirname, '..', '..'), stdio: 'inherit' })
 
@@ -82,6 +84,14 @@ export default async function globalSetup(): Promise<void> {
   }
 
   console.log('[HA Setup] Home Assistant is ready!')
+}
+
+function assertDockerRunning(): void {
+  try {
+    execSync('docker info', { stdio: 'ignore', timeout: 10_000 })
+  } catch {
+    throw new Error('[HA Setup] Docker daemon is not reachable — start Docker and retry.')
+  }
 }
 
 function removeStaleContainers(): void {
