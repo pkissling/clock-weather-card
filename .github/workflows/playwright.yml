@@ -20,26 +20,9 @@ jobs:
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
 
-    # Run tests inside the same image used to generate snapshots
-    # (.github/playwright-snapshots-helper/Dockerfile pins this same tag).
-    # Pre-installed fonts on the GitHub-hosted runner alter font-fallback
-    # resolution and cause sub-pixel differences vs the snapshots; running
-    # in the snapshot image makes the CI render byte-identical.
-    # --network=host so the HA container we launch via the mounted socket
-    # is reachable on its randomly mapped 127.0.0.1 port from inside this
-    # container.
+    # Same pinned image as local runs and snapshot generation, so renders are byte-identical.
     - name: Run Playwright tests
-      run: |
-        docker run --rm \
-          --network host \
-          -v /var/run/docker.sock:/var/run/docker.sock \
-          -v "$(which docker):/usr/bin/docker:ro" \
-          -v /tmp:/tmp \
-          -v "$PWD:/work" \
-          -w /work \
-          -e PLAYWRIGHT_HTML_OPEN=never \
-          mcr.microsoft.com/playwright:v1.59.1-jammy@sha256:8a0360d39d1973be506dd59002904a774f6d697d4946c94063b3fd006461c8ff \
-          bash -lc "corepack enable && yarn install --immutable && yarn playwright test"
+      run: .github/playwright-snapshots-helper/run-in-docker.sh
 
     - uses: actions/upload-artifact@v6
       if: failure()

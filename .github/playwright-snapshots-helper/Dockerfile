@@ -1,8 +1,13 @@
 # Use official Playwright image with browsers preinstalled.
 # Pin the digest — the v1.59.1-jammy tag is mutable; without pinning, snapshots
 # drift the moment Microsoft republishes the image (different fonts → ~37 px
-# anti-aliasing diff). The CI workflow pins the same digest.
+# anti-aliasing diff).
 FROM mcr.microsoft.com/playwright:v1.59.1-jammy@sha256:8a0360d39d1973be506dd59002904a774f6d697d4946c94063b3fd006461c8ff
+
+# The host's docker binary can't be mounted in from macOS (Mach-O), so ship a Linux CLI.
+COPY --from=docker:29-cli /usr/local/bin/docker /usr/local/bin/docker
+
+ENV E2E_IN_DOCKER=1 PLAYWRIGHT_HTML_OPEN=never
 
 WORKDIR /work
 
@@ -19,5 +24,5 @@ RUN yarn install --immutable
 # Copy the rest of the project
 COPY . .
 
-# Run tests that update snapshots (skip playwright install — browsers are preinstalled in the base image)
-ENTRYPOINT ["bash", "-lc", "PLAYWRIGHT_HTML_OPEN=never yarn playwright test --update-snapshots"]
+# Browsers are preinstalled in the base image, so skip `playwright install`.
+ENTRYPOINT ["yarn", "playwright", "test"]

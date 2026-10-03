@@ -23,9 +23,10 @@
     "lint": "eslint . --max-warnings 0 --fix",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "test:e2e": "playwright install && playwright test",
+    "test:e2e": ".github/playwright-snapshots-helper/run-in-docker.sh",
+    "test:e2e:host": "playwright install && playwright test",
     "playwright-ui": "playwright test --ui",
-    "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/update-snapshots.sh"
+    "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots"
   },
   "dependencies": {
     "@meteocons/svg": "^0.1.0",
