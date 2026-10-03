@@ -3,103 +3,58 @@ import { resolve } from 'path'
 import * as ts from 'typescript'
 import { describe, expect, it } from 'vitest'
 
-type LeafPath = string[]
+const E2E_DIR = resolve(__dirname, '../../e2e')
 
-function collectConfigPaths(): { leaves: LeafPath[], objects: LeafPath[] } {
-  const path = resolve(__dirname, '../../src/types.ts')
-  const sf = ts.createSourceFile(
+function collectConfigPaths(): { leaves: string[][], objects: string[][] } {
+  const source = ts.createSourceFile(
     'types.ts',
-    readFileSync(path, 'utf-8'),
+    readFileSync(resolve(__dirname, '../../src/types.ts'), 'utf-8'),
     ts.ScriptTarget.ESNext,
-    true
   )
-
-  const interfaces = new Map<string, ts.InterfaceDeclaration>()
-  sf.forEachChild(node => {
-    if (ts.isInterfaceDeclaration(node)) {
-      interfaces.set(node.name.text, node)
-    }
-  })
-
-  const root = interfaces.get('ClockWeatherCardConfig')
+  const root = source.statements.find((node): node is ts.InterfaceDeclaration =>
+    ts.isInterfaceDeclaration(node) && node.name.text === 'ClockWeatherCardConfig')
   if (!root) throw new Error('ClockWeatherCardConfig not found in src/types.ts')
 
-  const leaves: LeafPath[] = []
-  const objects: LeafPath[] = []
-  const walkMembers = (members: ts.NodeArray<ts.TypeElement>, prefix: string[]): void => {
-    for (const member of members) {
-      if (!ts.isPropertySignature(member)) continue
-      const name = (member.name as ts.Identifier).text
-      walkType(member.type, [...prefix, name])
-    }
-  }
-  const walkType = (typeNode: ts.TypeNode | undefined, prefix: string[]): void => {
-    if (typeNode && ts.isTypeReferenceNode(typeNode) && ts.isIdentifier(typeNode.typeName)) {
-      const iface = interfaces.get(typeNode.typeName.text)
-      if (iface) {
-        objects.push(prefix)
-        walkMembers(iface.members, prefix)
-        return
+  const leaves: string[][] = []
+  const objects: string[][] = []
+  const walk = (members: ts.NodeArray<ts.TypeElement>, prefix: string[]): void => {
+    for (const member of members.filter(ts.isPropertySignature)) {
+      const path = [...prefix, (member.name as ts.Identifier).text]
+      if (member.type && ts.isTypeLiteralNode(member.type)) {
+        objects.push(path)
+        walk(member.type.members, path)
+      } else {
+        leaves.push(path)
       }
     }
-    if (typeNode && ts.isTypeLiteralNode(typeNode)) {
-      objects.push(prefix)
-      walkMembers(typeNode.members, prefix)
-      return
-    }
-    leaves.push(prefix)
   }
-  walkMembers(root.members, [])
+  walk(root.members, [])
   return { leaves, objects }
 }
 
 const { leaves, objects } = collectConfigPaths()
+const toSpecPath = (path: string[]): string => path.join('/')
+  .replace(/_/g, '-')
 
-function expectedLeafSpecPath(segments: LeafPath): string {
-  const kebab = segments.map(s => s.replace(/_/g, '-'))
-  if (kebab.length === 1) {
-    return resolve(__dirname, `../../e2e/config-options/${kebab[0]}/${kebab[0]}.spec.ts`)
-  }
-  return resolve(__dirname, `../../e2e/config-options/${kebab.join('/')}.spec.ts`)
-}
-
-function expectedObjectSpecPath(segments: LeafPath): string {
-  const kebab = segments.map(s => s.replace(/_/g, '-'))
-  return resolve(__dirname, `../../e2e/${kebab.join('/')}.spec.ts`)
-}
-
-describe('every ClockWeatherCardConfig leaf has a dedicated e2e config-options spec', () => {
-  for (const segments of leaves) {
-    const spec = expectedLeafSpecPath(segments)
-    it(`${segments.join('.')} → ${spec.split('/e2e/')[1]} exists`, () => {
-      expect(existsSync(spec), `Missing ${spec}`)
+describe('every config leaf has an e2e config-options spec with a (no reload) test', () => {
+  for (const path of leaves) {
+    const name = toSpecPath(path)
+    const spec = `config-options/${path.length === 1 ? `${name}/${name}` : name}.spec.ts`
+    it(`${path.join('.')} → ${spec}`, () => {
+      const file = resolve(E2E_DIR, spec)
+      expect(existsSync(file), `Missing e2e/${spec}`)
         .toBe(true)
-    })
-  }
-})
-
-// Each leaf spec must include a "(no reload)" test asserting that the
-// card reacts to runtime config / state changes without a page refresh.
-describe('every config-options leaf has a runtime-update (no reload) test', () => {
-  for (const segments of leaves) {
-    const spec = expectedLeafSpecPath(segments)
-    it(`${segments.join('.')} spec contains a "(no reload)" test`, () => {
-      const content = readFileSync(spec, 'utf-8')
-      expect(content, `Missing "(no reload)" test in ${spec}`)
+      expect(readFileSync(file, 'utf-8'), `Missing "(no reload)" test in e2e/${spec}`)
         .toMatch(/\(no reload\)/)
     })
   }
 })
 
-// Every object node in the config tree (e.g. `sections`, `sections.daily_forecast`) gets
-// a section-level spec at e2e/<path>.spec.ts where overview/cross-leaf tests live. If a
-// particular object has nothing meaningful to test, the spec can be a noop placeholder.
-describe('every ClockWeatherCardConfig object has a section-level e2e spec', () => {
-  for (const segments of objects) {
-    if (segments.length === 0) continue
-    const spec = expectedObjectSpecPath(segments)
-    it(`${segments.join('.')} → ${spec.split('/e2e/')[1]} exists`, () => {
-      expect(existsSync(spec), `Missing ${spec}`)
+describe('every config object has a section-level e2e spec', () => {
+  for (const path of objects) {
+    const spec = `${toSpecPath(path)}.spec.ts`
+    it(`${path.join('.')} → ${spec}`, () => {
+      expect(existsSync(resolve(E2E_DIR, spec)), `Missing e2e/${spec}`)
         .toBe(true)
     })
   }
