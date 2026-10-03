@@ -133,11 +133,12 @@ test.describe('forecast_strip section', () => {
       .toHaveCount(0)
   })
 
-  test('renders the .precipitation span on every item when at least one has a precipitation probability > 0', async ({ setupCard, clockWeatherCard }) => {
+  test('shows 0% on zero-probability items (blank when unknown) when at least one item has a precipitation probability > 0', async ({ setupCard, clockWeatherCard }) => {
     const forecasts: WeatherForecast[] = [
       { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
       { datetime: '2025-09-14T14:00:00+00:00', condition: 'rainy', temperature: 19, precipitation_probability: 70 },
       { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
+      { datetime: '2025-09-14T16:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: null },
     ]
     await setupCard({
       date: new Date('2025-09-14T13:30:00+00:00'),
@@ -147,10 +148,10 @@ test.describe('forecast_strip section', () => {
 
     const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
     await expect(items)
-      .toHaveCount(3)
-    // Span exists on every column — empty for the 0% entries, filled for the 70% entry.
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation'))
-      .toHaveCount(3)
+      .toHaveCount(4)
+    const precip = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    await expect(precip)
+      .toHaveText(['0%', '70%', '0%', ''])
   })
 
   test('rounds precipitation probabilities to the nearest 10%', async ({ setupCard, clockWeatherCard }) => {

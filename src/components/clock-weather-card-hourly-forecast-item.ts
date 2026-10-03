@@ -13,7 +13,6 @@ class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardCompone
 
   public render(): TemplateResult {
     const { label, condition, isNight, animatedIcon, weatherIconType, temperature, temperatureUnit, sunEvent, precipitationProbability, showPrecipitation } = this.item
-    const hasPrecip = precipitationProbability !== null && precipitationProbability > 0
     const precipClass = weatherIconType === 'monochrome' ? 'precipitation precipitation--monochrome' : 'precipitation'
 
     return html`
@@ -28,7 +27,7 @@ class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardCompone
     ? html`<span class="label"><ha-icon icon=${sunEvent.kind === 'sunrise' ? 'mdi:arrow-up' : 'mdi:arrow-down'} title=${sunEvent.label} aria-label=${sunEvent.label}></ha-icon></span>`
     : html`<span class="label">${temperature}${temperatureUnit}</span>`}
       ${showPrecipitation
-    ? html`<span class=${precipClass}>${hasPrecip ? html`<ha-icon icon="mdi:water"></ha-icon>${precipitationProbability}%` : nothing}</span>`
+    ? html`<span class=${precipClass}>${precipitationProbability !== null ? html`<ha-icon icon="mdi:water"></ha-icon>${precipitationProbability}%` : nothing}</span>`
     : nothing}
     `
   }
