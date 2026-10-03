@@ -6,7 +6,7 @@ const FORECAST: WeatherForecast[] = [
 ]
 
 const FIXED_NOW = new Date('2025-09-14T18:00:00+00:00')
-const HOURLY_ICON = 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img'
+const STRIP_ICON = 'clock-weather-card-forecast-strip-item clock-weather-card-icon img'
 
 test.describe('sections.forecast_strip.weather_icon_type', () => {
   test('falls back to the top-level weather_icon_type by default', async ({ setupCard, clockWeatherCard }) => {
@@ -18,7 +18,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: FORECAST },
     })
-    const lineSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const lineSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -30,7 +30,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: FORECAST },
     })
-    const fillSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const fillSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -50,7 +50,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: FORECAST },
     })
-    const inheritedSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const inheritedSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -65,7 +65,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: FORECAST },
     })
-    const overrideSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const overrideSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -105,7 +105,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: forecast },
     })
-    const lineColor = await clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    const lineColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
       .first()
       .evaluate(el => getComputedStyle(el).color)
 
@@ -119,10 +119,10 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: forecast },
     })
-    const monoPrecipColor = await clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    const monoPrecipColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
       .first()
       .evaluate(el => getComputedStyle(el).color)
-    const monoTempColor = await clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .label')
+    const monoTempColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .label')
       .first()
       .evaluate(el => getComputedStyle(el).color)
 
@@ -142,7 +142,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: FORECAST },
     })
-    const lineSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const lineSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -157,7 +157,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       weather: { forecast_hourly: FORECAST },
     })
 
-    await expect(clockWeatherCard.locator(HOURLY_ICON)
+    await expect(clockWeatherCard.locator(STRIP_ICON)
       .first())
       .not.toHaveAttribute('src', lineSrc!)
   })

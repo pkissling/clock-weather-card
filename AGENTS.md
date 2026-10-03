@@ -28,10 +28,10 @@ yarn test:unit:watch    # watch mode
 ### E2E Tests (Playwright)
 
 ```
-yarn test:e2e                                   # full suite
-yarn test:e2e e2e/sections/daily-forecast.spec.ts   # single spec while iterating
-yarn test:e2e:host                              # run on the host, skipping screenshot comparisons
-yarn playwright-ui                              # interactive Playwright UI (host, no screenshot comparisons)
+yarn test:e2e                                     # full suite
+yarn test:e2e e2e/sections/forecast-list.spec.ts  # single spec while iterating
+yarn test:e2e:host                                # run on the host, skipping screenshot comparisons
+yarn playwright-ui                                # interactive Playwright UI (host, no screenshot comparisons)
 ```
 
 - `yarn test:e2e` runs Playwright inside the pinned Linux image (`.github/playwright-snapshots-helper/Dockerfile`), the same environment as CI, so screenshot tests pass on macOS and Linux alike. Host runs (`test:e2e:host`, `playwright-ui`) set no `E2E_IN_DOCKER`, so `toHaveScreenshot` assertions are skipped there.

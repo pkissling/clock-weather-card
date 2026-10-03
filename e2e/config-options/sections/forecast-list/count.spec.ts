@@ -19,7 +19,7 @@ test.describe('sections.forecast_list.count', () => {
       weather: { forecast_daily: makeDaily(10) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(5)
   })
 
@@ -34,7 +34,7 @@ test.describe('sections.forecast_list.count', () => {
       weather: { forecast_daily: makeDaily(10) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(3)
   })
 
@@ -49,7 +49,7 @@ test.describe('sections.forecast_list.count', () => {
       weather: { forecast_daily: makeDaily(4) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(4)
   })
 
@@ -93,7 +93,7 @@ test.describe('sections.forecast_list.count', () => {
       `,
       weather: { forecast_daily: makeDaily(10) },
     })
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(2)
 
     await setupCard({
@@ -106,7 +106,7 @@ test.describe('sections.forecast_list.count', () => {
       weather: { forecast_daily: makeDaily(10) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(6)
   })
 })

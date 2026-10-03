@@ -50,7 +50,7 @@ test.describe('sections.header.weather_icon_type', () => {
   })
 
   test('does not affect the forecast sections', async ({ setupCard, clockWeatherCard }) => {
-    const stripIcon = 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img'
+    const stripIcon = 'clock-weather-card-forecast-strip-item clock-weather-card-icon img'
     await setupCard({ cardConfig: 'weather_icon_type: line' })
     const inheritedStripSrc = await clockWeatherCard.locator(stripIcon)
       .first()

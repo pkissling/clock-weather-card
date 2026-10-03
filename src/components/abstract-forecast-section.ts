@@ -6,131 +6,148 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import type { PropertyValues, TemplateResult } from 'lit'
 import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
-import type { DateTime } from 'luxon'
+import { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import { configContext, hassContext } from '@/context'
+import forecastSubscriptionService from '@/service/forecast-subscription-service'
 import hassService from '@/service/hass-service'
-import logger from '@/service/logger'
-import type { ForecastType, ResolvedConfig, WeatherForecast } from '@/types'
+import translationsService from '@/service/translations-service'
+import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastNotSupported } from '@/utils/errors'
 
-abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForecast> extends AbstractClockWeatherCardComponent {
+export interface ForecastRow {
+  forecast: WeatherForecast
+  at: DateTime
+  isCurrent: boolean
+  label: string
+  isNight: boolean
+}
+
+abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() protected hass!: HomeAssistant
   @consume({ context: configContext, subscribe: true }) @state() protected config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
-  @state() protected forecasts: F[] = []
+  @state() protected forecasts: WeatherForecast[] = []
   // Reflected so e2e tests can wait for the first forecast payload.
   @property({ type: Boolean, reflect: true, attribute: 'data-loaded' }) private _loaded = false
 
-  private subscription: (() => Promise<void>) | null = null
-  private subscribedEntityId: string | null = null
-  private syncToken = 0
+  private unsubscribe: (() => void) | null = null
+  private subscribedKey: string | null = null
 
-  protected abstract readonly forecastType: ForecastType
+  protected abstract resolveForecastType(): SectionForecastType
   protected abstract resolveEntityId(): string
-  protected abstract renderForecast(entityId: string): TemplateResult
-
-  // Hook for subclasses that need to massage the raw HA payload (e.g. normalize missing
-  // precipitation_probability). Defaults to a passthrough cast.
-  protected normalizeForecasts(raw: WeatherForecast[]): F[] {
-    return raw as F[]
-  }
+  protected abstract renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult
 
   public render(): TemplateResult {
     const entityId = this.resolveEntityId()
-    if (!hassService.supportsForecast(this.hass, entityId, this.forecastType)) {
+    const forecastType = this.resolveForecastType()
+    if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
       return html`
         <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
         <clock-weather-card-error
           severity="warning"
-          .message=${forecastNotSupported(entityId, this.forecastType).message}
+          .message=${forecastNotSupported(entityId, forecastType).message}
         ></clock-weather-card-error>
       `
     }
-    return this.renderForecast(entityId)
+    return this.renderForecast(entityId, forecastType)
   }
 
   public connectedCallback(): void {
     super.connectedCallback()
-    void this._syncSubscription()
+    this._syncSubscription()
   }
 
   public disconnectedCallback(): void {
     super.disconnectedCallback()
-    // Invalidate any in-flight subscribe so it tears itself down on resolve.
-    this.syncToken++
-    void this._unsubscribe()
+    this._unsubscribe()
   }
 
   public willUpdate(changed: PropertyValues): void {
     if (changed.has('config') || changed.has('hass')) {
-      void this._syncSubscription()
+      this._syncSubscription()
     }
   }
 
-  private async _syncSubscription(): Promise<void> {
-    if (!this.hass || !this.config) return
-    const token = ++this.syncToken
-    const desiredEntityId = this.resolveEntityId()
-    const supports = hassService.supportsForecast(this.hass, desiredEntityId, this.forecastType)
+  /** Hourly: the entry at or before now ("Now") plus upcoming hours. Daily: today ("Today") onwards. */
+  protected visibleRows(count: number): ForecastRow[] {
+    const now = this.currentDate
+    const { locale, timeZone, sunEntity } = this.config
+    const timed = this.forecasts.map(forecast => ({
+      forecast,
+      at: DateTime.fromISO(forecast.datetime)
+        .setLocale(locale)
+        .setZone(timeZone),
+    }))
 
-    if (!supports) {
-      if (this.subscription) {
-        await this._unsubscribe()
+    if (this.resolveForecastType() === 'hourly') {
+      const firstFutureIdx = timed.findIndex(({ at }) => at > now)
+      if (firstFutureIdx === -1) return []
+      const start = Math.max(0, firstFutureIdx - 1)
+      const nowLabel = translationsService.t(locale, 'misc.now')
+      return timed.slice(start, start + count)
+        .map(({ forecast, at }) => {
+          const isCurrent = at <= now
+          return {
+            forecast,
+            at,
+            isCurrent,
+            label: isCurrent ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
+            isNight: hassService.isNight(this.hass, sunEntity, at),
+          }
+        })
+    }
+
+    const todayIso = now.toISODate()!
+    const todayLabel = translationsService.t(locale, 'misc.today')
+    return timed
+      .filter(({ at }) => at.isValid && at.toISODate()! >= todayIso)
+      .slice(0, count)
+      .map(({ forecast, at }) => {
+        const isCurrent = at.toISODate() === todayIso
+        return {
+          forecast,
+          at,
+          isCurrent,
+          label: isCurrent ? todayLabel : translationsService.t(locale, `day.${at.weekday}`),
+          // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
+          isNight: isCurrent && hassService.isNight(this.hass, sunEntity),
+        }
+      })
+  }
+
+  private _syncSubscription(): void {
+    if (!this.hass || !this.config) return
+    const entityId = this.resolveEntityId()
+    const forecastType = this.resolveForecastType()
+
+    if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
+      if (this.unsubscribe) {
+        this._unsubscribe()
         this.forecasts = []
       }
       this._loaded = true
       return
     }
 
-    if (this.subscription && this.subscribedEntityId === desiredEntityId) return
+    const key = `${entityId}|${forecastType}`
+    if (this.unsubscribe && this.subscribedKey === key) return
+
+    this._unsubscribe()
+    this.forecasts = []
     this._loaded = false
-
-    if (this.subscription) {
-      await this._unsubscribe()
-    }
-    if (token !== this.syncToken) return
-
-    try {
-      const sub = await hassService.subscribeForecast(
-        this.hass,
-        desiredEntityId,
-        this.forecastType,
-        event => {
-          if (token !== this.syncToken) return
-          this.forecasts = this.normalizeForecasts(event.forecast ?? [])
-          this._loaded = true
-        },
-      )
-      if (token !== this.syncToken) {
-        // Superseded while awaiting — drop this subscription.
-        try { await sub() } catch (_: unknown) { /* swallow */ }
-        return
-      }
-      this.subscription = sub
-      this.subscribedEntityId = desiredEntityId
-      logger.debug(`Subscribed to ${this.forecastType} forecast`, desiredEntityId)
-    } catch (e: unknown) {
-      if (token === this.syncToken) {
-        this.subscription = null
-        this.subscribedEntityId = null
-        this._loaded = true
-      }
-      logger.error(`Error subscribing to ${this.forecastType} forecast`, e)
-    }
+    this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, forecastType, forecasts => {
+      this.forecasts = forecasts
+      this._loaded = true
+    })
+    this.subscribedKey = key
   }
 
-  private async _unsubscribe(): Promise<void> {
-    if (!this.subscription) return
-    try {
-      await this.subscription()
-    } catch (_: unknown) {
-      // swallow — connection may already be closed
-    } finally {
-      this.subscription = null
-      this.subscribedEntityId = null
-    }
+  private _unsubscribe(): void {
+    this.unsubscribe?.()
+    this.unsubscribe = null
+    this.subscribedKey = null
   }
 }
 

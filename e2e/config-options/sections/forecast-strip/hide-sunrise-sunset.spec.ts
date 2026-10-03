@@ -33,8 +33,8 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    const strip = clockWeatherCard.locator('clock-weather-card-hourly-forecast .strip')
-    const sunset = strip.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)')
+    const strip = clockWeatherCard.locator('clock-weather-card-forecast-strip .strip')
+    const sunset = strip.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)')
     await expect(sunset)
       .toHaveCount(1)
     await expect(sunset.locator('.time'))
@@ -60,7 +60,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       weather: { forecast_hourly: sunnyHours(date, 3) },
     })
 
-    const sunrise = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)')
+    const sunrise = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)')
     await expect(sunrise)
       .toHaveCount(1)
     await expect(sunrise.locator('.time'))
@@ -84,9 +84,9 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)'))
       .toHaveCount(0)
   })
 
@@ -105,8 +105,8 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    const strip = clockWeatherCard.locator('clock-weather-card-hourly-forecast .strip')
-    await expect(strip.locator('clock-weather-card-hourly-forecast-item'))
+    const strip = clockWeatherCard.locator('clock-weather-card-forecast-strip .strip')
+    await expect(strip.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(4)
     expect(await columnTimes(strip))
       .toEqual(['Now', '17', '18', '18:42'])
@@ -125,9 +125,9 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(FORECAST_HOURLY.length)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)'))
       .toHaveCount(0)
   })
 
@@ -143,7 +143,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    const sunEvents = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)')
+    const sunEvents = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)')
     await expect(sunEvents)
       .toHaveCount(0)
 

@@ -15,9 +15,9 @@ test.describe('sections.forecast_strip.hide', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(1)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(FORECAST_HOURLY.length)
   })
 
@@ -32,7 +32,7 @@ test.describe('sections.forecast_strip.hide', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
@@ -45,7 +45,7 @@ test.describe('sections.forecast_strip.hide', () => {
         supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
       },
     })
-    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-strip')
     await expect(section)
       .toBeVisible()
     await cardErrorMessage(section)
@@ -64,7 +64,7 @@ test.describe('sections.forecast_strip.hide', () => {
       },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(0)
   })
 
@@ -72,7 +72,7 @@ test.describe('sections.forecast_strip.hide', () => {
     await setupCard({
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(1)
 
     await setupCard({
@@ -85,7 +85,7 @@ test.describe('sections.forecast_strip.hide', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(0)
   })
 

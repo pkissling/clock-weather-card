@@ -10,8 +10,8 @@ test.describe('sections', () => {
     expect(await sections.evaluateAll(els => els.map(el => el.localName)))
       .toEqual([
         'clock-weather-card-header',
-        'clock-weather-card-hourly-forecast',
-        'clock-weather-card-daily-forecast',
+        'clock-weather-card-forecast-strip',
+        'clock-weather-card-forecast-list',
       ])
   })
 
@@ -24,7 +24,7 @@ test.describe('sections', () => {
       `,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast > clock-weather-card-divider'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list > clock-weather-card-divider'))
       .toBeVisible()
   })
 
@@ -39,7 +39,7 @@ test.describe('sections', () => {
       `,
     })
 
-    const divider = clockWeatherCard.locator('clock-weather-card-daily-forecast > clock-weather-card-divider')
+    const divider = clockWeatherCard.locator('clock-weather-card-forecast-list > clock-weather-card-divider')
     await expect(divider)
       .toHaveCount(1)
     await expect(divider)

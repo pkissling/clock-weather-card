@@ -22,7 +22,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items)
       .toHaveCount(DAILY.length)
     await expect(items.nth(0)
@@ -45,17 +45,17 @@ test.describe('forecast_list section', () => {
       weather: { forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     // 2025-09-14 is a Sunday, but the first row is "today" regardless of weekday.
     await expect(items.nth(0)
-      .locator('.day-label'))
+      .locator('.label'))
       .toHaveText('Today')
     // Subsequent rows show weekday abbreviations from the locale.
     await expect(items.nth(1)
-      .locator('.day-label'))
+      .locator('.label'))
       .toHaveText('Mon')
     await expect(items.nth(2)
-      .locator('.day-label'))
+      .locator('.label'))
       .toHaveText('Tue')
   })
 
@@ -65,7 +65,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.nth(0)
       .locator('.dot'))
       .toHaveCount(1)
@@ -85,7 +85,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: 11.5, forecast_daily: DAILY },
     })
 
-    const dot = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const dot = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.dot')
     const leftStyle = await dot.getAttribute('style')
@@ -99,7 +99,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: -100, forecast_daily: DAILY },
     })
 
-    const dot = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const dot = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.dot')
     expect(await dot.getAttribute('style'))
@@ -112,7 +112,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: 100, forecast_daily: DAILY },
     })
 
-    const dot = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const dot = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.dot')
     expect(await dot.getAttribute('style'))
@@ -127,7 +127,7 @@ test.describe('forecast_list section', () => {
     })
 
     // Global range: low = 4°C, high = 19°C, span = 15°C. First row: low 5 → (1/15)*100 ≈ 6.67%, high 14 → (10/15)*100 ≈ 66.67%.
-    const firstFill = await clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const firstFill = await clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.bar-fill')
       .getAttribute('style')
@@ -146,7 +146,7 @@ test.describe('forecast_list section', () => {
       weather: { temperature: 20, forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.first()
       .locator('.temperature-high'))
       .toHaveText('20°C')
@@ -175,12 +175,12 @@ test.describe('forecast_list section', () => {
       },
     })
 
-    const section = clockWeatherCard.locator('clock-weather-card-daily-forecast')
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-list')
     await expect(section)
       .toBeVisible()
     await cardErrorMessage(section)
       .toBe('Entity "weather.mock_weather" does not support daily forecasts')
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
@@ -197,11 +197,11 @@ test.describe('forecast_list section', () => {
     })
 
     // Past entry is filtered out; we still see 5 rows (today + 4 future).
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(5)
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
-      .locator('.day-label'))
+      .locator('.label'))
       .toHaveText('Today')
   })
 
@@ -215,7 +215,7 @@ test.describe('forecast_list section', () => {
     })
 
     // The inlined meteocons SVGs carry their icon name as an element id.
-    const rows = clockWeatherCard.locator('clock-weather-card-daily-forecast-item clock-weather-card-icon img')
+    const rows = clockWeatherCard.locator('clock-weather-card-forecast-list-item clock-weather-card-icon img')
     await expect(rows)
       .toHaveCount(3)
     await expect(rows.nth(0))
@@ -238,7 +238,7 @@ test.describe('forecast_list section', () => {
 // Every text column (label, low, high) must be exactly as wide as its widest cell: no fixed
 // width that either wastes space for short text or clips long text.
 test.describe('forecast_list column sizing', () => {
-  const DAILY_ITEM = 'clock-weather-card-daily-forecast-item'
+  const LIST_ITEM = 'clock-weather-card-forecast-list-item'
 
   // Cell width and intrinsic text width of every cell in a column.
   const measureColumn = (cells: Locator): Promise<{ cell: number, text: number }[]> => cells.evaluateAll(els => els.map(el => {
@@ -247,7 +247,7 @@ test.describe('forecast_list column sizing', () => {
     return { cell: el.getBoundingClientRect().width, text: range.getBoundingClientRect().width }
   }))
 
-  for (const column of ['.day-label', '.temperature-low', '.temperature-high']) {
+  for (const column of ['.label', '.temperature-low', '.temperature-high']) {
     test(`sizes the ${column} column to its widest text`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
         date: TODAY,
@@ -262,7 +262,7 @@ test.describe('forecast_list column sizing', () => {
         },
       })
 
-      const widths = await measureColumn(clockWeatherCard.locator(`${DAILY_ITEM} ${column}`))
+      const widths = await measureColumn(clockWeatherCard.locator(`${LIST_ITEM} ${column}`))
       const widest = Math.max(...widths.map(w => w.text))
       expect(widest)
         .toBeGreaterThan(0)
@@ -285,7 +285,7 @@ test.describe('forecast_list column sizing', () => {
     })
 
     for (const selector of ['clock-weather-card-icon', '.bar-track']) {
-      const lefts = await clockWeatherCard.locator(`${DAILY_ITEM} ${selector}`)
+      const lefts = await clockWeatherCard.locator(`${LIST_ITEM} ${selector}`)
         .evaluateAll(els => els.map(el => el.getBoundingClientRect().left))
       expect(lefts)
         .toHaveLength(DAILY.length)

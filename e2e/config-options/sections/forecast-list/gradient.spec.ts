@@ -6,7 +6,7 @@ import { expect, test } from '../../../utils/fixtures'
 // by screenshot tests in e2e/screenshots/gradient.spec.ts.
 
 const barFillStyle = (clockWeatherCard: Locator): Promise<string | null> =>
-  clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+  clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     .first()
     .locator('.bar-fill')
     .getAttribute('style')

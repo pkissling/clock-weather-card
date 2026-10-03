@@ -5,7 +5,7 @@ const FORECAST_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T15:00:00+00:00', condition: 'rainy', temperature: 12, precipitation_probability: 50 },
 ]
 
-const HOURLY_ICON = 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img'
+const STRIP_ICON = 'clock-weather-card-forecast-strip-item clock-weather-card-icon img'
 
 test.describe('sections.forecast_strip.animated_icons', () => {
   test('loads animated assets when sections.forecast_strip.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
@@ -18,7 +18,7 @@ test.describe('sections.forecast_strip.animated_icons', () => {
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    const staticSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const staticSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -31,7 +31,7 @@ test.describe('sections.forecast_strip.animated_icons', () => {
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    const animatedSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const animatedSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -50,7 +50,7 @@ test.describe('sections.forecast_strip.animated_icons', () => {
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    const staticSrc = await clockWeatherCard.locator(HOURLY_ICON)
+    const staticSrc = await clockWeatherCard.locator(STRIP_ICON)
       .first()
       .getAttribute('src')
 
@@ -64,7 +64,7 @@ test.describe('sections.forecast_strip.animated_icons', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator(HOURLY_ICON)
+    await expect(clockWeatherCard.locator(STRIP_ICON)
       .first())
       .not.toHaveAttribute('src', staticSrc!)
   })

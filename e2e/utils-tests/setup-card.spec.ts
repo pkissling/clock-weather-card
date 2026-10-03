@@ -11,7 +11,7 @@ test.describe('setupCard', () => {
   })
 
   test('returns only after a follow-up config has rendered, even when HA pushes arrive late', async ({ setupCard, clockWeatherCard }) => {
-    const icon = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item clock-weather-card-icon img')
+    const icon = clockWeatherCard.locator('clock-weather-card-forecast-strip-item clock-weather-card-icon img')
       .first()
 
     const srcs: (string | null)[] = []
@@ -28,7 +28,7 @@ test.describe('setupCard', () => {
   })
 
   test('returns only after follow-up forecasts have rendered, even when HA pushes arrive late', async ({ setupCard, clockWeatherCard }) => {
-    const precip = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
       .first()
 
     const texts: (string | null)[] = []

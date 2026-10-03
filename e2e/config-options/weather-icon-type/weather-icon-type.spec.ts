@@ -60,8 +60,8 @@ test.describe('weather_icon_type', () => {
   test('applies to all sections when set globally', async ({ setupCard, clockWeatherCard }) => {
     const sectionIcons = {
       header: 'clock-weather-card-header clock-weather-card-icon img',
-      forecast_strip: 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img',
-      forecast_list: 'clock-weather-card-daily-forecast-item clock-weather-card-icon img',
+      forecast_strip: 'clock-weather-card-forecast-strip-item clock-weather-card-icon img',
+      forecast_list: 'clock-weather-card-forecast-list-item clock-weather-card-icon img',
     }
     const readSrcs = async (): Promise<Record<string, string | null>> => Object.fromEntries(await Promise.all(
       Object.entries(sectionIcons)

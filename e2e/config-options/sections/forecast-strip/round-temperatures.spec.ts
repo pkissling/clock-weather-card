@@ -15,7 +15,7 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(3)
     await expect(items.nth(0)
@@ -41,7 +41,7 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(3)
     await expect(items.nth(0)
@@ -66,7 +66,7 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
     })
-    const firstTemp = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const firstTemp = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
       .first()
       .locator('.label')
     await expect(firstTemp)

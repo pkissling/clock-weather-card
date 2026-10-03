@@ -55,6 +55,7 @@ describe('resolveConfig', () => {
         forecastStrip: {
           hidden: false,
           entity: 'weather.home',
+          forecastType: 'hourly',
           count: 24,
           animatedIcons: false,
           roundTemperatures: true,
@@ -64,6 +65,7 @@ describe('resolveConfig', () => {
         forecastList: {
           hidden: false,
           entity: 'weather.home',
+          forecastType: 'daily',
           count: 5,
           rowHeight: null,
           barThickness: '60%',

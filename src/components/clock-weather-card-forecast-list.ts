@@ -1,15 +1,13 @@
-import '@/components/clock-weather-card-daily-forecast-item'
+import '@/components/clock-weather-card-forecast-list-item'
 import '@/components/clock-weather-card-divider'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
-import translationsService from '@/service/translations-service'
-import type { DailyForecastItem, DailyWeatherForecast, ForecastType } from '@/types'
+import type { ForecastListItem, SectionForecastType } from '@/types'
 import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gradient'
 
 /**
@@ -19,20 +17,21 @@ import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gra
 const toBarThicknessCss = (thickness: string): string => {
   const percent = /^(\d+(?:\.\d+)?)%$/.exec(thickness.trim())
   return percent
-    ? `calc(var(--cwc-daily-row-height, 28px) * ${Number(percent[1]) / 100})`
+    ? `calc(var(--cwc-list-row-height, 28px) * ${Number(percent[1]) / 100})`
     : thickness
 }
 
-@customElement('clock-weather-card-daily-forecast')
-class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeatherForecast> {
-  protected readonly forecastType: ForecastType = 'daily'
+@customElement('clock-weather-card-forecast-list')
+class ClockWeatherCardForecastList extends AbstractForecastSection {
+  protected resolveForecastType(): SectionForecastType {
+    return this.config.forecastList.forecastType
+  }
 
   protected resolveEntityId(): string {
     return this.config.forecastList.entity
   }
 
-  protected renderForecast(entityId: string): TemplateResult {
-    const { sunEntity, timeZone, locale } = this.config
+  protected renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult {
     const {
       count, animatedIcons, weatherIconType, roundTemperatures,
       hideCurrentTempIndicator, gradient, rowHeight, barThickness,
@@ -43,36 +42,27 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
 
     const currentTempRaw = typeof currentTemp === 'number' && Number.isFinite(currentTemp) ? currentTemp : null
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
-    const todayIso = this.currentDate.toISODate()
-    const parsed = this.forecasts
-      .map(forecast => {
-        const at = DateTime.fromISO(forecast.datetime)
-          .setLocale(locale)
-          .setZone(timeZone)
-        const isToday = at.toISODate() === todayIso
-        // For today's row, fold the current temperature into the day's range so the dot is
-        // always inside the colored bar — some HA integrations leave today's forecasted
-        // `temperature` below the actual current value when the daily high hasn't settled.
-        // For other rows, sort defensively in case `templow`/`temperature` arrive inverted.
-        const tempValues = [forecast.templow, forecast.temperature]
-        if (isToday && currentTempRaw !== null) tempValues.push(currentTempRaw)
+    const hourly = forecastType === 'hourly'
+    const visible = this.visibleRows(count)
+      .map((row, i, rows) => {
+        const tempValues = hourly
+          ? [row.forecast.temperature, i === 0 ? currentTempRaw ?? row.forecast.temperature : rows[i - 1].forecast.temperature]
+          : [row.forecast.templow ?? row.forecast.temperature, row.forecast.temperature]
+        // Some integrations leave today's forecasted `temperature` below the current value; keep the dot inside the bar.
+        if (!hourly && row.isCurrent && currentTempRaw !== null) tempValues.push(currentTempRaw)
         const lowRaw = Math.min(...tempValues)
         const highRaw = Math.max(...tempValues)
         return {
-          forecast,
-          at,
-          isToday,
+          ...row,
           lowRaw,
           highRaw,
           lowC: toCelsius(lowRaw, temperatureUnit),
           highC: toCelsius(highRaw, temperatureUnit),
         }
       })
-      .filter(({ at }) => at.isValid && at.toISODate()! >= todayIso!)
 
-    if (parsed.length === 0) return html``
+    if (visible.length === 0) return html``
 
-    const visible = parsed.slice(0, count)
     const globalLowC = Math.min(...visible.map(v => v.lowC))
     const globalHighC = Math.max(...visible.map(v => v.highC))
     const range = globalHighC - globalLowC
@@ -80,24 +70,21 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
       ? 50
       : Math.max(0, Math.min(100, ((c - globalLowC) / range) * 100))
 
-    const todayLabel = translationsService.t(locale, 'misc.today')
-
     const rowsStyle = [
-      rowHeight ? `--cwc-daily-row-height: ${rowHeight}` : null,
-      `--cwc-daily-bar-thickness: ${toBarThicknessCss(barThickness)}`,
+      rowHeight ? `--cwc-list-row-height: ${rowHeight}` : null,
+      `--cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`,
     ].filter(Boolean)
       .join('; ')
 
     return html`
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
       <div class="rows" style=${rowsStyle}>
-        ${visible.map(({ forecast, at, isToday, lowRaw, highRaw, lowC, highC }) => {
-    const showCurrentIndicator = isToday && !hideCurrentTempIndicator && currentTempC !== null
-    const item: DailyForecastItem = {
-      label: isToday ? todayLabel : translationsService.t(locale, `day.${at.weekday}`),
+        ${visible.map(({ forecast, label, isNight, isCurrent, lowRaw, highRaw, lowC, highC }) => {
+    const showCurrentIndicator = isCurrent && !hideCurrentTempIndicator && currentTempC !== null
+    const item: ForecastListItem = {
+      label,
       condition: forecast.condition,
-      // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
-      isNight: isToday && hassService.isNight(this.hass, sunEntity),
+      isNight,
       animatedIcon: animatedIcons,
       weatherIconType,
       temperatureLow: roundTemperatures ? Math.round(lowRaw) : lowRaw,
@@ -109,11 +96,11 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
       showCurrentIndicator,
       currentTempPercent: showCurrentIndicator ? percentFor(currentTempC!) : 0,
     }
-    return html`<clock-weather-card-daily-forecast-item .item=${item}></clock-weather-card-daily-forecast-item>`
+    return html`<clock-weather-card-forecast-list-item .item=${item}></clock-weather-card-forecast-list-item>`
   })}
       </div>
     `
   }
 }
 
-export default ClockWeatherCardDailyForecast
+export default ClockWeatherCardForecastList
