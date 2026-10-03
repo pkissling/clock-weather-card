@@ -110,6 +110,41 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   }
 }
 
+export interface ResolvedConfig {
+  entity: string
+  title: string | null
+  sunEntity: string
+  weatherIconType: WeatherIconType
+  timeZone: string
+  locale: string
+  header: ResolvedHeaderConfig
+  forecastStrip: ResolvedForecastStripConfig
+  forecastList: ResolvedForecastListConfig
+}
+
+export interface ResolvedHeaderConfig {
+  hidden: boolean
+  rows: RowConfig[]
+  animatedIcons: boolean
+  weatherIconType: WeatherIconType
+}
+
+export interface ResolvedForecastStripConfig {
+  hidden: boolean
+  entity: string
+  count: number
+  animatedIcons: boolean
+  roundTemperatures: boolean
+  weatherIconType: WeatherIconType
+}
+
+export interface ResolvedForecastListConfig extends ResolvedForecastStripConfig {
+  rowHeight: string | null
+  barThickness: string
+  hideCurrentTempIndicator: boolean
+  gradient: Record<number | string, string>
+}
+
 export const enum WeatherEntityFeature {
   FORECAST_DAILY = 1,
   FORECAST_HOURLY = 2,

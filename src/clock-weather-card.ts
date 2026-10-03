@@ -3,17 +3,19 @@ import '@/components/clock-weather-card-today'
 import '@/components/clock-weather-card-hourly-forecast'
 import '@/components/clock-weather-card-daily-forecast'
 
-import type { HomeAssistant } from 'custom-card-helpers'
+import { provide } from '@lit/context'
+import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
 import { LitElement } from 'lit'
 import { html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
-import configService from '@/service/config-service'
+import { configContext, hassContext } from '@/context'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
-import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
+import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
+import { resolveConfig } from '@/utils/config'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
 import { configNeedsSeconds, startClock } from '@/utils/luxon'
@@ -40,8 +42,10 @@ console.info(
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
-  @property({ attribute: false }) public hass?: HomeAssistant
+  @provide({ context: hassContext }) @property({ attribute: false }) public hass!: HomeAssistant
   @state() private config?: ClockWeatherCardConfig
+  @provide({ context: configContext }) @state() private resolved?: ResolvedConfig
+  @state() private error?: string
   @state() private currentDate: DateTime = DateTime.now()
   private _clock: ClockHandle | null = null
 
@@ -51,57 +55,28 @@ export class ClockWeatherCard extends LitElement {
       return html`<ha-card><h1>Loading...</h1></ha-card>`
     }
 
-    try {
-      return this._renderCard(this.hass, this.config)
-    } catch (e) {
-      const message = e instanceof Error ? e.message : String(e)
+    if (!this.resolved) {
       return html`
         <clock-weather-card-error
-          .message=${message}
-          .hass=${this.hass}
+          .message=${this.error}
           .config=${this.config}
         ></clock-weather-card-error>
       `
     }
-  }
 
-  private _renderCard(hass: HomeAssistant, config: ClockWeatherCardConfig): TemplateResult {
-    configService.validateConfig(config, hass)
-    const title = configService.getTitle(config)
-    const locale = configService.getLocale(config, hass)
-    const headerHidden = configService.getHeader(config)
-      .isHidden()
-    const stripHidden = configService.getForecastStrip(config)
-      .isHidden()
-    const listHidden = configService.getForecastList(config)
-      .isHidden()
+    const { title, header, forecastStrip, forecastList } = this.resolved
     return html`
       <ha-card>
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
-          ${headerHidden ? '' : html`
-            <clock-weather-card-today
-              .hass=${hass}
-              .config=${config}
-              .currentDate=${this.currentDate}
-              .locale=${locale}
-            ></clock-weather-card-today>
+          ${header.hidden ? '' : html`
+            <clock-weather-card-today .currentDate=${this.currentDate}></clock-weather-card-today>
           `}
-          ${stripHidden ? '' : html`
-            <clock-weather-card-hourly-forecast
-              .hass=${hass}
-              .config=${config}
-              .currentDate=${this.currentDate}
-              .locale=${locale}
-            ></clock-weather-card-hourly-forecast>
+          ${forecastStrip.hidden ? '' : html`
+            <clock-weather-card-hourly-forecast .currentDate=${this.currentDate}></clock-weather-card-hourly-forecast>
           `}
-          ${listHidden ? '' : html`
-            <clock-weather-card-daily-forecast
-              .hass=${hass}
-              .config=${config}
-              .currentDate=${this.currentDate}
-              .locale=${locale}
-            ></clock-weather-card-daily-forecast>
+          ${forecastList.hidden ? '' : html`
+            <clock-weather-card-daily-forecast .currentDate=${this.currentDate}></clock-weather-card-daily-forecast>
           `}
         </div>
       </ha-card>
@@ -131,23 +106,36 @@ export class ClockWeatherCard extends LitElement {
   }
 
   public willUpdate(changed: PropertyValues): void {
-    // Config change can affect tick interval (HH:mm vs HH:mm:ss) — restart.
-    if (changed.has('config')) this._stopClock()
-    if (changed.has('config') || changed.has('hass')) this._tryStart()
+    if (!changed.has('config') && !changed.has('hass')) return
+    const previous = this.resolved
+    this._resolveConfig()
+    // A new resolved config can change the tick interval (HH:mm vs HH:mm:ss), locale or time zone — restart.
+    if (this.resolved !== previous) this._stopClock()
+    this._tryStart()
+  }
+
+  private _resolveConfig(): void {
+    if (!this.hass || !this.config) return
+    try {
+      const next = resolveConfig(this.config, this.hass)
+      // Keep the previous object when nothing changed so config consumers don't re-render on every hass update.
+      if (!deepEqual(next, this.resolved)) this.resolved = next
+      this.error = undefined
+    } catch (e) {
+      this.resolved = undefined
+      this.error = e instanceof Error ? e.message : String(e)
+    }
   }
 
   // Idempotent — safe to call from any lifecycle hook.
   private _tryStart(): void {
-    if (!this.hass || !this.config) return
-    if (!configService.isValidConfig(this.config, this.hass)) return
+    if (!this.resolved) return
     if (this._clock === null) {
-      this._clock = startClock(configNeedsSeconds(this.config), () => {
-        // hass/config are set when the clock starts and only cleared via
-        // disconnectedCallback (which stops the clock first), so reading
-        // them live keeps locale/timezone updates reactive.
+      const { header, locale, timeZone } = this.resolved
+      this._clock = startClock(configNeedsSeconds(header), () => {
         this.currentDate = DateTime.now()
-          .setLocale(configService.getLocale(this.config!, this.hass!))
-          .setZone(configService.getTimeZone(this.config!, this.hass!))
+          .setLocale(locale)
+          .setZone(timeZone)
       })
     }
   }

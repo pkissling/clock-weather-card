@@ -1,18 +1,19 @@
+import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { PropertyValues } from 'lit'
 import { property, state } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
+import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
-import type { ClockWeatherCardConfig, ForecastType, WeatherForecast } from '@/types'
+import type { ForecastType, ResolvedConfig, WeatherForecast } from '@/types'
 
 abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForecast> extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public hass!: HomeAssistant
-  @property({ attribute: false }) public config!: ClockWeatherCardConfig
+  @consume({ context: hassContext, subscribe: true }) @state() protected hass!: HomeAssistant
+  @consume({ context: configContext, subscribe: true }) @state() protected config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
-  @property({ attribute: false }) public locale!: string
   @state() protected forecasts: F[] = []
 
   private subscription: (() => Promise<void>) | null = null

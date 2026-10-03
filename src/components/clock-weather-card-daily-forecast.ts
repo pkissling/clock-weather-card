@@ -8,7 +8,6 @@ import { customElement } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
-import configService from '@/service/config-service'
 import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { DailyForecastItem, DailyWeatherForecast, ForecastType } from '@/types'
@@ -31,8 +30,7 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
   protected readonly forecastType: ForecastType = 'daily'
 
   protected resolveEntityId(): string {
-    return configService.getForecastList(this.config)
-      .getEntity()
+    return this.config.forecastList.entity
   }
 
   public render(): TemplateResult {
@@ -45,23 +43,18 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
         <clock-weather-card-error
           severity="warning"
           .message=${forecastNotSupported(entityId, this.forecastType).message}
-          .hass=${this.hass}
-          .config=${this.config}
         ></clock-weather-card-error>
       `
     }
 
-    const listConfig = configService.getForecastList(this.config)
-    const count = listConfig.getCount()
-    const sunEntityId = configService.getSunEntity(this.config)
-    const timeZone = configService.getTimeZone(this.config, this.hass)
-    const animatedIcon = listConfig.getAnimatedIcons()
-    const weatherIconType = listConfig.getWeatherIconType()
-    const round = listConfig.getRoundTemperatures()
-    const hideCurrentTempIndicator = listConfig.isCurrentTempIndicatorHidden()
+    const { sunEntity, timeZone, locale } = this.config
+    const {
+      count, animatedIcons, weatherIconType, roundTemperatures,
+      hideCurrentTempIndicator, gradient, rowHeight, barThickness,
+    } = this.config.forecastList
     const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
     const currentTemp = hassService.getEntityAttribute(this.hass, entityId, 'temperature')
-    const stops = normalizeGradient(listConfig.getGradient())
+    const stops = normalizeGradient(gradient)
 
     const currentTempRaw = typeof currentTemp === 'number' && Number.isFinite(currentTemp) ? currentTemp : null
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
@@ -69,7 +62,7 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
     const parsed = this.forecasts
       .map(forecast => {
         const at = DateTime.fromISO(forecast.datetime)
-          .setLocale(this.locale)
+          .setLocale(locale)
           .setZone(timeZone)
         const isToday = at.toISODate() === todayIso
         // For today's row, fold the current temperature into the day's range so the dot is
@@ -102,12 +95,11 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
       ? 50
       : Math.max(0, Math.min(100, ((c - globalLowC) / range) * 100))
 
-    const todayLabel = translationsService.t(this.locale, 'misc.today')
+    const todayLabel = translationsService.t(locale, 'misc.today')
 
-    const rowHeight = listConfig.getRowHeight()
     const rowsStyle = [
       rowHeight ? `--cwc-daily-row-height: ${rowHeight}` : null,
-      `--cwc-daily-bar-thickness: ${toBarThicknessCss(listConfig.getBarThickness())}`,
+      `--cwc-daily-bar-thickness: ${toBarThicknessCss(barThickness)}`,
     ].filter(Boolean)
       .join('; ')
 
@@ -117,14 +109,14 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
         ${visible.map(({ forecast, at, isToday, lowRaw, highRaw, lowC, highC }) => {
     const showCurrentIndicator = isToday && !hideCurrentTempIndicator && currentTempC !== null
     const item: DailyForecastItem = {
-      label: isToday ? todayLabel : translationsService.t(this.locale, `day.${at.weekday}`),
+      label: isToday ? todayLabel : translationsService.t(locale, `day.${at.weekday}`),
       condition: forecast.condition,
       // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
-      isNight: isToday && hassService.isNight(this.hass, sunEntityId),
-      animatedIcon,
+      isNight: isToday && hassService.isNight(this.hass, sunEntity),
+      animatedIcon: animatedIcons,
       weatherIconType,
-      temperatureLow: round ? Math.round(lowRaw) : lowRaw,
-      temperatureHigh: round ? Math.round(highRaw) : highRaw,
+      temperatureLow: roundTemperatures ? Math.round(lowRaw) : lowRaw,
+      temperatureHigh: roundTemperatures ? Math.round(highRaw) : highRaw,
       temperatureUnit,
       barLowPercent: percentFor(lowC),
       barHighPercent: percentFor(highC),

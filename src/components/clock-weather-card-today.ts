@@ -1,42 +1,36 @@
 import '@/components/clock-weather-card-icon'
 import '@/components/clock-weather-card-today-details'
 
+import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import configService from '@/service/config-service'
+import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
-import type { ClockWeatherCardConfig } from '@/types'
+import type { ResolvedConfig } from '@/types'
 
 @customElement('clock-weather-card-today')
 class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public hass!: HomeAssistant
-  @property({ attribute: false }) public config!: ClockWeatherCardConfig
+  @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
+  @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
-  @property({ attribute: false }) public locale!: string
 
   public render (): TemplateResult {
-    const weatherState = hassService.getEntityState(this.hass, configService.getEntity(this.config))
-    const isNight = hassService.isNight(this.hass, configService.getSunEntity(this.config))
-    const headerConfig = configService.getHeader(this.config)
+    const weatherState = hassService.getEntityState(this.hass, this.config.entity)
+    const isNight = hassService.isNight(this.hass, this.config.sunEntity)
 
     return html`
       <clock-weather-card-icon
         .weatherState=${weatherState}
         .isNight=${isNight}
-        .animatedIcon=${headerConfig.getAnimatedIcons()}
-        .weatherIconType=${headerConfig.getWeatherIconType()}
+        .animatedIcon=${this.config.header.animatedIcons}
+        .weatherIconType=${this.config.header.weatherIconType}
       ></clock-weather-card-icon>
-      <clock-weather-card-today-details
-        .hass=${this.hass}
-        .config=${this.config}
-        .currentDate=${this.currentDate}
-        .locale=${this.locale}
-      ></clock-weather-card-today-details>
+      <clock-weather-card-today-details .currentDate=${this.currentDate}></clock-weather-card-today-details>
     `
   }
 }

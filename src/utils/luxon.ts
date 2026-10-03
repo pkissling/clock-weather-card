@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
 
-import configService from '@/service/config-service'
-import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
+import type { ClockHandle, ResolvedHeaderConfig } from '@/types'
 
 // Two fixed reference points that differ only in their second component.
 // Used to detect whether a Luxon format pattern produces output that changes every second
@@ -9,9 +8,8 @@ import type { ClockHandle, ClockWeatherCardConfig } from '@/types'
 const SECOND_0 = DateTime.local(2000, 1, 1, 12, 0, 0)
 const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
 
-export function configNeedsSeconds(config: ClockWeatherCardConfig): boolean {
-  const header = configService.getHeader(config)
-  return !header.isHidden() && header.getRows()
+export function configNeedsSeconds(header: ResolvedHeaderConfig): boolean {
+  return !header.hidden && header.rows
     .some(row => row.segments.some(seg => seg.type === 'time' && patternNeedsSeconds(seg.time_pattern)))
 }
 

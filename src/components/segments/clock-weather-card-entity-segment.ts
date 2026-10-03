@@ -1,15 +1,17 @@
+import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
+import { hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 
 @customElement('clock-weather-card-entity-segment')
 class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public hass!: HomeAssistant
+  @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
   @property() public entityId!: string
   @property() public attribute?: string
   @property({ type: Boolean }) public showUnit = true

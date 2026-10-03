@@ -5,7 +5,6 @@ import '@/components/segments/clock-weather-card-spacer-segment'
 import '@/components/segments/clock-weather-card-time-segment'
 import '@/components/segments/clock-weather-card-weather-segment'
 
-import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
@@ -16,11 +15,8 @@ import type { RowConfig, SegmentConfig } from '@/types'
 
 @customElement('clock-weather-card-today-details-row')
 class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public hass!: HomeAssistant
   @property({ attribute: false }) public rowConfig!: RowConfig
   @property({ attribute: false }) public currentDate!: DateTime
-  @property({ attribute: false }) public entity!: string
-  @property({ attribute: false }) public locale!: string
 
   public render (): TemplateResult {
     return html`${this.rowConfig.segments.map(seg => this.renderSegment(seg))}`
@@ -40,15 +36,11 @@ class ClockWeatherCardTodayDetailsRow extends AbstractClockWeatherCardComponent 
         ></clock-weather-card-date-segment>`
     case 'weather':
       return html`<clock-weather-card-weather-segment
-          .hass=${this.hass}
-          .entity=${this.entity}
-          .locale=${this.locale}
           .attribute=${segment.attribute}
           .showUnit=${segment.show_unit ?? true}
         ></clock-weather-card-weather-segment>`
     case 'entity':
       return html`<clock-weather-card-entity-segment
-          .hass=${this.hass}
           .entityId=${segment.entity_id}
           .attribute=${segment.attribute}
           .showUnit=${segment.show_unit ?? true}

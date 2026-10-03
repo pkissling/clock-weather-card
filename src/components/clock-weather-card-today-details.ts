@@ -1,34 +1,27 @@
 import '@/components/clock-weather-card-today-details-row'
 
-import type { HomeAssistant } from 'custom-card-helpers'
+import { consume } from '@lit/context'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import configService from '@/service/config-service'
-import type { ClockWeatherCardConfig } from '@/types'
+import { configContext } from '@/context'
+import type { ResolvedConfig } from '@/types'
 
 @customElement('clock-weather-card-today-details')
 class ClockWeatherCardTodayDetails extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public hass!: HomeAssistant
-  @property({ attribute: false }) public config!: ClockWeatherCardConfig
+  @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
-  @property({ attribute: false }) public locale!: string
 
   public render (): TemplateResult {
-    const entity = configService.getEntity(this.config)
-    return html`${configService.getHeader(this.config)
-      .getRows()
+    return html`${this.config.header.rows
       .map(rowConfig => html`
         <clock-weather-card-today-details-row
           style="font-size: ${rowConfig.font_size ?? ''}"
-          .hass=${this.hass}
-          .entity=${entity}
           .rowConfig=${rowConfig}
           .currentDate=${this.currentDate}
-          .locale=${this.locale}
         ></clock-weather-card-today-details-row>
       `)}`
   }
