@@ -1,9 +1,9 @@
-import { expect, test } from '../../utils/fixtures'
-import api from '../../utils/ha-api'
+import { expect, test } from '../../../utils/fixtures'
+import api from '../../../utils/ha-api'
 
 // TODO: cover more rows variations — empty rows, font_size, mixed segment types per row,
 // reordering segments within a row, missing optional segment fields.
-test.describe('rows', () => {
+test.describe('sections.header.rows', () => {
   test('renders the default 3 rows when rows is omitted', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: new Date('2026-04-27T15:30:00Z'),
@@ -46,17 +46,19 @@ test.describe('rows', () => {
   test('renders a custom rows config with the configured segments in order', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        rows:
-          - segments:
-              - type: time
-                time_pattern: HH:mm
-          - segments:
-              - type: date
-                date_pattern: yyyy-MM-dd
-          - segments:
-              - type: weather
-                attribute: temperature
-                show_unit: false
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: time
+                    time_pattern: HH:mm
+              - segments:
+                  - type: date
+                    date_pattern: yyyy-MM-dd
+              - segments:
+                  - type: weather
+                    attribute: temperature
+                    show_unit: false
       `,
       date: new Date('2026-04-27T15:30:00Z'),
       weather: { temperature: 21 },
@@ -76,10 +78,12 @@ test.describe('rows', () => {
   test('updates rows at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        rows:
-          - segments:
-              - type: time
-                time_pattern: HH:mm
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: time
+                    time_pattern: HH:mm
       `,
     })
     // Initial: only a time segment.
@@ -90,10 +94,12 @@ test.describe('rows', () => {
 
     await setupCard({
       cardConfig: `
-        rows:
-          - segments:
-              - type: date
-                date_pattern: yyyy-MM-dd
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: date
+                    date_pattern: yyyy-MM-dd
       `,
     })
 
@@ -108,10 +114,12 @@ test.describe('rows', () => {
     test('renders seconds when time_pattern includes ss', async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: time
-                  time_pattern: HH:mm:ss
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: time
+                      time_pattern: HH:mm:ss
         `,
         date: new Date('2025-06-15T12:00:30Z'),
       })
@@ -126,10 +134,12 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
         `,
       })
 
@@ -141,11 +151,13 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', 'on', { brightness: 75, unit_of_measurement: '%' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  attribute: brightness
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      attribute: brightness
         `,
       })
 
@@ -157,11 +169,13 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C', custom_unit: 'kWh' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  unit_attribute: custom_unit
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      unit_attribute: custom_unit
         `,
       })
 
@@ -173,11 +187,13 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  unit_attribute: not_there
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      unit_attribute: not_there
         `,
       })
 
@@ -189,11 +205,13 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  show_unit: false
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      show_unit: false
         `,
       })
 
@@ -205,10 +223,12 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', 'on', {})
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
         `,
       })
 
@@ -220,11 +240,13 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', 'on', { unit_of_measurement: '%' })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  attribute: missing
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      attribute: missing
         `,
       })
 
@@ -237,12 +259,14 @@ test.describe('rows', () => {
       await api.setEntityState('sensor.demo', 'on', { count: 7 })
       await setupCard({
         cardConfig: `
-          rows:
-            - segments:
-                - type: entity
-                  entity_id: sensor.demo
-                  attribute: count
-                  show_unit: false
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      attribute: count
+                      show_unit: false
         `,
       })
 

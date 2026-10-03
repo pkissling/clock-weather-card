@@ -7,13 +7,13 @@ const FORECAST_HOURLY: WeatherForecast[] = [
 
 const HOURLY_ICON = 'clock-weather-card-hourly-forecast-item clock-weather-card-icon img'
 
-test.describe('sections.hourly_forecast.animated_icons', () => {
-  test('loads animated assets when sections.hourly_forecast.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
+test.describe('sections.forecast_strip.animated_icons', () => {
+  test('loads animated assets when sections.forecast_strip.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             animated_icons: false
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -26,7 +26,7 @@ test.describe('sections.hourly_forecast.animated_icons', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             animated_icons: true
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -44,9 +44,8 @@ test.describe('sections.hourly_forecast.animated_icons', () => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          hourly_forecast:
+          forecast_strip:
             animated_icons: false
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -58,9 +57,8 @@ test.describe('sections.hourly_forecast.animated_icons', () => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          hourly_forecast:
+          forecast_strip:
             animated_icons: true
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },

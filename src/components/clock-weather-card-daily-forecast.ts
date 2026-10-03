@@ -31,7 +31,7 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
   protected readonly forecastType: ForecastType = 'daily'
 
   protected resolveEntityId(): string {
-    return configService.getDaily(this.config)
+    return configService.getForecastList(this.config)
       .getEntity()
   }
 
@@ -51,17 +51,17 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
       `
     }
 
-    const dailyConfig = configService.getDaily(this.config)
-    const maxRows = dailyConfig.getRows()
+    const listConfig = configService.getForecastList(this.config)
+    const count = listConfig.getCount()
     const sunEntityId = configService.getSunEntity(this.config)
     const timeZone = configService.getTimeZone(this.config, this.hass)
-    const animatedIcon = dailyConfig.getAnimatedIcons()
-    const weatherIconType = dailyConfig.getWeatherIconType()
-    const round = dailyConfig.getRoundTemperatures()
-    const hideCurrentTempIndicator = dailyConfig.isCurrentTempIndicatorHidden()
+    const animatedIcon = listConfig.getAnimatedIcons()
+    const weatherIconType = listConfig.getWeatherIconType()
+    const round = listConfig.getRoundTemperatures()
+    const hideCurrentTempIndicator = listConfig.isCurrentTempIndicatorHidden()
     const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
     const currentTemp = hassService.getEntityAttribute(this.hass, entityId, 'temperature')
-    const stops = normalizeGradient(dailyConfig.getGradient())
+    const stops = normalizeGradient(listConfig.getGradient())
 
     const currentTempRaw = typeof currentTemp === 'number' && Number.isFinite(currentTemp) ? currentTemp : null
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
@@ -94,7 +94,7 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
 
     if (parsed.length === 0) return html``
 
-    const visible = parsed.slice(0, maxRows)
+    const visible = parsed.slice(0, count)
     const globalLowC = Math.min(...visible.map(v => v.lowC))
     const globalHighC = Math.max(...visible.map(v => v.highC))
     const range = globalHighC - globalLowC
@@ -104,10 +104,10 @@ class ClockWeatherCardDailyForecast extends AbstractForecastSection<DailyWeather
 
     const todayLabel = translationsService.t(this.locale, 'misc.today')
 
-    const rowHeight = dailyConfig.getRowHeight()
+    const rowHeight = listConfig.getRowHeight()
     const rowsStyle = [
       rowHeight ? `--cwc-daily-row-height: ${rowHeight}` : null,
-      `--cwc-daily-bar-thickness: ${toBarThicknessCss(dailyConfig.getBarThickness())}`,
+      `--cwc-daily-bar-thickness: ${toBarThicknessCss(listConfig.getBarThickness())}`,
     ].filter(Boolean)
       .join('; ')
 

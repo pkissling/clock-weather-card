@@ -7,13 +7,13 @@ const DAILY: DailyWeatherForecast[] = [
 
 const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
 
-test.describe('sections.daily_forecast.animated_icons', () => {
-  test('loads animated assets when sections.daily_forecast.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
+test.describe('sections.forecast_list.animated_icons', () => {
+  test('loads animated assets when sections.forecast_list.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             animated_icons: false
       `,
       weather: { forecast_daily: DAILY },
@@ -26,7 +26,7 @@ test.describe('sections.daily_forecast.animated_icons', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             animated_icons: true
       `,
       weather: { forecast_daily: DAILY },
@@ -44,9 +44,8 @@ test.describe('sections.daily_forecast.animated_icons', () => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          daily_forecast:
+          forecast_list:
             animated_icons: false
       `,
       weather: { forecast_daily: DAILY },
@@ -58,9 +57,8 @@ test.describe('sections.daily_forecast.animated_icons', () => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          daily_forecast:
+          forecast_list:
             animated_icons: true
       `,
       weather: { forecast_daily: DAILY },

@@ -6,7 +6,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 4, temperature: 12, precipitation_probability: 0 },
 ]
 
-test.describe('sections.daily_forecast.hide_current_temp_indicator', () => {
+test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
   test('renders the current-temp dot on today\'s row by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { temperature: 8, forecast_daily: DAILY },
@@ -23,7 +23,7 @@ test.describe('sections.daily_forecast.hide_current_temp_indicator', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             hide_current_temp_indicator: true
       `,
       weather: { temperature: 8, forecast_daily: DAILY },
@@ -40,7 +40,7 @@ test.describe('sections.daily_forecast.hide_current_temp_indicator', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             hide_current_temp_indicator: true
       `,
       weather: { temperature: 8, forecast_daily: DAILY },

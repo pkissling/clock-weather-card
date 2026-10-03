@@ -32,9 +32,11 @@ test.describe('locale', () => {
     await setupCard({
       cardConfig: `
         locale: es
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -47,9 +49,11 @@ test.describe('locale', () => {
     await setupCard({
       cardConfig: `
         locale: DE
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -62,9 +66,11 @@ test.describe('locale', () => {
     await setupCard({
       language: 'es',
       cardConfig: `
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -78,9 +84,11 @@ test.describe('locale', () => {
       language: 'es',
       cardConfig: `
         locale: en
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -93,9 +101,11 @@ test.describe('locale', () => {
     await setupCard({
       cardConfig: `
         locale: xx-XX
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -109,9 +119,11 @@ test.describe('locale', () => {
       language: 'es',
       cardConfig: `
         locale: D
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -124,9 +136,11 @@ test.describe('locale', () => {
     await setupCard({
       cardConfig: `
         locale: en
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
       weather: { state: 'sunny' },
     })
@@ -136,9 +150,11 @@ test.describe('locale', () => {
     await setupCard({
       cardConfig: `
         locale: es
-        rows:
-          - segments:
-              - type: weather
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
       `,
     })
 

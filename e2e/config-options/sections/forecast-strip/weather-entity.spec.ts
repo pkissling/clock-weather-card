@@ -15,7 +15,7 @@ const SECONDARY_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T17:00:00+00:00', condition: 'pouring', temperature: 9, precipitation_probability: 100 },
 ]
 
-test.describe('sections.hourly_forecast.weather_entity', () => {
+test.describe('sections.forecast_strip.weather_entity', () => {
   test('renders forecasts from the override entity when configured', async ({ setupCard, clockWeatherCard }) => {
     await api.setMockWeather({
       entity_id: 'weather.mock_weather_2',
@@ -25,7 +25,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_hourly: PRIMARY_HOURLY },
@@ -44,7 +44,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.does_not_exist
       `,
     })
@@ -71,7 +71,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_hourly: PRIMARY_HOURLY },
@@ -95,7 +95,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_hourly: PRIMARY_HOURLY },
@@ -111,7 +111,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.mock_weather
       `,
       weather: { forecast_hourly: PRIMARY_HOURLY },
@@ -144,7 +144,7 @@ test.describe('sections.hourly_forecast.weather_entity', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          hourly_forecast:
+          forecast_strip:
             weather_entity: weather.mock_weather_2
       `,
       weather: { forecast_hourly: PRIMARY_HOURLY },

@@ -8,13 +8,13 @@ const DAILY: DailyWeatherForecast[] = [
 
 const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
 
-test.describe('sections.daily_forecast.row_height', () => {
+test.describe('sections.forecast_list.row_height', () => {
   test('applies the configured row height to the icon and the row', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 48px
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
@@ -40,13 +40,13 @@ test.describe('sections.daily_forecast.row_height', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: "tall"
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.row_height" has invalid value "tall"')
+      .toContain('Config option "sections.forecast_list.row_height" has invalid value "tall"')
   })
 
   test('updates the row height at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
@@ -54,7 +54,7 @@ test.describe('sections.daily_forecast.row_height', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 20px
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
@@ -69,7 +69,7 @@ test.describe('sections.daily_forecast.row_height', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 56px
       `,
       weather: { temperature: 9, forecast_daily: DAILY },

@@ -2,7 +2,7 @@ import type { WeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
 
-test.describe('hourly_forecast section', () => {
+test.describe('forecast_strip section', () => {
   test('labels the entry immediately before "now" as the "Now" column and sources its data from that forecast', async ({ setupCard, clockWeatherCard }) => {
     // Forecast entry at 19:00 sits just before the mocked clock (19:07). It feeds the "Now" column.
     const forecasts: WeatherForecast[] = [

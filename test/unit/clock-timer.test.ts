@@ -107,7 +107,7 @@ describe('ClockWeatherCard timer behavior', () => {
     it('sets up a second-level interval when time_pattern has ss', async () => {
       vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
       const card = await createCard({
-        rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }],
+        sections: { header: { rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }] } },
       })
 
       const initial = (card.currentDate as DateTime).toMillis()
@@ -121,10 +121,24 @@ describe('ClockWeatherCard timer behavior', () => {
   })
 
   describe('_startClock without seconds', () => {
+    it('ignores seconds in time_pattern when the header is hidden', async () => {
+      vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
+      const card = await createCard({
+        sections: { header: { hide: true, rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }] } },
+      })
+
+      const initial = (card.currentDate as DateTime).toMillis()
+
+      vi.advanceTimersByTime(2000)
+
+      expect((card.currentDate as DateTime).toMillis())
+        .toBe(initial)
+    })
+
     it('sets up a minute-level interval when time_pattern has no seconds', async () => {
       vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
       const card = await createCard({
-        rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm' }] }],
+        sections: { header: { rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm' }] }] } },
       })
 
       const initial = (card.currentDate as DateTime).toMillis()
@@ -148,7 +162,7 @@ describe('ClockWeatherCard timer behavior', () => {
   describe('_stopClock on disconnect', () => {
     it('clears timers when disconnected', async () => {
       const card = await createCard({
-        rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }],
+        sections: { header: { rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }] } },
       })
 
       expect(card._clock).not.toBeNull()
@@ -164,7 +178,7 @@ describe('ClockWeatherCard timer behavior', () => {
     it('switches interval when config changes', async () => {
       vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
       const card = await createCard({
-        rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }],
+        sections: { header: { rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm:ss' }] }] } },
       })
 
       vi.advanceTimersByTime(1000)
@@ -172,7 +186,7 @@ describe('ClockWeatherCard timer behavior', () => {
       card.setConfig({
         type: 'custom:clock-weather-card',
         entity: 'weather.home',
-        rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm' }] }],
+        sections: { header: { rows: [{ segments: [{ type: 'time', time_pattern: 'HH:mm' }] }] } },
       })
       card.willUpdate(new Map([['config', undefined]]))
 

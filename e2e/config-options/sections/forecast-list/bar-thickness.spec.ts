@@ -8,13 +8,13 @@ const DAILY: DailyWeatherForecast[] = [
 
 const BAR_TRACK = 'clock-weather-card-daily-forecast-item .bar-track'
 
-test.describe('sections.daily_forecast.bar_thickness', () => {
+test.describe('sections.forecast_list.bar_thickness', () => {
   test('uses 60% of row_height by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 100px
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
@@ -34,7 +34,7 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 100px
             bar_thickness: 30%
       `,
@@ -55,7 +55,7 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 100px
             bar_thickness: 20px
       `,
@@ -74,13 +74,13 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             bar_thickness: "thick"
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.bar_thickness" has invalid value "thick"')
+      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "thick"')
   })
 
   test('rejects unitless numbers', async ({ setupCard, cardErrorMessage }) => {
@@ -88,13 +88,13 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             bar_thickness: 0.6
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.bar_thickness" has invalid value "0.6"')
+      .toContain('Config option "sections.forecast_list.bar_thickness" has invalid value "0.6"')
   })
 
   test('updates the thickness at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
@@ -102,7 +102,7 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 100px
             bar_thickness: 20%
       `,
@@ -118,7 +118,7 @@ test.describe('sections.daily_forecast.bar_thickness', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             row_height: 100px
             bar_thickness: 80%
       `,

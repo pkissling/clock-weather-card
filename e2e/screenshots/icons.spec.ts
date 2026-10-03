@@ -54,12 +54,13 @@ for (const animated of ['animated', 'static'] as const) {
           sun: isDay ? DAY_SUN : NIGHT_SUN,
           cardConfig: `
             weather_icon_type: ${iconVariant}
-            animated_icon: ${isAnimated}
             sections:
-              hourly_forecast:
+              header:
                 animated_icons: ${isAnimated}
-              daily_forecast:
-                rows: ${dailyStates.length}
+              forecast_strip:
+                animated_icons: ${isAnimated}
+              forecast_list:
+                count: ${dailyStates.length}
                 animated_icons: ${isAnimated}
           `,
           expectedIcons: supportedWeatherStates.length,

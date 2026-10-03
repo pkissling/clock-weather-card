@@ -13,7 +13,7 @@ function makeDaily(count: number): DailyWeatherForecast[] {
   }))
 }
 
-test.describe('sections.daily_forecast.rows', () => {
+test.describe('sections.forecast_list.count', () => {
   test('renders 5 rows by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { forecast_daily: makeDaily(10) },
@@ -28,8 +28,8 @@ test.describe('sections.daily_forecast.rows', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 3
+          forecast_list:
+            count: 3
       `,
       weather: { forecast_daily: makeDaily(10) },
     })
@@ -38,13 +38,13 @@ test.describe('sections.daily_forecast.rows', () => {
       .toHaveCount(3)
   })
 
-  test('renders all items when rows exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
+  test('renders all items when count exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 14
+          forecast_list:
+            count: 14
       `,
       weather: { forecast_daily: makeDaily(4) },
     })
@@ -58,13 +58,13 @@ test.describe('sections.daily_forecast.rows', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 0
+          forecast_list:
+            count: 0
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.rows" has invalid value "0"')
+      .toContain('Config option "sections.forecast_list.count" has invalid value "0"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -74,22 +74,22 @@ test.describe('sections.daily_forecast.rows', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 3.5
+          forecast_list:
+            count: 3.5
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.rows" has invalid value "3.5"')
+      .toContain('Config option "sections.forecast_list.count" has invalid value "3.5"')
   })
 
-  test('updates the rendered count at runtime when rows changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+  test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 2
+          forecast_list:
+            count: 2
       `,
       weather: { forecast_daily: makeDaily(10) },
     })
@@ -100,8 +100,8 @@ test.describe('sections.daily_forecast.rows', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
-            rows: 6
+          forecast_list:
+            count: 6
       `,
       weather: { forecast_daily: makeDaily(10) },
     })

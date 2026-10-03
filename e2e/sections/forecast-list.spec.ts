@@ -15,7 +15,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-18T00:00:00+00:00', condition: 'sunny',        templow: 10, temperature: 19, precipitation_probability: 5 },
 ]
 
-test.describe('daily_forecast section', () => {
+test.describe('forecast_list section', () => {
   test('renders one row per forecast day with low/high temperatures', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: TODAY,
@@ -237,7 +237,7 @@ test.describe('daily_forecast section', () => {
 
 // Every text column (label, low, high) must be exactly as wide as its widest cell: no fixed
 // width that either wastes space for short text or clips long text.
-test.describe('daily_forecast column sizing', () => {
+test.describe('forecast_list column sizing', () => {
   const DAILY_ITEM = 'clock-weather-card-daily-forecast-item'
 
   // Cell width and intrinsic text width of every cell in a column.

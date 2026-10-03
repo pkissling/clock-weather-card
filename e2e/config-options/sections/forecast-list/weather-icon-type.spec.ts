@@ -9,14 +9,13 @@ const DAILY: DailyWeatherForecast[] = [
 
 const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
 
-test.describe('sections.daily_forecast.weather_icon_type', () => {
+test.describe('sections.forecast_list.weather_icon_type', () => {
   test('falls back to the top-level weather_icon_type by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: TODAY,
       cardConfig: `
         entity: weather.mock_weather
         weather_icon_type: line
-        animated_icon: false
       `,
       weather: { forecast_daily: DAILY },
     })
@@ -29,7 +28,6 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       cardConfig: `
         entity: weather.mock_weather
         weather_icon_type: fill
-        animated_icon: false
       `,
       weather: { forecast_daily: DAILY },
     })
@@ -50,7 +48,6 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       cardConfig: `
         entity: weather.mock_weather
         weather_icon_type: line
-        animated_icon: false
       `,
       weather: { forecast_daily: DAILY },
     })
@@ -63,9 +60,8 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       cardConfig: `
         entity: weather.mock_weather
         weather_icon_type: line
-        animated_icon: false
         sections:
-          daily_forecast:
+          forecast_list:
             weather_icon_type: fill
       `,
       weather: { forecast_daily: DAILY },
@@ -83,13 +79,13 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       cardConfig: `
         entity: weather.mock_weather
         sections:
-          daily_forecast:
+          forecast_list:
             weather_icon_type: gradient
       `,
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.daily_forecast.weather_icon_type" has invalid value "gradient"')
+      .toContain('Config option "sections.forecast_list.weather_icon_type" has invalid value "gradient"')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -99,9 +95,8 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       date: TODAY,
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          daily_forecast:
+          forecast_list:
             weather_icon_type: line
       `,
       weather: { forecast_daily: DAILY },
@@ -114,9 +109,8 @@ test.describe('sections.daily_forecast.weather_icon_type', () => {
       date: TODAY,
       cardConfig: `
         entity: weather.mock_weather
-        animated_icon: false
         sections:
-          daily_forecast:
+          forecast_list:
             weather_icon_type: monochrome
       `,
       weather: { forecast_daily: DAILY },

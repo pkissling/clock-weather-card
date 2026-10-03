@@ -14,7 +14,7 @@ test('default gradient', async ({ setupCard, clockWeatherCard }) => {
   await setupCard({
     cardConfig: `
       sections:
-        hourly_forecast:
+        forecast_strip:
           hide: true
     `,
     weather: { forecast_daily: DAILY },
@@ -27,9 +27,9 @@ test('custom gradient', async ({ setupCard, clockWeatherCard }) => {
   await setupCard({
     cardConfig: `
       sections:
-        hourly_forecast:
+        forecast_strip:
           hide: true
-        daily_forecast:
+        forecast_list:
           gradient:
             0: "#ff00ff"
             30: "#00ff00"
@@ -44,9 +44,9 @@ test('gradient narrower than the bar range', async ({ setupCard, clockWeatherCar
   await setupCard({
     cardConfig: `
       sections:
-        hourly_forecast:
+        forecast_strip:
           hide: true
-        daily_forecast:
+        forecast_list:
           gradient:
             5: "#ff0000"
             15: "#0000ff"
@@ -61,9 +61,9 @@ test('single stop gradient', async ({ setupCard, clockWeatherCard }) => {
   await setupCard({
     cardConfig: `
       sections:
-        hourly_forecast:
+        forecast_strip:
           hide: true
-        daily_forecast:
+        forecast_list:
           gradient:
             10: "#3366ff"
     `,

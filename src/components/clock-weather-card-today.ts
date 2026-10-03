@@ -27,7 +27,8 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
       <clock-weather-card-icon
         .weatherState=${weatherState}
         .isNight=${isNight}
-        .animatedIcon=${configService.getAnimatedIcon(this.config)}
+        .animatedIcon=${configService.getHeader(this.config)
+    .getAnimatedIcons()}
         .weatherIconType=${configService.getWeatherIconType(this.config)}
       ></clock-weather-card-icon>
       <clock-weather-card-today-details

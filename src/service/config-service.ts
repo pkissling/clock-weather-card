@@ -9,7 +9,6 @@ import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
 
 const DEFAULT_SUN_ENTITY = 'sun.sun'
 const DEFAULT_WEATHER_ICON_TYPE: WeatherIconType = 'line'
-const DEFAULT_ANIMATED_ICON = true
 const DEFAULT_ROWS: RowConfig[] = [
   {
     segments: [
@@ -66,27 +65,29 @@ class ConfigService {
 
     assertEntityExists(config.entity)
     assertEntityExists(config.sun_entity)
-    assertEntityExists(config.sections?.hourly_forecast?.weather_entity)
-    assertEntityExists(config.sections?.daily_forecast?.weather_entity)
+    assertEntityExists(config.sections?.forecast_strip?.weather_entity)
+    assertEntityExists(config.sections?.forecast_list?.weather_entity)
 
     assertEnumValue('weather_icon_type', config.weather_icon_type, WEATHER_ICON_TYPES)
-    assertEnumValue('sections.hourly_forecast.weather_icon_type', config.sections?.hourly_forecast?.weather_icon_type, WEATHER_ICON_TYPES)
-    assertEnumValue('sections.daily_forecast.weather_icon_type', config.sections?.daily_forecast?.weather_icon_type, WEATHER_ICON_TYPES)
+    assertEnumValue('sections.forecast_strip.weather_icon_type', config.sections?.forecast_strip?.weather_icon_type, WEATHER_ICON_TYPES)
+    assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
+    assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, ['hourly'])
+    assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, ['daily'])
 
-    assertPositiveInteger('sections.hourly_forecast.hours', config.sections?.hourly_forecast?.hours)
-    assertPositiveInteger('sections.daily_forecast.rows', config.sections?.daily_forecast?.rows)
+    assertPositiveInteger('sections.forecast_strip.count', config.sections?.forecast_strip?.count)
+    assertPositiveInteger('sections.forecast_list.count', config.sections?.forecast_list?.count)
 
-    assertCssLength('sections.daily_forecast.row_height', config.sections?.daily_forecast?.row_height)
-    assertCssLength('sections.daily_forecast.bar_thickness', config.sections?.daily_forecast?.bar_thickness)
+    assertCssLength('sections.forecast_list.row_height', config.sections?.forecast_list?.row_height)
+    assertCssLength('sections.forecast_list.bar_thickness', config.sections?.forecast_list?.bar_thickness)
 
-    const gradient = config.sections?.daily_forecast?.gradient
+    const gradient = config.sections?.forecast_list?.gradient
     if (gradient !== undefined) {
       if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
-        throw invalidConfigValue('sections.daily_forecast.gradient', String(gradient))
+        throw invalidConfigValue('sections.forecast_list.gradient', String(gradient))
       }
       for (const [k, v] of Object.entries(gradient)) {
-        if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.daily_forecast.gradient', `key "${k}"`)
-        if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.daily_forecast.gradient', `value at "${k}"`)
+        if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key "${k}"`)
+        if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at "${k}"`)
       }
     }
 
@@ -120,10 +121,6 @@ class ConfigService {
     return config.weather_icon_type || DEFAULT_WEATHER_ICON_TYPE
   }
 
-  public getAnimatedIcon(config: ClockWeatherCardConfig): boolean {
-    return config.animated_icon ?? DEFAULT_ANIMATED_ICON
-  }
-
   public getTimeZone(config: ClockWeatherCardConfig, hass: HomeAssistant): string {
     return config.time_zone || hassService.getTimeZone(hass)
   }
@@ -132,30 +129,35 @@ class ConfigService {
     return config.locale || hassService.getLocale(hass)
   }
 
-  public getRows(config: ClockWeatherCardConfig): RowConfig[] {
-    return config.rows ?? DEFAULT_ROWS
+  public getHeader(config: ClockWeatherCardConfig): HeaderConfig {
+    const section = config.sections?.header
+    return {
+      isHidden: () => section?.hide ?? false,
+      getRows: () => section?.rows ?? DEFAULT_ROWS,
+      getAnimatedIcons: () => section?.animated_icons ?? true,
+    }
   }
 
-  public getHourly(config: ClockWeatherCardConfig): HourlyForecastConfig {
-    const section = config.sections?.hourly_forecast
+  public getForecastStrip(config: ClockWeatherCardConfig): ForecastStripConfig {
+    const section = config.sections?.forecast_strip
     return {
       isHidden: () => section?.hide ?? false,
       getEntity: () => section?.weather_entity ?? this.getEntity(config),
-      getHours: () => section?.hours ?? 24,
+      getCount: () => section?.count ?? 24,
       getAnimatedIcons: () => section?.animated_icons ?? false,
       getRoundTemperatures: () => section?.round_temperatures ?? true,
       getWeatherIconType: () => section?.weather_icon_type ?? this.getWeatherIconType(config),
     }
   }
 
-  public getDaily(config: ClockWeatherCardConfig): DailyForecastConfig {
-    const section = config.sections?.daily_forecast
+  public getForecastList(config: ClockWeatherCardConfig): ForecastListConfig {
+    const section = config.sections?.forecast_list
     return {
       isHidden: () => section?.hide ?? false,
       getEntity: () => section?.weather_entity ?? this.getEntity(config),
       getRowHeight: () => section?.row_height ?? null,
       getBarThickness: () => section?.bar_thickness ?? '60%',
-      getRows: () => section?.rows ?? 5,
+      getCount: () => section?.count ?? 5,
       isCurrentTempIndicatorHidden: () => section?.hide_current_temp_indicator ?? false,
       getAnimatedIcons: () => section?.animated_icons ?? false,
       getRoundTemperatures: () => section?.round_temperatures ?? true,
@@ -165,21 +167,27 @@ class ConfigService {
   }
 }
 
-export interface HourlyForecastConfig {
+export interface HeaderConfig {
+  isHidden: () => boolean
+  getRows: () => RowConfig[]
+  getAnimatedIcons: () => boolean
+}
+
+export interface ForecastStripConfig {
   isHidden: () => boolean
   getEntity: () => string
-  getHours: () => number
+  getCount: () => number
   getAnimatedIcons: () => boolean
   getRoundTemperatures: () => boolean
   getWeatherIconType: () => WeatherIconType
 }
 
-export interface DailyForecastConfig {
+export interface ForecastListConfig {
   isHidden: () => boolean
   getEntity: () => string
   getRowHeight: () => string | null
   getBarThickness: () => string
-  getRows: () => number
+  getCount: () => number
   isCurrentTempIndicatorHidden: () => boolean
   getAnimatedIcons: () => boolean
   getRoundTemperatures: () => boolean

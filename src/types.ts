@@ -74,23 +74,28 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   title?: string
   sun_entity?: string
   weather_icon_type?: WeatherIconType
-  animated_icon?: boolean
   time_zone?: string
   locale?: string
-  rows?: RowConfig[]
   sections?: {
-    hourly_forecast?: {
+    header?: {
+      hide?: boolean
+      animated_icons?: boolean
+      rows?: RowConfig[]
+    }
+    forecast_strip?: {
       hide?: boolean
       weather_entity?: string
-      hours?: number
+      forecast_type?: 'hourly'
+      count?: number
       animated_icons?: boolean
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
     }
-    daily_forecast?: {
+    forecast_list?: {
       hide?: boolean
       weather_entity?: string
-      rows?: number
+      forecast_type?: 'daily'
+      count?: number
       row_height?: string
       bar_thickness?: string
       hide_current_temp_indicator?: boolean
