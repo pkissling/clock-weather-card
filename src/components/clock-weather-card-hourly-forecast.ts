@@ -8,7 +8,6 @@ import { customElement } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
-import configService from '@/service/config-service'
 import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { ForecastType, HourlyForecastItem, WeatherForecast } from '@/types'
@@ -19,8 +18,7 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
   protected readonly forecastType: ForecastType = 'hourly'
 
   protected resolveEntityId(): string {
-    return configService.getForecastStrip(this.config)
-      .getEntity()
+    return this.config.forecastStrip.entity
   }
 
   protected normalizeForecasts(raw: WeatherForecast[]): WeatherForecast[] {
@@ -40,29 +38,22 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
         <clock-weather-card-error
           severity="warning"
           .message=${forecastNotSupported(entityId, this.forecastType).message}
-          .hass=${this.hass}
-          .config=${this.config}
         ></clock-weather-card-error>
       `
     }
 
-    const stripConfig = configService.getForecastStrip(this.config)
-    const count = stripConfig.getCount()
-    const sunEntityId = configService.getSunEntity(this.config)
-    const timeZone = configService.getTimeZone(this.config, this.hass)
-    const animatedIcon = stripConfig.getAnimatedIcons()
-    const weatherIconType = stripConfig.getWeatherIconType()
-    const round = stripConfig.getRoundTemperatures()
+    const { sunEntity, timeZone, locale } = this.config
+    const { count, animatedIcons, weatherIconType, roundTemperatures } = this.config.forecastStrip
     const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
 
     const now = this.currentDate
     const parsed = this.forecasts.map(forecast => ({
       forecast,
       at: DateTime.fromISO(forecast.datetime)
-        .setLocale(this.locale)
+        .setLocale(locale)
         .setZone(timeZone),
     }))
-    const nowLabel = translationsService.t(this.locale, 'misc.now')
+    const nowLabel = translationsService.t(locale, 'misc.now')
 
     // Show every entry strictly after "now" plus the one immediately before — that becomes the "Now" column.
     const firstFutureIdx = parsed.findIndex(({ at }) => at > now)
@@ -80,10 +71,10 @@ class ClockWeatherCardHourlyForecast extends AbstractForecastSection {
     const item: HourlyForecastItem = {
       label: at <= now ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
       condition: forecast.condition,
-      isNight: hassService.isNight(this.hass, sunEntityId, at),
-      animatedIcon,
+      isNight: hassService.isNight(this.hass, sunEntity, at),
+      animatedIcon: animatedIcons,
       weatherIconType,
-      temperature: round ? Math.round(forecast.temperature) : forecast.temperature,
+      temperature: roundTemperatures ? Math.round(forecast.temperature) : forecast.temperature,
       temperatureUnit,
       precipitationProbability: roundToTens(forecast.precipitation_probability),
       showPrecipitation,

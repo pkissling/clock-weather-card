@@ -22,8 +22,15 @@ vi.mock('lit/decorators.js', () => ({
   state: () => (_target: unknown, _key: string): void => {},
 }))
 
+vi.mock('@lit/context', () => ({
+  createContext: (key: unknown): unknown => key,
+  provide: () => (_target: unknown, _key: string): void => {},
+  consume: () => (_target: unknown, _key: string): void => {},
+}))
+
 vi.mock('custom-card-helpers', () => ({
   hasConfigOrEntityChanged: (): boolean => true,
+  deepEqual: (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b),
   hasAction: (): boolean => false,
   handleAction: (): void => {},
   TimeFormat: { am_pm: 'am_pm', twenty_four: '24' },

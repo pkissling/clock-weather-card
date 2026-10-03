@@ -29,6 +29,7 @@
     "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots"
   },
   "dependencies": {
+    "@lit/context": "^1.1.6",
     "@meteocons/svg": "^0.1.0",
     "@meteocons/svg-static": "^0.1.0",
     "custom-card-helpers": "2.0.0",
