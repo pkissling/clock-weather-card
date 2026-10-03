@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "υγρασία",
-    "feels-like": "Αίσθηση σαν"
+    "feels-like": "Αίσθηση σαν",
+    "outdoor": "Outdoor"
   }
 }

@@ -13,6 +13,10 @@ export default [
     output: {
       dir: 'dist',
       format: 'es',
+      chunkFileNames: '[name].js',
+      manualChunks: {
+        'animated-icons': ['./src/animatedImages.ts']
+      }
     },
     plugins: [
       image(),

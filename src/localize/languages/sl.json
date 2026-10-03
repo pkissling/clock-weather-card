@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "AQI",
     "humidity": "vlažnost",
-    "feels-like": "Občutek temperature"
+    "feels-like": "Občutek temperature",
+    "outdoor": "Outdoor"
   }
 }

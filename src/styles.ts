@@ -3,8 +3,13 @@ import { css } from 'lit'
 export default css`
 
   ha-card {
-    --bar-height: 1.5rem;
+    --bar-height: 1.2rem;
     height: 100%;
+  }
+
+  .card-content {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
 
   clock-weather-card-today {
@@ -13,9 +18,9 @@ export default css`
 
   clock-weather-card-today-left {
     display: flex;
-    width: 35%;
+    flex-direction: column;
+    width: var(--today-left-width, 35%);
     align-items: center;
-    justify-content: center;
   }
 
   .grow-img {
@@ -23,36 +28,54 @@ export default css`
     max-height: 100%;
   }
 
+  .today-date {
+    width: 100%;
+    text-align: start;
+    display: block;
+    z-index: 3;
+    white-space: nowrap;
+    padding-left: 0.1rem;
+  #  opacity: 0.88;
+  }
+
+  .today-main-icon {
+    width: 100%;
+    height: calc(var(--today-center-height, 4rem) + 1rem);
+    object-fit: contain;
+    opacity: var(--today-icon-opacity, 1);
+    transform: scale(var(--today-icon-scale, 1));
+    transform-origin: center;
+  }
+
   clock-weather-card-today-right {
     display: flex;
-    width: 65%;
-    justify-content: space-around;
-    align-items: center;
+    width: var(--today-right-width, 65%);
+    align-items: stretch;
   }
 
   clock-weather-card-today-right-wrap {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-top {
     width: 100%;
     text-align: end;
     display: block;
+    z-index: 3;
   }
 
   clock-weather-card-today-right-wrap-center {
     display: flex;
-    height: 4rem;
-    font-size: 3.5rem;
+    flex: 1;
+    min-height: var(--today-center-height, 4rem);
+    font-size: var(--today-center-font-size, 3.5rem);
     white-space: nowrap;
     align-items: center;
     justify-content: center;
-  }
-
-  clock-weather-card-today-right-wrap-bottom {
-    display: flex;
-    justify-content: start;
+    transition: opacity 0.5s ease;
   }
 
   clock-weather-card-forecast {
@@ -63,7 +86,7 @@ export default css`
     display: grid;
     grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
     align-items: center;
-    grid-gap: 0.5rem;
+    grid-gap: 0.2rem;
   }
 
   forecast-text {
@@ -131,3 +154,4 @@ export default css`
     border-radius: 5px;
   }
 `
+

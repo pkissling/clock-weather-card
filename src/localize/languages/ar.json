@@ -28,6 +28,7 @@
   "misc": {
     "aqi": "مؤشر جودة الهواء",
     "humidity": "رطوبة",
-    "feels-like": "يشعر كأنه"
+    "feels-like": "يشعر كأنه",
+    "outdoor": "Outdoor"
   }
 }
