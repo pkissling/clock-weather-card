@@ -118,6 +118,7 @@ sections:
   header:
     hide: false
     animated_icons: true
+    weather_icon_type: line
     rows:
       - segments:
           - type: icon
@@ -176,7 +177,7 @@ sections:
 | `entity` | string | **yes** | - | Entity ID of your weather provider |
 | `title` | string | no | `null` | Title displayed at the top of the card |
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
-| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icon ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icons ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). Applies to all sections; each section can override it with its own `weather_icon_type`. |
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
@@ -193,6 +194,7 @@ Renders the large current-weather icon next to the configurable rows of segments
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the section. |
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
 | `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display. See [Row Options](#row-options). |
 
 #### `forecast_strip`
