@@ -20,6 +20,8 @@ abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForeca
   @consume({ context: configContext, subscribe: true }) @state() protected config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
   @state() protected forecasts: F[] = []
+  // Reflected so e2e tests can wait for the first forecast payload.
+  @property({ type: Boolean, reflect: true, attribute: 'data-loaded' }) private _loaded = false
 
   private subscription: (() => Promise<void>) | null = null
   private subscribedEntityId: string | null = null
@@ -78,10 +80,12 @@ abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForeca
         await this._unsubscribe()
         this.forecasts = []
       }
+      this._loaded = true
       return
     }
 
     if (this.subscription && this.subscribedEntityId === desiredEntityId) return
+    this._loaded = false
 
     if (this.subscription) {
       await this._unsubscribe()
@@ -96,6 +100,7 @@ abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForeca
         event => {
           if (token !== this.syncToken) return
           this.forecasts = this.normalizeForecasts(event.forecast ?? [])
+          this._loaded = true
         },
       )
       if (token !== this.syncToken) {
@@ -110,6 +115,7 @@ abstract class AbstractForecastSection<F extends WeatherForecast = WeatherForeca
       if (token === this.syncToken) {
         this.subscription = null
         this.subscribedEntityId = null
+        this._loaded = true
       }
       logger.error(`Error subscribing to ${this.forecastType} forecast`, e)
     }
