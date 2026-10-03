@@ -18,15 +18,20 @@ const __dirname = path.dirname(__filename)
 
 const HA_IMAGE = 'ghcr.io/home-assistant/home-assistant:stable'
 const HA_CONFIG_DIR = path.join(__dirname, 'ha-config')
-const DIST_DIR = path.join(__dirname, '..', '..', 'dist')
+const PROJECT_DIR = path.join(__dirname, '..', '..')
+const DIST_DIR = path.join(PROJECT_DIR, 'dist')
 
 export const TEST_DASHBOARD = 'clock-weather-card'
 
 export default async function globalSetup(): Promise<void> {
   assertDockerRunning()
 
+  // Inside the Playwright container every worktree is mounted at /work, so run-in-docker.sh passes the host path.
+  const containerName = createContainerName(process.env.E2E_PROJECT_DIR ?? PROJECT_DIR)
+  assertNoActiveRun(containerName)
+
   console.log('[HA Setup] Building card...')
-  execSync('yarn build', { cwd: path.join(__dirname, '..', '..'), stdio: 'inherit' })
+  execSync('yarn build', { cwd: PROJECT_DIR, stdio: 'inherit' })
 
   console.log('[HA Setup] Preparing HA config directory...')
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), `${E2E_ARTIFACT_NAME}-`))
@@ -48,7 +53,6 @@ export default async function globalSetup(): Promise<void> {
   removeStaleContainers()
   removeStaleTempEntries()
 
-  const containerName = createContainerName()
   console.log(`[HA Setup] Starting Home Assistant container ${containerName}...`)
   // `-p 127.0.0.1::8123` lets Docker pick a free host port, so concurrent
   // sessions never race for the same port.
@@ -91,6 +95,17 @@ function assertDockerRunning(): void {
     execSync('docker info', { stdio: 'ignore', timeout: 10_000 })
   } catch {
     throw new Error('[HA Setup] Docker daemon is not reachable — start Docker and retry.')
+  }
+}
+
+function assertNoActiveRun(containerName: string): void {
+  const existing = execSync(`docker ps -aq --filter name=^${containerName}$`, { encoding: 'utf-8' })
+    .trim()
+  if (existing) {
+    throw new Error(
+      `[HA Setup] An e2e run is already active in this worktree (container ${containerName}). ` +
+      `If it isn't, remove it with \`docker rm -f ${containerName}\`.`,
+    )
   }
 }
 
