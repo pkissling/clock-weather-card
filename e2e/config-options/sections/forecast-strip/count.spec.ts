@@ -63,7 +63,7 @@ test.describe('sections.forecast_strip.count', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_strip.count" has invalid value "0"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "0", expected a positive integer')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -79,7 +79,7 @@ test.describe('sections.forecast_strip.count', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_strip.count" has invalid value "-1"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "-1", expected a positive integer')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -95,7 +95,7 @@ test.describe('sections.forecast_strip.count', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_strip.count" has invalid value "3.5"')
+      .toContain('Config option "sections.forecast_strip.count" has invalid value "3.5", expected a positive integer')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })

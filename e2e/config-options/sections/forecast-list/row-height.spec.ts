@@ -46,7 +46,7 @@ test.describe('sections.forecast_list.row_height', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.row_height" has invalid value "tall"')
+      .toContain('Config option "sections.forecast_list.row_height" has invalid value "tall", expected a CSS length in px, rem, em, vh, vw or %')
   })
 
   test('updates the row height at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

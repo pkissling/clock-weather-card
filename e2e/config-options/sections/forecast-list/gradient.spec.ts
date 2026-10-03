@@ -24,7 +24,34 @@ test.describe('sections.forecast_list.gradient', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at "0""')
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at "0"", expected non-empty color strings')
+  })
+
+  test('rejects a gradient that is not a map', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            gradient: red
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "red", expected a map of percentages to colors')
+  })
+
+  test('rejects non-numeric gradient keys', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            gradient:
+              cold: "#0000ff"
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "key "cold"", expected numeric percentage keys')
   })
 
   test('swaps the gradient at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

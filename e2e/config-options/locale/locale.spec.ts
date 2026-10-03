@@ -129,7 +129,7 @@ test.describe('locale', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "locale" has invalid value "D"')
+      .toContain('Config option "locale" has invalid value "D", expected a BCP 47 language tag such as "en-US"')
   })
 
   test('updates the locale at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

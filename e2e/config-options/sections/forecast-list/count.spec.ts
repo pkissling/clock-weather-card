@@ -64,7 +64,7 @@ test.describe('sections.forecast_list.count', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.count" has invalid value "0"')
+      .toContain('Config option "sections.forecast_list.count" has invalid value "0", expected a positive integer')
     await expect(clockWeatherCard.locator('clock-weather-card-today'))
       .toHaveCount(0)
   })
@@ -80,7 +80,7 @@ test.describe('sections.forecast_list.count', () => {
     })
 
     expect(await cardErrorMessage())
-      .toContain('Config option "sections.forecast_list.count" has invalid value "3.5"')
+      .toContain('Config option "sections.forecast_list.count" has invalid value "3.5", expected a positive integer')
   })
 
   test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
