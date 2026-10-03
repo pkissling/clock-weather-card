@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.6](https://github.com/pkissling/clock-weather-card/compare/v2.9.5...v2.9.6) (2026-10-03)
+
+
+### Bug Fixes
+
+* Match the full forecast period for the current temperature ([#724](https://github.com/pkissling/clock-weather-card/issues/724)) ([3fbdac1](https://github.com/pkissling/clock-weather-card/commit/3fbdac14e9d50a0d8296bbad2a95b92091ce7215))
+
 ## [2.9.5](https://github.com/pkissling/clock-weather-card/compare/v2.9.4...v2.9.5) (2026-09-23)
 
 
