@@ -126,10 +126,12 @@ export default css`
     display: block;
   }
 
-  clock-weather-card-hourly-forecast-item .temperature {
+  clock-weather-card-hourly-forecast-item .label {
+    display: inline-flex;
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1;
+    --mdc-icon-size: 1em;
   }
 
   clock-weather-card-hourly-forecast-item .precipitation {

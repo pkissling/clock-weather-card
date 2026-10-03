@@ -30,6 +30,8 @@
     "humidity": "نمی",
     "feels-like": "Feels like",
     "now": "ابھی",
-    "today": "آج"
+    "today": "آج",
+    "sunrise": "طلوع آفتاب",
+    "sunset": "غروب آفتاب"
   }
 }

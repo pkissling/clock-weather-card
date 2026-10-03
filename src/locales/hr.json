@@ -30,6 +30,8 @@
     "humidity": "vlažnost",
     "feels-like": "Osjet temperature",
     "now": "Sada",
-    "today": "Danas"
+    "today": "Danas",
+    "sunrise": "Izlazak sunca",
+    "sunset": "Zalazak sunca"
   }
 }

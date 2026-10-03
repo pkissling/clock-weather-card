@@ -19,13 +19,13 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
     await expect(items)
       .toHaveCount(3)
     await expect(items.nth(0)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('23°C')
     await expect(items.nth(1)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('21°C')
     await expect(items.nth(2)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('20°C')
   })
 
@@ -45,13 +45,13 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
     await expect(items)
       .toHaveCount(3)
     await expect(items.nth(0)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('22.7°C')
     await expect(items.nth(1)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('21.4°C')
     await expect(items.nth(2)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('19.6°C')
   })
 
@@ -68,7 +68,7 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
     })
     const firstTemp = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
       .first()
-      .locator('.temperature')
+      .locator('.label')
     await expect(firstTemp)
       .toHaveText('22.7°C')
 
@@ -79,5 +79,18 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
 
     await expect(firstTemp)
       .toHaveText('23°C')
+  })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            round_temperatures: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_strip.round_temperatures" has invalid value "fals", expected true or false')
   })
 })

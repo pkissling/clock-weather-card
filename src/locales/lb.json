@@ -30,6 +30,8 @@
     "humidity": "Loftfiichtegkeet",
     "feels-like": "Gefillt",
     "now": "Elo",
-    "today": "Haut"
+    "today": "Haut",
+    "sunrise": "Sonnenopgank",
+    "sunset": "Sonnenënnergank"
   }
 }

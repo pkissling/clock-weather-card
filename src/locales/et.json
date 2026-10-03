@@ -30,6 +30,8 @@
     "humidity": "niiskus",
     "feels-like": "Tundub nagu",
     "now": "Praegu",
-    "today": "Täna"
+    "today": "Täna",
+    "sunrise": "Päikesetõus",
+    "sunset": "Päikeseloojang"
   }
 }

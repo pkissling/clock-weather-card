@@ -68,4 +68,17 @@ test.describe('sections.forecast_strip.animated_icons', () => {
       .first())
       .not.toHaveAttribute('src', staticSrc!)
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_strip.animated_icons" has invalid value "fals", expected true or false')
+  })
 })

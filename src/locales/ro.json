@@ -30,6 +30,8 @@
     "humidity": "umiditate",
     "feels-like": "Temp. resimțită",
     "now": "Acum",
-    "today": "Azi"
+    "today": "Azi",
+    "sunrise": "Răsărit",
+    "sunset": "Apus"
   }
 }

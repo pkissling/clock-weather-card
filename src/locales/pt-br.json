@@ -30,6 +30,8 @@
     "humidity": "umidade",
     "feels-like": "Sensação térmica",
     "now": "Agora",
-    "today": "Hoje"
+    "today": "Hoje",
+    "sunrise": "Nascer do sol",
+    "sunset": "Pôr do sol"
   }
 }

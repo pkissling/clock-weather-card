@@ -13,5 +13,8 @@ export const entityNotFound = (entityId: string): Error =>
 export const invalidConfigValue = (attribute: ConfigAttribute | string, value: string, expected: string): Error =>
   new Error(`Config option "${attribute}" has invalid value "${value}", expected ${expected}`)
 
+export const optionRequiresValue = (attribute: string, otherAttribute: string, otherValue: string): Error =>
+  new Error(`Config option "${attribute}" requires "${otherAttribute}" to be "${otherValue}"`)
+
 export const forecastNotSupported = (entityId: string, kind: ForecastType): Error =>
   new Error(`Entity "${entityId}" does not support ${kind} forecasts`)

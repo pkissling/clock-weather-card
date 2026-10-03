@@ -30,6 +30,8 @@
     "humidity": "humitat",
     "feels-like": "Sensació tèrmica",
     "now": "Ara",
-    "today": "Avui"
+    "today": "Avui",
+    "sunrise": "Sortida del sol",
+    "sunset": "Posta de sol"
   }
 }

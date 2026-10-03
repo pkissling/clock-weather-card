@@ -57,4 +57,17 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
       .locator('.dot'))
       .toHaveCount(1)
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            hide_current_temp_indicator: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_list.hide_current_temp_indicator" has invalid value "fals", expected true or false')
+  })
 })

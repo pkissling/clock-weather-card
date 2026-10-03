@@ -88,4 +88,17 @@ test.describe('sections.forecast_strip.hide', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
       .toHaveCount(0)
   })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            hide: fals
+      `,
+    })
+
+    expect(await cardErrorMessage())
+      .toContain('Config option "sections.forecast_strip.hide" has invalid value "fals", expected true or false')
+  })
 })

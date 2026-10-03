@@ -1,6 +1,7 @@
 import type { WeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
+import { hourlyForecast } from '../utils/test-utils'
 
 test.describe('forecast_strip section', () => {
   test('labels the entry immediately before "now" as the "Now" column and sources its data from that forecast', async ({ setupCard, clockWeatherCard }) => {
@@ -23,7 +24,7 @@ test.describe('forecast_strip section', () => {
       .toHaveText('Now')
     // 19:00 forecast temp (15), not the entity's 30°C.
     await expect(items.nth(0)
-      .locator('.temperature'))
+      .locator('.label'))
       .toHaveText('15°C')
     await expect(items.nth(0)
       .locator('.precipitation'))
@@ -267,5 +268,43 @@ test.describe('forecast_strip section', () => {
       .boundingBox()
     expect(third!.x - second!.x)
       .toBeLessThanOrEqual(58)
+  })
+
+  test('keeps the sunset column through its minute and drops it afterwards', async ({ page, setupCard, clockWeatherCard }) => {
+    const now = new Date('2025-09-14T18:40:00Z')
+    await setupCard({
+      date: now,
+      timeZone: 'UTC',
+      sun: { attributes: { next_setting: '2025-09-14T18:41:00+00:00', next_rising: '2025-09-15T05:13:00+00:00' } },
+      cardConfig: `
+        entity: weather.mock_weather
+        locale: en-GB
+      `,
+      weather: {
+        forecast_hourly: hourlyForecast(now, ['sunny', 'clear-night', 'clear-night'], () => ({ temperature: 18, precipitation_probability: 0 })),
+      },
+    })
+
+    const columns = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const sunset = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)')
+    await expect(columns.nth(0)
+      .locator('.time'))
+      .toHaveText('Now')
+    await expect(columns.nth(1)
+      .locator('.time'))
+      .toHaveText('18:41')
+    await expect(columns.nth(1)
+      .locator('.label ha-icon'))
+      .toHaveAttribute('icon', 'mdi:arrow-down')
+
+    await page.clock.setFixedTime(new Date('2025-09-14T18:41:00Z'))
+    await page.clock.runFor('01:00')
+    await expect(sunset)
+      .toHaveCount(1)
+
+    await page.clock.setFixedTime(new Date('2025-09-14T18:42:00Z'))
+    await page.clock.runFor('01:00')
+    await expect(sunset)
+      .toHaveCount(0)
   })
 })
