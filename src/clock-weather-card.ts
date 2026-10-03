@@ -1,5 +1,5 @@
 import '@/components/clock-weather-card-error'
-import '@/components/clock-weather-card-today'
+import '@/components/clock-weather-card-header'
 import '@/components/clock-weather-card-hourly-forecast'
 import '@/components/clock-weather-card-daily-forecast'
 
@@ -70,7 +70,7 @@ export class ClockWeatherCard extends LitElement {
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
           ${header.hidden ? '' : html`
-            <clock-weather-card-today .currentDate=${this.currentDate}></clock-weather-card-today>
+            <clock-weather-card-header .currentDate=${this.currentDate}></clock-weather-card-header>
           `}
           ${forecastStrip.hidden ? '' : html`
             <clock-weather-card-hourly-forecast .currentDate=${this.currentDate}></clock-weather-card-hourly-forecast>

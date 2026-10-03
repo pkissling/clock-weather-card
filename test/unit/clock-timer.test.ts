@@ -39,7 +39,7 @@ vi.mock('custom-card-helpers', () => ({
 vi.mock('@/styles', () => ({ default: '' }))
 vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, error: (): void => {} } }))
 vi.mock('@/service/translations-service', () => ({ default: { t: (l: string, k: string): string => `${l}:${k}` } }))
-vi.mock('@/components/clock-weather-card-today', () => ({}))
+vi.mock('@/components/clock-weather-card-header', () => ({}))
 vi.mock('@/utils/development', () => ({ isDev: false }))
 
 type CardInstance = Record<string, unknown>

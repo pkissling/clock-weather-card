@@ -6,7 +6,7 @@ test.describe('sections.header.animated_icons', () => {
       cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'sunny' },
     })
-    const src = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const src = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
     expect(src)
       .toBeTruthy()
@@ -19,14 +19,14 @@ test.describe('sections.header.animated_icons', () => {
       cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'rainy' },
     })
-    const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const staticSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       cardConfig: 'sections: { header: { animated_icons: true } }',
       weather: { state: 'rainy' },
     })
-    const animatedSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const animatedSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     expect(staticSrc)
@@ -41,12 +41,12 @@ test.describe('sections.header.animated_icons', () => {
       cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'rainy' },
     })
-    const staticSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const staticSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({ cardConfig: 'sections: { header: { animated_icons: true } }' })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img'))
       .not.toHaveAttribute('src', staticSrc!)
   })
 

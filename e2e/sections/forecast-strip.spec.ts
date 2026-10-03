@@ -80,7 +80,7 @@ test.describe('forecast_strip section', () => {
       .toBe(true)
   })
 
-  test('renders a horizontal divider between the today section and the hourly strip', async ({ setupCard, clockWeatherCard }) => {
+  test('renders a horizontal divider between the header section and the hourly strip', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {
         forecast_hourly: [
@@ -213,7 +213,7 @@ test.describe('forecast_strip section', () => {
       .toContainText('Entity "weather.mock_weather" does not support hourly forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
       .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
   })
 

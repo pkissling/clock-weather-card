@@ -7,14 +7,14 @@ test.describe('sun_entity', () => {
       sun: { state: 'above_horizon' },
       weather: { state: 'sunny' },
     })
-    const daySrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const daySrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       sun: { state: 'below_horizon' },
       weather: { state: 'sunny' },
     })
-    const nightSrc = await clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const nightSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     expect(daySrc)
@@ -29,7 +29,7 @@ test.describe('sun_entity', () => {
       sun: { state: 'above_horizon' },
       weather: { state: 'sunny' },
     })
-    const icon = clockWeatherCard.locator('clock-weather-card-today clock-weather-card-icon img')
+    const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
     const daySrc = await icon.getAttribute('src')
     expect(daySrc)
       .toBeTruthy()
@@ -52,7 +52,7 @@ test.describe('sun_entity', () => {
 
     expect(await cardErrorMessage())
       .toContain('Referenced entity sun.does_not_exist does not exist')
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
 

@@ -11,7 +11,7 @@ test.describe('sections.header.rows', () => {
     })
 
     // 3 rows.
-    await expect(clockWeatherCard.locator('clock-weather-card-today-details-row'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header-details-row'))
       .toHaveCount(3)
 
     // Row 1: thermometer icon, temperature, spacer, weather state, weather-cloudy icon.
@@ -91,7 +91,7 @@ test.describe('sections.header.rows', () => {
 
     expect(await cardErrorMessage())
       .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "spacer"')
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
 

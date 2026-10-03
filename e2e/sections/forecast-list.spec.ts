@@ -182,7 +182,7 @@ test.describe('forecast_list section', () => {
       .toContainText('Entity "weather.mock_weather" does not support daily forecasts')
     await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
       .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-today'))
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
   })
 

@@ -1,5 +1,5 @@
 import '@/components/clock-weather-card-icon'
-import '@/components/clock-weather-card-today-details'
+import '@/components/clock-weather-card-header-details'
 
 import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
@@ -13,8 +13,8 @@ import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import type { ResolvedConfig } from '@/types'
 
-@customElement('clock-weather-card-today')
-class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
+@customElement('clock-weather-card-header')
+class ClockWeatherCardHeader extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property({ attribute: false }) public currentDate!: DateTime
@@ -30,9 +30,9 @@ class ClockWeatherCardToday extends AbstractClockWeatherCardComponent {
         .animatedIcon=${this.config.header.animatedIcons}
         .weatherIconType=${this.config.header.weatherIconType}
       ></clock-weather-card-icon>
-      <clock-weather-card-today-details .currentDate=${this.currentDate}></clock-weather-card-today-details>
+      <clock-weather-card-header-details .currentDate=${this.currentDate}></clock-weather-card-header-details>
     `
   }
 }
 
-export default ClockWeatherCardToday
+export default ClockWeatherCardHeader
