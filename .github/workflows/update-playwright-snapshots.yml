@@ -5,40 +5,16 @@ on:
 
 jobs:
   update-snapshots:
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v6
 
-    - uses: actions/setup-node@v6
-      with:
-        node-version: 24
-
-    - name: Enable Corepack
-      run: corepack enable
-
-    - name: Install dependencies
-      run: yarn install
-
-    - name: Set up Docker (macOS)
-      if: runner.os == 'macOS'
-      uses: docker/setup-docker-action@v4
-
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
 
-    - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
-
     - name: Update snapshots
-      run: yarn playwright test --update-snapshots
-      env:
-        PLAYWRIGHT_HTML_OPEN: never
+      run: .github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots
 
     - name: Pull latest changes
       run: git pull --rebase
@@ -51,6 +27,6 @@ jobs:
         if git diff --staged --quiet; then
           echo "No snapshot changes to commit"
         else
-          git commit -m "chore: update ${{ runner.os }} playwright snapshots"
+          git commit -m "chore: update playwright snapshots"
           git push
         fi

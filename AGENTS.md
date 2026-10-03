@@ -30,9 +30,11 @@ yarn test:unit:watch    # watch mode
 ```
 yarn test:e2e                                   # full suite
 yarn test:e2e e2e/sections/daily-forecast.spec.ts   # single spec while iterating
-yarn playwright-ui                              # interactive Playwright UI
+yarn test:e2e:host                              # run on the host, skipping screenshot comparisons
+yarn playwright-ui                              # interactive Playwright UI (host, no screenshot comparisons)
 ```
 
+- `yarn test:e2e` runs Playwright inside the pinned Linux image (`.github/playwright-snapshots-helper/Dockerfile`), the same environment as CI, so screenshot tests pass on macOS and Linux alike. Host runs (`test:e2e:host`, `playwright-ui`) set no `E2E_IN_DOCKER`, so `toHaveScreenshot` assertions are skipped there.
 - Config: `playwright.config.ts`
 - Layout:
   - `e2e/config-options/<option>/` — behavior of a single top-level config option
@@ -56,7 +58,7 @@ yarn test:e2e
 
 ## Playwright snapshots
 
-If Playwright snapshots need to be updated, always regenerate them via `yarn test:e2e:update-snapshots`. This runs the tests inside a Linux Docker container so snapshots match those produced by GitHub Actions. Running Playwright directly on the host OS — including `yarn test:e2e --update-snapshots` — produces snapshots that diverge from CI and will fail the next CI run. **Never** pass `--update-snapshots` to `yarn test:e2e`.
+If Playwright snapshots need to be updated, always regenerate them via `yarn test:e2e:update-snapshots`. This runs the tests inside the same Linux Docker image as CI so snapshots match. **Never** run `playwright test --update-snapshots` directly on the host — it produces snapshots that diverge from CI.
 
 ## README maintenance
 
