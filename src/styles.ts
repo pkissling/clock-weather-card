@@ -85,18 +85,18 @@ export default css`
     margin: 0 2px;
   }
 
-  clock-weather-card-hourly-forecast {
+  clock-weather-card-forecast-strip {
     display: block;
   }
 
-  clock-weather-card-hourly-forecast .strip {
+  clock-weather-card-forecast-strip .strip {
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
   }
 
-  clock-weather-card-hourly-forecast-item {
+  clock-weather-card-forecast-strip-item {
     flex: 0 0 auto;
     min-width: 40px;
     display: flex;
@@ -105,17 +105,17 @@ export default css`
     padding: 4px 7px;
   }
 
-  clock-weather-card-hourly-forecast-item:first-of-type {
+  clock-weather-card-forecast-strip-item:first-of-type {
     padding-left: 0;
   }
 
-  clock-weather-card-hourly-forecast-item .time {
+  clock-weather-card-forecast-strip-item .time {
     font-size: 0.8rem;
     opacity: 0.7;
     line-height: 1;
   }
 
-  clock-weather-card-hourly-forecast-item clock-weather-card-icon {
+  clock-weather-card-forecast-strip-item clock-weather-card-icon {
     position: static;
     width: 40px;
     height: 40px;
@@ -124,13 +124,13 @@ export default css`
     display: block;
   }
 
-  clock-weather-card-hourly-forecast-item clock-weather-card-icon img {
+  clock-weather-card-forecast-strip-item clock-weather-card-icon img {
     width: 100%;
     height: 100%;
     display: block;
   }
 
-  clock-weather-card-hourly-forecast-item .label {
+  clock-weather-card-forecast-strip-item .label {
     display: inline-flex;
     font-size: 0.95rem;
     font-weight: 500;
@@ -138,7 +138,14 @@ export default css`
     --mdc-icon-size: 1em;
   }
 
-  clock-weather-card-hourly-forecast-item .precipitation {
+  clock-weather-card-forecast-strip-item .temperature-low {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  clock-weather-card-forecast-strip-item .precipitation {
     font-size: 0.72rem;
     opacity: 0.65;
     color: var(--info-color, #4a90d9);
@@ -150,72 +157,72 @@ export default css`
     margin-top: 2px;
   }
 
-  clock-weather-card-hourly-forecast-item .precipitation--monochrome {
+  clock-weather-card-forecast-strip-item .precipitation--monochrome {
     color: inherit;
   }
 
-  clock-weather-card-hourly-forecast-item .precipitation ha-icon {
+  clock-weather-card-forecast-strip-item .precipitation ha-icon {
     --mdc-icon-size: 1em;
     display: inline-flex;
   }
 
-  clock-weather-card-daily-forecast {
+  clock-weather-card-forecast-list {
     display: block;
   }
 
   /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
-  clock-weather-card-daily-forecast .rows {
+  clock-weather-card-forecast-list .rows {
     display: grid;
-    grid-template-columns: max-content var(--cwc-daily-row-height, 28px) max-content 1fr max-content;
-    grid-auto-rows: minmax(var(--cwc-daily-row-height, auto), auto);
+    grid-template-columns: max-content var(--cwc-list-row-height, 28px) max-content 1fr max-content;
+    grid-auto-rows: minmax(var(--cwc-list-row-height, auto), auto);
     align-items: center;
     column-gap: 8px;
     font-size: 0.9rem;
     line-height: 1;
   }
 
-  clock-weather-card-daily-forecast-item {
-    --_bar-thickness: var(--cwc-daily-bar-thickness, calc(var(--cwc-daily-row-height, 28px) * 0.6));
+  clock-weather-card-forecast-list-item {
+    --_bar-thickness: var(--cwc-list-bar-thickness, calc(var(--cwc-list-row-height, 28px) * 0.6));
     display: contents;
   }
 
-  clock-weather-card-daily-forecast-item .day-label {
+  clock-weather-card-forecast-list-item .label {
     font-weight: 500;
     opacity: 0.9;
     white-space: nowrap;
   }
 
-  clock-weather-card-daily-forecast-item clock-weather-card-icon {
+  clock-weather-card-forecast-list-item clock-weather-card-icon {
     position: static;
-    width: var(--cwc-daily-row-height, 28px);
-    height: var(--cwc-daily-row-height, 28px);
+    width: var(--cwc-list-row-height, 28px);
+    height: var(--cwc-list-row-height, 28px);
     margin: 0;
     right: 0;
     display: block;
   }
 
-  clock-weather-card-daily-forecast-item clock-weather-card-icon img {
+  clock-weather-card-forecast-list-item clock-weather-card-icon img {
     width: 100%;
     height: 100%;
     display: block;
   }
 
-  clock-weather-card-daily-forecast-item .temperature-low,
-  clock-weather-card-daily-forecast-item .temperature-high {
+  clock-weather-card-forecast-list-item .temperature-low,
+  clock-weather-card-forecast-list-item .temperature-high {
     font-variant-numeric: tabular-nums;
     opacity: 0.85;
     line-height: 1;
   }
 
-  clock-weather-card-daily-forecast-item .temperature-low {
+  clock-weather-card-forecast-list-item .temperature-low {
     text-align: right;
   }
 
-  clock-weather-card-daily-forecast-item .temperature-high {
+  clock-weather-card-forecast-list-item .temperature-high {
     text-align: left;
   }
 
-  clock-weather-card-daily-forecast-item .bar-track {
+  clock-weather-card-forecast-list-item .bar-track {
     position: relative;
     height: var(--_bar-thickness);
     min-height: 8px;
@@ -223,14 +230,14 @@ export default css`
     border-radius: 999px;
   }
 
-  clock-weather-card-daily-forecast-item .bar-fill {
+  clock-weather-card-forecast-list-item .bar-fill {
     position: absolute;
     top: 0;
     bottom: 0;
     border-radius: 999px;
   }
 
-  clock-weather-card-daily-forecast-item .dot {
+  clock-weather-card-forecast-list-item .dot {
     position: absolute;
     top: 50%;
     width: calc(var(--_bar-thickness) + 8px);

@@ -7,7 +7,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-14T00:00:00+00:00', condition: 'sunny', templow: 10, temperature: 20, precipitation_probability: 0 },
 ]
 
-const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
+const LIST_ICON = 'clock-weather-card-forecast-list-item clock-weather-card-icon img'
 
 test.describe('sections.forecast_list.weather_icon_type', () => {
   test('falls back to the top-level weather_icon_type by default', async ({ setupCard, clockWeatherCard }) => {
@@ -19,7 +19,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       `,
       weather: { forecast_daily: DAILY },
     })
-    const lineSrc = await clockWeatherCard.locator(DAILY_ICON)
+    const lineSrc = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .getAttribute('src')
 
@@ -31,7 +31,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       `,
       weather: { forecast_daily: DAILY },
     })
-    const fillSrc = await clockWeatherCard.locator(DAILY_ICON)
+    const fillSrc = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .getAttribute('src')
 
@@ -51,7 +51,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       `,
       weather: { forecast_daily: DAILY },
     })
-    const inheritedSrc = await clockWeatherCard.locator(DAILY_ICON)
+    const inheritedSrc = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .getAttribute('src')
 
@@ -66,7 +66,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       `,
       weather: { forecast_daily: DAILY },
     })
-    const overrideSrc = await clockWeatherCard.locator(DAILY_ICON)
+    const overrideSrc = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .getAttribute('src')
 
@@ -101,7 +101,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       `,
       weather: { forecast_daily: DAILY },
     })
-    const lineSrc = await clockWeatherCard.locator(DAILY_ICON)
+    const lineSrc = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .getAttribute('src')
 
@@ -116,7 +116,7 @@ test.describe('sections.forecast_list.weather_icon_type', () => {
       weather: { forecast_daily: DAILY },
     })
 
-    await expect(clockWeatherCard.locator(DAILY_ICON)
+    await expect(clockWeatherCard.locator(LIST_ICON)
       .first())
       .not.toHaveAttribute('src', lineSrc!)
   })

@@ -94,7 +94,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
     forecast_strip?: {
       hide?: boolean
       weather_entity?: string
-      forecast_type?: 'hourly'
+      forecast_type?: SectionForecastType
       count?: number
       animated_icons?: boolean
       round_temperatures?: boolean
@@ -104,7 +104,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
     forecast_list?: {
       hide?: boolean
       weather_entity?: string
-      forecast_type?: 'daily'
+      forecast_type?: SectionForecastType
       count?: number
       row_height?: string
       bar_thickness?: string
@@ -139,6 +139,7 @@ export interface ResolvedHeaderConfig {
 export interface ResolvedForecastStripConfig {
   hidden: boolean
   entity: string
+  forecastType: SectionForecastType
   count: number
   animatedIcons: boolean
   roundTemperatures: boolean
@@ -149,6 +150,7 @@ export interface ResolvedForecastStripConfig {
 export interface ResolvedForecastListConfig {
   hidden: boolean
   entity: string
+  forecastType: SectionForecastType
   count: number
   animatedIcons: boolean
   roundTemperatures: boolean
@@ -183,6 +185,7 @@ export interface WeatherForecast {
   datetime: string
   temperature: number
   condition: string
+  templow?: number
   precipitation_probability?: number | null
 }
 
@@ -190,7 +193,7 @@ export interface DailyWeatherForecast extends WeatherForecast {
   templow: number
 }
 
-export type HourlyForecastItem = {
+export type ForecastStripItem = {
   label: string
   condition: string
   isNight: boolean
@@ -199,8 +202,8 @@ export type HourlyForecastItem = {
   precipitationProbability: number | null
   showPrecipitation: boolean
 } & (
-  | { temperature: number, temperatureUnit: string | null, sunEvent?: never }
-  | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureUnit?: never }
+  | { temperature: number, temperatureLow: number | null, temperatureUnit: string | null, sunEvent?: never }
+  | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }
 )
 
 export interface GradientStop {
@@ -208,7 +211,7 @@ export interface GradientStop {
   color: string
 }
 
-export interface DailyForecastItem {
+export interface ForecastListItem {
   label: string
   condition: string
   isNight: boolean
@@ -237,6 +240,9 @@ export interface HumiditySensor extends HassEntity {
 }
 
 export type ForecastType = 'hourly' | 'daily' | 'twice_daily'
+
+export const SECTION_FORECAST_TYPES = ['hourly', 'daily'] as const satisfies readonly ForecastType[]
+export type SectionForecastType = typeof SECTION_FORECAST_TYPES[number]
 
 export interface WeatherForecastEvent {
   forecast?: WeatherForecast[]

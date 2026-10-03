@@ -12,7 +12,7 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
       weather: { temperature: 8, forecast_daily: DAILY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.dot'))
       .toHaveCount(1)
@@ -29,9 +29,9 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
       weather: { temperature: 8, forecast_daily: DAILY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item .dot'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item .dot'))
       .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item .bar-fill'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item .bar-fill'))
       .toHaveCount(DAILY.length)
   })
 
@@ -45,14 +45,14 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
       `,
       weather: { temperature: 8, forecast_daily: DAILY },
     })
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item .dot'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item .dot'))
       .toHaveCount(0)
 
     await setupCard({
       weather: { temperature: 8, forecast_daily: DAILY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.dot'))
       .toHaveCount(1)

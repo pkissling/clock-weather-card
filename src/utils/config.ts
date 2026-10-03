@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
-import { SEGMENT_TYPES, WEATHER_ICON_TYPES } from '@/types'
+import { SECTION_FORECAST_TYPES, SEGMENT_TYPES, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
@@ -76,8 +76,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertEnumValue('sections.header.weather_icon_type', config.sections?.header?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_strip.weather_icon_type', config.sections?.forecast_strip?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
-  assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, ['hourly'])
-  assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, ['daily'])
+  assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, SECTION_FORECAST_TYPES)
+  assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, SECTION_FORECAST_TYPES)
   config.sections?.header?.rows?.forEach((row, i) => {
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
@@ -143,6 +143,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     forecastStrip: {
       hidden: strip?.hide ?? false,
       entity: strip?.weather_entity ?? config.entity,
+      forecastType: strip?.forecast_type ?? 'hourly',
       count: strip?.count ?? 24,
       animatedIcons: strip?.animated_icons ?? false,
       roundTemperatures: strip?.round_temperatures ?? true,
@@ -152,6 +153,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     forecastList: {
       hidden: list?.hide ?? false,
       entity: list?.weather_entity ?? config.entity,
+      forecastType: list?.forecast_type ?? 'daily',
       count: list?.count ?? 5,
       rowHeight: list?.row_height ?? null,
       barThickness: list?.bar_thickness ?? '60%',

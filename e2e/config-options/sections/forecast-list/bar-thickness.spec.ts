@@ -6,7 +6,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 4, temperature: 12, precipitation_probability: 0 },
 ]
 
-const BAR_TRACK = 'clock-weather-card-daily-forecast-item .bar-track'
+const BAR_TRACK = 'clock-weather-card-forecast-list-item .bar-track'
 
 test.describe('sections.forecast_list.bar_thickness', () => {
   test('uses 60% of row_height by default', async ({ setupCard, clockWeatherCard }) => {

@@ -31,9 +31,9 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(SECONDARY_HOURLY.length)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
       .first()
       .locator('.label'))
       .toHaveText('12°C')
@@ -51,7 +51,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await cardErrorMessage()
       .toContain('Referenced entity "weather.does_not_exist" does not exist')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toHaveCount(0)
   })
 
@@ -64,7 +64,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       forecast_hourly: SECONDARY_HOURLY,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
 
     await setupCard({
@@ -77,9 +77,9 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(SECONDARY_HOURLY.length)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
       .first())
       .toContainText('12')
   })
@@ -101,10 +101,10 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-strip')
     await cardErrorMessage(section)
       .toBe('Entity "weather.mock_weather_2" does not support hourly forecasts')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(0)
 
     await setupCard({
@@ -119,7 +119,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await cardErrorMessage(section)
       .toBeNull()
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
   })
 
@@ -134,8 +134,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
 
-    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-strip')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
     await cardErrorMessage(section)
       .toBeNull()
@@ -152,7 +152,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await cardErrorMessage(section)
       .toBe('Entity "weather.mock_weather_2" does not support hourly forecasts')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(0)
   })
 })

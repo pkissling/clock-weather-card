@@ -19,7 +19,7 @@ test('default gradient', async ({ setupCard, clockWeatherCard }) => {
     `,
     weather: { forecast_daily: DAILY },
   })
-  await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+  await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
     .toHaveScreenshot()
 })
 
@@ -36,7 +36,7 @@ test('custom gradient', async ({ setupCard, clockWeatherCard }) => {
     `,
     weather: { forecast_daily: DAILY },
   })
-  await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+  await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
     .toHaveScreenshot()
 })
 
@@ -53,7 +53,7 @@ test('gradient narrower than the bar range', async ({ setupCard, clockWeatherCar
     `,
     weather: { forecast_daily: DAILY },
   })
-  await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+  await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
     .toHaveScreenshot()
 })
 
@@ -69,6 +69,6 @@ test('single stop gradient', async ({ setupCard, clockWeatherCard }) => {
     `,
     weather: { forecast_daily: DAILY },
   })
-  await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+  await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
     .toHaveScreenshot()
 })

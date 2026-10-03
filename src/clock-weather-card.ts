@@ -1,7 +1,7 @@
 import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-header'
-import '@/components/clock-weather-card-hourly-forecast'
-import '@/components/clock-weather-card-daily-forecast'
+import '@/components/clock-weather-card-forecast-strip'
+import '@/components/clock-weather-card-forecast-list'
 
 import { provide } from '@lit/context'
 import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
@@ -74,10 +74,10 @@ export class ClockWeatherCard extends LitElement {
             <clock-weather-card-header .currentDate=${this.currentDate}></clock-weather-card-header>
           `}
           ${forecastStrip.hidden ? '' : html`
-            <clock-weather-card-hourly-forecast .currentDate=${this.currentDate}></clock-weather-card-hourly-forecast>
+            <clock-weather-card-forecast-strip .currentDate=${this.currentDate}></clock-weather-card-forecast-strip>
           `}
           ${forecastList.hidden ? '' : html`
-            <clock-weather-card-daily-forecast .currentDate=${this.currentDate}></clock-weather-card-daily-forecast>
+            <clock-weather-card-forecast-list .currentDate=${this.currentDate}></clock-weather-card-forecast-list>
           `}
         </div>
       </ha-card>

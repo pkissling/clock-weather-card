@@ -16,7 +16,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 - **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `weather_icon`, `spacer`).
 - **Three independent sections** — `header` (clock, date, current weather), `forecast_strip` (horizontally scrolling columns) and `forecast_list` (vertical rows with temperature bars), each of which can be shown or hidden on its own via `hide`.
-- **Hourly or daily per section** — `forecast_type` selects whether the strip's columns and the list's rows show hourly or daily forecast data.
+- **Interchangeable hourly / daily modes** — `forecast_type` (`hourly` | `daily`) is set independently on `forecast_strip` and `forecast_list`, so the strip can show upcoming days and the list upcoming hours (e.g. a daily strip above an hourly list).
 - **Two new icon styles** — `flat` and `monochrome` join `line` and `fill`, courtesy of [meteocons v3](https://github.com/basmilius/meteocons).
 - **Animated icons toggle** — `animated_icons` option per section (default `true` for the header, `false` for the forecast sections).
 - **Performance — smaller bundle** — bundle splitting drops the initial JS from ~302 KB to **~98 KB** gzip; static and animated icons stream in as separate chunks on demand. Keeps the main thread responsive on low-power devices (e.g. NSPanel Pro).
@@ -199,41 +199,47 @@ Renders the large current-weather icon next to the configurable rows of segments
 
 #### `forecast_strip`
 
-Renders a horizontally scrolling strip of upcoming hours (time, weather icon, temperature, precipitation probability) below the header. Precipitation probabilities are rounded to the nearest 10%; hours at 0% show `0%`, but the row is hidden entirely when every visible hour rounds to 0%. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` supported feature — if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and precipitation probability. Precipitation probabilities are rounded to the nearest 10%; columns at 0% show `0%`, but the row is hidden entirely when every visible column rounds to 0%. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` — if the selected entity does not, the section renders an inline warning instead.
 
-The first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
+In hourly mode, the first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
-When the next sunrise or sunset (taken from `sun_entity`) falls within the visible hours, an extra column with its exact time and an up (sunrise) or down (sunset) arrow is inserted at the matching position. These columns count toward `count`.
+In daily mode, the first column is labeled "Today" (localized) and the others show the weekday. Each column shows the day's high temperature with the low below it.
+
+In hourly mode, when the next sunrise or sunset (taken from `sun_entity`) falls within the visible hours, an extra column with its exact time and an up (sunrise) or down (sunset) arrow is inserted at the matching position. These columns count toward `count`.
 
 When the configured columns do not fit the card width, the strip scrolls horizontally (swipe, trackpad, Shift + mouse wheel, or the thin scrollbar below the strip).
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
-| `weather_entity` | string | no | top-level `entity` | Weather entity whose hourly forecast is displayed. Falls back to the card's main `entity` when not set. |
-| `forecast_type` | `hourly` | no | `hourly` | Forecast data shown in the strip. Only `hourly` is supported currently. |
-| `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
-| `animated_icons` | boolean | no | `false` | Whether the per-hour weather icons should be animated. Defaults to `false` to keep the strip lightweight. |
+| `weather_entity` | string | no | top-level `entity` | Weather entity whose forecast is displayed. Falls back to the card's main `entity` when not set. |
+| `forecast_type` | `hourly` \| `daily` | no | `hourly` | Forecast data shown in the strip. |
+| `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now"/"Today" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
+| `animated_icons` | boolean | no | `false` | Whether the strip's weather icons should be animated. Defaults to `false` to keep the strip lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, temperatures in the strip are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
 | `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
 
 #### `forecast_list`
 
-Renders a vertical list of upcoming days below the forecast strip. Each row shows the day name, a weather icon, the day's low and high temperatures, and a horizontal temperature bar. All bars share a single axis from the lowest low to the highest high across the visible days, and each bar's gradient covers the configured color ramp clipped to that day's range. Today's row is labeled "Today" (localized) and shows a dot indicator at the current temperature on its bar.
+Renders a vertical list of upcoming days (`forecast_type: daily`, default) or hours (`forecast_type: hourly`) below the forecast strip. Each row shows a label, a weather icon, a low and high temperature, and a horizontal temperature bar. All bars share a single axis from the lowest low to the highest high across the visible rows, and each bar's gradient covers the configured color ramp clipped to that row's range.
 
-Requires a weather entity that advertises the `FORECAST_DAILY` supported feature — if the selected entity does not, the section renders an inline warning instead.
+In daily mode, each row spans the day's low and high. Today's row is labeled "Today" (localized) and shows a dot indicator at the current temperature on its bar.
+
+In hourly mode, the first row is labeled "Now" and the others show the hour. Each row's bar spans from the previous hour's temperature to this hour's; the "Now" row starts from the current temperature and shows the current-temperature dot.
+
+Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOURLY` supported feature, matching `forecast_type` — if the selected entity does not, the section renders an inline warning instead.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
-| `weather_entity` | string | no | top-level `entity` | Weather entity whose daily forecast is displayed. Falls back to the card's main `entity` when not set. |
-| `forecast_type` | `daily` | no | `daily` | Forecast data shown in the list. Only `daily` is supported currently. |
-| `count` | number | no | `5` | Maximum number of day rows to render, starting from today. Fewer are shown if the provider returns less. |
+| `weather_entity` | string | no | top-level `entity` | Weather entity whose forecast is displayed. Falls back to the card's main `entity` when not set. |
+| `forecast_type` | `daily` \| `hourly` | no | `daily` | Forecast data shown in the list. |
+| `count` | number | no | `5` | Maximum number of rows to render, starting from today (daily) or the current hour (hourly). Fewer are shown if the provider returns less. |
 | `row_height` | string | no | `28px` | CSS length controlling the height of each day row. Drives both the icon size and the row's minimum height. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%`. |
 | `bar_thickness` | string | no | `60%` | CSS length controlling the thickness of the temperature bar. A percentage is relative to `row_height` (so the bar scales with the row); absolute units (`px`, `rem`, `em`, `vh`, `vw`) set a fixed thickness. The current-temperature dot scales with it. Thicker bars reduce the visible gap between adjacent rows. |
-| `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row is not rendered. |
-| `animated_icons` | boolean | no | `false` | Whether the per-day weather icons should be animated. Defaults to `false` to keep the section lightweight. |
+| `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row (daily) or the "Now" row (hourly) is not rendered. |
+| `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated. Defaults to `false` to keep the section lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast list. Falls back to the card's main `weather_icon_type` when unset. |
 | `gradient` | map | no | built-in ramp (see below) | Map of temperature (in °C, regardless of the weather entity's unit) → CSS color (hex recommended) used to colorize the bars. Colors are linearly interpolated between adjacent stops. |

@@ -15,7 +15,7 @@ test.describe('sections.forecast_list.round_temperatures', () => {
       weather: { temperature: 10, forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.nth(0)
       .locator('.temperature-low'))
       .toHaveText('5°C')
@@ -42,7 +42,7 @@ test.describe('sections.forecast_list.round_temperatures', () => {
       weather: { temperature: 10, forecast_daily: DAILY },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.nth(0)
       .locator('.temperature-low'))
       .toHaveText('5.4°C')
@@ -62,7 +62,7 @@ test.describe('sections.forecast_list.round_temperatures', () => {
       `,
       weather: { temperature: 10, forecast_daily: DAILY },
     })
-    const firstHigh = clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    const firstHigh = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.temperature-high')
     await expect(firstHigh)

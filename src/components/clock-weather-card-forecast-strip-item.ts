@@ -5,14 +5,14 @@ import { html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import type { HourlyForecastItem } from '@/types'
+import type { ForecastStripItem } from '@/types'
 
-@customElement('clock-weather-card-hourly-forecast-item')
-class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public item!: HourlyForecastItem
+@customElement('clock-weather-card-forecast-strip-item')
+class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponent {
+  @property({ attribute: false }) public item!: ForecastStripItem
 
   public render(): TemplateResult {
-    const { label, condition, isNight, animatedIcon, weatherIconType, temperature, temperatureUnit, sunEvent, precipitationProbability, showPrecipitation } = this.item
+    const { label, condition, isNight, animatedIcon, weatherIconType, temperature, temperatureLow, temperatureUnit, sunEvent, precipitationProbability, showPrecipitation } = this.item
     const precipClass = weatherIconType === 'monochrome' ? 'precipitation precipitation--monochrome' : 'precipitation'
 
     return html`
@@ -26,6 +26,7 @@ class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardCompone
       ${sunEvent
     ? html`<span class="label"><ha-icon icon=${sunEvent.kind === 'sunrise' ? 'mdi:arrow-up' : 'mdi:arrow-down'} title=${sunEvent.label} aria-label=${sunEvent.label}></ha-icon></span>`
     : html`<span class="label">${temperature}${temperatureUnit}</span>`}
+      ${temperatureLow === null || temperatureLow === undefined ? nothing : html`<span class="temperature-low">${temperatureLow}${temperatureUnit}</span>`}
       ${showPrecipitation
     ? html`<span class=${precipClass}>${precipitationProbability !== null ? html`<ha-icon icon="mdi:water"></ha-icon>${precipitationProbability}%` : nothing}</span>`
     : nothing}
@@ -33,4 +34,4 @@ class ClockWeatherCardHourlyForecastItem extends AbstractClockWeatherCardCompone
   }
 }
 
-export default ClockWeatherCardHourlyForecastItem
+export default ClockWeatherCardForecastStripItem

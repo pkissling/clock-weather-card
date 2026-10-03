@@ -5,11 +5,11 @@ import { html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import type { DailyForecastItem } from '@/types'
+import type { ForecastListItem } from '@/types'
 
-@customElement('clock-weather-card-daily-forecast-item')
-class ClockWeatherCardDailyForecastItem extends AbstractClockWeatherCardComponent {
-  @property({ attribute: false }) public item!: DailyForecastItem
+@customElement('clock-weather-card-forecast-list-item')
+class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent {
+  @property({ attribute: false }) public item!: ForecastListItem
 
   public render(): TemplateResult {
     const {
@@ -26,7 +26,7 @@ class ClockWeatherCardDailyForecastItem extends AbstractClockWeatherCardComponen
     const dotStyle = `left: ${currentTempPercent}%;`
 
     return html`
-      <span class="day-label">${label}</span>
+      <span class="label">${label}</span>
       <clock-weather-card-icon
         .weatherState=${condition}
         .isNight=${isNight}
@@ -43,4 +43,4 @@ class ClockWeatherCardDailyForecastItem extends AbstractClockWeatherCardComponen
   }
 }
 
-export default ClockWeatherCardDailyForecastItem
+export default ClockWeatherCardForecastListItem

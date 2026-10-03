@@ -16,7 +16,7 @@ test.describe('forecast_strip section', () => {
       weather: { state: 'sunny', temperature: 30, forecast_hourly: forecasts },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(2)
     await expect(items.nth(0)
@@ -42,7 +42,7 @@ test.describe('forecast_strip section', () => {
       weather: { state: 'rainy', temperature: 22, forecast_hourly: future },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(future.length)
     await expect(items.nth(0)
@@ -65,7 +65,7 @@ test.describe('forecast_strip section', () => {
       weather: { temperature: 22, forecast_hourly: forecasts },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     // 19:00 (Now) + 20:00 + 21:00 = 3 items.
     await expect(items)
       .toHaveCount(3)
@@ -89,7 +89,7 @@ test.describe('forecast_strip section', () => {
       },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast > clock-weather-card-divider[orientation="horizontal"]'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip > clock-weather-card-divider[orientation="horizontal"]'))
       .toHaveCount(1)
   })
 
@@ -107,9 +107,9 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
       .toHaveCount(0)
   })
 
@@ -125,11 +125,11 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(3)
     // None of the columns should render a .precipitation span at all.
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
       .toHaveCount(0)
   })
 
@@ -146,10 +146,10 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(4)
-    const precip = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
     await expect(precip)
       .toHaveText(['0%', '70%', '0%', ''])
   })
@@ -167,7 +167,7 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    const precip = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation')
+    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
     await expect(precip)
       .toHaveCount(4)
     await expect(precip.nth(0))
@@ -191,9 +191,9 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item .precipitation'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
       .toHaveCount(0)
   })
 
@@ -207,12 +207,12 @@ test.describe('forecast_strip section', () => {
       },
     })
 
-    const section = clockWeatherCard.locator('clock-weather-card-hourly-forecast')
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-strip')
     await expect(section)
       .toBeVisible()
     await cardErrorMessage(section)
       .toBe('Entity "weather.mock_weather" does not support hourly forecasts')
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
@@ -233,7 +233,7 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(2)
     await expect(items.nth(0)
@@ -247,7 +247,7 @@ test.describe('forecast_strip section', () => {
 
   test('scrolls horizontally when the hours exceed the card width', async ({ setupCard, clockWeatherCard, page }) => {
     await setupCard({ expectedIcons: 20 })
-    const strip = clockWeatherCard.locator('clock-weather-card-hourly-forecast .strip')
+    const strip = clockWeatherCard.locator('clock-weather-card-forecast-strip .strip')
     const metrics = await strip.evaluate(el => ({ scrollWidth: el.scrollWidth, clientWidth: el.clientWidth }))
     expect(metrics.scrollWidth)
       .toBeGreaterThan(metrics.clientWidth)
@@ -261,7 +261,7 @@ test.describe('forecast_strip section', () => {
   test('packs hourly columns tightly (at most 58px per column for typical content)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({})
 
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     // Distance between the left edges of two neighbouring non-"Now" columns (the "Now" column has no left padding).
     const second = await items.nth(1)
       .boundingBox()
@@ -286,8 +286,8 @@ test.describe('forecast_strip section', () => {
       },
     })
 
-    const columns = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
-    const sunset = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:has(.label ha-icon)')
+    const columns = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+    const sunset = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:has(.label ha-icon)')
     await expect(columns.nth(0)
       .locator('.time'))
       .toHaveText('Now')

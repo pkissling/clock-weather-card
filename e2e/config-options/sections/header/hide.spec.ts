@@ -19,12 +19,12 @@ test.describe('sections.header.hide', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
       .first())
       .toBeVisible()
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast > clock-weather-card-divider'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip > clock-weather-card-divider'))
       .toBeHidden()
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast > clock-weather-card-divider'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list > clock-weather-card-divider'))
       .toBeVisible()
   })
 

@@ -18,7 +18,7 @@ test.describe('sections.forecast_strip.count', () => {
       weather: { forecast_hourly: makeHourly(30) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(24)
   })
 
@@ -33,7 +33,7 @@ test.describe('sections.forecast_strip.count', () => {
       weather: { forecast_hourly: makeHourly(10) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(3)
   })
 
@@ -48,7 +48,7 @@ test.describe('sections.forecast_strip.count', () => {
       weather: { forecast_hourly: makeHourly(5) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(3)
   })
 
@@ -110,7 +110,7 @@ test.describe('sections.forecast_strip.count', () => {
       `,
       weather: { forecast_hourly: makeHourly(10) },
     })
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(4)
 
     await setupCard({
@@ -123,7 +123,7 @@ test.describe('sections.forecast_strip.count', () => {
       weather: { forecast_hourly: makeHourly(10) },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-hourly-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(7)
   })
 })

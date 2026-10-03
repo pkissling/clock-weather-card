@@ -170,7 +170,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     .poll(() => card.evaluate((el, [entity, token]) =>
       el.localName === 'hui-error-card' || (el as unknown as { hass?: HomeAssistant }).hass?.states[entity]?.state === token, [SYNC_ENTITY, syncToken]))
     .toBe(true)
-  await expect(card.locator('clock-weather-card-daily-forecast:not([data-loaded]), clock-weather-card-hourly-forecast:not([data-loaded])'))
+  await expect(card.locator('clock-weather-card-forecast-list:not([data-loaded]), clock-weather-card-forecast-strip:not([data-loaded])'))
     .toHaveCount(0)
 
   await waitForIconsSettled(page, opts?.expectedIcons ?? 1)

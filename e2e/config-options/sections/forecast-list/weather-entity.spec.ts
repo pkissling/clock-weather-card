@@ -31,9 +31,9 @@ test.describe('sections.forecast_list.weather_entity', () => {
       weather: { forecast_daily: PRIMARY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(SECONDARY.length)
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.temperature-high'))
       .toHaveText('0°C')
@@ -51,7 +51,7 @@ test.describe('sections.forecast_list.weather_entity', () => {
 
     await cardErrorMessage()
       .toContain('Referenced entity "weather.does_not_exist" does not exist')
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(0)
   })
 
@@ -65,7 +65,7 @@ test.describe('sections.forecast_list.weather_entity', () => {
       supported_features: WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(PRIMARY.length)
 
     await setupCard({
@@ -78,7 +78,7 @@ test.describe('sections.forecast_list.weather_entity', () => {
       weather: { forecast_daily: PRIMARY },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(SECONDARY.length)
   })
 })

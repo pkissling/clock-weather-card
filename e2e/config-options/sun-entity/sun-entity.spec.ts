@@ -79,7 +79,7 @@ test.describe('sun_entity', () => {
     })
 
     // Hour columns only: the 18:00 sunset column sits between 17:00 and 19:00.
-    const items = clockWeatherCard.locator('clock-weather-card-hourly-forecast-item:not(:has(.label ha-icon))')
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:not(:has(.label ha-icon))')
     await expect(items)
       .toHaveCount(3)
 

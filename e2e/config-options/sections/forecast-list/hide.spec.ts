@@ -5,9 +5,9 @@ test.describe('sections.forecast_list.hide', () => {
   test('renders the daily forecast section by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard()
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(1)
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast-item'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(5)
   })
 
@@ -21,7 +21,7 @@ test.describe('sections.forecast_list.hide', () => {
       `,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(0)
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(1)
@@ -31,7 +31,7 @@ test.describe('sections.forecast_list.hide', () => {
     await setupCard({
       weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
     })
-    const section = clockWeatherCard.locator('clock-weather-card-daily-forecast')
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-list')
     await expect(section)
       .toBeVisible()
     await cardErrorMessage(section)
@@ -47,13 +47,13 @@ test.describe('sections.forecast_list.hide', () => {
       weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(0)
   })
 
   test('removes the section at runtime when hide flips to true (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard()
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(1)
 
     await setupCard({
@@ -65,7 +65,7 @@ test.describe('sections.forecast_list.hide', () => {
       `,
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-daily-forecast'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))
       .toHaveCount(0)
   })
 

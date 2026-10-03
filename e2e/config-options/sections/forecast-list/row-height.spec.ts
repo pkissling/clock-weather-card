@@ -6,7 +6,7 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 4, temperature: 12, precipitation_probability: 0 },
 ]
 
-const DAILY_ICON = 'clock-weather-card-daily-forecast-item clock-weather-card-icon img'
+const LIST_ICON = 'clock-weather-card-forecast-list-item clock-weather-card-icon img'
 
 test.describe('sections.forecast_list.row_height', () => {
   test('applies the configured row height to the icon and the row', async ({ setupCard, clockWeatherCard }) => {
@@ -20,7 +20,7 @@ test.describe('sections.forecast_list.row_height', () => {
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
-    const iconBox = await clockWeatherCard.locator(DAILY_ICON)
+    const iconBox = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .boundingBox()
     expect(iconBox?.height)
@@ -29,7 +29,7 @@ test.describe('sections.forecast_list.row_height', () => {
       .toBeLessThanOrEqual(49)
 
     // Rows are laid out on a shared grid; each row must be at least row_height tall.
-    const rowTops = await clockWeatherCard.locator(DAILY_ICON)
+    const rowTops = await clockWeatherCard.locator(LIST_ICON)
       .evaluateAll(els => els.map(el => el.getBoundingClientRect().top))
     expect(rowTops[1] - rowTops[0])
       .toBeGreaterThanOrEqual(48)
@@ -59,7 +59,7 @@ test.describe('sections.forecast_list.row_height', () => {
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
-    const smallIcon = await clockWeatherCard.locator(DAILY_ICON)
+    const smallIcon = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .boundingBox()
     expect(smallIcon?.height)
@@ -74,7 +74,7 @@ test.describe('sections.forecast_list.row_height', () => {
       `,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
-    const largeIcon = await clockWeatherCard.locator(DAILY_ICON)
+    const largeIcon = await clockWeatherCard.locator(LIST_ICON)
       .first()
       .boundingBox()
     expect(largeIcon?.height)

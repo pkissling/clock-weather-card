@@ -23,7 +23,7 @@ test.describe('error card', () => {
     await expect(errorCard.locator('.message'))
       .toContainText('Config option sections.forecast_strip.forecast_type has invalid value')
     await expect(errorCard.locator('.message code'))
-      .toHaveText(['sections.forecast_strip.forecast_type', 'hour'.repeat(50), 'hourly'])
+      .toHaveText(['sections.forecast_strip.forecast_type', 'hour'.repeat(50), 'hourly', 'daily'])
 
     const overflow = await errorCard.evaluate((el) => {
       const haCard = el.shadowRoot!.querySelector('ha-card')!
