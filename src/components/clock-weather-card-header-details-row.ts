@@ -2,6 +2,7 @@ import '@/components/segments/clock-weather-card-date-segment'
 import '@/components/segments/clock-weather-card-entity-segment'
 import '@/components/segments/clock-weather-card-icon-segment'
 import '@/components/segments/clock-weather-card-spacer-segment'
+import '@/components/segments/clock-weather-card-text-segment'
 import '@/components/segments/clock-weather-card-time-segment'
 import '@/components/segments/clock-weather-card-weather-icon-segment'
 import '@/components/segments/clock-weather-card-weather-segment'
@@ -55,6 +56,10 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
       return html`<clock-weather-card-weather-icon-segment
           .entityId=${segment.entity_id}
         ></clock-weather-card-weather-icon-segment>`
+    case 'text':
+      return html`<clock-weather-card-text-segment
+          .text=${segment.text}
+        ></clock-weather-card-text-segment>`
     case 'spacer':
       return html`<clock-weather-card-spacer-segment></clock-weather-card-spacer-segment>`
     }

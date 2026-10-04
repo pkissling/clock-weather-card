@@ -14,7 +14,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 ## What's new in v3
 
-- **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `weather_icon`, `spacer`).
+- **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `weather_icon`, `text`, `spacer`).
 - **Three independent sections** — `header` (clock, date, current weather), `forecast_strip` (horizontally scrolling columns) and `forecast_list` (vertical rows with temperature bars), each of which can be shown or hidden on its own via `hide`.
 - **Interchangeable hourly / daily modes** — `forecast_type` (`hourly` | `daily`) is set independently on `forecast_strip` and `forecast_list`, so the strip can show upcoming days and the list upcoming hours (e.g. a daily strip above an hourly list).
 - **Two new icon styles** — `flat` and `monochrome` join `line` and `fill`, courtesy of [meteocons v3](https://github.com/basmilius/meteocons).
@@ -321,6 +321,15 @@ Displays an MDI icon matching the current state of a weather entity (e.g. `mdi:w
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `weather_icon` |
 | `entity_id` | string | no | card `entity` | Weather entity whose state drives the icon |
+
+#### `text`
+
+Displays static text.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `text` |
+| `text` | string | **yes** | - | Text to display |
 
 #### `spacer`
 

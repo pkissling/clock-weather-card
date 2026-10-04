@@ -56,6 +56,11 @@ export interface WeatherIconSegmentConfig {
   entity_id?: string
 }
 
+export interface TextSegmentConfig {
+  type: 'text'
+  text: string
+}
+
 export interface SpacerSegmentConfig {
   type: 'spacer'
 }
@@ -67,9 +72,10 @@ export type SegmentConfig =
   | EntitySegmentConfig
   | IconSegmentConfig
   | WeatherIconSegmentConfig
+  | TextSegmentConfig
   | SpacerSegmentConfig
 
-export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
+export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
 
 export interface RowConfig {
   segments: SegmentConfig[]

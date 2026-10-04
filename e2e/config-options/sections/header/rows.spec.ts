@@ -90,9 +90,40 @@ test.describe('sections.header.rows', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "spacer"')
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
+  })
+
+  test('renders a text segment with its static text', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: text
+                    text: Hello world
+      `,
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-text-segment'))
+      .toHaveText('Hello world')
+  })
+
+  test('rejects a text segment without a string text', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: text
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].segments[0].text" has invalid value "undefined", expected a string')
   })
 
   test('rejects a non-boolean segment show_unit', async ({ setupCard, cardErrorMessage }) => {
