@@ -119,7 +119,7 @@ sections:
     hide: false
     animated_icons: true
     weather_icon_type: line
-    weather_icon_size: 9rem
+    # weather_icon_size: 9rem  # default: as tall as the rows, at least 9rem
     rows:
       - segments:
           - type: icon
