@@ -381,7 +381,6 @@ rows:
         attribute: temperature
       - type: spacer
       - type: weather
-      - type: weather_icon
   - font_size: 4rem
     segments:
       - type: spacer

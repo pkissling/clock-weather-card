@@ -14,14 +14,18 @@ test.describe('sections.header.rows', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-header-details-row'))
       .toHaveCount(3)
 
-    // Row 1: thermometer icon, temperature, spacer, weather state, weather icon.
-    await expect(clockWeatherCard.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:thermometer"]'))
+    // Row 1: thermometer icon, temperature, spacer, weather state.
+    const firstRow = clockWeatherCard.locator('clock-weather-card-header-details-row')
+      .first()
+    await expect(firstRow.locator('> *'))
+      .toHaveCount(4)
+    await expect(firstRow.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:thermometer"]'))
       .toHaveCount(1)
-    await expect(clockWeatherCard.locator('clock-weather-card-weather-icon-segment ha-icon[icon="mdi:weather-sunny"]'))
-      .toHaveCount(1)
-    await expect(clockWeatherCard)
+    await expect(firstRow)
       .toContainText('21')
-    await expect(clockWeatherCard)
+    await expect(firstRow.locator('clock-weather-card-weather-icon-segment'))
+      .toHaveCount(0)
+    await expect(firstRow)
       .toContainText('Sunny')
 
     // Row 2: spacer, time, spacer. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30 → en TIME_SIMPLE.
@@ -41,6 +45,7 @@ test.describe('sections.header.rows', () => {
     // 1 spacer in row 1 + 2 in row 2 + 2 in row 3 = 5 total.
     await expect(clockWeatherCard.locator('clock-weather-card-spacer-segment'))
       .toHaveCount(5)
+
   })
 
   test('renders a custom rows config with the configured segments in order', async ({ setupCard, clockWeatherCard }) => {

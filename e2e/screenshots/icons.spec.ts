@@ -53,6 +53,7 @@ for (const animated of ['animated', 'static'] as const) {
           },
           sun: isDay ? DAY_SUN : NIGHT_SUN,
           cardConfig: `
+            locale: en-GB
             weather_icon_type: ${iconVariant}
             sections:
               header:
