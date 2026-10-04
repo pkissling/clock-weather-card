@@ -41,7 +41,6 @@ describe('resolveConfig', () => {
                 { type: 'weather', attribute: 'temperature' },
                 { type: 'spacer' },
                 { type: 'weather' },
-                { type: 'weather_icon' },
               ],
             },
             {

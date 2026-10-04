@@ -13,8 +13,7 @@ const DEFAULT_ROWS: RowConfig[] = [
       { type: 'icon', icon: 'mdi:thermometer' },
       { type: 'weather', attribute: 'temperature' },
       { type: 'spacer' },
-      { type: 'weather' },
-      { type: 'weather_icon' }
+      { type: 'weather' }
     ]
   },
   {
