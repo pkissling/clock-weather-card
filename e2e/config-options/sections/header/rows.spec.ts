@@ -142,6 +142,41 @@ test.describe('sections.header.rows', () => {
       .toContain('Config option "sections.header.rows[0].segments[0].show_unit" has invalid value "fals", expected true or false')
   })
 
+  test('rejects a non-string weather segment unit', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+                    attribute: humidity
+                    unit: [ '%' ]
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].segments[0].unit" has invalid value "%", expected a string')
+  })
+
+  test('rejects a weather segment unit combined with show_unit: false', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+                    attribute: humidity
+                    unit: '%'
+                    show_unit: false
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].segments[0].unit" requires "sections.header.rows[0].segments[0].show_unit" to be "true"')
+  })
+
   test('updates rows at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
@@ -193,6 +228,147 @@ test.describe('sections.header.rows', () => {
 
       await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
         .toContainText(/\d{2}:\d{2}:\d{2}/)
+    })
+  })
+
+  test.describe('weather segment', () => {
+    test('appends % to humidity', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { humidity: 50 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: humidity
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('50%')
+    })
+
+    test('appends temperature_unit to temperature', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { temperature: 21 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: temperature
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('21°C')
+    })
+
+    test('appends temperature_unit to dew_point', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { dew_point: 12 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: dew_point
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('12°C')
+    })
+
+    test('falls back to <attribute>_unit for unknown attributes', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { extra_attributes: { foo: 5, foo_unit: 'x' } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: foo
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('5x')
+    })
+
+    test('renders unknown attributes without unit when <attribute>_unit is missing', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { extra_attributes: { bar: 7 } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: bar
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('7')
+    })
+
+    test('prefers the configured unit over the known unit', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { humidity: 50 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: humidity
+                      unit: ' %rH'
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('50 %rH')
+    })
+
+    test('prefers the configured unit over <attribute>_unit', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { temperature: 21 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: temperature
+                      unit: ' K'
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('21 K')
+    })
+
+    test('show_unit: false hides the unit', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { humidity: 50 },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+                      attribute: humidity
+                      show_unit: false
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText('50')
     })
   })
 

@@ -84,6 +84,11 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
       if (segment.type === 'text' && typeof segment.text !== 'string') throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].text`, String(segment.text), 'a string')
       if ('show_unit' in segment) assertBoolean(`sections.header.rows[${i}].segments[${j}].show_unit`, segment.show_unit)
+      if (segment.type === 'weather' && 'unit' in segment) {
+        const path = `sections.header.rows[${i}].segments[${j}]`
+        if (typeof segment.unit !== 'string') throw invalidConfigValue(`${path}.unit`, String(segment.unit), 'a string')
+        if (segment.show_unit === false) throw optionRequiresValue(`${path}.unit`, `${path}.show_unit`, 'true')
+      }
     })
   })
 
