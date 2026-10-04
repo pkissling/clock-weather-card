@@ -34,13 +34,29 @@ export default css`
   clock-weather-card-header-details {
     display: flex;
     flex-direction: column;
+    justify-self: center;
+    min-width: 0;
+    max-width: 100%;
     overflow: hidden;
   }
 
   clock-weather-card-header-details-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+  }
+
+  /* A flex gap would also pad around spacers, widening the row beyond its content. */
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) ~ :not(clock-weather-card-spacer-segment) {
+    margin-inline-start: 8px;
+  }
+
+  clock-weather-card-header-details-row > :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) + :not(clock-weather-card-spacer-segment),
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) + :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) {
+    margin-inline-start: 4px;
+  }
+
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) ~ clock-weather-card-spacer-segment + :not(clock-weather-card-spacer-segment) {
+    margin-inline-start: 16px;
   }
 
   clock-weather-card-spacer-segment {
