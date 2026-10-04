@@ -67,7 +67,7 @@ describe('resolveConfig', () => {
           entity: 'weather.home',
           forecastType: 'daily',
           count: 5,
-          rowHeight: null,
+          rowHeight: '28px',
           barThickness: '60%',
           hideCurrentTempIndicator: false,
           animatedIcons: false,

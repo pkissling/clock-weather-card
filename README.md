@@ -27,7 +27,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 ## Breaking changes from v2
 
 - **`time_format` removed.** Use `time_pattern` on a `time` segment instead. For 24-hour clocks use `HH:mm` (or `HH:mm:ss`), for 12-hour use `hh:mm a` (or `h:mm a`). Full token reference: [Luxon formatting tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
-- **Default `time_pattern` / `date_pattern` are now locale-aware.** When you omit `time_pattern` or `date_pattern`, the segment renders using Luxon's locale defaults (`DateTime.TIME_SIMPLE` / `DateTime.DATE_FULL`) — e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 always rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old behavior.
+- **Default `time_pattern` / `date_pattern` are now locale-aware.** When you omit `time_pattern` or `date_pattern`, the segment renders using the localized Luxon tokens `t` / `DDD` (equivalent to `DateTime.TIME_SIMPLE` / `DateTime.DATE_FULL`) — e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 always rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old behavior.
 
 ## FAQ
 
@@ -125,6 +125,7 @@ sections:
             icon: mdi:thermometer
           - type: weather
             attribute: temperature
+            show_unit: true
           - type: spacer
           - type: weather
           - type: weather_icon
@@ -132,14 +133,14 @@ sections:
         segments:
           - type: spacer
           - type: time
-            time_pattern: HH:mm
+            time_pattern: t
           - type: spacer
       - segments:
           - type: spacer
           - type: icon
             icon: mdi:calendar
           - type: date
-            date_pattern: EEEE, dd MMMM
+            date_pattern: DDD
           - type: spacer
   forecast_strip:
     hide: false
@@ -195,7 +196,7 @@ Renders the large current-weather icon next to the configurable rows of segments
 | `hide` | boolean | no | `false` | Hide the section. |
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
-| `rows` | list | no | See [Default Rows](#default-rows) | List of rows to display. See [Row Options](#row-options). |
+| `rows` | list | no | See [Default Header Rows](#default-header-rows) | List of rows to display. See [Row Options](#row-options). |
 
 #### `forecast_strip`
 
@@ -274,7 +275,7 @@ Displays the current time, auto-updating every second.
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `time` |
-| `time_pattern` | string | no | locale default (`DateTime.TIME_SIMPLE`) | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) time format pattern |
+| `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) time format pattern. The default `t` is the localized short time (e.g. `15:27` for `en-GB`, `3:27 PM` for `en-US`). |
 
 #### `date`
 
@@ -283,7 +284,7 @@ Displays the current date.
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `date` |
-| `date_pattern` | string | no | locale default (`DateTime.DATE_FULL`) | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) date format pattern |
+| `date_pattern` | string | no | `DDD` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) date format pattern. The default `DDD` is the localized full date (e.g. `27 April 2026` for `en-GB`, `April 27, 2026` for `en-US`). |
 
 #### `weather`
 
@@ -293,6 +294,7 @@ Displays the current weather state (localized) or a specific weather entity attr
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `weather` |
 | `attribute` | string | no | - | Weather entity attribute (e.g. `temperature`, `humidity`). If omitted, shows the localized weather state text. |
+| `show_unit` | boolean | no | `true` | When `attribute` is set, append the unit from the matching `<attribute>_unit` attribute (e.g. `temperature_unit`). |
 
 #### `entity`
 
@@ -303,6 +305,8 @@ Displays a Home Assistant entity's state and unit.
 | `type` | string | **yes** | - | `entity` |
 | `entity_id` | string | **yes** | - | Entity ID (e.g. `sensor.temperature`) |
 | `attribute` | string | no | - | Entity attribute to display. If omitted, shows the entity state + unit. |
+| `show_unit` | boolean | no | `true` | Append the unit to the displayed value. |
+| `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from. |
 
 #### `icon`
 
@@ -411,7 +415,9 @@ yarn install
 | `yarn dev` | Start the Vite dev server on `http://localhost:5173` |
 | `yarn build` | Type-check and build the production bundle |
 | `yarn lint` | Run ESLint with auto-fix |
-| `yarn test:e2e` | Run Playwright E2E tests against a real HA instance |
+| `yarn test:unit` | Run Vitest unit tests |
+| `yarn test:e2e` | Run Playwright E2E tests against a real HA instance (inside the pinned Linux Docker image) |
+| `yarn test:e2e:host` | Run Playwright E2E tests on the host, skipping screenshot comparisons |
 | `yarn playwright-ui` | Open the Playwright UI for interactive test debugging |
 | `yarn test:e2e:update-snapshots` | Regenerate Playwright snapshots in a Linux Docker container |
 

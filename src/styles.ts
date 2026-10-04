@@ -189,8 +189,8 @@ export default css`
   /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
   clock-weather-card-forecast-list .rows {
     display: grid;
-    grid-template-columns: max-content var(--cwc-list-row-height, 28px) max-content 1fr max-content;
-    grid-auto-rows: minmax(var(--cwc-list-row-height, auto), auto);
+    grid-template-columns: max-content var(--cwc-list-row-height) max-content 1fr max-content;
+    grid-auto-rows: minmax(var(--cwc-list-row-height), auto);
     align-items: center;
     column-gap: 8px;
     font-size: 0.9rem;
@@ -198,7 +198,7 @@ export default css`
   }
 
   clock-weather-card-forecast-list-item {
-    --_bar-thickness: var(--cwc-list-bar-thickness, calc(var(--cwc-list-row-height, 28px) * 0.6));
+    --_bar-thickness: var(--cwc-list-bar-thickness);
     display: contents;
   }
 
@@ -210,8 +210,8 @@ export default css`
 
   clock-weather-card-forecast-list-item clock-weather-card-icon {
     position: static;
-    width: var(--cwc-list-row-height, 28px);
-    height: var(--cwc-list-row-height, 28px);
+    width: var(--cwc-list-row-height);
+    height: var(--cwc-list-row-height);
     margin: 0;
     right: 0;
     display: block;

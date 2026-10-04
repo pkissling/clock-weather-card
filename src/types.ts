@@ -161,7 +161,7 @@ export interface ResolvedForecastListConfig {
   animatedIcons: boolean
   roundTemperatures: boolean
   weatherIconType: WeatherIconType
-  rowHeight: string | null
+  rowHeight: string
   barThickness: string
   hideCurrentTempIndicator: boolean
   gradient: Record<number | string, string>
