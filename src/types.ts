@@ -91,6 +91,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   weather_icon_type?: WeatherIconType
   time_zone?: string
   locale?: string
+  temperature_unit?: TemperatureUnitOption
   sections?: {
     header?: {
       hide?: boolean
@@ -132,6 +133,7 @@ export interface ResolvedConfig {
   weatherIconType: WeatherIconType
   timeZone: string
   locale: string
+  temperatureUnit: TemperatureUnit
   header: ResolvedHeaderConfig
   forecastStrip: ResolvedForecastStripConfig
   forecastList: ResolvedForecastListConfig
@@ -190,6 +192,9 @@ export interface Weather extends HassEntity {
 
 export type TemperatureUnit = '°C' | '°F'
 
+export const TEMPERATURE_UNIT_SYMBOLS = { celsius: '°C', fahrenheit: '°F' } as const satisfies Record<string, TemperatureUnit>
+export type TemperatureUnitOption = keyof typeof TEMPERATURE_UNIT_SYMBOLS
+
 export interface WeatherForecast {
   datetime: string
   temperature: number
@@ -211,7 +216,7 @@ export type ForecastStripItem = {
   precipitationProbability: number | null
   showPrecipitation: boolean
 } & (
-  | { temperature: number, temperatureLow: number | null, temperatureUnit: string | null, sunEvent?: never }
+  | { temperature: number, temperatureLow: number | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }
 )
 
@@ -228,7 +233,7 @@ export interface ForecastListItem {
   weatherIconType: WeatherIconType
   temperatureLow: number | string
   temperatureHigh: number | string
-  temperatureUnit: string | null
+  temperatureUnit: TemperatureUnit
   barLowPercent: number
   barHighPercent: number
   gradientStops: GradientStop[]

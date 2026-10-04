@@ -8,7 +8,8 @@ import { customElement } from 'lit/decorators.js'
 import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
 import type { ForecastListItem, SectionForecastType } from '@/types'
-import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gradient'
+import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
+import { toCelsius } from '@/utils/temperature'
 
 /**
  * A percentage `bar_thickness` is relative to the row height (a CSS `%` height would resolve against
@@ -36,11 +37,10 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
       count, animatedIcons, weatherIconType, roundTemperatures,
       hideCurrentTempIndicator, gradient, rowHeight, barThickness,
     } = this.config.forecastList
-    const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
-    const currentTemp = hassService.getEntityAttribute(this.hass, entityId, 'temperature')
+    const { temperatureUnit } = this.config
     const stops = normalizeGradient(gradient)
 
-    const currentTempRaw = typeof currentTemp === 'number' && Number.isFinite(currentTemp) ? currentTemp : null
+    const currentTempRaw = hassService.getWeatherTemperature(this.hass, entityId, 'temperature', temperatureUnit)
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
     const hourly = forecastType === 'hourly'
     const visible = this.visibleRows(count)

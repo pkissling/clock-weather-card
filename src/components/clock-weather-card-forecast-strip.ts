@@ -21,10 +21,9 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     return this.config.forecastStrip.entity
   }
 
-  protected renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult {
-    const { sunEntity, timeZone, locale } = this.config
+  protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
+    const { sunEntity, timeZone, locale, temperatureUnit } = this.config
     const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset } = this.config.forecastStrip
-    const temperatureUnit = hassService.getEntityAttributeString(this.hass, entityId, 'temperature_unit')
     const now = this.currentDate
 
     const visible = this.visibleRows(count)

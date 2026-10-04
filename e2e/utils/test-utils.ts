@@ -22,6 +22,7 @@ export type MockOptions = undefined | {
   weather?: {
     state?: string
     temperature?: number
+    temperatureUnit?: '°C' | '°F'
     humidity?: number
     dew_point?: number
     extra_attributes?: Record<string, unknown>
@@ -41,6 +42,7 @@ export type MockOptions = undefined | {
   date?: Date
   language?: string
   timeZone?: string
+  unitSystem?: 'metric' | 'us_customary'
   /** Icons that must finish loading before setup completes (default 1). */
   expectedIcons?: number
 }
@@ -131,6 +133,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const sunState = opts?.sun?.state ?? 'above_horizon'
   const language = opts?.language ?? 'en'
   const timeZone = opts?.timeZone ?? 'Europe/Berlin'
+  const haTemperatureUnit = opts?.unitSystem === 'us_customary' ? '°F' : '°C'
 
   // HA replaces the card element on every dashboard save, so a fresh element proves the new config landed.
   await page.locator('clock-weather-card, hui-error-card')
@@ -142,6 +145,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     api.setMockWeather({
       condition: opts?.weather?.state ?? 'sunny',
       temperature: opts?.weather?.temperature ?? 21,
+      temperature_unit: opts?.weather?.temperatureUnit ?? '°C',
       humidity: opts?.weather?.humidity ?? 50,
       dew_point: opts?.weather?.dew_point ?? null,
       extra_attributes: opts?.weather?.extra_attributes ?? {},
@@ -157,6 +161,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     page.clock.setFixedTime(date),
     api.setLanguage(language),
     api.setTimeZone(timeZone),
+    api.setUnitSystem(opts?.unitSystem ?? 'metric'),
   ])
   // HA pushes events to the browser in order, so once the card sees this token it has every update above.
   const syncToken = randomUUID()
@@ -172,13 +177,14 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const card = page.locator(`clock-weather-card:not([${STALE_ATTRIBUTE}]), hui-error-card:not([${STALE_ATTRIBUTE}])`)
     .first()
   await card.waitFor({ state: 'visible' })
-  // Language and time zone reach the frontend via separate subscriptions, so the sync token alone doesn't cover them on a reused page.
-  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeZone }
+  // Language, time zone and unit system reach the frontend via separate subscriptions, so the sync token alone doesn't cover them on a reused page.
+  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeZone, temperatureUnit: haTemperatureUnit }
   await expect
-    .poll(() => card.evaluate((el, { entity, token, language, timeZone }) => {
+    .poll(() => card.evaluate((el, { entity, token, language, timeZone, temperatureUnit }) => {
       if (el.localName === 'hui-error-card') return true
       const hass = (el as unknown as { hass?: HomeAssistant }).hass
       return hass?.states[entity]?.state === token && hass.language === language && hass.config.time_zone === timeZone
+        && hass.config.unit_system.temperature === temperatureUnit
     }, expected))
     .toBe(true)
   await expect(card.locator('clock-weather-card-forecast-list:not([data-loaded]), clock-weather-card-forecast-strip:not([data-loaded])'))

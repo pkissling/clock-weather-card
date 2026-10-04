@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
-import { SECTION_FORECAST_TYPES, SEGMENT_TYPES, WEATHER_ICON_TYPES } from '@/types'
+import { SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
@@ -72,6 +72,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   }
 
   assertEnumValue('weather_icon_type', config.weather_icon_type, WEATHER_ICON_TYPES)
+  assertEnumValue('temperature_unit', config.temperature_unit, Object.keys(TEMPERATURE_UNIT_SYMBOLS))
   assertEnumValue('sections.header.weather_icon_type', config.sections?.header?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_strip.weather_icon_type', config.sections?.forecast_strip?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
@@ -140,6 +141,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     weatherIconType,
     timeZone: config.time_zone || hassService.getTimeZone(hass),
     locale: config.locale || hassService.getLocale(hass),
+    temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     header: {
       hidden: header?.hide ?? false,
       rows: header?.rows ?? DEFAULT_ROWS,

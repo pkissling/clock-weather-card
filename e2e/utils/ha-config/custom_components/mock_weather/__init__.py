@@ -27,6 +27,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             entity._condition = call.data["condition"]
         if "temperature" in call.data:
             entity._temperature = call.data["temperature"]
+        if "temperature_unit" in call.data:
+            entity._mock_temperature_unit = call.data["temperature_unit"]
         if "humidity" in call.data:
             entity._humidity = call.data["humidity"]
         if "dew_point" in call.data:

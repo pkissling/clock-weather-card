@@ -87,8 +87,3 @@ export function gradientStopsForRange(stops: ColorStop[], lowC: number, highC: n
   result.push({ percent: 100, color: interpolateColor(stops, highC) })
   return result
 }
-
-export function toCelsius(value: number, unit: string | null | undefined): number {
-  if (unit === '°F') return (value - 32) * 5 / 9
-  return value
-}

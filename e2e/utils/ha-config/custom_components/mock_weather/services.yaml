@@ -31,6 +31,12 @@ set_weather:
           min: -50
           max: 60
           step: 0.1
+    temperature_unit:
+      name: Temperature unit
+      description: Unit of the temperature values (°C or °F), reported as-is without conversion to the HA unit system.
+      example: "°F"
+      selector:
+        text:
     humidity:
       name: Humidity
       description: Current humidity percentage
