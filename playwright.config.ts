@@ -25,7 +25,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. The HA container
        gets a random host port picked in globalSetup, so the effective baseURL
-       is resolved per-run by a fixture override in e2e/utils/fixtures.ts;
+       is resolved per-run by the sharedContext fixture in e2e/utils/fixtures.ts;
        HA_URL takes precedence there too. */
     baseURL: process.env.HA_URL || 'http://127.0.0.1:8123',
 

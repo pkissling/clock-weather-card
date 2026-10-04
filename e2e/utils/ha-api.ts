@@ -25,19 +25,27 @@ class HaApi {
     })
   }
 
+  // Most tests keep the defaults, and each update makes the frontend refetch its config, so unchanged values are skipped.
+  private language?: string
+  private timeZone?: string
+
   async setLanguage(language: string): Promise<void> {
-    return this.wsRequest({
+    if (language === this.language) return
+    await this.wsRequest({
       type: 'frontend/set_user_data',
       key: 'language',
       value: { language },
     })
+    this.language = language
   }
 
   async setTimeZone(timeZone: string): Promise<void> {
-    return this.wsRequest({
+    if (timeZone === this.timeZone) return
+    await this.wsRequest({
       type: 'config/core/update',
       time_zone: timeZone,
     })
+    this.timeZone = timeZone
   }
 
   private wsRequest(payload: Record<string, unknown>): Promise<void> {
