@@ -127,6 +127,8 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const date = opts?.date ?? DEFAULT_DATE
 
   const sunState = opts?.sun?.state ?? 'above_horizon'
+  const language = opts?.language ?? 'en'
+  const timeZone = opts?.timeZone ?? 'Europe/Berlin'
 
   // HA replaces the card element on every dashboard save, so a fresh element proves the new config landed.
   await page.locator('clock-weather-card, hui-error-card')
@@ -149,8 +151,8 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       ...(opts?.sun?.attributes ?? {}),
     }),
     page.clock.setFixedTime(date),
-    api.setLanguage(opts?.language ?? 'en'),
-    api.setTimeZone(opts?.timeZone ?? 'Europe/Berlin'),
+    api.setLanguage(language),
+    api.setTimeZone(timeZone),
   ])
   // HA pushes events to the browser in order, so once the card sees this token it has every update above.
   const syncToken = randomUUID()
@@ -166,9 +168,14 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const card = page.locator(`clock-weather-card:not([${STALE_ATTRIBUTE}]), hui-error-card:not([${STALE_ATTRIBUTE}])`)
     .first()
   await card.waitFor({ state: 'visible' })
+  // Language and time zone reach the frontend via separate subscriptions, so the sync token alone doesn't cover them on a reused page.
+  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeZone }
   await expect
-    .poll(() => card.evaluate((el, [entity, token]) =>
-      el.localName === 'hui-error-card' || (el as unknown as { hass?: HomeAssistant }).hass?.states[entity]?.state === token, [SYNC_ENTITY, syncToken]))
+    .poll(() => card.evaluate((el, { entity, token, language, timeZone }) => {
+      if (el.localName === 'hui-error-card') return true
+      const hass = (el as unknown as { hass?: HomeAssistant }).hass
+      return hass?.states[entity]?.state === token && hass.language === language && hass.config.time_zone === timeZone
+    }, expected))
     .toBe(true)
   await expect(card.locator('clock-weather-card-forecast-list:not([data-loaded]), clock-weather-card-forecast-strip:not([data-loaded])'))
     .toHaveCount(0)

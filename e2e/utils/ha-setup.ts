@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { execSync, spawn } from 'child_process'
 import { cpSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs'
 import os from 'os'
 import path from 'path'
@@ -30,9 +30,6 @@ export default async function globalSetup(): Promise<void> {
   const containerName = createContainerName(process.env.E2E_PROJECT_DIR ?? PROJECT_DIR)
   assertNoActiveRun(containerName)
 
-  console.log('[HA Setup] Building card...')
-  execSync('yarn build', { cwd: PROJECT_DIR, stdio: 'inherit' })
-
   console.log('[HA Setup] Preparing HA config directory...')
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), `${E2E_ARTIFACT_NAME}-`))
 
@@ -42,10 +39,9 @@ export default async function globalSetup(): Promise<void> {
   // Generate .storage files for dashboards and resources
   generateStorageFiles(tmpDir)
 
-  // Copy built card assets into www/
+  // HA only serves /local when www/ exists at startup; the built card is copied in once the build finishes.
   const wwwDir = path.join(tmpDir, 'www')
   mkdirSync(wwwDir, { recursive: true })
-  cpSync(DIST_DIR, wwwDir, { recursive: true })
 
   // Remove leftovers of crashed runs (containers, state files, tmp dirs).
   // Everything is age-gated so artifacts of concurrently running sessions
@@ -69,8 +65,8 @@ export default async function globalSetup(): Promise<void> {
   try {
     const haUrl = `http://127.0.0.1:${getMappedPort(containerName)}`
 
-    console.log(`[HA Setup] Waiting for Home Assistant on ${haUrl}...`)
-    await waitForHA(haUrl)
+    console.log(`[HA Setup] Building card while waiting for Home Assistant on ${haUrl}...`)
+    await Promise.all([buildCard(wwwDir), waitForHA(haUrl)])
 
     console.log('[HA Setup] Completing onboarding...')
     const token = await completeOnboarding(haUrl)
@@ -88,6 +84,15 @@ export default async function globalSetup(): Promise<void> {
   }
 
   console.log('[HA Setup] Home Assistant is ready!')
+}
+
+async function buildCard(wwwDir: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    spawn('yarn', ['build'], { cwd: PROJECT_DIR, stdio: 'inherit' })
+      .on('error', reject)
+      .on('exit', code => code === 0 ? resolve() : reject(new Error(`yarn build exited with code ${code}`)))
+  })
+  cpSync(DIST_DIR, wwwDir, { recursive: true })
 }
 
 function assertDockerRunning(): void {
@@ -208,7 +213,7 @@ function writeStorageFile(storageDir: string, key: string, data: unknown): void 
 
 async function waitForHA(baseUrl: string, timeoutMs = 120_000): Promise<void> {
   const start = Date.now()
-  const interval = 2_000
+  const interval = 250
 
   while (Date.now() - start < timeoutMs) {
     try {

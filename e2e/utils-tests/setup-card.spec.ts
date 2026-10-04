@@ -1,13 +1,19 @@
 import { expect, test } from '../utils/fixtures'
 
 test.describe('setupCard', () => {
-  test.beforeEach(async ({ page }) => {
+  test.use({ freshPage: true })
+
+  test.beforeEach(async ({ page, setupCard }) => {
+    let delayMs = 0
     await page.routeWebSocket(/\/api\/websocket/, ws => {
       const server = ws.connectToServer()
       server.onMessage(message => {
-        setTimeout(() => ws.send(message), 300)
+        setTimeout(() => ws.send(message), delayMs)
       })
     })
+    // Delaying the frontend's boot would only slow the test down; the late pushes matter for follow-up calls.
+    await setupCard()
+    delayMs = 300
   })
 
   test('returns only after a follow-up config has rendered, even when HA pushes arrive late', async ({ setupCard, clockWeatherCard }) => {
