@@ -2,6 +2,10 @@ import { DateTime } from 'luxon'
 
 import type { ClockHandle, ResolvedHeaderConfig } from '@/types'
 
+// Luxon macro tokens equivalent to DateTime.TIME_SIMPLE / DateTime.DATE_FULL.
+export const DEFAULT_TIME_PATTERN = 't'
+export const DEFAULT_DATE_PATTERN = 'DDD'
+
 // Two fixed reference points that differ only in their second component.
 // Used to detect whether a Luxon format pattern produces output that changes every second
 // without re-implementing Luxon's token parser (handles macro tokens and quoted literals).

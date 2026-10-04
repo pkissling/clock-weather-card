@@ -107,10 +107,10 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   const gradient = config.sections?.forecast_list?.gradient
   if (gradient !== undefined) {
     if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
-      throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of percentages to colors')
+      throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of temperatures to colors')
     }
     for (const [k, v] of Object.entries(gradient)) {
-      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric percentage keys')
+      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric temperature keys')
       if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'non-empty color strings')
     }
   }
@@ -156,7 +156,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       entity: list?.weather_entity ?? config.entity,
       forecastType: list?.forecast_type ?? 'daily',
       count: list?.count ?? 5,
-      rowHeight: list?.row_height ?? null,
+      rowHeight: list?.row_height ?? '28px',
       barThickness: list?.bar_thickness ?? '60%',
       hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? false,
       animatedIcons: list?.animated_icons ?? false,

@@ -17,7 +17,7 @@ import { gradientStopsForRange, normalizeGradient, toCelsius } from '@/utils/gra
 const toBarThicknessCss = (thickness: string): string => {
   const percent = /^(\d+(?:\.\d+)?)%$/.exec(thickness.trim())
   return percent
-    ? `calc(var(--cwc-list-row-height, 28px) * ${Number(percent[1]) / 100})`
+    ? `calc(var(--cwc-list-row-height) * ${Number(percent[1]) / 100})`
     : thickness
 }
 
@@ -70,11 +70,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
       ? 50
       : Math.max(0, Math.min(100, ((c - globalLowC) / range) * 100))
 
-    const rowsStyle = [
-      rowHeight ? `--cwc-list-row-height: ${rowHeight}` : null,
-      `--cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`,
-    ].filter(Boolean)
-      .join('; ')
+    const rowsStyle = `--cwc-list-row-height: ${rowHeight}; --cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`
 
     return html`
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
