@@ -95,6 +95,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       hide?: boolean
       animated_icons?: boolean
       weather_icon_type?: WeatherIconType
+      weather_icon_size?: string
       rows?: RowConfig[]
     }
     forecast_strip?: {
@@ -140,6 +141,7 @@ export interface ResolvedHeaderConfig {
   rows: RowConfig[]
   animatedIcons: boolean
   weatherIconType: WeatherIconType
+  weatherIconSize: string | null
 }
 
 export interface ResolvedForecastStripConfig {

@@ -16,19 +16,21 @@ export default css`
 
   clock-weather-card-header {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    height: auto;
   }
 
-  clock-weather-card-icon {
-    position: relative;
+  clock-weather-card-header > clock-weather-card-icon {
+    display: block;
+    justify-self: center;
+    /* The glyph fills the middle 80% of the box; the img's -10% margins crop the rest. */
+    width: min(100%, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
+  }
+
+  clock-weather-card-header > clock-weather-card-icon img {
+    display: block;
     width: 100%;
-    margin-top: -10%;
-    margin-bottom: -10%;
-    margin-left: -20%;
-    margin-right: -20%;
-    right: -20%;
+    margin: -10% 0;
   }
 
   clock-weather-card-header-details {
@@ -132,11 +134,8 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item clock-weather-card-icon {
-    position: static;
     width: 40px;
     height: 40px;
-    margin: 0;
-    right: 0;
     display: block;
   }
 
@@ -209,11 +208,8 @@ export default css`
   }
 
   clock-weather-card-forecast-list-item clock-weather-card-icon {
-    position: static;
     width: var(--cwc-list-row-height);
     height: var(--cwc-list-row-height);
-    margin: 0;
-    right: 0;
     display: block;
   }
 

@@ -33,6 +33,7 @@ describe('resolveConfig', () => {
           hidden: false,
           animatedIcons: true,
           weatherIconType: 'line',
+          weatherIconSize: null,
           rows: [
             {
               segments: [
