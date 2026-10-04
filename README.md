@@ -114,6 +114,7 @@ sun_entity: sun.sun
 weather_icon_type: line
 time_zone: Europe/Berlin
 locale: en-GB
+temperature_unit: celsius
 sections:
   header:
     hide: false
@@ -182,6 +183,7 @@ sections:
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icons ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). Applies to all sections; each section can override it with its own `weather_icon_type`. |
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
+| `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
 
 ### Sections Options
@@ -296,7 +298,7 @@ Displays the current weather state (localized) or a specific weather entity attr
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `weather` |
 | `attribute` | string | no | - | Weather entity attribute (e.g. `temperature`, `humidity`). If omitted, shows the localized weather state text. |
-| `show_unit` | boolean | no | `true` | When `attribute` is set, append `unit` if configured, otherwise the attribute's known unit (`temperature_unit` for `temperature`/`apparent_temperature`/`dew_point`, `pressure_unit`, `wind_speed_unit` for `wind_speed`/`wind_gust_speed`, `visibility_unit`, `precipitation_unit`, `%` for `humidity`/`cloud_coverage`, `°` for `wind_bearing`), otherwise the `<attribute>_unit` attribute. |
+| `show_unit` | boolean | no | `true` | When `attribute` is set, append `unit` if configured, otherwise the attribute's known unit (the card's `temperature_unit` for `temperature`/`apparent_temperature`/`dew_point`, whose values are converted to it, `pressure_unit`, `wind_speed_unit` for `wind_speed`/`wind_gust_speed`, `visibility_unit`, `precipitation_unit`, `%` for `humidity`/`cloud_coverage`, `°` for `wind_bearing`), otherwise the `<attribute>_unit` attribute. |
 | `unit` | string | no | - | Hard-coded unit appended to the attribute value, overriding the resolved unit. Useful for attributes without a known unit. Cannot be combined with `show_unit: false`. |
 
 #### `entity`
@@ -308,7 +310,7 @@ Displays a Home Assistant entity's state and unit.
 | `type` | string | **yes** | - | `entity` |
 | `entity_id` | string | **yes** | - | Entity ID (e.g. `sensor.temperature`) |
 | `attribute` | string | no | - | Entity attribute to display. If omitted, shows the entity state + unit. |
-| `show_unit` | boolean | no | `true` | Append the unit to the displayed value. |
+| `show_unit` | boolean | no | `true` | Append the unit to the displayed value. Values with a `°C`/`°F` unit are converted to the card's `temperature_unit`. |
 | `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from. |
 
 #### `icon`

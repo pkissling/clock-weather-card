@@ -1,8 +1,9 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime, type Zone } from 'luxon'
 
-import type { ForecastType, SunEntity, WeatherForecastEvent } from '@/types'
+import type { ForecastType, SunEntity, TemperatureUnit, WeatherForecastEvent } from '@/types'
 import { WeatherEntityFeature } from '@/types'
+import { convertTemperature, isTemperatureUnit } from '@/utils/temperature'
 
 const FORECAST_FEATURE_BIT: Record<ForecastType, WeatherEntityFeature> = {
   daily: WeatherEntityFeature.FORECAST_DAILY,
@@ -56,6 +57,11 @@ class HassService {
     return hass.config.time_zone
   }
 
+  public getTemperatureUnit(hass: HomeAssistant): TemperatureUnit {
+    const unit = hass.config.unit_system?.temperature
+    return isTemperatureUnit(unit) ? unit : '°C'
+  }
+
   public getEntityState(hass: HomeAssistant, entityId: string): string | null {
     return hass.states[entityId]?.state ?? null
   }
@@ -67,6 +73,17 @@ class HassService {
   public getEntityAttributeString(hass: HomeAssistant, entityId: string, attribute: string): string | null {
     const attr = this.getEntityAttribute(hass, entityId, attribute)
     return typeof attr === 'string' ? attr : null
+  }
+
+  public isWeatherTemperatureAttribute(attribute: string): boolean {
+    const known = WEATHER_ATTRIBUTE_UNITS[attribute]
+    return known !== undefined && 'attribute' in known && known.attribute === 'temperature_unit'
+  }
+
+  public getWeatherTemperature(hass: HomeAssistant, entityId: string, attribute: string, toUnit: TemperatureUnit): number | null {
+    const value = this.getEntityAttribute(hass, entityId, attribute)
+    if (typeof value !== 'number' || !Number.isFinite(value)) return null
+    return convertTemperature(value, this.getEntityAttributeString(hass, entityId, 'temperature_unit'), toUnit)
   }
 
   public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {

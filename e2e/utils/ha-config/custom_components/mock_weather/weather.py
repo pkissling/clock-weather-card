@@ -46,6 +46,7 @@ class MockWeatherEntity(WeatherEntity):
         self._humidity: int = 50
         self._dew_point: float | None = None
         self._extra_attributes: dict = {}
+        self._mock_temperature_unit: str = UnitOfTemperature.CELSIUS
         self._forecast_daily: list[Forecast] = []
         self._forecast_hourly: list[Forecast] = []
 
@@ -62,7 +63,12 @@ class MockWeatherEntity(WeatherEntity):
     @property
     def native_temperature_unit(self) -> str:
         """Return the unit of measurement."""
-        return UnitOfTemperature.CELSIUS
+        return self._mock_temperature_unit
+
+    @property
+    def _default_temperature_unit(self) -> str:
+        """Report the native unit so HA does not convert to its unit system."""
+        return self._mock_temperature_unit
 
     @property
     def humidity(self) -> int:

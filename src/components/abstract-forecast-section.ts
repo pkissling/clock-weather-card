@@ -15,6 +15,7 @@ import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastNotSupported } from '@/utils/errors'
+import { convertTemperature } from '@/utils/temperature'
 
 export interface ForecastRow {
   forecast: WeatherForecast
@@ -70,12 +71,18 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     }
   }
 
-  /** Hourly: the entry at or before now ("Now") plus upcoming hours. Daily: today ("Today") onwards. */
+  /** Hourly: the entry at or before now ("Now") plus upcoming hours. Daily: today ("Today") onwards. Temperatures are in the configured unit. */
   protected visibleRows(count: number): ForecastRow[] {
     const now = this.currentDate
-    const { locale, timeZone, sunEntity } = this.config
+    const { locale, timeZone, sunEntity, temperatureUnit } = this.config
+    const sourceUnit = hassService.getEntityAttributeString(this.hass, this.resolveEntityId(), 'temperature_unit')
+    const convert = (t: number): number => convertTemperature(t, sourceUnit, temperatureUnit)
     const timed = this.forecasts.map(forecast => ({
-      forecast,
+      forecast: {
+        ...forecast,
+        temperature: convert(forecast.temperature),
+        templow: typeof forecast.templow === 'number' ? convert(forecast.templow) : forecast.templow,
+      },
       at: DateTime.fromISO(forecast.datetime)
         .setLocale(locale)
         .setZone(timeZone),

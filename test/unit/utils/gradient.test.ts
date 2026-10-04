@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { gradientStopsForRange, interpolateColor, normalizeGradient, toCelsius } from '@/utils/gradient'
+import { gradientStopsForRange, interpolateColor, normalizeGradient } from '@/utils/gradient'
 
 describe('normalizeGradient', () => {
   it('sorts stops by temperature ascending', () => {
@@ -137,30 +137,5 @@ describe('gradientStopsForRange', () => {
         { percent: 0, color: '#888888' },
         { percent: 100, color: '#888888' },
       ])
-  })
-})
-
-describe('toCelsius', () => {
-  it('passes Celsius values through unchanged', () => {
-    expect(toCelsius(10, '°C'))
-      .toBe(10)
-    expect(toCelsius(0, '°C'))
-      .toBe(0)
-  })
-
-  it('converts Fahrenheit to Celsius', () => {
-    expect(toCelsius(32, '°F'))
-      .toBe(0)
-    expect(toCelsius(212, '°F'))
-      .toBeCloseTo(100, 6)
-    expect(toCelsius(50, '°F'))
-      .toBeCloseTo(10, 6)
-  })
-
-  it('treats unknown units as Celsius', () => {
-    expect(toCelsius(20, null))
-      .toBe(20)
-    expect(toCelsius(20, 'K'))
-      .toBe(20)
   })
 })

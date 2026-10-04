@@ -29,6 +29,7 @@ describe('resolveConfig', () => {
         weatherIconType: 'line',
         timeZone: 'Europe/Berlin',
         locale: 'de',
+        temperatureUnit: '°C',
         header: {
           hidden: false,
           animatedIcons: true,
@@ -85,6 +86,22 @@ describe('resolveConfig', () => {
       .toBe('America/New_York')
     expect(resolved.locale)
       .toBe('fr')
+  })
+
+  it('takes the temperature unit from the hass unit system when unset', () => {
+    const usHass = { ...hass, config: { ...hass.config, unit_system: { temperature: '°F' } } } as unknown as HomeAssistant
+
+    expect(resolveConfig(config(), usHass).temperatureUnit)
+      .toBe('°F')
+  })
+
+  it('prefers the configured temperature_unit over hass', () => {
+    const usHass = { ...hass, config: { ...hass.config, unit_system: { temperature: '°F' } } } as unknown as HomeAssistant
+
+    expect(resolveConfig(config({ temperature_unit: 'celsius' }), usHass).temperatureUnit)
+      .toBe('°C')
+    expect(resolveConfig(config({ temperature_unit: 'fahrenheit' }), hass).temperatureUnit)
+      .toBe('°F')
   })
 
   it('lets sections inherit the card weather_icon_type', () => {
