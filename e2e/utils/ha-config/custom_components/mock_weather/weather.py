@@ -44,6 +44,8 @@ class MockWeatherEntity(WeatherEntity):
         self._condition: str = "sunny"
         self._temperature: float = 21.0
         self._humidity: int = 50
+        self._dew_point: float | None = None
+        self._extra_attributes: dict = {}
         self._forecast_daily: list[Forecast] = []
         self._forecast_hourly: list[Forecast] = []
 
@@ -66,6 +68,16 @@ class MockWeatherEntity(WeatherEntity):
     def humidity(self) -> int:
         """Return the humidity."""
         return self._humidity
+
+    @property
+    def native_dew_point(self) -> float | None:
+        """Return the dew point."""
+        return self._dew_point
+
+    @property
+    def extra_state_attributes(self) -> dict:
+        """Return custom attributes."""
+        return self._extra_attributes
 
     async def async_forecast_daily(self) -> list[Forecast]:
         """Return the daily forecast."""

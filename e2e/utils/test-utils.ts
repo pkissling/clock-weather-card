@@ -23,6 +23,8 @@ export type MockOptions = undefined | {
     state?: string
     temperature?: number
     humidity?: number
+    dew_point?: number
+    extra_attributes?: Record<string, unknown>
     forecast_daily?: DailyWeatherForecast[]
     forecast_hourly?: WeatherForecast[]
     supportedFeatures?: WeatherEntityFeature[]
@@ -141,6 +143,8 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       condition: opts?.weather?.state ?? 'sunny',
       temperature: opts?.weather?.temperature ?? 21,
       humidity: opts?.weather?.humidity ?? 50,
+      dew_point: opts?.weather?.dew_point ?? null,
+      extra_attributes: opts?.weather?.extra_attributes ?? {},
       forecast_daily: opts?.weather?.forecast_daily ?? defaultForecastDaily(date),
       forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
       supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)

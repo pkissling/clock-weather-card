@@ -16,6 +16,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property() public attribute?: string
   @property({ type: Boolean }) public showUnit = true
+  @property() public unit?: string
 
   public render (): TemplateResult {
     const { entity, locale } = this.config
@@ -23,7 +24,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
       const value = hassService.getEntityAttribute(this.hass, entity, this.attribute)
       if (value === undefined || value === null) return html``
       const unit = this.showUnit
-        ? hassService.getEntityAttribute(this.hass, entity, `${this.attribute}_unit`) ?? ''
+        ? this.unit ?? hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute) ?? ''
         : ''
       return html`<span>${value}${unit}</span>`
     }

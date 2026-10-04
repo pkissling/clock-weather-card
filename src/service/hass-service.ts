@@ -10,6 +10,22 @@ const FORECAST_FEATURE_BIT: Record<ForecastType, WeatherEntityFeature> = {
   twice_daily: WeatherEntityFeature.FORECAST_TWICE_DAILY,
 }
 
+type UnitSource = { attribute: string } | { fixed: string }
+
+const WEATHER_ATTRIBUTE_UNITS: Record<string, UnitSource> = {
+  temperature: { attribute: 'temperature_unit' },
+  apparent_temperature: { attribute: 'temperature_unit' },
+  dew_point: { attribute: 'temperature_unit' },
+  pressure: { attribute: 'pressure_unit' },
+  wind_speed: { attribute: 'wind_speed_unit' },
+  wind_gust_speed: { attribute: 'wind_speed_unit' },
+  visibility: { attribute: 'visibility_unit' },
+  precipitation: { attribute: 'precipitation_unit' },
+  humidity: { fixed: '%' },
+  cloud_coverage: { fixed: '%' },
+  wind_bearing: { fixed: '°' },
+}
+
 class HassService {
 
   public isNight(hass: HomeAssistant, sunEntityId: string, at?: DateTime): boolean {
@@ -55,6 +71,14 @@ class HassService {
 
   public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {
     return this.getEntityAttributeString(hass, entityId, 'unit_of_measurement')
+  }
+
+  public getWeatherAttributeUnit(hass: HomeAssistant, entityId: string, attribute: string): string | null {
+    const known = WEATHER_ATTRIBUTE_UNITS[attribute]
+    if (known && 'fixed' in known) {
+      return typeof this.getEntityAttribute(hass, entityId, attribute) === 'number' ? known.fixed : null
+    }
+    return this.getEntityAttributeString(hass, entityId, known?.attribute ?? `${attribute}_unit`)
   }
 
   public supportsForecast(hass: HomeAssistant, entityId: string, forecastType: ForecastType): boolean {

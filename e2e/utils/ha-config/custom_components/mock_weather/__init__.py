@@ -29,6 +29,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             entity._temperature = call.data["temperature"]
         if "humidity" in call.data:
             entity._humidity = call.data["humidity"]
+        if "dew_point" in call.data:
+            entity._dew_point = call.data["dew_point"]
+        if "extra_attributes" in call.data:
+            entity._extra_attributes = call.data["extra_attributes"]
         if "forecast_daily" in call.data:
             entity._forecast_daily = call.data["forecast_daily"]
         if "forecast_hourly" in call.data:

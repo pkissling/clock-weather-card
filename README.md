@@ -296,7 +296,8 @@ Displays the current weather state (localized) or a specific weather entity attr
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `weather` |
 | `attribute` | string | no | - | Weather entity attribute (e.g. `temperature`, `humidity`). If omitted, shows the localized weather state text. |
-| `show_unit` | boolean | no | `true` | When `attribute` is set, append the unit from the matching `<attribute>_unit` attribute (e.g. `temperature_unit`). |
+| `show_unit` | boolean | no | `true` | When `attribute` is set, append `unit` if configured, otherwise the attribute's known unit (`temperature_unit` for `temperature`/`apparent_temperature`/`dew_point`, `pressure_unit`, `wind_speed_unit` for `wind_speed`/`wind_gust_speed`, `visibility_unit`, `precipitation_unit`, `%` for `humidity`/`cloud_coverage`, `°` for `wind_bearing`), otherwise the `<attribute>_unit` attribute. |
+| `unit` | string | no | - | Hard-coded unit appended to the attribute value, overriding the resolved unit. Useful for attributes without a known unit. Cannot be combined with `show_unit: false`. |
 
 #### `entity`
 
