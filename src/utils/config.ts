@@ -101,6 +101,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertPositiveInteger('sections.forecast_strip.count', config.sections?.forecast_strip?.count)
   assertPositiveInteger('sections.forecast_list.count', config.sections?.forecast_list?.count)
 
+  assertCssLength('sections.header.weather_icon_size', header?.weather_icon_size)
   assertCssLength('sections.forecast_list.row_height', config.sections?.forecast_list?.row_height)
   assertCssLength('sections.forecast_list.bar_thickness', config.sections?.forecast_list?.bar_thickness)
 
@@ -140,6 +141,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       rows: header?.rows ?? DEFAULT_ROWS,
       animatedIcons: header?.animated_icons ?? true,
       weatherIconType: header?.weather_icon_type ?? weatherIconType,
+      weatherIconSize: header?.weather_icon_size ?? null,
     },
     forecastStrip: {
       hidden: strip?.hide ?? false,

@@ -119,6 +119,7 @@ sections:
     hide: false
     animated_icons: true
     weather_icon_type: line
+    weather_icon_size: 9rem
     rows:
       - segments:
           - type: icon
@@ -189,13 +190,14 @@ Sections render top to bottom in the order `header`, `forecast_strip`, `forecast
 
 #### `header`
 
-Renders the large current-weather icon next to the configurable rows of segments (clock, date, current weather, entities, icons) at the top of the card.
+Renders the current-weather icon next to the configurable rows of segments (clock, date, current weather, entities, icons) at the top of the card. By default the icon is as tall as the rows, but at least `9rem`; `weather_icon_size` overrides this. The icon never grows beyond half the card width.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the section. |
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
+| `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon, capped at half the card width. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
 | `rows` | list | no | See [Default Header Rows](#default-header-rows) | List of rows to display. See [Row Options](#row-options). |
 
 #### `forecast_strip`
