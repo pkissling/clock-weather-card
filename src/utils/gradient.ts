@@ -21,8 +21,10 @@ export function normalizeGradient(map: Record<number | string, string>): ColorSt
     .sort((a, b) => a.temp - b.temp)
 }
 
-function toRgb(hexString: string): [number, number, number] | null {
-  const c = hexString.trim()
+export const isSupportedColor = (color: string): boolean => toRgb(color) !== null
+
+function toRgb(color: string): [number, number, number] | null {
+  const c = color.trim()
   const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(c)
   if (hex) {
     const h = hex[1]

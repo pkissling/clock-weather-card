@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import iconsService from '@/service/icons-service'
+import logger from '@/service/logger'
 import type { WeatherIconType } from '@/types'
 
 @customElement('clock-weather-card-icon')
@@ -39,20 +40,21 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
     this._settled = false
     const { weatherIconType, weatherState, isNight, animatedIcon } = this
 
-    try {
-      const staticUrl = await iconsService.getWeatherIcon(weatherIconType, false, weatherState, isNight)
-      if (id === this._loadId) this._src = staticUrl
-    } catch {
-      // fall through to animated attempt; if both fail we keep the previous src
+    const load = async (animated: boolean): Promise<boolean> => {
+      try {
+        const url = await iconsService.getWeatherIcon(weatherIconType, animated, weatherState, isNight)
+        if (id === this._loadId) this._src = url
+        return true
+      } catch (e) {
+        logger.debug(e instanceof Error ? e.message : String(e))
+        return false
+      }
     }
 
-    if (animatedIcon) {
-      try {
-        const animatedUrl = await iconsService.getWeatherIcon(weatherIconType, true, weatherState, isNight)
-        if (id === this._loadId) this._src = animatedUrl
-      } catch {
-        // keep static fallback
-      }
+    const staticLoaded = await load(false)
+    const animatedLoaded = animatedIcon && await load(true)
+    if (!staticLoaded && !animatedLoaded) {
+      logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
     }
 
     if (id === this._loadId) this._settled = true

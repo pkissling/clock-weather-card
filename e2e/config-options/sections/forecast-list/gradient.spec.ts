@@ -24,7 +24,21 @@ test.describe('sections.forecast_list.gradient', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at 0", expected non-empty color strings')
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at 0", expected hex (#rgb, #rrggbb) or rgb() colors')
+  })
+
+  test('rejects gradient colors that are neither hex nor rgb()', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            gradient:
+              10: red
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "value at 10", expected hex (#rgb, #rrggbb) or rgb() colors')
   })
 
   test('rejects a gradient that is not a map', async ({ setupCard, cardErrorMessage }) => {

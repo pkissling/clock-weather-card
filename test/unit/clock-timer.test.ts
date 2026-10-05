@@ -37,7 +37,7 @@ vi.mock('custom-card-helpers', () => ({
 }))
 
 vi.mock('@/styles', () => ({ default: '' }))
-vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, error: (): void => {} } }))
+vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, warn: (): void => {}, error: (): void => {} } }))
 vi.mock('@/service/translations-service', () => ({ default: { t: (l: string, k: string): string => `${l}:${k}` } }))
 vi.mock('@/components/clock-weather-card-header', () => ({}))
 vi.mock('@/utils/development', () => ({ isDev: false }))
@@ -198,6 +198,20 @@ describe('ClockWeatherCard timer behavior', () => {
       card.willUpdate(new Map([['config', undefined]]))
 
       expect(card._clock).not.toBeNull()
+    })
+  })
+
+  describe('getStubConfig', () => {
+    it('prefers a weather entity from the suggested entities', async () => {
+      const { ClockWeatherCard } = await import('@/clock-weather-card')
+      expect(ClockWeatherCard.getStubConfig({} as never, ['sensor.a', 'weather.home'], ['weather.other']))
+        .toEqual({ entity: 'weather.home' })
+    })
+
+    it('falls back to a weather entity from the fallback entities', async () => {
+      const { ClockWeatherCard } = await import('@/clock-weather-card')
+      expect(ClockWeatherCard.getStubConfig({} as never, ['sensor.a'], ['light.b', 'weather.other']))
+        .toEqual({ entity: 'weather.other' })
     })
   })
 })

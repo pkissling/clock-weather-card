@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { gradientStopsForRange, interpolateColor, normalizeGradient } from '@/utils/gradient'
+import { gradientStopsForRange, interpolateColor, isSupportedColor, normalizeGradient } from '@/utils/gradient'
 
 describe('normalizeGradient', () => {
   it('sorts stops by temperature ascending', () => {
@@ -137,5 +137,17 @@ describe('gradientStopsForRange', () => {
         { percent: 0, color: '#888888' },
         { percent: 100, color: '#888888' },
       ])
+  })
+})
+
+describe('isSupportedColor', () => {
+  it.each(['#abc', '#AABBCC', ' #aabbcc ', 'rgb(1, 2, 3)', 'rgba(1, 2, 3, 0.5)'])('accepts %s', (color) => {
+    expect(isSupportedColor(color))
+      .toBe(true)
+  })
+
+  it.each(['red', 'currentColor', 'hsl(0, 100%, 50%)', '#abcd', ''])('rejects %s', (color) => {
+    expect(isSupportedColor(color))
+      .toBe(false)
   })
 })

@@ -7,6 +7,7 @@ import { customElement, property, state } from 'lit/decorators.js'
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
+import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig } from '@/types'
 
@@ -27,6 +28,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
         return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
       }
       const value = hassService.getEntityAttribute(this.hass, entity, this.attribute)
+      if (value === undefined) logger.warn(`Attribute "${this.attribute}" not found on weather entity "${entity}"`)
       if (value === undefined || value === null) return html``
       const unit = this.showUnit
         ? this.unit ?? hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute) ?? ''

@@ -247,7 +247,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOUR
 | `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated. Defaults to `false` to keep the section lightweight. |
 | `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast list. Falls back to the card's main `weather_icon_type` when unset. |
-| `gradient` | map | no | built-in ramp (see below) | Map of temperature (in °C, regardless of the weather entity's unit) → CSS color (hex recommended) used to colorize the bars. Colors are linearly interpolated between adjacent stops. |
+| `gradient` | map | no | built-in ramp (see below) | Map of temperature (in °C, regardless of the weather entity's unit) → hex (`#rgb`, `#rrggbb`) or `rgb()` color used to colorize the bars. Colors are linearly interpolated between adjacent stops. |
 
 The built-in gradient is:
 
@@ -309,7 +309,7 @@ Displays a Home Assistant entity's state and unit.
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `entity` |
 | `entity_id` | string | **yes** | - | Entity ID (e.g. `sensor.temperature`) |
-| `attribute` | string | no | - | Entity attribute to display. If omitted, shows the entity state + unit. |
+| `attribute` | string | no | - | Entity attribute to display; must exist on the entity. If omitted, shows the entity state + unit. |
 | `show_unit` | boolean | no | `true` | Append the unit to the displayed value. Values with a `°C`/`°F` unit are converted to the card's `temperature_unit`. |
 | `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from. |
 

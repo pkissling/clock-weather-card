@@ -7,6 +7,7 @@ import { customElement } from 'lit/decorators.js'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
+import logger from '@/service/logger'
 import type { ForecastListItem, SectionForecastType } from '@/types'
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { toCelsius } from '@/utils/temperature'
@@ -41,6 +42,9 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     const stops = normalizeGradient(gradient)
 
     const currentTempRaw = hassService.getWeatherTemperature(this.hass, entityId, 'temperature', temperatureUnit)
+    if (currentTempRaw === null && !hideCurrentTempIndicator) {
+      logger.debug(`Temperature of "${entityId}" is not numeric, hiding the current temperature indicator`)
+    }
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
     const hourly = forecastType === 'hourly'
     const visible = this.visibleRows(count)

@@ -1,6 +1,7 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime, type Zone } from 'luxon'
 
+import logger from '@/service/logger'
 import type { ForecastType, SunEntity, TemperatureUnit, WeatherForecastEvent } from '@/types'
 import { WeatherEntityFeature } from '@/types'
 import { convertTemperature, isTemperatureUnit } from '@/utils/temperature'
@@ -31,7 +32,10 @@ class HassService {
 
   public isNight(hass: HomeAssistant, sunEntityId: string, at?: DateTime): boolean {
     const sun = hass.states[sunEntityId] as SunEntity | undefined
-    if (!sun) return false
+    if (!sun) {
+      logger.warn(`Sun entity "${sunEntityId}" not found, assuming daytime`)
+      return false
+    }
     if (at === undefined) return sun.state === 'below_horizon'
     const { sunrise, sunset } = this.getNextSunEvents(hass, sunEntityId, at.zone)
     if (!sunrise || !sunset) return false
@@ -44,7 +48,9 @@ class HassService {
     const parse = (attribute: string): DateTime | null => {
       const iso = this.getEntityAttributeString(hass, sunEntityId, attribute)
       const dt = iso === null ? null : DateTime.fromISO(iso, { zone })
-      return dt?.isValid ? dt : null
+      if (dt?.isValid) return dt
+      logger.warn(`Sun entity "${sunEntityId}" has a missing or invalid ${attribute} "${iso}"`)
+      return null
     }
     return { sunrise: parse('next_rising'), sunset: parse('next_setting') }
   }

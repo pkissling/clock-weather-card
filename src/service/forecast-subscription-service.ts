@@ -1,4 +1,5 @@
 import type { HomeAssistant } from 'custom-card-helpers'
+import { DateTime } from 'luxon'
 
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
@@ -25,11 +26,12 @@ class ForecastSubscriptionService {
     return () => {
       if (!entry.listeners.delete(listener) || entry.listeners.size > 0) return
       if (entries.get(key) === entry) entries.delete(key)
+      logger.debug(`Unsubscribing from ${forecastType} forecast`, entityId)
       void entry.unsubscribe.then(async unsubscribe => {
         try {
           await unsubscribe?.()
-        } catch (_: unknown) {
-          // swallow — connection may already be closed
+        } catch (e: unknown) {
+          logger.debug(`Error unsubscribing from ${forecastType} forecast, connection may already be closed`, entityId, e)
         }
       })
     }
@@ -40,7 +42,12 @@ class ForecastSubscriptionService {
     const entry: Entry = { listeners: new Set(), latest: null, unsubscribe: Promise.resolve(null) }
     entry.unsubscribe = hassService
       .subscribeForecast(hass, entityId, forecastType, event => {
-        const latest = event.forecast ?? []
+        if (!event.forecast) logger.warn(`Received ${forecastType} forecast event without forecast entries`, entityId)
+        const latest = (event.forecast ?? []).filter(forecast => {
+          if (DateTime.fromISO(forecast.datetime).isValid) return true
+          logger.warn(`Ignoring ${forecastType} forecast entry of "${entityId}" with invalid datetime "${forecast.datetime}"`)
+          return false
+        })
         entry.latest = latest
         entry.listeners.forEach(l => l(latest))
       })
