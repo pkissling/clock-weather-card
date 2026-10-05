@@ -12,6 +12,7 @@ import { customElement, property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import { configContext, errorMessageContext, hassContext } from '@/context'
+import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
@@ -92,7 +93,9 @@ export class ClockWeatherCard extends LitElement {
   }
 
   public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
-    const entity = entities.find(e => e.startsWith('weather.') ?? entitiesFallback.find(() => true))
+    const isWeather = (e: string): boolean => e.startsWith('weather.')
+    const entity = entities.find(isWeather) ?? entitiesFallback.find(isWeather)
+    if (!entity) logger.warn('No weather entity found for the stub config')
     return { entity }
   }
 
@@ -120,11 +123,15 @@ export class ClockWeatherCard extends LitElement {
     try {
       const next = resolveConfig(this.config, this.hass)
       // Keep the previous object when nothing changed so config consumers don't re-render on every hass update.
-      if (!deepEqual(next, this.resolved)) this.resolved = next
+      if (!deepEqual(next, this.resolved)) {
+        logger.debug('Resolved config', next)
+        this.resolved = next
+      }
       this.error = undefined
     } catch (e) {
       this.resolved = undefined
       this.error = e instanceof Error ? e.message : String(e)
+      logger.warn(`Invalid config: ${this.error}`)
     }
   }
 
@@ -133,7 +140,9 @@ export class ClockWeatherCard extends LitElement {
     if (!this.resolved) return
     if (this._clock === null) {
       const { header, locale, timeZone } = this.resolved
-      this._clock = startClock(configNeedsSeconds(header), () => {
+      const needsSeconds = configNeedsSeconds(header)
+      logger.debug(`Starting clock with ${needsSeconds ? 'per-second' : 'per-minute'} ticks`)
+      this._clock = startClock(needsSeconds, () => {
         this.currentDate = DateTime.now()
           .setLocale(locale)
           .setZone(timeZone)
@@ -142,7 +151,10 @@ export class ClockWeatherCard extends LitElement {
   }
 
   private _stopClock(): void {
-    this._clock?.stop()
+    if (this._clock) {
+      logger.debug('Stopping clock')
+      this._clock.stop()
+    }
     this._clock = null
   }
 

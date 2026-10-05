@@ -484,7 +484,7 @@ test.describe('sections.header.rows', () => {
         .toHaveText('on')
     })
 
-    test('renders nothing when the configured attribute is missing on the entity', async ({ setupCard, clockWeatherCard }) => {
+    test('rejects an attribute that is missing on the entity', async ({ setupCard, cardErrorMessage }) => {
       await api.setEntityState('sensor.demo', 'on', { unit_of_measurement: '%' })
       await setupCard({
         cardConfig: `
@@ -498,8 +498,24 @@ test.describe('sections.header.rows', () => {
         `,
       })
 
-      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
-        .toHaveText('')
+      await cardErrorMessage()
+        .toContain('Config option "sections.header.rows[0].segments[0].attribute" has invalid value "missing", expected an attribute of "sensor.demo"')
+    })
+
+    test('rejects an entity_id that does not exist', async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.does_not_exist
+        `,
+      })
+
+      await cardErrorMessage()
+        .toContain('Referenced entity "sensor.does_not_exist" does not exist')
     })
 
     test('renders numeric attribute values', async ({ setupCard, clockWeatherCard }) => {

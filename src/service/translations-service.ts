@@ -26,10 +26,9 @@ class TranslationsService {
     if (langDict && langDict.has(key)) return langDict.get(key) as string
 
     const baseLang = lang.split('-')[0]
-    if (baseLang !== lang) {
-      const baseLangDict = this.translationsByLang.get(baseLang)
-      if (baseLangDict?.has(key)) return baseLangDict.get(key)!
-    }
+    const baseLangDict = this.translationsByLang.get(baseLang)
+    if (baseLang !== lang && baseLangDict?.has(key)) return baseLangDict.get(key)!
+    if (!langDict && !baseLangDict) logger.warn(`No translations for language "${language}", falling back to English`)
 
     const enFallback = this.translationsByLang.get('en')
     if (enFallback?.has(key)) return enFallback.get(key) as string

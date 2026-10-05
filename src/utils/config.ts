@@ -4,7 +4,7 @@ import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
 import { SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
-import { DEFAULT_GRADIENT } from '@/utils/gradient'
+import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
 
 const DEFAULT_ROWS: RowConfig[] = [
@@ -82,6 +82,12 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
+      if (segment.type === 'entity') {
+        assertEntityExists(segment.entity_id)
+        if (segment.attribute !== undefined && hassService.getEntityAttribute(hass, segment.entity_id, segment.attribute) === undefined) {
+          throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].attribute`, segment.attribute, `an attribute of "${segment.entity_id}"`)
+        }
+      }
       if (segment.type === 'text' && typeof segment.text !== 'string') throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].text`, String(segment.text), 'a string')
       if ('show_unit' in segment) assertBoolean(`sections.header.rows[${i}].segments[${j}].show_unit`, segment.show_unit)
       if (segment.type === 'weather' && 'unit' in segment) {
@@ -117,7 +123,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     }
     for (const [k, v] of Object.entries(gradient)) {
       if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric temperature keys')
-      if (typeof v !== 'string' || v.trim() === '') throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'non-empty color strings')
+      if (typeof v !== 'string' || !isSupportedColor(v)) throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'hex (#rgb, #rrggbb) or rgb() colors')
     }
   }
 

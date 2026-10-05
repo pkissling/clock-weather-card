@@ -69,6 +69,16 @@ After implementing a feature or fixing a bug, always check whether `README.md` n
 
 When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/utils/config.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` (from `src/utils/errors.ts`) so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.
 
+## Logging
+
+When writing code, consider whether a case deserves a log via `logger` (`src/service/logger.ts`, never `console` directly):
+
+- `warn` — the card silently falls back or drops something because of bad entity data or a config mistake that `validateConfig` can't catch up front (missing attribute, unparseable value, unknown state, empty forecast).
+- `error` — an unsupported situation the card can only paper over (e.g. an unknown temperature unit) or a failed HA call.
+- `debug` — lifecycle and diagnostics (subscriptions, payloads received, clock start/stop, resolved config).
+
+Prefer throwing a config error in `validateConfig` over warning when the mistake is detectable from config + `hass`. The logger suppresses identical messages for 3 minutes, so it is safe on render paths; put the distinguishing details (entity id, value) into the message. Don't add tests that only assert log output.
+
 ## Translations
 
 User-facing strings live in `src/locales/<lang>.json`. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).

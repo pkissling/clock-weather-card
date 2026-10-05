@@ -1,3 +1,4 @@
+import logger from '@/service/logger'
 import type { WeatherIconType } from '@/types'
 
 type IconLoader = () => Promise<string>
@@ -68,6 +69,7 @@ class IconsService {
     if (s === 'windy-exceptional') return 'mdi:weather-windy'
     if (s === 'exceptional') return 'mdi:alert-circle-outline'
     if (MDI_WEATHER_STATES.has(s)) return `mdi:weather-${s}`
+    logger.warn(`No MDI icon for weather state "${weatherState}", using fallback icon`)
     return 'mdi:weather-cloudy-alert'
   }
 

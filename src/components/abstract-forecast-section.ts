@@ -12,6 +12,7 @@ import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weath
 import { configContext, hassContext } from '@/context'
 import forecastSubscriptionService from '@/service/forecast-subscription-service'
 import hassService from '@/service/hass-service'
+import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastNotSupported } from '@/utils/errors'
@@ -87,10 +88,17 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
         .setLocale(locale)
         .setZone(timeZone),
     }))
+    const warnIfNoRows = (rowCount: number): void => {
+      if (rowCount > 0 || timed.length === 0) return
+      logger.warn(`No current or upcoming ${this.resolveForecastType()} forecast entries for "${this.resolveEntityId()}"`)
+    }
 
     if (this.resolveForecastType() === 'hourly') {
       const firstFutureIdx = timed.findIndex(({ at }) => at > now)
-      if (firstFutureIdx === -1) return []
+      if (firstFutureIdx === -1) {
+        warnIfNoRows(0)
+        return []
+      }
       const start = Math.max(0, firstFutureIdx - 1)
       const nowLabel = translationsService.t(locale, 'misc.now')
       return timed.slice(start, start + count)
@@ -108,8 +116,9 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
 
     const todayIso = now.toISODate()!
     const todayLabel = translationsService.t(locale, 'misc.today')
-    return timed
-      .filter(({ at }) => at.isValid && at.toISODate()! >= todayIso)
+    const upcoming = timed.filter(({ at }) => at.toISODate()! >= todayIso)
+    warnIfNoRows(upcoming.length)
+    return upcoming
       .slice(0, count)
       .map(({ forecast, at }) => {
         const isCurrent = at.toISODate() === todayIso
@@ -130,6 +139,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     const forecastType = this.resolveForecastType()
 
     if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
+      logger.debug(`"${entityId}" does not support ${forecastType} forecasts, skipping subscription`)
       if (this.unsubscribe) {
         this._unsubscribe()
         this.forecasts = []
@@ -145,6 +155,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.forecasts = []
     this._loaded = false
     this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, forecastType, forecasts => {
+      logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
       this.forecasts = forecasts
       this._loaded = true
     })

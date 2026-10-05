@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import forecastSubscriptionService from '@/service/forecast-subscription-service'
 import type { WeatherForecast, WeatherForecastEvent } from '@/types'
 
-vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, error: (): void => {} } }))
+vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, warn: (): void => {}, error: (): void => {} } }))
 
 interface FakeSubscription {
   message: { forecast_type: string, entity_id: string }
@@ -127,5 +127,17 @@ describe('forecastSubscriptionService', () => {
 
     expect(subscriptions)
       .toHaveLength(2)
+  })
+
+  it('drops forecast entries with an invalid datetime', async () => {
+    const listener = vi.fn()
+    forecastSubscriptionService.subscribe(hass, 'weather.home', 'hourly', listener)
+    subscriptions[0].resolve()
+    await flush()
+
+    subscriptions[0].emit([{ datetime: 'garbage', temperature: 1, condition: 'sunny' }, ...forecast(20)])
+
+    expect(listener)
+      .toHaveBeenCalledWith(forecast(20))
   })
 })
