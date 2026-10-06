@@ -3,8 +3,7 @@ import { type HaState, readHaState } from './ha-state.js'
 class HaApi {
   private _state?: HaState
 
-  // Read lazily so importing this module (e.g. during `playwright test --list`)
-  // doesn't require globalSetup to have already written the state file.
+  // Read lazily so importing this module (e.g. during `playwright test --list`) doesn't require globalSetup to have run.
   private get state(): HaState {
     return this._state ??= readHaState()
   }

@@ -1,17 +1,10 @@
 import { execSync, spawn } from 'child_process'
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs'
+import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'fs'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import {
-  createContainerName,
-  createStateFilePath,
-  E2E_ARTIFACT_NAME,
-  isStaleCreatedAt,
-  isStaleHaTempEntry,
-  writeHaState,
-} from './ha-state.js'
+import { createContainerName, E2E_ARTIFACT_NAME, writeHaState } from './ha-state.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -43,18 +36,11 @@ export default async function globalSetup(): Promise<void> {
   const wwwDir = path.join(tmpDir, 'www')
   mkdirSync(wwwDir, { recursive: true })
 
-  // Remove leftovers of crashed runs (containers, state files, tmp dirs).
-  // Everything is age-gated so artifacts of concurrently running sessions
-  // are never touched — each session only removes its own in teardown.
-  removeStaleContainers()
-  removeStaleTempEntries()
-
   console.log(`[HA Setup] Starting Home Assistant container ${containerName}...`)
   // `-p 127.0.0.1::8123` lets Docker pick a free host port, so concurrent
   // sessions never race for the same port.
   execSync(
     `docker run -d --name ${containerName} ` +
-    `--label ${E2E_ARTIFACT_NAME} ` +
     '-p 127.0.0.1::8123 ' +
     `-v ${tmpDir}:/config ` +
     '-e TZ=UTC ' +
@@ -71,9 +57,6 @@ export default async function globalSetup(): Promise<void> {
     console.log('[HA Setup] Completing onboarding...')
     const token = await completeOnboarding(haUrl)
 
-    // Unique path per run — a stale file owned by a different user (e.g. root in
-    // Docker vs. host user) can't block this write.
-    createStateFilePath()
     writeHaState({ haUrl, haToken: token, tmpDir, containerName })
   } catch (err) {
     // globalTeardown doesn't run when globalSetup throws — clean up here so a
@@ -111,41 +94,6 @@ function assertNoActiveRun(containerName: string): void {
       `[HA Setup] An e2e run is already active in this worktree (container ${containerName}). ` +
       `If it isn't, remove it with \`docker rm -f ${containerName}\`.`,
     )
-  }
-}
-
-function removeStaleContainers(): void {
-  let ids: string[]
-  try {
-    ids = execSync(`docker ps -aq --filter label=${E2E_ARTIFACT_NAME}`, { encoding: 'utf-8' })
-      .split('\n')
-      .filter(Boolean)
-  } catch {
-    return
-  }
-
-  for (const id of ids) {
-    try {
-      const created = execSync(`docker inspect -f '{{.Created}}' ${id}`, { encoding: 'utf-8' })
-        .trim()
-      if (isStaleCreatedAt(created, Date.now())) {
-        console.log(`[HA Setup] Removing stale HA container ${id}...`)
-        execSync(`docker rm -f ${id}`, { stdio: 'ignore' })
-      }
-    } catch { /* container vanished in the meantime, ignore */ }
-  }
-}
-
-function removeStaleTempEntries(): void {
-  const now = Date.now()
-  for (const entry of readdirSync(os.tmpdir())) {
-    if (!entry.startsWith(`${E2E_ARTIFACT_NAME}-`)) continue // skip the stat for unrelated /tmp entries
-    try {
-      const entryPath = path.join(os.tmpdir(), entry)
-      if (isStaleHaTempEntry(entry, statSync(entryPath).mtimeMs, now)) {
-        rmSync(entryPath, { recursive: true, force: true })
-      }
-    } catch { /* ignore — cleanup is best-effort */ }
   }
 }
 

@@ -435,7 +435,7 @@ E2E tests use Playwright and run the card inside a real Home Assistant Docker co
 4. Runs the tests
 5. Tears down the container
 
-A custom `mock_weather` integration (`e2e/ha-config/custom_components/mock_weather/`) provides a controllable weather entity. Tests set weather state, forecasts, and sun position via the HA REST API before each test.
+A custom `mock_weather` integration (`e2e/utils/ha-config/custom_components/mock_weather/`) provides a controllable weather entity. Tests set weather state, forecasts, and sun position via the HA REST API before each test.
 
 > **Note:** Docker must be running before executing `yarn test:e2e`.
 

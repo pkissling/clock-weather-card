@@ -6,8 +6,6 @@ import { readHaState } from './ha-state.js'
 export default async function globalTeardown(): Promise<void> {
   console.log('[HA Teardown] Stopping Home Assistant container...')
 
-  // Only remove this run's own artifacts (identified via the per-run state
-  // file) — other sessions may be running concurrently.
   try {
     const state = readHaState()
     try {
@@ -17,16 +15,7 @@ export default async function globalTeardown(): Promise<void> {
     }
     rmSync(state.tmpDir, { recursive: true, force: true })
   } catch {
-    // State file may not exist (setup failed before writing it)
-  }
-
-  const stateFile = process.env.HA_E2E_STATE_FILE
-  if (stateFile) {
-    try {
-      rmSync(stateFile, { force: true })
-    } catch {
-      // Best-effort — unique per-run paths mean a leaked file won't block future runs
-    }
+    // State is unset when setup failed before writing it
   }
 
   console.log('[HA Teardown] Cleanup complete.')
