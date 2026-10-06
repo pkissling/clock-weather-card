@@ -51,9 +51,6 @@ const customElementDevSuffixPlugin = (): Plugin => {
 }
 
 export default defineConfig(({ command }) => ({
-  // don't include public dir's content in dist, since those files are only required
-  // for the development server (playwright tests)
-  publicDir: command === 'build' ? false : 'public',
   plugins: [
     customElementDevSuffixPlugin(),
     // Emit only gzip bundles for production; no Brotli

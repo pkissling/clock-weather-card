@@ -19,7 +19,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
     "lint": "eslint . --max-warnings 0 --fix",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",

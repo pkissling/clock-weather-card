@@ -1,6 +1,5 @@
 # yarn
 /node_modules/
-/.rpt2_cache/
 package-lock.json
 /dist
 .yarn/install-state.gz
@@ -9,8 +8,3 @@ package-lock.json
 node_modules/
 /test-results/
 /playwright-report/
-/blob-report/
-/playwright/.cache/
-
-# Claude
-.claude/worktrees/
