@@ -34,8 +34,8 @@ export const test = base.extend<ClockWeatherCardFixtures, WorkerFixtures>({
     const context = await browser.newContext({
       ...options,
       ...contextOptions,
-      // The HA container's host port is only known after globalSetup, so the config's baseURL is a placeholder.
-      baseURL: process.env.HA_URL ?? readHaState().haUrl,
+      // The HA container gets a random host port, only known after globalSetup.
+      baseURL: readHaState().haUrl,
     })
     await use(context)
     await context.close()

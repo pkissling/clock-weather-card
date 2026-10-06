@@ -5,15 +5,11 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './e2e',
-  /* fullyParallel enables test-level distribution for `--shard=N/M` (otherwise
-     Playwright shards by file, putting all 270+ icon snapshot tests in one shard).
-     workers: 1 still forces serial execution within a shard — required because
-     the test suite shares a single HA Docker container per shard. */
-  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* No retries */
   retries: 0,
+  /* The whole suite shares one HA container. */
   workers: 1,
   /* Baselines are rendered in the pinned Docker image; host fonts would never match them. */
   ignoreSnapshots: !process.env.E2E_IN_DOCKER,
@@ -23,12 +19,7 @@ export default defineConfig({
   reporter: [['list'], ['html']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. The HA container
-       gets a random host port picked in globalSetup, so the effective baseURL
-       is resolved per-run by the sharedContext fixture in e2e/utils/fixtures.ts;
-       HA_URL takes precedence there too. */
-    baseURL: process.env.HA_URL || 'http://127.0.0.1:8123',
-
+    /* baseURL is set by the sharedContext fixture in e2e/utils/fixtures.ts, since HA's port is only known after globalSetup. */
     /* Trace export on passing icon-heavy tests takes 30s+ and blows the test timeout. */
     trace: 'retain-on-failure',
   },
