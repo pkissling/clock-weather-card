@@ -9,7 +9,7 @@ import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ResolvedConfig } from '@/types'
-import { convertTemperature, isTemperatureUnit } from '@/utils/temperature'
+import { toDisplayTemperature } from '@/utils/temperature'
 
 @customElement('clock-weather-card-entity-segment')
 class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
@@ -18,6 +18,7 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
   @property() public entityId!: string
   @property() public attribute?: string
   @property({ type: Boolean }) public showUnit = true
+  @property() public unit?: string
   @property() public unitAttribute?: string
 
   public render (): TemplateResult {
@@ -27,16 +28,14 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
     if (value === undefined || value === null) return html``
 
     const unit = this.resolveUnit()
-    const numeric = Number(value)
-    if (isTemperatureUnit(unit) && value !== '' && Number.isFinite(numeric)) {
-      const { temperatureUnit } = this.config
-      return html`<span>${convertTemperature(numeric, unit, temperatureUnit)}${this.showUnit ? temperatureUnit : ''}</span>`
-    }
+    const { temperatureUnit } = this.config
+    const temperature = toDisplayTemperature(value, unit, temperatureUnit)
+    if (temperature !== null) return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
 
-    if (this.showUnit && unit === null) {
+    if (this.showUnit && this.unit === undefined && unit === null) {
       logger.warn(`Unit attribute "${this.unitAttribute ?? 'unit_of_measurement'}" not found for entity "${this.entityId}"`)
     }
-    return html`<span>${value}${this.showUnit ? unit ?? '' : ''}</span>`
+    return html`<span>${value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
   }
 
   private resolveUnit (): string | null {

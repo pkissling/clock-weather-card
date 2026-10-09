@@ -41,12 +41,14 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
           .attribute=${segment.attribute}
           .showUnit=${segment.show_unit ?? true}
           .unit=${segment.unit}
+          .unitAttribute=${segment.unit_attribute}
         ></clock-weather-card-weather-segment>`
     case 'entity':
       return html`<clock-weather-card-entity-segment
           .entityId=${segment.entity_id}
           .attribute=${segment.attribute}
           .showUnit=${segment.show_unit ?? true}
+          .unit=${segment.unit}
           .unitAttribute=${segment.unit_attribute}
         ></clock-weather-card-entity-segment>`
     case 'icon':

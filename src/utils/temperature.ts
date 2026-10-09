@@ -18,3 +18,8 @@ export function convertTemperature(value: number, from: string | null, to: Tempe
   return Number(fromCelsius(toCelsius(value, from), to)
     .toFixed(decimals))
 }
+
+export function toDisplayTemperature(value: unknown, unit: string | null, to: TemperatureUnit): number | null {
+  const numeric = Number(value)
+  return isTemperatureUnit(unit) && value !== '' && Number.isFinite(numeric) ? convertTemperature(numeric, unit, to) : null
+}

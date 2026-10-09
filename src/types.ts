@@ -37,6 +37,7 @@ export interface WeatherSegmentConfig {
   attribute?: string
   show_unit?: boolean
   unit?: string
+  unit_attribute?: string
 }
 
 export interface EntitySegmentConfig {
@@ -44,6 +45,7 @@ export interface EntitySegmentConfig {
   entity_id: string
   attribute?: string
   show_unit?: boolean
+  unit?: string
   unit_attribute?: string
 }
 
