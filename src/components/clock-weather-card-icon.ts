@@ -14,50 +14,34 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property() public animatedIcon!: boolean
   @property() public weatherIconType!: WeatherIconType
   @state() private _src?: string
-  // Reflected so e2e tests can wait for the final (static or animated) src.
+  // Reflected so e2e tests can wait until the current icon has actually loaded.
   @property({ type: Boolean, reflect: true, attribute: 'data-settled' }) private _settled = false
-  private _loadId = 0
 
   public render(): TemplateResult {
-    return html`<img src="${this._src ?? nothing}" />`
+    return html`<img src="${this._src ?? nothing}" @load=${this._onImageDone} @error=${this._onImageDone} />`
   }
 
   public willUpdate(changed: PropertyValues): void {
     if (
-      changed.has('weatherState') ||
-      changed.has('isNight') ||
-      changed.has('animatedIcon') ||
-      changed.has('weatherIconType')
-    ) {
-      void this._loadIcon()
+      !changed.has('weatherState') &&
+      !changed.has('isNight') &&
+      !changed.has('animatedIcon') &&
+      !changed.has('weatherIconType')
+    ) return
+
+    const { weatherIconType, weatherState, isNight, animatedIcon } = this
+    const src = iconsService.getWeatherIcon(weatherIconType, animatedIcon, weatherState, isNight)
+    if (!src) {
+      logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
+      this._settled = true
+    } else if (src !== this._src) {
+      this._src = src
+      this._settled = false
     }
   }
 
-  private async _loadIcon(): Promise<void> {
-    // Bump per-load id so a stale resolution from a previous prop set
-    // can't overwrite the current icon.
-    const id = ++this._loadId
-    this._settled = false
-    const { weatherIconType, weatherState, isNight, animatedIcon } = this
-
-    const load = async (animated: boolean): Promise<boolean> => {
-      try {
-        const url = await iconsService.getWeatherIcon(weatherIconType, animated, weatherState, isNight)
-        if (id === this._loadId) this._src = url
-        return true
-      } catch (e) {
-        logger.debug(e instanceof Error ? e.message : String(e))
-        return false
-      }
-    }
-
-    const staticLoaded = await load(false)
-    const animatedLoaded = animatedIcon && await load(true)
-    if (!staticLoaded && !animatedLoaded) {
-      logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
-    }
-
-    if (id === this._loadId) this._settled = true
+  private _onImageDone(): void {
+    this._settled = true
   }
 }
 

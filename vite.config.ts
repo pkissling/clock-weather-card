@@ -50,9 +50,26 @@ const customElementDevSuffixPlugin = (): Plugin => {
   }
 }
 
+const MAX_BUNDLE_BYTES = 210_000
+
+const bundleSizeBudgetPlugin = (): Plugin => ({
+  name: 'clock-weather-card-bundle-size-budget',
+  apply: 'build',
+  generateBundle (_options, bundle) {
+    for (const chunk of Object.values(bundle)) {
+      if (chunk.type === 'chunk' && chunk.code.length > MAX_BUNDLE_BYTES) {
+        this.error(`${chunk.fileName} is ${chunk.code.length} bytes, over the ${MAX_BUNDLE_BYTES} byte budget`)
+      }
+    }
+  }
+})
+
 export default defineConfig(({ command }) => ({
+  // Resolve emitted assets relative to the card's own URL (e.g. /hacsfiles/clock-weather-card/), not the HA origin.
+  base: './',
   plugins: [
     customElementDevSuffixPlugin(),
+    bundleSizeBudgetPlugin(),
     // Emit only gzip bundles for production; no Brotli
     compression({ algorithms: ['gzip'] }),
     // Pack the dist into a single zip for HACS distribution
@@ -61,28 +78,23 @@ export default defineConfig(({ command }) => ({
         inDir: 'dist',
         outDir: 'dist',
         outFileName: 'clock-weather-card.zip',
-        filter: (fileName) => fileName.endsWith('.js'),
+        filter: (fileName) => /\.(js|svg)$/.test(fileName),
       })]
       : []),
   ],
   build: {
     target: 'es2019',
+    // Vite's default minifier keeps whitespace in ES library builds.
+    minify: 'terser',
     lib: {
       entry: 'src/clock-weather-card.ts',
       formats: ['es']
     },
     rollupOptions: {
       output: {
-        // Keep other assets (svg, translations) under assets/
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        // Chunks sit at the dist root so HACS's flat install layout
-        // can resolve dynamic imports like ./static-icons.js
-        chunkFileNames: '[name].js',
-        manualChunks (id: string) {
-          if (id.includes('@meteocons/svg-static/')) return 'static-icons'
-          if (id.includes('@meteocons/svg/')) return 'animated-icons'
-          return undefined
-        },
+        // Flat at the dist root so HACS's flat install layout can resolve them; hashed so upgrades bust browser caches.
+        assetFileNames: '[name]-[hash][extname]',
+        chunkFileNames: '[name]-[hash].js',
       },
     },
   },

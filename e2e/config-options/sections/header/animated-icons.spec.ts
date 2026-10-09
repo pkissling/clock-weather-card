@@ -1,7 +1,7 @@
 import { expect, test } from '../../../utils/fixtures'
 
 test.describe('sections.header.animated_icons', () => {
-  test('animated_icons: false renders a static SVG without SMIL animation tags', async ({ setupCard, clockWeatherCard }) => {
+  test('animated_icons: false renders a static SVG without SMIL animation tags', async ({ page, setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'sections: { header: { animated_icons: false } }',
       weather: { state: 'sunny' },
@@ -10,7 +10,9 @@ test.describe('sections.header.animated_icons', () => {
       .getAttribute('src')
     expect(src)
       .toBeTruthy()
-    const svg = decodeURIComponent(src!.replace(/^data:image\/svg\+xml;base64,/, ''))
+    const svg = await (await page.request.get(src!)).text()
+    expect(svg)
+      .toContain('<svg')
     expect(svg).not.toMatch(/<animate(Transform|Motion)?\b/)
   })
 
