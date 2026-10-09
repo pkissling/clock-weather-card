@@ -43,6 +43,8 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       .toHaveAttribute('icon', 'mdi:arrow-down')
     await expect(sunset.locator('.label ha-icon'))
       .toHaveAttribute('aria-label', 'Sunset')
+    await expect(sunset.locator('clock-weather-card-icon img'))
+      .toHaveAttribute('src', /\/sunset-[^/]*\.svg$/)
     expect(await columnTimes(strip))
       .toEqual(['Now', '17', '18', '18:42', '19', '20'])
   })
@@ -69,6 +71,8 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       .toHaveAttribute('icon', 'mdi:arrow-up')
     await expect(sunrise.locator('.label ha-icon'))
       .toHaveAttribute('aria-label', 'Sunrise')
+    await expect(sunrise.locator('clock-weather-card-icon img'))
+      .toHaveAttribute('src', /\/sunrise-[^/]*\.svg$/)
   })
 
   test('omits sun events after the last visible hour', async ({ setupCard, clockWeatherCard }) => {
