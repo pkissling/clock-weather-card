@@ -3,8 +3,7 @@ name: Bundle Release
 on:
   release:
     types: [published]
-  # Dispatched by release-please.yaml with the release tag as ref
-  # (releases created with GITHUB_TOKEN don't trigger release events).
+  # Releases created with GITHUB_TOKEN don't emit release events, so release-please dispatches this.
   workflow_dispatch:
 
 jobs:
