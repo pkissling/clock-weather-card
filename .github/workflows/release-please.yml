@@ -10,12 +10,18 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
+        id: release
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: node
+      - name: Trigger release asset build
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run release.yml -R ${{ github.repository }} --ref ${{ steps.release.outputs.tag_name }}

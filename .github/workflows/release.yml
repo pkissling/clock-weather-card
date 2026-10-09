@@ -3,6 +3,8 @@ name: Bundle Release
 on:
   release:
     types: [published]
+  # Releases created with GITHUB_TOKEN don't emit release events, so release-please dispatches this.
+  workflow_dispatch:
 
 jobs:
   release:

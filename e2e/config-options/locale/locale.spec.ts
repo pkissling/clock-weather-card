@@ -62,6 +62,23 @@ test.describe('locale', () => {
       .toContainText('Sonnig')
   })
 
+  test('renders Japanese translations', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        locale: ja
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+      `,
+      weather: { state: 'sunny' },
+    })
+
+    await expect(clockWeatherCard)
+      .toContainText('晴れ')
+  })
+
   test('falls back to HA language when locale is not configured', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       language: 'es',

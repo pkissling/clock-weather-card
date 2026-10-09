@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.9.6](https://github.com/pkissling/clock-weather-card/compare/v2.9.5...v2.9.6) (2026-10-03)
+
+
+### Bug Fixes
+
+* Match the full forecast period for the current temperature ([#724](https://github.com/pkissling/clock-weather-card/issues/724)) ([3fbdac1](https://github.com/pkissling/clock-weather-card/commit/3fbdac14e9d50a0d8296bbad2a95b92091ce7215))
+
+## [2.9.5](https://github.com/pkissling/clock-weather-card/compare/v2.9.4...v2.9.5) (2026-09-23)
+
+
+### Bug Fixes
+
+* clear clock interval when the card is disconnected ([#721](https://github.com/pkissling/clock-weather-card/issues/721)) ([e61027f](https://github.com/pkissling/clock-weather-card/commit/e61027f907f6b02ae8fb79858ffce9a7c369ac5f))
+
+## [2.9.4](https://github.com/pkissling/clock-weather-card/compare/v2.9.3...v2.9.4) (2026-07-15)
+
+
+### Bug Fixes
+
+* Add Japanese translation ([#706](https://github.com/pkissling/clock-weather-card/issues/706)) ([023f4bd](https://github.com/pkissling/clock-weather-card/commit/023f4bd2a9a3f3bc16001d28dfb0111c23f97862))
+
 ## [2.9.3](https://github.com/pkissling/clock-weather-card/compare/v2.9.2...v2.9.3) (2026-04-09)
 
 
