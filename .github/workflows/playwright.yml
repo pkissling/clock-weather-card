@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 45
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
@@ -24,7 +24,7 @@ jobs:
     - name: Run Playwright tests
       run: .github/playwright-snapshots-helper/run-in-docker.sh
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       if: failure()
       with:
         name: playwright-report

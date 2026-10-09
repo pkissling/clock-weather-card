@@ -1,8 +1,8 @@
 # Use official Playwright image with browsers preinstalled.
-# Pin the digest — the v1.59.1-jammy tag is mutable; without pinning, snapshots
+# Pin the digest — the v1.64.0-jammy tag is mutable; without pinning, snapshots
 # drift the moment Microsoft republishes the image (different fonts → ~37 px
 # anti-aliasing diff).
-FROM mcr.microsoft.com/playwright:v1.59.1-jammy@sha256:8a0360d39d1973be506dd59002904a774f6d697d4946c94063b3fd006461c8ff
+FROM mcr.microsoft.com/playwright:v1.64.0-jammy@sha256:c064e7f355d2dda32f669801a1b09e86a1e9252395c844d2cfbbe5c44acb9b79
 
 # The host's docker binary can't be mounted in from macOS (Mach-O), so ship a Linux CLI.
 COPY --from=docker:29-cli /usr/local/bin/docker /usr/local/bin/docker
