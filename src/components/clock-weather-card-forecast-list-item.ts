@@ -23,7 +23,7 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
       .map(s => `${s.color} ${s.percent}%`)
       .join(', ')
     const fillStyle = `left: ${barLowPercent}%; right: ${100 - barHighPercent}%; background: linear-gradient(to right, ${gradient});`
-    const dotStyle = `left: ${currentTempPercent}%;`
+    const dotStyle = `--_dot-left: ${currentTempPercent}%;`
 
     return html`
       <span class="label">${label}</span>
