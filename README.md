@@ -300,6 +300,7 @@ Displays the current weather state (localized) or a specific weather entity attr
 | `attribute` | string | no | - | Weather entity attribute (e.g. `temperature`, `humidity`). If omitted, shows the localized weather state text. |
 | `show_unit` | boolean | no | `true` | When `attribute` is set, append `unit` if configured, otherwise the attribute's known unit (the card's `temperature_unit` for `temperature`/`apparent_temperature`/`dew_point`, whose values are converted to it, `pressure_unit`, `wind_speed_unit` for `wind_speed`/`wind_gust_speed`, `visibility_unit`, `precipitation_unit`, `%` for `humidity`/`cloud_coverage`, `°` for `wind_bearing`), otherwise the `<attribute>_unit` attribute. |
 | `unit` | string | no | - | Hard-coded unit appended to the attribute value, overriding the resolved unit. Useful for attributes without a known unit. Cannot be combined with `show_unit: false`. |
+| `unit_attribute` | string | no | - | Weather entity attribute the unit is read from, replacing the resolved unit described under `show_unit`; must exist on the entity. Values with a `°C`/`°F` unit are converted to the card's `temperature_unit`. |
 
 #### `entity`
 
@@ -311,7 +312,8 @@ Displays a Home Assistant entity's state and unit.
 | `entity_id` | string | **yes** | - | Entity ID (e.g. `sensor.temperature`) |
 | `attribute` | string | no | - | Entity attribute to display; must exist on the entity. If omitted, shows the entity state + unit. |
 | `show_unit` | boolean | no | `true` | Append the unit to the displayed value. Values with a `°C`/`°F` unit are converted to the card's `temperature_unit`. |
-| `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from. |
+| `unit` | string | no | - | Hard-coded unit appended to the value, overriding the resolved unit. Cannot be combined with `show_unit: false`. |
+| `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from; must exist on the entity. |
 
 #### `icon`
 
