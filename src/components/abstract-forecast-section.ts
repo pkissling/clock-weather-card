@@ -15,7 +15,7 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
-import { forecastNotSupported } from '@/utils/errors'
+import { forecastAttributeNotFound, forecastNotSupported } from '@/utils/errors'
 import { convertTemperature } from '@/utils/temperature'
 
 export interface ForecastRow {
@@ -40,18 +40,17 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   protected abstract resolveForecastType(): SectionForecastType
   protected abstract resolveEntityId(): string
   protected abstract renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult
+  protected abstract requiredAttribute(): string | null
 
   public render(): TemplateResult {
     const entityId = this.resolveEntityId()
     const forecastType = this.resolveForecastType()
     if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
-      return html`
-        <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
-        <clock-weather-card-error
-          severity="warning"
-          .message=${forecastNotSupported(entityId, forecastType).message}
-        ></clock-weather-card-error>
-      `
+      return this._renderWarning(forecastNotSupported(entityId, forecastType))
+    }
+    const attribute = this.requiredAttribute()
+    if (attribute !== null && this.forecasts.length > 0 && !this.forecasts.some(forecast => attribute in forecast)) {
+      return this._renderWarning(forecastAttributeNotFound(entityId, attribute))
     }
     return this.renderForecast(entityId, forecastType)
   }
@@ -79,11 +78,8 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     const sourceUnit = hassService.getEntityAttributeString(this.hass, this.resolveEntityId(), 'temperature_unit')
     const convert = (t: number): number => convertTemperature(t, sourceUnit, temperatureUnit)
     const timed = this.forecasts.map(forecast => ({
-      forecast: {
-        ...forecast,
-        temperature: convert(forecast.temperature),
-        templow: typeof forecast.templow === 'number' ? convert(forecast.templow) : forecast.templow,
-      },
+      forecast: Object.fromEntries(Object.entries(forecast)
+        .map(([key, value]) => [key, typeof value === 'number' && (key === 'templow' || hassService.isWeatherTemperatureAttribute(key)) ? convert(value) : value])) as unknown as WeatherForecast,
       at: DateTime.fromISO(forecast.datetime)
         .setLocale(locale)
         .setZone(timeZone),
@@ -131,6 +127,19 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
           isNight: isCurrent && hassService.isNight(this.hass, sunEntity),
         }
       })
+  }
+
+  protected forecastAttributeUnit(attribute: string): string | null {
+    return hassService.isWeatherTemperatureAttribute(attribute)
+      ? this.config.temperatureUnit
+      : hassService.getForecastAttributeUnit(this.hass, this.resolveEntityId(), attribute)
+  }
+
+  private _renderWarning(error: Error): TemplateResult {
+    return html`
+      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <clock-weather-card-error severity="warning" .message=${error.message}></clock-weather-card-error>
+    `
   }
 
   private _syncSubscription(): void {

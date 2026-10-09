@@ -54,6 +54,13 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     if (value === undefined) return
     if (typeof value !== 'boolean') throw invalidConfigValue(path, String(value), 'true or false')
   }
+  const assertNonEmptyString = (path: string, value: unknown): void => {
+    if (value === undefined) return
+    if (typeof value !== 'string' || value.trim() === '') throw invalidConfigValue(path, String(value), 'a non-empty string')
+  }
+  const assertString = (path: string, value: unknown): void => {
+    if (value !== undefined && typeof value !== 'string') throw invalidConfigValue(path, String(value), 'a string')
+  }
   const assertCssLength = (path: string, value: unknown): void => {
     if (value === undefined) return
     if (typeof value !== 'string' || !/^\d+(\.\d+)?(px|rem|em|vh|vw|%)$/i.test(value.trim())) {
@@ -78,6 +85,12 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, SECTION_FORECAST_TYPES)
   assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, SECTION_FORECAST_TYPES)
+  assertNonEmptyString('sections.forecast_strip.attribute', strip?.attribute)
+  assertNonEmptyString('sections.forecast_strip.attribute_icon', strip?.attribute_icon)
+  assertNonEmptyString('sections.forecast_strip.attribute_color', strip?.attribute_color)
+  assertNonEmptyString('sections.forecast_list.attribute', list?.attribute)
+  assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
+  assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
   config.sections?.header?.rows?.forEach((row, i) => {
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
@@ -128,10 +141,10 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   const gradient = config.sections?.forecast_list?.gradient
   if (gradient !== undefined) {
     if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
-      throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of temperatures to colors')
+      throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of values to colors')
     }
     for (const [k, v] of Object.entries(gradient)) {
-      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric temperature keys')
+      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric keys')
       if (typeof v !== 'string' || !isSupportedColor(v)) throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'hex (#rgb, #rrggbb) or rgb() colors')
     }
   }
@@ -149,6 +162,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
   validateConfig(config, hass)
   const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
   const weatherIconType = config.weather_icon_type || 'line'
+  const listAttribute = list?.attribute ?? 'temperature'
   return {
     entity: config.entity,
     title: config.title ?? null,
@@ -173,6 +187,11 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       roundTemperatures: strip?.round_temperatures ?? true,
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
       hideSunriseSunset: strip?.hide_sunrise_sunset ?? false,
+      attribute: strip?.attribute ?? 'precipitation_probability',
+      attributeRequired: strip?.attribute !== undefined,
+      attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
+      attributeColor: strip?.attribute_color ?? null,
+      attributeUnit: strip?.attribute_unit ?? null,
     },
     forecastList: {
       hidden: list?.hide ?? false,
@@ -185,6 +204,8 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       animatedIcons: list?.animated_icons ?? false,
       roundTemperatures: list?.round_temperatures ?? true,
       weatherIconType: list?.weather_icon_type ?? weatherIconType,
+      attribute: listAttribute,
+      attributeUnit: list?.attribute_unit ?? null,
       gradient: list?.gradient ?? DEFAULT_GRADIENT,
     },
   }

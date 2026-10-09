@@ -34,7 +34,7 @@ test.describe('setupCard', () => {
   })
 
   test('returns only after follow-up forecasts have rendered, even when HA pushes arrive late', async ({ setupCard, clockWeatherCard }) => {
-    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
+    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute')
       .first()
 
     const texts: (string | null)[] = []

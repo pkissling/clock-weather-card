@@ -23,6 +23,7 @@ const WEATHER_ATTRIBUTE_UNITS: Record<string, UnitSource> = {
   wind_gust_speed: { attribute: 'wind_speed_unit' },
   visibility: { attribute: 'visibility_unit' },
   precipitation: { attribute: 'precipitation_unit' },
+  precipitation_probability: { fixed: '%' },
   humidity: { fixed: '%' },
   cloud_coverage: { fixed: '%' },
   wind_bearing: { fixed: '°' },
@@ -98,9 +99,13 @@ class HassService {
 
   public getWeatherAttributeUnit(hass: HomeAssistant, entityId: string, attribute: string): string | null {
     const known = WEATHER_ATTRIBUTE_UNITS[attribute]
-    if (known && 'fixed' in known) {
-      return typeof this.getEntityAttribute(hass, entityId, attribute) === 'number' ? known.fixed : null
-    }
+    if (known && 'fixed' in known && typeof this.getEntityAttribute(hass, entityId, attribute) !== 'number') return null
+    return this.getForecastAttributeUnit(hass, entityId, attribute)
+  }
+
+  public getForecastAttributeUnit(hass: HomeAssistant, entityId: string, attribute: string): string | null {
+    const known = WEATHER_ATTRIBUTE_UNITS[attribute]
+    if (known && 'fixed' in known) return known.fixed
     return this.getEntityAttributeString(hass, entityId, known?.attribute ?? `${attribute}_unit`)
   }
 

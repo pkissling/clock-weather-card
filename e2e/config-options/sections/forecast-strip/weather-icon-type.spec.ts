@@ -105,7 +105,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: forecast },
     })
-    const lineColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
+    const lineColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute')
       .first()
       .evaluate(el => getComputedStyle(el).color)
 
@@ -119,7 +119,7 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
       `,
       weather: { forecast_hourly: forecast },
     })
-    const monoPrecipColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
+    const monoPrecipColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute')
       .first()
       .evaluate(el => getComputedStyle(el).color)
     const monoTempColor = await clockWeatherCard.locator('clock-weather-card-forecast-strip-item .label')
