@@ -28,6 +28,7 @@ Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather
 
 - **`time_format` removed.** Use `time_pattern` on a `time` segment instead. For 24-hour clocks use `HH:mm` (or `HH:mm:ss`), for 12-hour use `hh:mm a` (or `h:mm a`). Full token reference: [Luxon formatting tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
 - **Default `time_pattern` / `date_pattern` are now locale-aware.** When you omit `time_pattern` or `date_pattern`, the segment renders using the localized Luxon tokens `t` / `DDD` (equivalent to `DateTime.TIME_SIMPLE` / `DateTime.DATE_FULL`) — e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 always rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old behavior.
+- **Tapping the card does nothing by default.** v2 opened the weather entity's more-info dialog on tap and supported undocumented `hold_action` / `double_tap_action`. Set `tap_action: { action: more-info }` to restore the tap behavior; hold and double tap are no longer supported.
 
 ## FAQ
 
@@ -115,6 +116,7 @@ entity: weather.home
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
+| `tap_action` | object | no | `none` | [Action](https://www.home-assistant.io/dashboards/actions/) to run when the card is tapped, e.g. `navigate`, `url`, `more-info` (of `entity`) or `perform-action`. |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
 
 ### Sections Options

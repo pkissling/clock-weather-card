@@ -1,4 +1,4 @@
-import { type HomeAssistant, type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
+import { type ActionConfig, type HomeAssistant, type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
 import { type HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 
 declare global {
@@ -95,6 +95,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   time_zone?: string
   locale?: string
   temperature_unit?: TemperatureUnitOption
+  tap_action?: ActionConfig
   sections?: {
     header?: {
       hide?: boolean

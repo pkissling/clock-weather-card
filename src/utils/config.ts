@@ -153,6 +153,12 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     throw invalidConfigValue('time_zone', config.time_zone, 'an IANA time zone such as "Europe/Berlin"')
   }
 
+  if (config.tap_action !== undefined) {
+    const action = (config.tap_action as { action?: string } | null)?.action
+    if (!action) throw invalidConfigValue('tap_action', String(config.tap_action), 'an object with an "action"')
+    assertEnumValue('tap_action.action', action, ['more-info', 'toggle', 'navigate', 'url', 'perform-action', 'call-service', 'assist', 'fire-dom-event', 'none'])
+  }
+
   if (config.locale && !isValidLocale(config.locale)) {
     throw invalidConfigValue('locale', config.locale, 'a BCP 47 language tag such as "en-US"')
   }

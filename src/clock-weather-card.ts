@@ -6,7 +6,7 @@ import '@/components/clock-weather-card-forecast-list'
 import { provide } from '@lit/context'
 import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
-import { LitElement } from 'lit'
+import { LitElement, nothing } from 'lit'
 import { html } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
@@ -70,8 +70,16 @@ export class ClockWeatherCard extends LitElement {
     }
 
     const { title, header, forecastStrip, forecastList } = this.resolved
+    const tapAction = this.config.tap_action
+    const clickable = !!tapAction && tapAction.action !== 'none'
     return html`
-      <ha-card>
+      <ha-card
+        class=${clickable ? 'clickable' : ''}
+        role=${clickable ? 'button' : nothing}
+        tabindex=${clickable ? 0 : nothing}
+        @click=${clickable ? this.handleTap : nothing}
+        @keydown=${clickable ? (e: KeyboardEvent) => { if (e.key === 'Enter') this.handleTap() } : nothing}
+      >
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
           ${header.hidden ? '' : html`
@@ -86,6 +94,14 @@ export class ClockWeatherCard extends LitElement {
         </div>
       </ha-card>
       `
+  }
+
+  private handleTap(): void {
+    this.dispatchEvent(new CustomEvent('hass-action', {
+      bubbles: true,
+      composed: true,
+      detail: { config: { entity: this.config?.entity, tap_action: this.config?.tap_action }, action: 'tap' },
+    }))
   }
 
   public setConfig(config: ClockWeatherCardConfig): void {
