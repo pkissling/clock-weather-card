@@ -124,7 +124,7 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item:first-of-type {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   clock-weather-card-forecast-strip-item .time {
@@ -237,11 +237,11 @@ export default css`
   }
 
   clock-weather-card-forecast-list-item .temperature-low {
-    text-align: right;
+    text-align: end;
   }
 
   clock-weather-card-forecast-list-item .temperature-high {
-    text-align: left;
+    text-align: start;
   }
 
   clock-weather-card-forecast-list-item .bar-track {
@@ -250,6 +250,10 @@ export default css`
     min-height: 8px;
     background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
     border-radius: 999px;
+  }
+
+  clock-weather-card-forecast-list-item:dir(rtl) .bar-track {
+    transform: scaleX(-1);
   }
 
   clock-weather-card-forecast-list-item .bar-fill {
