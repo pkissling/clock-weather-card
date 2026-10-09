@@ -160,25 +160,34 @@ export default css`
     margin-top: 2px;
   }
 
-  clock-weather-card-forecast-strip-item .precipitation {
+  clock-weather-card-forecast-strip-item .attribute {
     font-size: 0.72rem;
     opacity: 0.65;
     color: var(--info-color, #4a90d9);
     line-height: 1;
     min-height: 0.72rem;
-    display: inline-flex;
+    display: flex;
+    max-width: 5rem;
     align-items: center;
     gap: 2px;
     margin-top: 2px;
   }
 
-  clock-weather-card-forecast-strip-item .precipitation--monochrome {
+  clock-weather-card-forecast-strip-item .attribute-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  clock-weather-card-forecast-strip-item .attribute--monochrome {
     color: inherit;
   }
 
-  clock-weather-card-forecast-strip-item .precipitation ha-icon {
+  clock-weather-card-forecast-strip-item .attribute ha-icon {
     --mdc-icon-size: 1em;
     display: inline-flex;
+    flex: none;
   }
 
   clock-weather-card-forecast-list {

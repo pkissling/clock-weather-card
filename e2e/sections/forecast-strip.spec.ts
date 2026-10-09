@@ -27,7 +27,7 @@ test.describe('forecast_strip section', () => {
       .locator('.label'))
       .toHaveText('15°C')
     await expect(items.nth(0)
-      .locator('.precipitation'))
+      .locator('.attribute'))
       .toContainText('90%')
   })
 
@@ -109,7 +109,7 @@ test.describe('forecast_strip section', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
       .toHaveCount(0)
   })
 
@@ -129,7 +129,7 @@ test.describe('forecast_strip section', () => {
     await expect(items)
       .toHaveCount(3)
     // None of the columns should render a .precipitation span at all.
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
       .toHaveCount(0)
   })
 
@@ -149,41 +149,39 @@ test.describe('forecast_strip section', () => {
     const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
     await expect(items)
       .toHaveCount(4)
-    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
+    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute')
     await expect(precip)
       .toHaveText(['0%', '70%', '0%', ''])
   })
 
-  test('rounds precipitation probabilities to the nearest 10%', async ({ setupCard, clockWeatherCard }) => {
-    const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'rainy', temperature: 20, precipitation_probability: 34 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'rainy', temperature: 19, precipitation_probability: 35 },
-      { datetime: '2025-09-14T15:00:00+00:00', condition: 'pouring', temperature: 18, precipitation_probability: 97 },
-      { datetime: '2025-09-14T16:00:00+00:00', condition: 'cloudy', temperature: 18, precipitation_probability: 5 },
-    ]
-    await setupCard({
-      date: new Date('2025-09-14T13:30:00+00:00'),
-      timeZone: 'UTC',
-      weather: { forecast_hourly: forecasts },
-    })
+  test('widens columns for attribute values up to a cap, truncating longer ones', async ({ setupCard, clockWeatherCard }) => {
+    const config = (unit: string): string => `
+      entity: weather.mock_weather
+      sections:
+        forecast_strip:
+          attribute: precipitation_probability
+          attribute_icon: mdi:gauge
+          attribute_unit: "${unit}"
+    `
+    const value = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute-value')
+      .first()
+    const isTruncated = (): Promise<boolean> => value.evaluate(el => el.scrollWidth > el.clientWidth)
 
-    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation')
-    await expect(precip)
-      .toHaveCount(4)
-    await expect(precip.nth(0))
-      .toHaveText('30%')
-    await expect(precip.nth(1))
-      .toHaveText('40%')
-    await expect(precip.nth(2))
-      .toHaveText('100%')
-    await expect(precip.nth(3))
-      .toHaveText('10%')
+    await setupCard({ cardConfig: config('00.0 hPa') })
+    expect(await isTruncated())
+      .toBe(false)
+
+    await setupCard({ cardConfig: config(' percent chance of rain') })
+    expect(await isTruncated())
+      .toBe(true)
+    expect(await value.evaluate(el => getComputedStyle(el).textOverflow))
+      .toBe('ellipsis')
   })
 
-  test('hides the precipitation row when every probability rounds down to 0%', async ({ setupCard, clockWeatherCard }) => {
+  test('shows precipitation probabilities unrounded', async ({ setupCard, clockWeatherCard }) => {
     const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 4 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 2 },
+      { datetime: '2025-09-14T13:00:00+00:00', condition: 'rainy', temperature: 20, precipitation_probability: 34 },
+      { datetime: '2025-09-14T14:00:00+00:00', condition: 'cloudy', temperature: 19, precipitation_probability: 4 },
     ]
     await setupCard({
       date: new Date('2025-09-14T13:30:00+00:00'),
@@ -191,10 +189,8 @@ test.describe('forecast_strip section', () => {
       weather: { forecast_hourly: forecasts },
     })
 
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
-      .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .precipitation'))
-      .toHaveCount(0)
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
+      .toHaveText(['34%', '4%'])
   })
 
   test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {

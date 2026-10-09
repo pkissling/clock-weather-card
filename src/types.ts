@@ -111,6 +111,10 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
       hide_sunrise_sunset?: boolean
+      attribute?: string
+      attribute_icon?: string
+      attribute_color?: string
+      attribute_unit?: string
     }
     forecast_list?: {
       hide?: boolean
@@ -123,6 +127,8 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       animated_icons?: boolean
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
+      attribute?: string
+      attribute_unit?: string
       gradient?: Record<number, string>
     }
   }
@@ -158,6 +164,11 @@ export interface ResolvedForecastStripConfig {
   roundTemperatures: boolean
   weatherIconType: WeatherIconType
   hideSunriseSunset: boolean
+  attribute: string
+  attributeRequired: boolean
+  attributeIcon: string | null
+  attributeColor: string | null
+  attributeUnit: string | null
 }
 
 export interface ResolvedForecastListConfig {
@@ -171,6 +182,8 @@ export interface ResolvedForecastListConfig {
   rowHeight: string
   barThickness: string
   hideCurrentTempIndicator: boolean
+  attribute: string
+  attributeUnit: string | null
   gradient: Record<number | string, string>
 }
 
@@ -215,8 +228,7 @@ export type ForecastStripItem = {
   isNight: boolean
   animatedIcon: boolean
   weatherIconType: WeatherIconType
-  precipitationProbability: number | null
-  showPrecipitation: boolean
+  attribute: { icon: string | null, color: string | null, value: string | null } | null
 } & (
   | { temperature: number, temperatureLow: number | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }
@@ -233,16 +245,14 @@ export interface ForecastListItem {
   isNight: boolean
   animatedIcon: boolean
   weatherIconType: WeatherIconType
-  temperatureLow: number | string
-  temperatureHigh: number | string
-  temperatureUnit: TemperatureUnit
+  lowLabel: string | null
+  highLabel: string | null
   barLowPercent: number
   barHighPercent: number
   gradientStops: GradientStop[]
   showCurrentIndicator: boolean
   currentTempPercent: number
 }
-
 
 export interface TemperatureSensor extends HassEntity {
   state: string

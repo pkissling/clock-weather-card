@@ -14,7 +14,7 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
   public render(): TemplateResult {
     const {
       label, condition, isNight, animatedIcon, weatherIconType,
-      temperatureLow, temperatureHigh, temperatureUnit,
+      lowLabel, highLabel,
       barLowPercent, barHighPercent, gradientStops,
       showCurrentIndicator, currentTempPercent,
     } = this.item
@@ -33,12 +33,12 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
         .animatedIcon=${animatedIcon}
         .weatherIconType=${weatherIconType}
       ></clock-weather-card-icon>
-      <span class="temperature-low">${temperatureLow}${temperatureUnit}</span>
+      <span class="temperature-low">${lowLabel ?? nothing}</span>
       <div class="bar-track">
         <div class="bar-fill" style=${fillStyle}></div>
         ${showCurrentIndicator ? html`<div class="dot" style=${dotStyle}></div>` : nothing}
       </div>
-      <span class="temperature-high">${temperatureHigh}${temperatureUnit}</span>
+      <span class="temperature-high">${highLabel ?? nothing}</span>
     `
   }
 }

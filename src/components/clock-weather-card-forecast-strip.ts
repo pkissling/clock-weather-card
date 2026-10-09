@@ -10,6 +10,7 @@ import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { ForecastStripItem, SectionForecastType } from '@/types'
+import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
 
 @customElement('clock-weather-card-forecast-strip')
 class ClockWeatherCardForecastStrip extends AbstractForecastSection {
@@ -21,9 +22,14 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     return this.config.forecastStrip.entity
   }
 
+  protected requiredAttribute(): string | null {
+    const { attribute, attributeRequired } = this.config.forecastStrip
+    return attributeRequired ? attribute : null
+  }
+
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sunEntity, timeZone, locale, temperatureUnit } = this.config
-    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset } = this.config.forecastStrip
+    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
     const now = this.currentDate
 
     const visible = this.visibleRows(count)
@@ -31,10 +37,14 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     const roundTemperature = (t: number): number => roundTemperatures ? Math.round(t) : t
 
-    // Drop the precipitation row entirely if rounded precipitation never above 0%
-    const showPrecipitation = visible.some(({ forecast }) => (roundToTens(forecast.precipitation_probability) ?? 0) > 0)
+    const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
+    const attributeValues = visible.map(({ forecast }) => forecastAttributeValue(forecast, attribute))
+    const showAttribute = attributeValues.some(v => v !== null && v !== 0)
+    const attributeItem = (value: number | null): ForecastStripItem['attribute'] => showAttribute
+      ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(value, attributeUnit) }
+      : null
 
-    const forecastItems = visible.map(({ forecast, at, label, isNight }): { at: DateTime, item: ForecastStripItem } => {
+    const forecastItems = visible.map(({ forecast, at, label, isNight }, i): { at: DateTime, item: ForecastStripItem } => {
       const templow = forecastType === 'daily' ? forecast.templow ?? null : null
       return {
         at,
@@ -47,8 +57,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
           temperature: roundTemperature(templow === null ? forecast.temperature : Math.max(forecast.temperature, templow)),
           temperatureLow: templow === null ? null : roundTemperature(Math.min(forecast.temperature, templow)),
           temperatureUnit,
-          precipitationProbability: roundToTens(forecast.precipitation_probability),
-          showPrecipitation,
+          attribute: attributeItem(attributeValues[i]),
         },
       }
     })
@@ -68,8 +77,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
           animatedIcon: animatedIcons,
           weatherIconType,
           sunEvent: { kind, label: translationsService.t(locale, kind === 'sunrise' ? 'misc.sunrise' : 'misc.sunset') },
-          precipitationProbability: null,
-          showPrecipitation,
+          attribute: attributeItem(null),
         },
       }))
 
@@ -84,8 +92,5 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     `
   }
 }
-
-const roundToTens = (value: number | null | undefined): number | null =>
-  value === null || value === undefined ? null : Math.round(value / 10) * 10
 
 export default ClockWeatherCardForecastStrip

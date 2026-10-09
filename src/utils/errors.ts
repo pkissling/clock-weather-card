@@ -16,5 +16,8 @@ export const invalidConfigValue = (attribute: ConfigAttribute | string, value: s
 export const optionRequiresValue = (attribute: string, otherAttribute: string, otherValue: string): Error =>
   new Error(`Config option "${attribute}" requires "${otherAttribute}" to be "${otherValue}"`)
 
+export const forecastAttributeNotFound = (entityId: string, attribute: string): Error =>
+  new Error(`Forecast of entity "${entityId}" has no attribute "${attribute}"`)
+
 export const forecastNotSupported = (entityId: string, kind: ForecastType): Error =>
   new Error(`Entity "${entityId}" does not support ${kind} forecasts`)

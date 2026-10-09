@@ -62,6 +62,11 @@ describe('resolveConfig', () => {
           roundTemperatures: true,
           weatherIconType: 'line',
           hideSunriseSunset: false,
+          attribute: 'precipitation_probability',
+          attributeRequired: false,
+          attributeIcon: 'mdi:water',
+          attributeColor: null,
+          attributeUnit: null,
         },
         forecastList: {
           hidden: false,
@@ -74,6 +79,8 @@ describe('resolveConfig', () => {
           animatedIcons: false,
           roundTemperatures: true,
           weatherIconType: 'line',
+          attribute: 'temperature',
+          attributeUnit: null,
           gradient: DEFAULT_GRADIENT,
         },
       })
@@ -133,4 +140,17 @@ describe('resolveConfig', () => {
       .toMatchObject({ entity: 'weather.list', weatherIconType: 'monochrome', count: 3 })
   })
 
+  it('drops the default strip icon once a custom attribute is configured', () => {
+    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed' } } }), hass).forecastStrip.attributeIcon)
+      .toBeNull()
+    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed', attribute_icon: 'mdi:weather-windy' } } }), hass).forecastStrip.attributeIcon)
+      .toBe('mdi:weather-windy')
+  })
+
+  it('prefers a configured gradient over the attribute default', () => {
+    const resolved = resolveConfig(config({ sections: { forecast_list: { attribute: 'humidity', gradient: { 0: '#000000' } } } }), hass)
+
+    expect(resolved.forecastList.gradient)
+      .toEqual({ 0: '#000000' })
+  })
 })

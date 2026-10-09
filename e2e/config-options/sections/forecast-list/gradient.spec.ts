@@ -51,7 +51,7 @@ test.describe('sections.forecast_list.gradient', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.forecast_list.gradient" has invalid value "red", expected a map of temperatures to colors')
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "red", expected a map of values to colors')
   })
 
   test('rejects non-numeric gradient keys', async ({ setupCard, cardErrorMessage }) => {
@@ -65,7 +65,7 @@ test.describe('sections.forecast_list.gradient', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.forecast_list.gradient" has invalid value "key cold", expected numeric temperature keys')
+      .toContain('Config option "sections.forecast_list.gradient" has invalid value "key cold", expected numeric keys')
   })
 
   test('swaps the gradient at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
