@@ -63,7 +63,7 @@ If Playwright snapshots need to be updated, always regenerate them via `yarn tes
 
 ## README maintenance
 
-After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change. Config options are documented in the `Card Options`, `Sections Options`, `Row Options` and `Segment Types` tables; also check the `Full configuration` example, behavior descriptions, usage instructions and screenshots. If anything is affected, update it as part of the same change.
+After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change. Config options are documented in the `Card Options`, `Sections Options`, `Row Options` and `Segment Types` tables; also check behavior descriptions, usage instructions and screenshots. If anything is affected, update it as part of the same change.
 
 ## Config validation
 
