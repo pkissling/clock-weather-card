@@ -6,7 +6,8 @@
     {
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "minor-dependencies",
-      "matchPackageNames": ["*"]
+      "matchPackageNames": ["*"],
+      "automerge": true
     },
     {
       "matchPackageNames": ["lit"],
