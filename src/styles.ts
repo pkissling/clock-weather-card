@@ -2,8 +2,8 @@ import { css } from 'lit'
 
 export default css`
 
-  ha-card {
-    cursor: pointer; // TODO conditional!
+  ha-card.clickable {
+    cursor: pointer;
   }
 
   h1.card-header {
