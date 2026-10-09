@@ -83,8 +83,8 @@ _Thanks to @deprecatedcoder for this explanation from [#143](https://github.com/
 
 ### Manual
 
-1. Download `clock-weather-card.js` from the [latest release](https://www.github.com/pkissling/clock-weather-card/releases/latest).
-2. Place the file in your Home Assistant `config/www` folder.
+1. Download `clock-weather-card.zip` from the [latest release](https://www.github.com/pkissling/clock-weather-card/releases/latest).
+2. Extract all of its files (the card and its weather icons) into your Home Assistant `config/www` folder.
 3. Add the resource to your `ui-lovelace.yaml`:
 
    ```yaml

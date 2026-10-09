@@ -1,64 +1,22 @@
 import logger from '@/service/logger'
 import type { WeatherIconType } from '@/types'
 
-type IconLoader = () => Promise<string>
-
 const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
 
-interface IconIndex {
-  [type: string]: Map<string, IconLoader>
-}
+// Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
+const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,partly-cloudy-day-rain,partly-cloudy-night-rain,cloudy,fog-day,fog-night,hail,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,windsock,hurricane,raindrop,raindrops}.svg', {
+  query: '?url&no-inline',
+  import: 'default',
+  eager: true
+}) as Record<string, string>
 
 class IconsService {
-  private staticIndex: IconIndex
-  private animatedIndex: IconIndex
-  private cache = new Map<string, Promise<string>>()
-
-  constructor() {
-    // `?inline` makes Vite emit each SVG as a base64 data URI in both dev and prod.
-    // Without it, dev mode returns a path-only URL that the browser resolves against
-    // the page origin — breaking when the page is served from a different host
-    // (e.g. Home Assistant) than the dev server.
-    const staticModules = import.meta.glob('/node_modules/@meteocons/svg-static/{fill,flat,line,monochrome}/*.svg', {
-      query: '?inline',
-      import: 'default'
-    }) as Record<string, IconLoader>
-    this.staticIndex = this.buildIndex(staticModules, /\/@meteocons\/svg-static\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
-
-    const animatedModules = import.meta.glob('/node_modules/@meteocons/svg/{fill,flat,line,monochrome}/*.svg', {
-      query: '?inline',
-      import: 'default'
-    }) as Record<string, IconLoader>
-    this.animatedIndex = this.buildIndex(animatedModules, /\/@meteocons\/svg\/(fill|flat|line|monochrome)\/([^/]+)\.svg$/)
-  }
-
-  private buildIndex(modules: Record<string, IconLoader>, pattern: RegExp): IconIndex {
-    return Object.entries(modules)
-      .reduce((acc, [path, loader]) => {
-        const match = path.match(pattern)
-        if (!match) return acc
-        const [, type, name] = match as unknown as [string, WeatherIconType, string]
-        if (!acc[type]) acc[type] = new Map<string, IconLoader>()
-        acc[type].set(name, loader)
-        return acc
-      }, {} as IconIndex)
-  }
-
-  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): Promise<string> {
+  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string | undefined {
     const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)
-    const cacheKey = `${animated ? 'a' : 's'}/${type}/${iconFileName}`
-    const cached = this.cache.get(cacheKey)
-    if (cached) return cached
-
-    const index = animated ? this.animatedIndex : this.staticIndex
-    const loader = index[type]?.get(iconFileName)
-    if (!loader) {
-      return Promise.reject(new Error(`Icon for weather state "${weatherState}" (${iconFileName}) not found in type "${type}"`))
-    }
-
-    const promise = loader()
-    this.cache.set(cacheKey, promise)
-    return promise
+    const lookup = (pkg: string): string | undefined => iconUrls[`/node_modules/@meteocons/${pkg}/${type}/${iconFileName}.svg`]
+    const url = (animated && lookup('svg')) || lookup('svg-static')
+    // Dev mode yields a root-relative path that must resolve against the dev server, not the Home Assistant page.
+    return url && import.meta.env.DEV ? new URL(url, import.meta.url).href : url
   }
 
   public getWeatherMdiIcon(weatherState: string, isNight: boolean): string {
@@ -116,7 +74,6 @@ class IconsService {
     case 'raindrops':
       return 'raindrops'
     default:
-      // Try raw state first; if caller passes e.g. 'overcast-day-rain', it will resolve
       return s
     }
   }

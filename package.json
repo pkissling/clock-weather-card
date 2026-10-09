@@ -50,6 +50,7 @@
     "globals": "^17.13.0",
     "home-assistant-js-websocket": "^9.7.1",
     "jsdom": "^30.1.2",
+    "terser": "^5.51.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.1",
     "vite": "^8.3.4",
