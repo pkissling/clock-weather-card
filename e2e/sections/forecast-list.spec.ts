@@ -90,7 +90,7 @@ test.describe('forecast_list section', () => {
       .locator('.dot')
     const leftStyle = await dot.getAttribute('style')
     expect(leftStyle)
-      .toMatch(/left:\s*50%/)
+      .toMatch(/--_dot-left:\s*50%/)
   })
 
   test('clamps the current-temperature dot to 0% when it sits below the global low', async ({ setupCard, clockWeatherCard }) => {
@@ -103,7 +103,7 @@ test.describe('forecast_list section', () => {
       .first()
       .locator('.dot')
     expect(await dot.getAttribute('style'))
-      .toMatch(/left:\s*0%/)
+      .toMatch(/--_dot-left:\s*0%/)
   })
 
   test('clamps the current-temperature dot to 100% when it sits above the global high', async ({ setupCard, clockWeatherCard }) => {
@@ -116,8 +116,32 @@ test.describe('forecast_list section', () => {
       .first()
       .locator('.dot')
     expect(await dot.getAttribute('style'))
-      .toMatch(/left:\s*100%/)
+      .toMatch(/--_dot-left:\s*100%/)
   })
+
+  for (const { temperature, label } of [{ temperature: -100, label: '.temperature-low' }, { temperature: 100, label: '.temperature-high' }]) {
+    test(`keeps the dot clamped to the bar end inside the bar, clear of ${label}`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        date: TODAY,
+        weather: { temperature, forecast_daily: DAILY },
+      })
+
+      const item = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+        .first()
+      const dot = (await item.locator('.dot')
+        .boundingBox())!
+      const track = (await item.locator('.bar-track')
+        .boundingBox())!
+      const text = (await item.locator(label)
+        .boundingBox())!
+      expect(dot.x)
+        .toBeGreaterThanOrEqual(track.x - 0.5)
+      expect(dot.x + dot.width)
+        .toBeLessThanOrEqual(track.x + track.width + 0.5)
+      expect(dot.x + dot.width <= text.x || text.x + text.width <= dot.x)
+        .toBe(true)
+    })
+  }
 
   test('positions each bar proportionally to the global low/high (visible) range', async ({ setupCard, clockWeatherCard }) => {
     // Set current temp inside today's forecast range so today's bar isn't extended by the dot.

@@ -198,6 +198,7 @@ export default css`
 
   clock-weather-card-forecast-list-item {
     --_bar-thickness: var(--cwc-list-bar-thickness);
+    --_dot-size: max(14px, calc(var(--_bar-thickness) + 8px));
     display: contents;
   }
 
@@ -252,10 +253,9 @@ export default css`
   clock-weather-card-forecast-list-item .dot {
     position: absolute;
     top: 50%;
-    width: calc(var(--_bar-thickness) + 8px);
-    height: calc(var(--_bar-thickness) + 8px);
-    min-width: 14px;
-    min-height: 14px;
+    left: clamp(calc(var(--_dot-size) / 2), var(--_dot-left), calc(100% - var(--_dot-size) / 2));
+    width: var(--_dot-size);
+    height: var(--_dot-size);
     border-radius: 50%;
     background: var(--card-background-color, var(--ha-card-background, #fff));
     border: 2px solid var(--primary-text-color, currentColor);
