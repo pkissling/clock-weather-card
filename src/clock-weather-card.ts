@@ -31,7 +31,10 @@ window.customCards.push({
   name: 'Clock Weather Card',
   description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
   preview: true,
-  documentationURL: 'https://github.com/pkissling/clock-weather-card'
+  documentationURL: 'https://github.com/pkissling/clock-weather-card',
+  getEntitySuggestion: (_hass, entityId) => entityId.startsWith('weather.')
+    ? { config: { type: 'custom:clock-weather-card', entity: entityId } }
+    : null
 })
 
 // eslint-disable-next-line no-console

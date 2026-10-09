@@ -1,4 +1,4 @@
-import { type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
+import { type HomeAssistant, type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
 import { type HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 
 declare global {
@@ -13,6 +13,7 @@ declare global {
     description: string
     preview?: boolean
     documentationURL?: string
+    getEntitySuggestion?: (hass: HomeAssistant, entityId: string) => { config: LovelaceCardConfig } | null
   }
 
   interface HTMLElementTagNameMap {
