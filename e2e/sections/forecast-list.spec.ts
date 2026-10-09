@@ -257,6 +257,31 @@ test.describe('forecast_list section', () => {
     await expect(rows.nth(2))
       .toHaveAttribute('src', /clear-day/)
   })
+  test('mirrors the bar and low/high temperatures in an RTL language', async ({ setupCard, clockWeatherCard }) => {
+    // Global range 4..19°C; today 5..14°C at 9°C, measured in degrees from the track's right edge.
+    await setupCard({
+      language: 'he',
+      date: TODAY,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+
+    const item = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+      .first()
+    await expect.poll(() => item.evaluate((el) => {
+      const rect = (selector: string): DOMRect => el.querySelector(selector)!.getBoundingClientRect()
+      const track = rect('.bar-track')
+      const fromRight = (x: number): number => Math.round((track.right - x) / track.width * 15)
+      const fill = rect('.bar-fill')
+      const dot = rect('.dot')
+      return {
+        lowRightOfHigh: rect('.temperature-low').left > rect('.temperature-high').left,
+        fillStart: fromRight(fill.right),
+        fillEnd: fromRight(fill.left),
+        dot: fromRight(dot.left + dot.width / 2),
+      }
+    }))
+      .toEqual({ lowRightOfHigh: true, fillStart: 1, fillEnd: 10, dot: 5 })
+  })
 })
 
 // Every text column (label, low, high) must be exactly as wide as its widest cell: no fixed
@@ -319,4 +344,5 @@ test.describe('forecast_list column sizing', () => {
       }
     }
   })
+
 })
