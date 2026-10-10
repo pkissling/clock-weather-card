@@ -1,6 +1,7 @@
 import type { WeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
+import api from '../utils/ha-api'
 import { hourlyForecast } from '../utils/test-utils'
 
 test.describe('forecast_strip section', () => {
@@ -303,5 +304,35 @@ test.describe('forecast_strip section', () => {
     await page.clock.runFor('01:00')
     await expect(sunset)
       .toHaveCount(0)
+  })
+
+  test.describe('when subscribing to the forecast fails', () => {
+    test.use({ freshPage: true })
+
+    test('retries once the weather entity updates', async ({ page, setupCard, clockWeatherCard }) => {
+      // HA rejects the subscription while the weather integration is still loading, e.g. right after a restart.
+      let integrationLoaded = false
+      await page.routeWebSocket(/\/api\/websocket$/, (ws) => {
+        const server = ws.connectToServer()
+        ws.onMessage((message) => {
+          const parsed = JSON.parse(message.toString()) as { id: number, type: string, forecast_type?: string }
+          if (!integrationLoaded && parsed.type === 'weather/subscribe_forecast' && parsed.forecast_type === 'hourly') {
+            ws.send(JSON.stringify({ id: parsed.id, type: 'result', success: false, error: { code: 'invalid_entity_id', message: 'Weather entity not found' } }))
+            return
+          }
+          server.send(message)
+        })
+      })
+      await setupCard({})
+      const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+      await expect(items)
+        .toHaveCount(0)
+
+      integrationLoaded = true
+      await api.setMockWeather({ temperature: 22 })
+
+      await expect(items)
+        .not.toHaveCount(0)
+    })
   })
 })

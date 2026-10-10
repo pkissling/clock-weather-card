@@ -5,7 +5,8 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ForecastType, WeatherForecast } from '@/types'
 
-type Listener = (forecasts: WeatherForecast[]) => void
+// Receives null when subscribing failed.
+type Listener = (forecasts: WeatherForecast[] | null) => void
 
 interface Entry {
   listeners: Set<Listener>
@@ -58,7 +59,7 @@ class ForecastSubscriptionService {
       .catch((e: unknown) => {
         logger.error(`Error subscribing to ${forecastType} forecast`, e)
         if (entries.get(key) === entry) entries.delete(key)
-        entry.listeners.forEach(l => l([]))
+        entry.listeners.forEach(l => l(null))
         return null
       })
     entries.set(key, entry)
