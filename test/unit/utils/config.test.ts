@@ -67,7 +67,7 @@ describe('resolveConfig', () => {
           attribute: 'precipitation_probability',
           attributeRequired: false,
           attributeIcon: 'mdi:water',
-          attributeColor: null,
+          attributeColor: '#3988EF',
           attributeUnit: null,
         },
         forecastList: {

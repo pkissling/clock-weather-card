@@ -24,6 +24,11 @@ class HaApi {
     })
   }
 
+  async getCardConfig(urlPath: string): Promise<Record<string, unknown>> {
+    const config = await this.wsRequest<{ views: { cards: Record<string, unknown>[] }[] }>({ type: 'lovelace/config', url_path: urlPath })
+    return config.views[0].cards[0]
+  }
+
   // Most tests keep the defaults, and each update makes the frontend refetch its config, so unchanged values are skipped.
   private language?: string
   private timeZone?: string
@@ -57,7 +62,7 @@ class HaApi {
     this.unitSystem = unitSystem
   }
 
-  private wsRequest(payload: Record<string, unknown>): Promise<void> {
+  private wsRequest<T = void>(payload: Record<string, unknown>): Promise<T> {
     const wsUrl = this.baseUrl.replace('http', 'ws') + '/api/websocket'
 
     return new Promise((resolve, reject) => {
@@ -72,7 +77,7 @@ class HaApi {
           ws.send(JSON.stringify({ id: 1, ...payload }))
         } else if (msg.id === 1) {
           ws.close()
-          if (msg.success) resolve()
+          if (msg.success) resolve(msg.result)
           else reject(new Error(`WS request failed: ${JSON.stringify(msg)}`))
         }
       }

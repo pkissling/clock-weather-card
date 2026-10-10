@@ -3,20 +3,29 @@ import logger from '@/service/logger'
 type Translations = Map<string, string>
 
 class TranslationsService {
-  private translationsByLang: Map<string, Translations>
+  private translationsByLang = new Map<string, Translations>()
 
   constructor() {
-    // Eagerly import all locale JSON files at build time (Vite)
-    const rawLocales = import.meta.glob('../locales/*.json', { eager: true, import: 'default' }) as Record<string, Record<string, unknown>>
+    this.register('', import.meta.glob('../locales/*.json', { eager: true, import: 'default' }))
+  }
 
-    this.translationsByLang = Object.entries(rawLocales)
-      .reduce((acc, [path, data]) => {
-      // Extract language code from filename
-        const match = path.match(/\/([^/]+)\.json$/)
-        if (!match || !match[1]) return acc
-        const lang = match[1]
-        return acc.set(lang, this.flattenTranslations(data))
-      }, new Map<string, Translations>())
+  public register(namespace: string, locales: Record<string, unknown>): void {
+    for (const [path, data] of Object.entries(locales)) {
+      const lang = path.match(/\/([^/]+)\.json$/)?.[1]
+      if (!lang || !data) continue
+      const translations = this.translationsByLang.get(lang) ?? new Map<string, string>()
+      for (const [key, value] of this.flattenTranslations(data as Record<string, unknown>, namespace)) translations.set(key, value)
+      this.translationsByLang.set(lang, translations)
+    }
+  }
+
+  public get languages(): string[] {
+    return [...this.translationsByLang.keys()]
+  }
+
+  public has(key: string): boolean {
+    return this.translationsByLang.get('en')
+      ?.has(key) ?? false
   }
 
   public t(language: string, key: string): string {

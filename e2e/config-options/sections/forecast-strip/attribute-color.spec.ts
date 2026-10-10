@@ -23,6 +23,13 @@ test.describe('sections.forecast_strip.attribute_color', () => {
       .toBe('rgb(255, 0, 0)')
   })
 
+  test('colors the default precipitation row blue', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: attributeColor(null) })
+
+    expect(await firstAttributeColor(clockWeatherCard))
+      .toBe('rgb(57, 136, 239)')
+  })
+
   test('overrides the monochrome text color', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ cardConfig: attributeColor('#ff0000', 'monochrome') })
 

@@ -1,36 +1,10 @@
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
-import * as ts from 'typescript'
 import { describe, expect, it } from 'vitest'
 
+import { collectConfigPaths } from './config-paths'
+
 const E2E_DIR = resolve(__dirname, '../../e2e')
-
-function collectConfigPaths(): { leaves: string[][], objects: string[][] } {
-  const source = ts.createSourceFile(
-    'types.ts',
-    readFileSync(resolve(__dirname, '../../src/types.ts'), 'utf-8'),
-    ts.ScriptTarget.ESNext,
-  )
-  const root = source.statements.find((node): node is ts.InterfaceDeclaration =>
-    ts.isInterfaceDeclaration(node) && node.name.text === 'ClockWeatherCardConfig')
-  if (!root) throw new Error('ClockWeatherCardConfig not found in src/types.ts')
-
-  const leaves: string[][] = []
-  const objects: string[][] = []
-  const walk = (members: ts.NodeArray<ts.TypeElement>, prefix: string[]): void => {
-    for (const member of members.filter(ts.isPropertySignature)) {
-      const path = [...prefix, (member.name as ts.Identifier).text]
-      if (member.type && ts.isTypeLiteralNode(member.type)) {
-        objects.push(path)
-        walk(member.type.members, path)
-      } else {
-        leaves.push(path)
-      }
-    }
-  }
-  walk(root.members, [])
-  return { leaves, objects }
-}
 
 const { leaves, objects } = collectConfigPaths()
 const toSpecPath = (path: string[]): string => path.join('/')

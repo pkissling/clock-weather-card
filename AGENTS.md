@@ -44,6 +44,7 @@ yarn playwright-ui                                # interactive Playwright UI (h
 - The suite is self-contained: global setup (`e2e/utils/ha-setup.ts`) builds the card, starts its own Home Assistant Docker container and tears it down afterwards. The only prerequisite is a running Docker daemon - no external services or accounts.
 - Tests in a worker share one page (booting the HA frontend costs ~1.5s; a follow-up `setupCard` ~0.1s), so `setupCard` reaches the mounted card via HA's live push instead of reloading. The page is reloaded only after a failing test. A test that alters the page itself (routes, init scripts) must opt into its own page with `test.use({ freshPage: true })`.
 - One e2e run per worktree: the Playwright image (`clock-weather-card-e2e-<hash>`), runner and HA containers are named after a hash of the worktree path (`clock-weather-card-e2e-<hash>-playwright`, `clock-weather-card-e2e-<hash>-ha`), so runs in different worktrees (each on a random free host port) don't interfere, while a second run in the same worktree fails fast with an "already active in this worktree" error.
+- **Never use `page.waitForTimeout`** (or any fixed sleep). Wait on a condition instead: web-first assertions (`await expect(locator)...`), `locator.waitFor()` or `expect.poll`.
 - **ALWAYS run the full `yarn test:e2e` before reporting a task as done.** Iterate on a single spec while developing, but never skip the full run.
 
 ## Verification after changes
@@ -69,6 +70,10 @@ After implementing a feature or fixing a bug, always check whether `README.md` n
 
 When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/utils/config.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` (from `src/utils/errors.ts`) so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.
 
+## GUI editor
+
+Every config option must be settable in the visual editor (`src/editor/`). When adding an option to `ClockWeatherCardConfig`, `RowConfig` or a segment type, add a matching field to `src/editor/fields.ts` (and its label to every `src/locales/editor/<lang>.json`). `test/unit/editor-coverage.test.ts` fails until the editor covers it.
+
 ## Logging
 
 When writing code, consider whether a case deserves a log via `logger` (`src/service/logger.ts`, never `console` directly):
@@ -81,4 +86,4 @@ Prefer throwing a config error in `validateConfig` over warning when the mistake
 
 ## Translations
 
-User-facing strings live in `src/locales/<lang>.json`. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).
+User-facing strings live in `src/locales/<lang>.json`; strings of the GUI editor live in `src/locales/editor/<lang>.json`, so they load only with the editor. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).

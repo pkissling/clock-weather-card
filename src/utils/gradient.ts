@@ -23,7 +23,7 @@ export function normalizeGradient(map: Record<number | string, string>): ColorSt
 
 export const isSupportedColor = (color: string): boolean => toRgb(color) !== null
 
-function toRgb(color: string): [number, number, number] | null {
+export function toRgb(color: string): [number, number, number] | null {
   const c = color.trim()
   const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(c)
   if (hex) {
@@ -40,7 +40,7 @@ function toRgb(color: string): [number, number, number] | null {
   return null
 }
 
-function toHex(rgb: [number, number, number]): string {
+export function toHex(rgb: [number, number, number]): string {
   const part = (n: number): string => Math.max(0, Math.min(255, Math.round(n)))
     .toString(16)
     .padStart(2, '0')
