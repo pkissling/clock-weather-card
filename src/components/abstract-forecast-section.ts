@@ -3,6 +3,7 @@ import '@/components/clock-weather-card-error'
 
 import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
+import type { HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 import type { PropertyValues, TemplateResult } from 'lit'
 import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
@@ -36,6 +37,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
 
   private unsubscribe: (() => void) | null = null
   private subscribedKey: string | null = null
+  private failedEntityState: HassEntity | null = null
 
   protected abstract resolveForecastType(): SectionForecastType
   protected abstract resolveEntityId(): string
@@ -158,14 +160,16 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     }
 
     const key = `${entityId}|${forecastType}`
-    if (this.unsubscribe && this.subscribedKey === key) return
+    // A failed subscription is retried once the entity's state changes, e.g. when its integration finished loading.
+    if (this.unsubscribe && this.subscribedKey === key && (!this.failedEntityState || this.failedEntityState === this.hass.states[entityId])) return
 
     this._unsubscribe()
     this.forecasts = []
     this._loaded = false
     this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, forecastType, forecasts => {
-      logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
-      this.forecasts = forecasts
+      if (forecasts) logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
+      else this.failedEntityState = this.hass.states[entityId]
+      this.forecasts = forecasts ?? []
       this._loaded = true
     })
     this.subscribedKey = key
@@ -175,6 +179,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.unsubscribe?.()
     this.unsubscribe = null
     this.subscribedKey = null
+    this.failedEntityState = null
   }
 }
 

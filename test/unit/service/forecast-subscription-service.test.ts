@@ -118,10 +118,14 @@ describe('forecastSubscriptionService', () => {
       .toHaveBeenCalledTimes(1)
   })
 
-  it('retries after a failed subscribe', async () => {
-    forecastSubscriptionService.subscribe(hass, 'weather.home', 'hourly', vi.fn())
+  it('notifies listeners with null and retries after a failed subscribe', async () => {
+    const listener = vi.fn()
+    forecastSubscriptionService.subscribe(hass, 'weather.home', 'hourly', listener)
     subscriptions[0].reject(new Error('boom'))
     await flush()
+
+    expect(listener)
+      .toHaveBeenCalledWith(null)
 
     forecastSubscriptionService.subscribe(hass, 'weather.home', 'hourly', vi.fn())
 
