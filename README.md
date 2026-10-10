@@ -5,68 +5,46 @@
 [![Downloads of latest version (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/total?sort=semver)](https://github.com/pkissling/clock-weather-card/releases/latest)
 [![Current version](https://img.shields.io/github/v/release/pkissling/clock-weather-card)](https://github.com/pkissling/clock-weather-card/releases/latest)
 
-A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) available through the [Home Assistant Community Store](https://hacs.xyz) showing the current date, time and a weather forecast.
+An iOS-inspired clock and weather card for [Home Assistant](https://www.home-assistant.io/) dashboards, available through the [Home Assistant Community Store](https://hacs.xyz).
 
 ![Clock Weather Card](.github/assets/card.gif)
-[^1]
 
-Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/meteocons) (MIT License).
+## Features
 
-## FAQ
-
-<details>
-<summary>Why don't I see the current day in my weather forecast?</summary>
-
-Some weather providers do not include today's weather in their forecast data. If this happens, try switching to a different provider.
-[Open Meteo](https://www.home-assistant.io/integrations/open_meteo/) is the default weather integration in Home Assistant and includes today's weather.
-
-</details>
-
-<details>
-<summary>What do the forecast bars represent?</summary>
-
-![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png)
-
-The bars visualize the temperature range for each day relative to the overall forecast range.
-
-- The full bar spans the overall low to overall high across all forecast days (9° to 21° in the example above).
-- The colored portion represents the temperature range for that specific day (e.g. 12° to 21° on Monday).
-- The circle marks the current temperature (e.g. 16°).
-
-This makes it easy to see the weather trend for the upcoming days at a glance.
-
-_Thanks to @deprecatedcoder for this explanation from [#143](https://github.com/pkissling/clock-weather-card/issues/143)._
-
-</details>
+- **A header you compose yourself** - arrange the clock, date, current weather, any entity, icons and text in rows of segments.
+- **Hourly and daily forecasts** - a horizontally scrolling strip and a list with temperature bars, each showing hours or days independently.
+- **Beautiful, animated weather icons** - [Meteocons](https://github.com/basmilius/meteocons) in four styles: `line`, `fill`, `flat` and `monochrome`. Shout-out to the creator [Bas](https://github.com/basmilius)!
+- **Any forecast attribute** - show wind speed, humidity, UV index or any other numeric attribute in the strip or as bars.
+- **Sunrise and sunset** - marked in the hourly strip.
+- **Fully customizable** - set your own color gradient for the forecast bars, pick icon styles and sizes per section, tune row heights, bar thickness, font sizes and alignment, choose date and time formats, and show or hide every section.
+- **Localized** - Dozens of languages, locale-aware date and time formats, any time zone, and Celsius or Fahrenheit.
+- **Visual editor** - set the card up in the dashboard UI, no YAML required.
 
 ## Installation
 
-### HACS
+The card is installed through [HACS](https://hacs.xyz):
 
-1. Make sure [HACS](https://hacs.xyz) is installed.
-2. Search for **Clock Weather Card** in HACS and install it.
-3. Add the resource depending on how you manage Lovelace resources:
+1. Make sure HACS is installed.
+2. Open the card in HACS and install it:
 
-   **Via UI (recommended):** Go to _Settings > Dashboards > Resources > Add Resource_ or use [![My Home Assistant](https://my.home-assistant.io/badges/lovelace_resources.svg)](https://my.home-assistant.io/redirect/lovelace_resources) and add:
+   [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=pkissling&repository=clock-weather-card&category=plugin)
 
-   ```
-   URL: /hacsfiles/clock-weather-card/clock-weather-card.js
-   Type: JavaScript Module
-   ```
-
-   **Via YAML:** Add to your `ui-lovelace.yaml`:
-
-   ```yaml
-   resources:
-     - url: /hacsfiles/clock-weather-card/clock-weather-card.js
-       type: module
-   ```
-
+   Or search for **Clock Weather Card** in HACS. If the button shows "not found", enable the [My Home Assistant](https://www.home-assistant.io/integrations/my/) integration.
+3. Reload your browser. HACS registers the card as a dashboard resource automatically.
 4. Add the card to your dashboard (see [Configuration](#configuration)).
+
+If you manage your dashboards in YAML mode, add the resource yourself in `configuration.yaml`:
+
+```yaml
+lovelace:
+  resources:
+    - url: /hacsfiles/clock-weather-card/clock-weather-card.js
+      type: module
+```
 
 ## Configuration
 
-Every option below can be set in the dashboard's visual card editor: pick the weather entity, toggle and tune each section, build the header rows from segments and adjust the forecast list's color gradient. The editor only writes options that differ from their defaults, so the resulting YAML stays minimal. The code editor remains available for those who prefer YAML.
+Edit your dashboard, click **Add card** and pick **Clock Weather Card**. Every option below can be set in the dashboard's visual card editor: pick the weather entity, toggle and tune each section, build the header rows from segments and adjust the forecast list's color gradient. The editor only writes options that differ from their defaults, so the resulting YAML stays minimal. The code editor remains available for those who prefer YAML.
 
 ### Minimal configuration
 
@@ -82,7 +60,7 @@ entity: weather.home
 | `entity` | string | **yes** | - | Entity ID of your weather provider |
 | `title` | string | no | `null` | Title displayed at the top of the card |
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
-| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icons ([@meteocons/svg](https://github.com/basmilius/meteocons) v3). Applies to all sections; each section can override it with its own `weather_icon_type`. |
+| `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icons ([meteocons](https://github.com/basmilius/meteocons)). Applies to all sections; each section can override it with its own `weather_icon_type`. |
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
@@ -99,7 +77,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
-| `hide` | boolean | no | `false` | Hide the section. |
+| `hide` | boolean | no | `false` | Hide the header section. |
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
 | `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon, capped at half the card width. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
@@ -107,7 +85,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 
 #### `forecast_strip`
 
-Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Columns without a value stay blank, and the row is hidden entirely when every visible column is `0` or has no value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Attribute columns without a value stay blank, and the row is hidden entirely when every visible column is `0` or has no value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
 
 In hourly mode, the first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
@@ -119,7 +97,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
-| `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
+| `hide` | boolean | no | `false` | Hide the forecast strip section. |
 | `weather_entity` | string | no | top-level `entity` | Weather entity whose forecast is displayed. Falls back to the card's main `entity` when not set. |
 | `forecast_type` | `hourly` \| `daily` | no | `hourly` | Forecast data shown in the strip. |
 | `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now"/"Today" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
@@ -131,7 +109,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `attribute` | string | no | `precipitation_probability` | Any numeric forecast attribute provided by the weather entity (e.g. `wind_speed`, `humidity`, `uv_index`), shown in the row below the temperature. See [Forecast attributes](#forecast-attributes). |
 | `attribute_icon` | string | no | `mdi:water` if `attribute` is unset, otherwise none | Icon shown before each attribute value. |
 | `attribute_unit` | string | no | resolved unit (see [Forecast attributes](#forecast-attributes)) | Unit shown after each attribute value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |
-| `attribute_color` | string | no | `#3988EF` (a light tint of the icons' rain drop blue) if `attribute` is unset, otherwise the theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the attribute row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
+| `attribute_color` | string | no | `#3988EF` if `attribute` is unset, otherwise the theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the attribute row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
 
 #### `forecast_list`
 
@@ -145,7 +123,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOUR
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
-| `hide` | boolean | no | `false` | Hide the section. When `true`, the section is removed from the DOM and no forecast subscription is opened. |
+| `hide` | boolean | no | `false` | Hide the forecast list section. |
 | `weather_entity` | string | no | top-level `entity` | Weather entity whose forecast is displayed. Falls back to the card's main `entity` when not set. |
 | `forecast_type` | `daily` \| `hourly` | no | `daily` | Forecast data shown in the list. |
 | `count` | number | no | `5` | Maximum number of rows to render, starting from today (daily) or the current hour (hourly). Fewer are shown if the provider returns less. |
@@ -154,7 +132,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOUR
 | `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row (daily) or the "Now" row (hourly) is not rendered. |
 | `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) format pattern for the hourly row labels. The default `t` is the localized short time (e.g. `15:00` for `en-GB`, `3:00 PM` for `en-US`); `H` shows only the hour. |
 | `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated. Defaults to `false` to keep the section lightweight. |
-| `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values. |
+| `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast list. Falls back to the card's main `weather_icon_type` when unset. |
 | `attribute` | string | no | `temperature` | Forecast attribute shown in the list: `temperature` or any numeric forecast attribute (see [Forecast attributes](#forecast-attributes)). For any attribute other than `temperature`, each row shows a single value right of its bar, which runs from `0` to the row's value; all bars share one axis spanning `0` and every visible value. The current-temperature dot is only shown for `temperature`. |
 | `attribute_unit` | string | no | resolved unit (`temperature_unit` for `temperature`, see [Forecast attributes](#forecast-attributes)) | Unit shown after each value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |
@@ -299,79 +277,50 @@ rows:
       - type: date
 ```
 
-## Development
+## FAQ
 
-### Prerequisites
+<details>
+<summary>Why don't I see the current day in my weather forecast?</summary>
 
-- [Node.js](https://nodejs.org/) (LTS)
-- [Yarn](https://yarnpkg.com/)
-- [Docker](https://www.docker.com/) (for E2E tests)
+Some weather providers do not include today's weather in their forecast data. If this happens, try switching to a different provider.
+[Open Meteo](https://www.home-assistant.io/integrations/open_meteo/) is the default weather integration in Home Assistant and includes today's weather.
 
-### Setup
+</details>
 
-```bash
-git clone https://github.com/pkissling/clock-weather-card.git
-cd clock-weather-card
-yarn install
-```
+<details>
+<summary>What do the forecast bars represent?</summary>
 
-### Commands
+![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png)
 
-| Command | Description |
-|---------|-------------|
-| `yarn dev` | Start the Vite dev server on `http://localhost:5173` |
-| `yarn build` | Type-check and build the production bundle |
-| `yarn lint` | Run ESLint with auto-fix |
-| `yarn test:unit` | Run Vitest unit tests |
-| `yarn test:e2e` | Run Playwright E2E tests against a real HA instance (inside the pinned Linux Docker image) |
-| `yarn test:e2e:host` | Run Playwright E2E tests on the host, skipping screenshot comparisons |
-| `yarn playwright-ui` | Open the Playwright UI for interactive test debugging |
-| `yarn test:e2e:update-snapshots` | Regenerate Playwright snapshots in a Linux Docker container |
+The bars visualize the temperature range for each day relative to the overall forecast range.
 
-### E2E tests
+- The full bar spans the overall low to overall high across all forecast days (9° to 21° in the example above).
+- The colored portion represents the temperature range for that specific day (e.g. 12° to 21° on Monday).
+- The circle marks the current temperature (e.g. 16°).
 
-E2E tests use Playwright and run the card inside a real Home Assistant Docker container. The test setup (`e2e/utils/ha-setup.ts`) automatically:
+This makes it easy to see the weather trend for the upcoming days at a glance.
 
-1. Builds the card
-2. Starts a Home Assistant container with the card installed
-3. Completes onboarding and configures test dashboards
-4. Runs the tests
-5. Tears down the container
+_Thanks to @deprecatedcoder for this explanation from [#143](https://github.com/pkissling/clock-weather-card/issues/143)._
 
-A custom `mock_weather` integration (`e2e/utils/ha-config/custom_components/mock_weather/`) provides a controllable weather entity. Tests set weather state, forecasts, and sun position via the HA REST API before each test.
+</details>
 
-> **Note:** Docker must be running before executing `yarn test:e2e`.
+## Feedback and support
 
-<!-- TODO: Add instructions for manual testing against a local HA instance (e.g. via docker-compose with hot-reload) -->
+- **Bugs** - something is broken or behaves differently than documented: open an [issue](https://github.com/pkissling/clock-weather-card/issues/new/choose).
+- **Feature requests and changes** - start a discussion in [Ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas), where others can upvote and discuss them. Once an idea is agreed on, it becomes an issue for implementation.
+- **Questions and configuration help** - ask in [Q&A](https://github.com/pkissling/clock-weather-card/discussions/categories/q-a).
 
-## Contributions
+Issues that aren't bugs are moved to Discussions.
 
-### Translations
+## Contributing
 
-The card is available in multiple languages. Translation files are located in [`src/locales/`](src/locales/), with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`). Strings of the visual editor live in [`src/locales/editor/`](src/locales/editor/), with the same file names.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, testing requirements and how to add translations.
 
-The card automatically picks the language configured in your Home Assistant instance. If no matching translation is found, it falls back to English.
+## Credits
 
-To add a new language or improve an existing translation:
-
-1. **New language:** Copy `src/locales/en.json` to `src/locales/<language-code>.json` and translate the values.
-2. **Update existing translation:** Edit the corresponding file in `src/locales/`.
-
-Use lowercase [BCP 47 language tags](https://en.wikipedia.org/wiki/IETF_language_tag) for the filename (e.g. `pt-br.json`, `zh-hans.json`).
-
-### Playwright screenshots
-
-E2E tests run against a real Home Assistant instance via Docker. Visual regression tests use Playwright screenshots to verify the card renders correctly.
-
-To regenerate screenshots after visual changes, either:
-
-- **CI:** Run the **Update Playwright Snapshots** workflow from the Actions tab. It updates snapshots in separate commits on the current branch.
-- **Locally:** Run `yarn test:e2e:update-snapshots` to regenerate snapshots. This builds a Docker image with the Playwright browsers and runs the tests inside it, writing updated snapshots back to `e2e/`. Requires Docker with access to the Docker socket (to spawn Home-Assistant in a dedicated Docker container).
+- Weather icons: [Meteocons](https://github.com/basmilius/meteocons) by [Bas Milius](https://github.com/basmilius) (MIT License).
+- Theme used in the screenshots: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes) by [Bas Nijholt](https://github.com/basnijholt).
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE.md).
-
-## Footnotes
-
-[^1]: Theme used: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes).
