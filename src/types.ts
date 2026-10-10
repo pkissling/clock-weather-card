@@ -81,9 +81,12 @@ export type SegmentConfig =
 
 export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
 
+export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
+
 export interface RowConfig {
   segments: SegmentConfig[]
   font_size?: string
+  alignment?: typeof ROW_ALIGNMENTS[number]
 }
 
 // Card configs

@@ -1,3 +1,5 @@
+import type { Locator } from '@playwright/test'
+
 import { expect, test } from '../../../utils/fixtures'
 import api from '../../../utils/ha-api'
 
@@ -28,13 +30,13 @@ test.describe('sections.header.rows', () => {
     await expect(firstRow)
       .toContainText('Sunny')
 
-    // Row 2: spacer, time, spacer. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30 → en TIME_SIMPLE.
+    // Row 2: centered time. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30 → en TIME_SIMPLE.
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
       .toHaveCount(1)
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
       .toHaveText('5:30 PM')
 
-    // Row 3: spacer, calendar icon, date, spacer.
+    // Row 3: centered calendar icon and date.
     await expect(clockWeatherCard.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:calendar"]'))
       .toHaveCount(1)
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
@@ -42,9 +44,8 @@ test.describe('sections.header.rows', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
       .toHaveText('April 27, 2026')
 
-    // 1 spacer in row 1 + 2 in row 2 + 2 in row 3 = 5 total.
     await expect(clockWeatherCard.locator('clock-weather-card-spacer-segment'))
-      .toHaveCount(5)
+      .toHaveCount(1)
 
   })
 
@@ -98,6 +99,69 @@ test.describe('sections.header.rows', () => {
       .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
+  })
+
+  const alignedRowConfig = (alignment: string): string => `
+    sections:
+      header:
+        rows:
+          - segments:
+              - type: text
+                text: A row much wider than the aligned one
+          - alignment: ${alignment}
+            segments:
+              - type: text
+                text: Short
+  `
+  type Box = Awaited<ReturnType<Locator['boundingBox']>>
+  const alignedBoxes = (clockWeatherCard: Locator): Promise<[Box, Box]> => Promise.all([
+    clockWeatherCard.locator('clock-weather-card-header-details-row')
+      .nth(1)
+      .boundingBox(),
+    clockWeatherCard.locator('clock-weather-card-text-segment')
+      .nth(1)
+      .boundingBox(),
+  ])
+
+  test('alignment: center centers the row\'s segments', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: alignedRowConfig('center') })
+    const [row, segment] = await alignedBoxes(clockWeatherCard)
+
+    expect(segment!.x - row!.x)
+      .toBeCloseTo(row!.x + row!.width - segment!.x - segment!.width, 0)
+    expect(segment!.x)
+      .toBeGreaterThan(row!.x + 1)
+  })
+
+  test('alignment: right moves the row\'s segments to the right edge', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: alignedRowConfig('right') })
+    const [row, segment] = await alignedBoxes(clockWeatherCard)
+
+    expect(segment!.x + segment!.width)
+      .toBeCloseTo(row!.x + row!.width, 0)
+  })
+
+  test('alignment: right stays on the right edge in an RTL language', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'he', cardConfig: alignedRowConfig('right') })
+    const [row, segment] = await alignedBoxes(clockWeatherCard)
+
+    expect(segment!.x + segment!.width)
+      .toBeCloseTo(row!.x + row!.width, 0)
+  })
+
+  test('alignment: left stays on the left edge in an RTL language', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'he', cardConfig: alignedRowConfig('left') })
+    const [row, segment] = await alignedBoxes(clockWeatherCard)
+
+    expect(segment!.x)
+      .toBeCloseTo(row!.x, 0)
+  })
+
+  test('rejects an unknown row alignment', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({ cardConfig: alignedRowConfig('middle') })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[1].alignment" has invalid value "middle", expected one of "left", "center", "right"')
   })
 
   test('renders a text segment with its static text', async ({ setupCard, clockWeatherCard }) => {

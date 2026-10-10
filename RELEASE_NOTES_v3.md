@@ -16,7 +16,7 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 ## ✨ New features
 
 - **Configuration via GUI** - set up every option in the dashboard's visual card editor, from sections and forecast settings to header rows and segments. No YAML required; the code editor stays available for those who prefer it.
-- **Composable header** - build the header from `rows` of `segments`: `time`, `date`, `weather` (state or any attribute), `entity` (any HA entity or attribute), `icon` (MDI), `weather_icon` (MDI icon following the weather state), `text` and `spacer` for alignment. Each row can set its own `font_size`.
+- **Composable header** - build the header from `rows` of `segments`: `time`, `date`, `weather` (state or any attribute), `entity` (any HA entity or attribute), `icon` (MDI), `weather_icon` (MDI icon following the weather state), `text` and `spacer` to push groups apart. Each row can set its own `font_size` and `alignment` (`left`, `center`, `right`).
 - **Forecast strip** - a horizontally scrolling strip of upcoming hours or days, with an extra attribute row (precipitation probability by default) and sunrise/sunset columns in hourly mode.
 - **Hourly or daily, per section** - `forecast_type` is set independently on `forecast_strip` and `forecast_list`, e.g. a daily strip above an hourly list.
 - **Any forecast attribute** - show `wind_speed`, `humidity`, `uv_index` or any other numeric forecast attribute in the strip (`attribute`, `attribute_icon`, `attribute_unit`, `attribute_color`) or as bars in the list.

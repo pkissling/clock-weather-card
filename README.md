@@ -180,6 +180,7 @@ Each header row is a horizontal line of segments.
 |--------|------|----------|---------|-------------|
 | `segments` | list | **yes** | - | List of segments in this row |
 | `font_size` | string | no | inherited | CSS font-size (e.g. `14px`, `3rem`) |
+| `alignment` | `left` \| `center` \| `right` | no | start of the row | Horizontal position of the row's segments. Always refers to the physical side, also in right-to-left languages. Has no effect when the row contains a `spacer`. |
 
 ### Segment Types
 
@@ -255,27 +256,14 @@ Displays static text.
 
 #### `spacer`
 
-A flexible spacer that fills remaining horizontal space. Use spacers to control alignment within a row.
+A flexible spacer that fills the remaining horizontal space, pushing the segments before and after it apart. To position a whole row, use the row's `alignment` instead.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `spacer` |
 
-**Alignment examples using spacers:**
-
 ```yaml
-# Center content
-- segments:
-    - type: spacer
-    - type: time
-    - type: spacer
-
-# Right-align content
-- segments:
-    - type: spacer
-    - type: time
-
-# Space between two groups
+# Temperature on the left, weather state on the right
 - segments:
     - type: weather
       attribute: temperature
@@ -297,16 +285,14 @@ rows:
       - type: spacer
       - type: weather
   - font_size: 4rem
+    alignment: center
     segments:
-      - type: spacer
       - type: time
-      - type: spacer
-  - segments:
-      - type: spacer
+  - alignment: center
+    segments:
       - type: icon
         icon: mdi:calendar
       - type: date
-      - type: spacer
 ```
 
 ## Development

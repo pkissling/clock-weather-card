@@ -64,10 +64,9 @@ test.describe('header section', () => {
                     attribute: temperature
                   - type: spacer
               - font_size: 4rem
+                alignment: center
                 segments:
-                  - type: spacer
                   - type: time
-                  - type: spacer
               - segments:
                   - type: spacer
                   - type: weather
