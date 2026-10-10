@@ -13,7 +13,6 @@ import { DateTime } from 'luxon'
 
 import { configContext, errorMessageContext, hassContext } from '@/context'
 import logger from '@/service/logger'
-import translationsService from '@/service/translations-service'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
 import { resolveConfig } from '@/utils/config'
@@ -177,21 +176,9 @@ export class ClockWeatherCard extends LitElement {
     this._clock = null
   }
 
-  public static getConfigForm(): Object {
-    return {
-      schema: [
-        { name: 'entity', required: true, selector: { entity: {} } },
-        { name: 'title', selector: { text: {} } },
-      ],
-      computeLabel: (schema: { name?: string }) => {
-        if (!schema.name) return ''
-        // TODO locale
-        return translationsService.t('en-GB', `config-editor.${schema.name}`)
-      },
-      assertConfig: (_: ClockWeatherCard) => {
-        // TODO
-      },
-    }
+  public static async getConfigElement(): Promise<HTMLElement> {
+    const { ClockWeatherCardEditor } = await import('@/editor/clock-weather-card-editor')
+    return new ClockWeatherCardEditor()
   }
 
   public static get styles (): CSSResultGroup {

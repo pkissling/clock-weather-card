@@ -7,7 +7,7 @@ import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
 
-const DEFAULT_ROWS: RowConfig[] = [
+export const DEFAULT_ROWS: RowConfig[] = [
   {
     segments: [
       { type: 'icon', icon: 'mdi:thermometer' },
@@ -31,6 +31,22 @@ const DEFAULT_ROWS: RowConfig[] = [
     ]
   }
 ]
+
+export const DEFAULTS = {
+  weather_icon_type: 'line',
+  sun_entity: 'sun.sun',
+  sections: {
+    header: { hide: false, animated_icons: true },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, attribute: 'precipitation_probability' },
+    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, attribute: 'temperature' },
+  },
+} as const satisfies Partial<ClockWeatherCardConfig>
+
+type StripConfig = NonNullable<ClockWeatherCardConfig['sections']>['forecast_strip']
+
+// The default precipitation row gets its own color; custom attributes and monochrome icons use the theme colors.
+export const defaultAttributeColor = (strip: StripConfig, weatherIconType: string): string | null =>
+  strip?.attribute || weatherIconType === 'monochrome' ? null : '#3988EF'
 
 function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): void {
   const assertEntityExists = (id: string | undefined): void => {
@@ -166,48 +182,49 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
 export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): ResolvedConfig {
   validateConfig(config, hass)
   const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
-  const weatherIconType = config.weather_icon_type || 'line'
-  const listAttribute = list?.attribute ?? 'temperature'
+  const D = DEFAULTS.sections
+  const weatherIconType = config.weather_icon_type || DEFAULTS.weather_icon_type
+  const listAttribute = list?.attribute ?? D.forecast_list.attribute
   return {
     entity: config.entity,
     title: config.title ?? null,
-    sunEntity: config.sun_entity ?? 'sun.sun',
+    sunEntity: config.sun_entity ?? DEFAULTS.sun_entity,
     weatherIconType,
     timeZone: config.time_zone || hassService.getTimeZone(hass),
     locale: config.locale || hassService.getLocale(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     header: {
-      hidden: header?.hide ?? false,
+      hidden: header?.hide ?? D.header.hide,
       rows: header?.rows ?? DEFAULT_ROWS,
-      animatedIcons: header?.animated_icons ?? true,
+      animatedIcons: header?.animated_icons ?? D.header.animated_icons,
       weatherIconType: header?.weather_icon_type ?? weatherIconType,
       weatherIconSize: header?.weather_icon_size ?? null,
     },
     forecastStrip: {
-      hidden: strip?.hide ?? false,
+      hidden: strip?.hide ?? D.forecast_strip.hide,
       entity: strip?.weather_entity ?? config.entity,
-      forecastType: strip?.forecast_type ?? 'hourly',
-      count: strip?.count ?? 24,
-      animatedIcons: strip?.animated_icons ?? false,
-      roundTemperatures: strip?.round_temperatures ?? true,
+      forecastType: strip?.forecast_type ?? D.forecast_strip.forecast_type,
+      count: strip?.count ?? D.forecast_strip.count,
+      animatedIcons: strip?.animated_icons ?? D.forecast_strip.animated_icons,
+      roundTemperatures: strip?.round_temperatures ?? D.forecast_strip.round_temperatures,
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
-      hideSunriseSunset: strip?.hide_sunrise_sunset ?? false,
-      attribute: strip?.attribute ?? 'precipitation_probability',
+      hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
+      attribute: strip?.attribute ?? D.forecast_strip.attribute,
       attributeRequired: strip?.attribute !== undefined,
       attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
-      attributeColor: strip?.attribute_color ?? null,
+      attributeColor: strip?.attribute_color ?? defaultAttributeColor(strip, strip?.weather_icon_type ?? weatherIconType),
       attributeUnit: strip?.attribute_unit ?? null,
     },
     forecastList: {
-      hidden: list?.hide ?? false,
+      hidden: list?.hide ?? D.forecast_list.hide,
       entity: list?.weather_entity ?? config.entity,
-      forecastType: list?.forecast_type ?? 'daily',
-      count: list?.count ?? 5,
-      rowHeight: list?.row_height ?? '28px',
-      barThickness: list?.bar_thickness ?? '60%',
-      hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? false,
-      animatedIcons: list?.animated_icons ?? false,
-      roundTemperatures: list?.round_temperatures ?? true,
+      forecastType: list?.forecast_type ?? D.forecast_list.forecast_type,
+      count: list?.count ?? D.forecast_list.count,
+      rowHeight: list?.row_height ?? D.forecast_list.row_height,
+      barThickness: list?.bar_thickness ?? D.forecast_list.bar_thickness,
+      hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? D.forecast_list.hide_current_temp_indicator,
+      animatedIcons: list?.animated_icons ?? D.forecast_list.animated_icons,
+      roundTemperatures: list?.round_temperatures ?? D.forecast_list.round_temperatures,
       weatherIconType: list?.weather_icon_type ?? weatherIconType,
       attribute: listAttribute,
       attributeUnit: list?.attribute_unit ?? null,

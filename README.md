@@ -66,6 +66,8 @@ _Thanks to @deprecatedcoder for this explanation from [#143](https://github.com/
 
 ## Configuration
 
+Every option below can be set in the dashboard's visual card editor: pick the weather entity, toggle and tune each section, build the header rows from segments and adjust the forecast list's color gradient. The editor only writes options that differ from their defaults, so the resulting YAML stays minimal. The code editor remains available for those who prefer YAML.
+
 ### Minimal configuration
 
 ```yaml
@@ -128,7 +130,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `attribute` | string | no | `precipitation_probability` | Any numeric forecast attribute provided by the weather entity (e.g. `wind_speed`, `humidity`, `uv_index`), shown in the row below the temperature. See [Forecast attributes](#forecast-attributes). |
 | `attribute_icon` | string | no | `mdi:water` if `attribute` is unset, otherwise none | Icon shown before each attribute value. |
 | `attribute_unit` | string | no | resolved unit (see [Forecast attributes](#forecast-attributes)) | Unit shown after each attribute value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |
-| `attribute_color` | string | no | theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the attribute row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
+| `attribute_color` | string | no | `#3988EF` (a light tint of the icons' rain drop blue) if `attribute` is unset, otherwise the theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the attribute row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
 
 #### `forecast_list`
 
@@ -344,7 +346,7 @@ A custom `mock_weather` integration (`e2e/utils/ha-config/custom_components/mock
 
 ### Translations
 
-The card is available in multiple languages. Translation files are located in [`src/locales/`](src/locales/), with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`).
+The card is available in multiple languages. Translation files are located in [`src/locales/`](src/locales/), with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`). Strings of the visual editor live in [`src/locales/editor/`](src/locales/editor/), with the same file names.
 
 The card automatically picks the language configured in your Home Assistant instance. If no matching translation is found, it falls back to English.
 
