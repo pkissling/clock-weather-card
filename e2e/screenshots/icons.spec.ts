@@ -29,7 +29,7 @@ const hourlyStates = forecastStates.slice(0, HOURLY_COLUMNS)
 const dailyStates = forecastStates.slice(HOURLY_COLUMNS)
 
 // The hourly section derives day/night per entry from the sun times: sunrise at local midnight and
-// sunset at 23:59:59 (Europe/Berlin) make every hour a day hour — swapped, a night hour.
+// sunset at 23:59:59 (Europe/Berlin) make every hour a day hour - swapped, a night hour.
 const DAY_SUN = {
   state: 'above_horizon' as const,
   attributes: { next_rising: '2025-09-15T00:00:00+02:00', next_setting: '2025-09-14T23:59:59+02:00' },

@@ -94,7 +94,7 @@ test.describe('forecast_strip section', () => {
   })
 
   test('treats forecast entries with missing precipitation_probability as no-precipitation (no precipitation row)', async ({ setupCard, clockWeatherCard }) => {
-    // Some HA integrations omit precipitation_probability entirely — the field arrives as undefined.
+    // Some HA integrations omit precipitation_probability entirely - the field arrives as undefined.
     // The card boundary should coerce undefined → null, and the row stays hidden when every visible
     // entry lacks a probability > 0.
     const forecasts: WeatherForecast[] = [

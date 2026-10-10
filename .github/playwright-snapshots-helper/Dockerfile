@@ -1,5 +1,5 @@
 # Use official Playwright image with browsers preinstalled.
-# Pin the digest — the v1.64.0-jammy tag is mutable; without pinning, snapshots
+# Pin the digest - the v1.64.0-jammy tag is mutable; without pinning, snapshots
 # drift the moment Microsoft republishes the image (different fonts → ~37 px
 # anti-aliasing diff).
 FROM mcr.microsoft.com/playwright:v1.64.0-jammy@sha256:c064e7f355d2dda32f669801a1b09e86a1e9252395c844d2cfbbe5c44acb9b79

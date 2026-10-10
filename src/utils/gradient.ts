@@ -60,7 +60,7 @@ export function interpolateColor(stops: ColorStop[], temp: number): string {
       const rgbA = toRgb(a.color)
       const rgbB = toRgb(b.color)
       // Fall back to the lower stop's color when one of the configured values is not a
-      // hex / rgb() string we can parse — the gradient still renders, just without a
+      // hex / rgb() string we can parse - the gradient still renders, just without a
       // smooth blend at this exact bracket.
       if (!rgbA || !rgbB) return a.color
       const t = (temp - a.temp) / (b.temp - a.temp)

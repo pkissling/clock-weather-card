@@ -26,7 +26,7 @@ export function writeHaState(state: HaState): void {
 export function readHaState(): HaState {
   const read = (key: keyof HaState): string => {
     const value = process.env[ENV_VARS[key]]
-    if (!value) throw new Error(`${ENV_VARS[key]} is not set — globalSetup must run before tests read HA state`)
+    if (!value) throw new Error(`${ENV_VARS[key]} is not set - globalSetup must run before tests read HA state`)
     return value
   }
   return { haUrl: read('haUrl'), haToken: read('haToken'), tmpDir: read('tmpDir'), containerName: read('containerName') }
