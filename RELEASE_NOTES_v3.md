@@ -1,6 +1,6 @@
 # clock-weather-card v3.0.0
 
-v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three independent sections - a composable `header`, a horizontally scrolling `forecast_strip` and a vertical `forecast_list` - each configurable on its own. **Most v2 options moved or were removed, so we recommend starting from scratch: delete your existing card, add it again and configure it in the visual editor.** The defaults cover most v2 setups, and a fresh config avoids leftover v2 options that v3 silently ignores. To convert an existing config by hand, see the [migration guide](#migration-guide-v2--v3).
+v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three independent sections - a composable `header`, a horizontally scrolling `forecast_strip` and a vertical `forecast_list` - each configurable on its own. **Most v2 options moved or were removed, so I recommend starting from scratch: delete your existing card, add it again and configure it in the visual editor.** The defaults cover most v2 setups, and a fresh config avoids leftover v2 options that v3 silently ignores. To convert an existing config by hand, see the [migration guide](#migration-guide-v2--v3).
 
 ## ⚠️ Breaking changes
 
@@ -10,7 +10,6 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **`time_format` removed.** Use `time_pattern` on a `time` segment: `HH:mm` / `HH:mm:ss` for 24-hour, `hh:mm a` / `h:mm a` for 12-hour ([Luxon tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens)).
 - **Default `time_pattern` / `date_pattern` are locale-aware.** When omitted, time and date use the localized Luxon tokens `t` / `DDD` - e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old look.
 - **`use_browser_time` removed.** The clock always uses `time_zone`, falling back to the Home Assistant time zone.
-- **Tapping the card does nothing by default.** v2 opened the weather entity's more-info dialog on tap and supported undocumented `hold_action` / `double_tap_action`. Set `tap_action: { action: more-info }` to restore the tap behavior; hold and double tap are no longer supported.
 - **Invalid config values now raise a card error** naming the offending option and the expected value, instead of rendering silently wrong.
 
 ## ✨ New features
@@ -28,7 +27,7 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **Header icon size** - `sections.header.weather_icon_size`; by default the icon matches the height of the header rows.
 - **`temperature_unit`** - show all temperatures in `celsius` or `fahrenheit`, converting the weather entity's values and `°C`/`°F` entity segments.
 - **Units everywhere** - known weather attributes get their unit automatically; override with `unit` or `unit_attribute` on `weather` and `entity` segments.
-- **`tap_action`** - any Home Assistant [action](https://www.home-assistant.io/dashboards/actions/) (`navigate`, `url`, `more-info`, `perform-action`, …).
+- **`tap_action`** - any Home Assistant [action](https://www.home-assistant.io/dashboards/actions/) (`navigate`, `url`, `more-info`, `perform-action`, …). Defaults to `more-info`; `none` makes the card not clickable.
 - **Per-section weather entity** - `forecast_strip` and `forecast_list` accept their own `weather_entity`.
 - **RTL support** support for right-to-left languages.
 
@@ -37,7 +36,6 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **Smaller bundle** - weather icons ship as plain SVG files and load on demand; the bundle is minified. Keeps low-power devices (e.g. NSPanel Pro) responsive.
 - **Isolated re-renders** - the single 800-line v2 component is split into ~15 sub-components, so a clock tick only re-renders the time segment instead of the whole card.
 - **Clearer errors** - config errors use Home Assistant's error card with a formatted, wrapping message; missing entity data logs a warning instead of failing silently.
-- **Precipitation display** - hourly precipitation probability is rounded to 10% steps, and `0%` is shown when other columns have values.
 
 ## 🐛 Bug fixes
 
@@ -53,7 +51,7 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 
 ## Migration guide (v2 → v3)
 
-We recommend starting from scratch (see above). If you'd rather convert an existing config by hand, use the mapping below.
+I recommend starting from scratch (see above). If you'd rather convert an existing config by hand, use the mapping below.
 
 ### Option mapping
 
@@ -77,4 +75,4 @@ We recommend starting from scratch (see above). If you'd rather convert an exist
 | `aqi_sensor` | `entity` segment with `entity_id: <sensor>` |
 | `show_decimal` | Removed. Header segments show the value as provided by the entity; forecast sections use `round_temperatures`. |
 | `use_browser_time` | Removed. Set `time_zone` if the HA time zone isn't the one you want. |
-| tap / `hold_action` / `double_tap_action` | `tap_action: { action: more-info }`; hold and double tap are not supported. |
+| `tap_action` | Tap opens more-info by default, configurable via `tap_action`; hold and double tap are not supported. |

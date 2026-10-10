@@ -4,7 +4,7 @@ import '@/components/clock-weather-card-forecast-strip'
 import '@/components/clock-weather-card-forecast-list'
 
 import { provide } from '@lit/context'
-import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
+import { type ActionConfig, deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
 import { LitElement, nothing } from 'lit'
 import { html } from 'lit'
@@ -15,7 +15,7 @@ import { configContext, errorMessageContext, hassContext } from '@/context'
 import logger from '@/service/logger'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
-import { resolveConfig } from '@/utils/config'
+import { DEFAULT_TAP_ACTION, resolveConfig } from '@/utils/config'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
 import { configNeedsSeconds, startClock } from '@/utils/luxon'
@@ -69,8 +69,7 @@ export class ClockWeatherCard extends LitElement {
     }
 
     const { title, header, forecastStrip, forecastList } = this.resolved
-    const tapAction = this.config.tap_action
-    const clickable = !!tapAction && tapAction.action !== 'none'
+    const clickable = this.tapAction.action !== 'none'
     return html`
       <ha-card
         class=${clickable ? 'clickable' : ''}
@@ -95,11 +94,15 @@ export class ClockWeatherCard extends LitElement {
       `
   }
 
+  private get tapAction(): ActionConfig {
+    return this.config?.tap_action ?? DEFAULT_TAP_ACTION
+  }
+
   private handleTap(): void {
     this.dispatchEvent(new CustomEvent('hass-action', {
       bubbles: true,
       composed: true,
-      detail: { config: { entity: this.config?.entity, tap_action: this.config?.tap_action }, action: 'tap' },
+      detail: { config: { entity: this.config?.entity, tap_action: this.tapAction }, action: 'tap' },
     }))
   }
 
