@@ -120,7 +120,8 @@ export default css`
     scrollbar-width: thin;
   }
 
-  clock-weather-card-forecast-strip-item {
+  clock-weather-card-forecast-strip-item,
+  clock-weather-card-forecast-strip .skeleton-item {
     flex: 0 0 auto;
     min-width: 40px;
     display: flex;
@@ -129,7 +130,8 @@ export default css`
     padding: 4px 7px;
   }
 
-  clock-weather-card-forecast-strip-item:first-of-type {
+  clock-weather-card-forecast-strip-item:first-of-type,
+  clock-weather-card-forecast-strip .skeleton-item:first-of-type {
     padding-inline-start: 0;
   }
 
@@ -281,6 +283,64 @@ export default css`
     border: 2px solid var(--primary-text-color, currentColor);
     transform: translate(-50%, -50%);
     box-sizing: border-box;
+  }
+
+  .skeleton {
+    display: block;
+    border-radius: 999px;
+    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    animation: cwc-skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes cwc-skeleton-pulse {
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+    }
+  }
+
+  clock-weather-card-forecast-strip .skeleton--time {
+    width: 1.6rem;
+    height: 0.8rem;
+  }
+
+  clock-weather-card-forecast-strip .skeleton--icon {
+    width: 28px;
+    height: 28px;
+    margin: 6px;
+    border-radius: 50%;
+  }
+
+  clock-weather-card-forecast-strip .skeleton--label {
+    width: 1.8rem;
+    height: 0.95rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--label {
+    width: 2.4rem;
+    height: 0.9rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--icon {
+    width: 70%;
+    aspect-ratio: 1;
+    justify-self: center;
+    border-radius: 50%;
+  }
+
+  clock-weather-card-forecast-list .skeleton--temperature {
+    width: 1.8rem;
+    height: 0.9rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--bar {
+    height: var(--cwc-list-bar-thickness);
+    min-height: 8px;
   }
 
 `

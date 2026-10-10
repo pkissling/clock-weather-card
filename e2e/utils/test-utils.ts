@@ -45,6 +45,8 @@ export type MockOptions = undefined | {
   unitSystem?: 'metric' | 'us_customary'
   /** Icons that must finish loading before setup completes (default 1). */
   expectedIcons?: number
+  /** Holds back forecast pushes until the promise settles. Needs `test.use({ freshPage: true })` so no cached forecast is reused. */
+  delayForecast?: Promise<void>
 }
 
 const DEFAULT_CARD_CONFIG = `
@@ -153,6 +155,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
       supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
         .reduce((acc, f) => acc | f, 0),
+      hold_forecast: opts?.delayForecast !== undefined,
     }),
     api.setEntityState('sun.sun', sunState, {
       elevation: sunState === 'below_horizon' ? -10 : 30,
@@ -163,6 +166,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     api.setTimeZone(timeZone),
     api.setUnitSystem(opts?.unitSystem ?? 'metric'),
   ])
+  void opts?.delayForecast?.then(() => api.setMockWeather({ hold_forecast: false }))
   // HA pushes events to the browser in order, so once the card sees this token it has every update above.
   const syncToken = randomUUID()
   await api.setEntityState(SYNC_ENTITY, syncToken)
