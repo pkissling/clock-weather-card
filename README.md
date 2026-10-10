@@ -12,24 +12,6 @@ A [Home Assistant Dashboard Card](https://www.home-assistant.io/dashboards/) ava
 
 Credits go to [basmilius](https://github.com/basmilius) for the awesome [weather icons](https://github.com/basmilius/meteocons) (MIT License).
 
-## What's new in v3
-
-- **Customizable layout** — fixed today/forecast layout replaced with composable header `rows` + `segments` (`time`, `date`, `weather`, `entity`, `icon`, `weather_icon`, `text`, `spacer`).
-- **Three independent sections** — `header` (clock, date, current weather), `forecast_strip` (horizontally scrolling columns) and `forecast_list` (vertical rows with temperature bars), each of which can be shown or hidden on its own via `hide`.
-- **Interchangeable hourly / daily modes** — `forecast_type` (`hourly` | `daily`) is set independently on `forecast_strip` and `forecast_list`, so the strip can show upcoming days and the list upcoming hours (e.g. a daily strip above an hourly list).
-- **Two new icon styles** — `flat` and `monochrome` join `line` and `fill`, courtesy of [meteocons v3](https://github.com/basmilius/meteocons).
-- **Animated icons toggle** — `animated_icons` option per section (default `true` for the header, `false` for the forecast sections).
-- **Performance — smaller bundle** — bundle splitting drops the initial JS from ~302 KB to **~98 KB** gzip; static and animated icons stream in as separate chunks on demand. Keeps the main thread responsive on low-power devices (e.g. NSPanel Pro).
-- **Performance — isolated re-renders** — the v2 monolith (one 800-line LitElement) is split into ~15 sub-components, so a clock tick or single-entity update only re-renders the affected piece (e.g. just the time segment) instead of the whole card.
-- **DX: real-HA e2e** — Playwright + screenshot tests against a real Home Assistant container catch visual regressions across every weather state × icon style × day/night × animated/static.
-- **DX: dev + prod side-by-side** — the dev build registers as `clock-weather-card-dev` so you can keep the production card installed and iterate on the dev one in the same dashboard without conflicts.
-
-## Breaking changes from v2
-
-- **`time_format` removed.** Use `time_pattern` on a `time` segment instead. For 24-hour clocks use `HH:mm` (or `HH:mm:ss`), for 12-hour use `hh:mm a` (or `h:mm a`). Full token reference: [Luxon formatting tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
-- **Default `time_pattern` / `date_pattern` are now locale-aware.** When you omit `time_pattern` or `date_pattern`, the segment renders using the localized Luxon tokens `t` / `DDD` (equivalent to `DateTime.TIME_SIMPLE` / `DateTime.DATE_FULL`) — e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 always rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old behavior.
-- **Tapping the card does nothing by default.** v2 opened the weather entity's more-info dialog on tap and supported undocumented `hold_action` / `double_tap_action`. Set `tap_action: { action: more-info }` to restore the tap behavior; hold and double tap are no longer supported.
-
 ## FAQ
 
 <details>
@@ -123,7 +105,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 
 #### `forecast_strip`
 
-Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Columns without a value stay blank, and the row is hidden entirely when every visible column is `0` or has no value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` — if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Columns without a value stay blank, and the row is hidden entirely when every visible column is `0` or has no value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
 
 In hourly mode, the first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
@@ -156,7 +138,7 @@ In daily mode, each row spans the day's low and high. Today's row is labeled "To
 
 In hourly mode, the first row is labeled "Now" and the others show the hour. Each row's bar spans from the previous hour's temperature to this hour's; the "Now" row starts from the current temperature and shows the current-temperature dot.
 
-Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOURLY` supported feature, matching `forecast_type` — if the selected entity does not, the section renders an inline warning instead.
+Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOURLY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
