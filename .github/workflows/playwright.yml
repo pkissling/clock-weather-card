@@ -3,30 +3,39 @@ name: Playwright Tests
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
 
 concurrency:
-  group: playwright-${{ github.ref }}
+  group: playwright-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   playwright:
-    name: Playwright Tests
+    name: Playwright Tests (HA ${{ matrix.ha_version }})
     runs-on: ubuntu-22.04
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        ha_version: [stable, beta, dev]
 
     steps:
     - uses: actions/checkout@v7
 
     - name: Pull HA Docker image
-      run: docker pull ghcr.io/home-assistant/home-assistant:stable
+      run: docker pull ghcr.io/home-assistant/home-assistant:${{ matrix.ha_version }}
 
     # Same pinned image as local runs and snapshot generation, so renders are byte-identical.
     - name: Run Playwright tests
+      env:
+        HA_VERSION: ${{ matrix.ha_version }}
       run: .github/playwright-snapshots-helper/run-in-docker.sh
 
     - uses: actions/upload-artifact@v7
       if: failure()
       with:
-        name: playwright-report
+        name: playwright-report-${{ matrix.ha_version }}
         path: playwright-report/
         retention-days: 7

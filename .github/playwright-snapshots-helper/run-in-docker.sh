@@ -30,6 +30,7 @@ docker run --rm \
   --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -e E2E_PROJECT_DIR="$PROJECT_DIR" \
+  -e HA_VERSION \
   -v /tmp:/tmp \
   -v "$PROJECT_DIR/e2e:/work/e2e" \
   -v "$PROJECT_DIR/playwright-report:/work/playwright-report" \
