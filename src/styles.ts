@@ -28,6 +28,11 @@ export default css`
     width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
   }
 
+  /* Meteocons clouds are near-white and vanish on light backgrounds without an outline. */
+  clock-weather-card-icon img {
+    filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.35));
+  }
+
   clock-weather-card-header > clock-weather-card-icon img {
     display: block;
     width: 100%;
