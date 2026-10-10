@@ -4,7 +4,7 @@ import type { WeatherIconType } from '@/types'
 const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
 
 // Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
-const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,partly-cloudy-day-rain,partly-cloudy-night-rain,cloudy,fog-day,fog-night,hail,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,windsock,hurricane,raindrop,raindrops,sunrise,sunset}.svg', {
+const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,partly-cloudy-day-rain,partly-cloudy-night-rain,cloudy,fog-day,fog-night,hail,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,windsock,hurricane,sunrise,sunset}.svg', {
   query: '?url&no-inline',
   import: 'default',
   eager: true
@@ -69,10 +69,6 @@ class IconsService {
       return 'windsock'
     case 'exceptional':
       return 'hurricane'
-    case 'raindrop':
-      return 'raindrop'
-    case 'raindrops':
-      return 'raindrops'
     default:
       return s
     }

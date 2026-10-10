@@ -30,7 +30,7 @@ describe('getWeatherMdiIcon', () => {
 })
 
 describe('getWeatherIcon', () => {
-  const states = ['clear-night', 'clear', 'sunny', 'partlycloudy', 'cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant', 'windy-exceptional', 'exceptional', 'raindrop', 'raindrops', 'sunrise', 'sunset']
+  const states = ['clear-night', 'clear', 'sunny', 'partlycloudy', 'cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant', 'windy-exceptional', 'exceptional', 'sunrise', 'sunset']
 
   it.each(WEATHER_ICON_TYPES.flatMap(type => states.flatMap(state => [true, false].flatMap(animated => [true, false].map(isNight => [type, state, animated, isNight] as const)))))('ships a %s icon for %s (animated: %s, night: %s)', (type, state, animated, isNight) => {
     expect(iconsService.getWeatherIcon(type, animated, state, isNight))
