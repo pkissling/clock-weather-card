@@ -14,6 +14,20 @@ test.describe('header section', () => {
       .toHaveText('4:21 PM')
   })
 
+  test('gives the details the space the weather icon does not use', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+    await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 400px' })
+    try {
+      const time = clockWeatherCard.locator('clock-weather-card-time-segment')
+      await expect(time)
+        .toHaveText('4:20 PM')
+      await expect.poll(() => time.evaluate(el => el.scrollWidth <= el.clientWidth))
+        .toBe(true)
+    } finally {
+      await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = '' })
+    }
+  })
+
   test('advances the time every second when a time segment shows seconds', async ({ page, setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `

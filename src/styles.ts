@@ -16,15 +16,16 @@ export default css`
 
   clock-weather-card-header {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
+    container-type: inline-size;
   }
 
   clock-weather-card-header > clock-weather-card-icon {
     display: block;
     justify-self: center;
     /* The glyph fills the middle 80% of the box; the img's -10% margins crop the rest. */
-    width: min(100%, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
+    width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
   }
 
   clock-weather-card-header > clock-weather-card-icon img {
