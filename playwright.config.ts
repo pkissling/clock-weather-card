@@ -13,6 +13,7 @@ export default defineConfig({
   workers: 1,
   /* Baselines are rendered in the pinned Docker image; host fonts would never match them. */
   ignoreSnapshots: !process.env.E2E_IN_DOCKER,
+  expect: { toHaveScreenshot: { threshold: 0, maxDiffPixels: 0 } },
   /* Timeout for each test - increased for HA page loads */
   timeout: 30_000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
