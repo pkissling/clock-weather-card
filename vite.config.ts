@@ -1,7 +1,6 @@
 import { resolve } from 'path'
 import { defineConfig, type Plugin } from 'vite'
 import compression from 'vite-plugin-compression2'
-import zipPack from 'vite-plugin-zip-pack'
 
 const CUSTOM_ELEMENT_PREFIX = 'clock-weather-card'
 const DEV_SUFFIX = '-dev'
@@ -64,7 +63,7 @@ const bundleSizeBudgetPlugin = (): Plugin => ({
   }
 })
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   // Resolve emitted assets relative to the card's own URL (e.g. /hacsfiles/clock-weather-card/), not the HA origin.
   base: './',
   plugins: [
@@ -72,15 +71,6 @@ export default defineConfig(({ command }) => ({
     bundleSizeBudgetPlugin(),
     // Emit only gzip bundles for production; no Brotli
     compression({ algorithms: ['gzip'] }),
-    // Pack the dist into a single zip for HACS distribution
-    ...(command === 'build'
-      ? [zipPack({
-        inDir: 'dist',
-        outDir: 'dist',
-        outFileName: 'clock-weather-card.zip',
-        filter: (fileName) => /\.(js|svg)$/.test(fileName),
-      })]
-      : []),
   ],
   build: {
     target: 'es2019',
@@ -114,4 +104,4 @@ export default defineConfig(({ command }) => ({
       '@': resolve(import.meta.dirname, './src')
     }
   }
-}))
+})
