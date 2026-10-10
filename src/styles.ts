@@ -256,6 +256,7 @@ export default css`
     min-height: 8px;
     background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
     border-radius: 999px;
+    box-shadow: 0 0 1px rgb(0 0 0 / 0.35);
   }
 
   clock-weather-card-forecast-list-item:dir(rtl) .bar-track {
