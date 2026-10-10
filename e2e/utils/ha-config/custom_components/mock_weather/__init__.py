@@ -44,6 +44,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                 int(call.data["supported_features"])
             )
 
+        if "hold_forecast" in call.data:
+            if call.data["hold_forecast"]:
+                entity._forecast_released.clear()
+            else:
+                entity._forecast_released.set()
+
         entity.async_write_ha_state()
 
     hass.services.async_register(DOMAIN, "set_weather", handle_set_weather)

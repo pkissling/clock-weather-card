@@ -1,5 +1,7 @@
 """Mock Weather entity for E2E testing."""
 
+import asyncio
+
 from homeassistant.components.weather import (
     Forecast,
     WeatherEntity,
@@ -49,6 +51,8 @@ class MockWeatherEntity(WeatherEntity):
         self._mock_temperature_unit: str = UnitOfTemperature.CELSIUS
         self._forecast_daily: list[Forecast] = []
         self._forecast_hourly: list[Forecast] = []
+        self._forecast_released = asyncio.Event()
+        self._forecast_released.set()
 
     @property
     def condition(self) -> str:
@@ -87,8 +91,10 @@ class MockWeatherEntity(WeatherEntity):
 
     async def async_forecast_daily(self) -> list[Forecast]:
         """Return the daily forecast."""
+        await self._forecast_released.wait()
         return self._forecast_daily
 
     async def async_forecast_hourly(self) -> list[Forecast]:
         """Return the hourly forecast."""
+        await self._forecast_released.wait()
         return self._forecast_hourly

@@ -57,3 +57,9 @@ set_weather:
       example: "[{\"datetime\": \"2024-01-02T12:00:00+00:00\", \"condition\": \"sunny\", \"temperature\": 21}]"
       selector:
         object:
+    hold_forecast:
+      name: Hold forecast
+      description: Withhold forecast pushes to subscribers until set back to false.
+      example: true
+      selector:
+        boolean:

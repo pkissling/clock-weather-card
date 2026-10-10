@@ -27,6 +27,21 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     return attributeRequired ? attribute : null
   }
 
+  protected renderSkeleton(): TemplateResult {
+    return html`
+      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <div class="strip" aria-busy="true">
+        ${Array.from({ length: this.config.forecastStrip.count }, () => html`
+          <div class="skeleton-item">
+            <span class="skeleton skeleton--time"></span>
+            <span class="skeleton skeleton--icon"></span>
+            <span class="skeleton skeleton--label"></span>
+          </div>
+        `)}
+      </div>
+    `
+  }
+
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sunEntity, timeZone, locale, temperatureUnit } = this.config
     const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip

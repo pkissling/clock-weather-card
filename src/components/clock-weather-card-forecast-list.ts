@@ -38,8 +38,23 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     return this.config.forecastList.attribute
   }
 
+  protected renderSkeleton(): TemplateResult {
+    return html`
+      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <div class="rows" aria-busy="true" style=${this._rowsStyle()}>
+        ${Array.from({ length: this.config.forecastList.count }, () => html`
+          <span class="skeleton skeleton--label"></span>
+          <span class="skeleton skeleton--icon"></span>
+          <span class="skeleton skeleton--temperature"></span>
+          <span class="skeleton skeleton--bar"></span>
+          <span class="skeleton skeleton--temperature"></span>
+        `)}
+      </div>
+    `
+  }
+
   protected renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult {
-    const { rowHeight, barThickness, gradient, animatedIcons, weatherIconType, attribute } = this.config.forecastList
+    const { gradient, animatedIcons, weatherIconType, attribute } = this.config.forecastList
     const { bars, domain } = attribute === 'temperature'
       ? this._temperatureBars(entityId, forecastType)
       : this._attributeBars(attribute)
@@ -53,11 +68,9 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
       ? 50
       : Math.max(0, Math.min(100, ((v - globalLow) / range) * 100))
 
-    const rowsStyle = `--cwc-list-row-height: ${rowHeight}; --cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`
-
     return html`
       <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
-      <div class="rows" style=${rowsStyle}>
+      <div class="rows" style=${this._rowsStyle()}>
         ${bars.map(({ row, lowLabel, highLabel, span, current }) => {
     const item: ForecastListItem = {
       label: row.label,
@@ -77,6 +90,11 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
   })}
       </div>
     `
+  }
+
+  private _rowsStyle(): string {
+    const { rowHeight, barThickness } = this.config.forecastList
+    return `--cwc-list-row-height: ${rowHeight}; --cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`
   }
 
   private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBars {
