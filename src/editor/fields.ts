@@ -4,7 +4,7 @@ import { editorT, type FormContext, localeOptions, NO_UNIT, TIME_ZONES, weatherI
 import hassService from '@/service/hass-service'
 import type { SegmentConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
-import { defaultAttributeColor, DEFAULTS } from '@/utils/config'
+import { DEFAULT_TAP_ACTION, defaultAttributeColor, DEFAULTS } from '@/utils/config'
 import { DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
@@ -70,7 +70,7 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'title', selector: text, group: 'essentials' },
   { name: 'weather_icon_type', selector: iconTypeSelector, group: 'appearance' },
   { name: 'temperature_unit', selector: { select: { mode: 'box', options: Object.keys(TEMPERATURE_UNIT_SYMBOLS) } }, default: temperatureUnitOf, group: 'appearance' },
-  { name: 'tap_action', selector: { ui_action: {} }, group: 'interaction' },
+  { name: 'tap_action', selector: { ui_action: { default_action: DEFAULT_TAP_ACTION.action } }, group: 'interaction' },
   { name: 'locale', selector: ({ hass }: FormContext) => ({ select: { custom_value: true, options: localeOptions(hass) } }), default: ({ hass }: FormContext) => hassService.getLocale(hass), group: 'region' },
   { name: 'time_zone', selector: { select: { custom_value: true, options: TIME_ZONES } }, default: ({ hass }: FormContext) => hassService.getTimeZone(hass), group: 'region' },
   { name: 'sun_entity', selector: { entity: { domain: 'sun' } }, group: 'region' },

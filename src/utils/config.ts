@@ -32,6 +32,8 @@ export const DEFAULT_ROWS: RowConfig[] = [
   }
 ]
 
+export const DEFAULT_TAP_ACTION = { action: 'more-info' } as const
+
 export const DEFAULTS = {
   weather_icon_type: 'line',
   sun_entity: 'sun.sun',

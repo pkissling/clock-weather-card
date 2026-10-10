@@ -19,6 +19,16 @@ test.describe('tap_action', () => {
       .toHaveURL(/#tapped$/)
   })
 
+  test('opens the more-info dialog of the entity when omitted', async ({ page, setupCard }) => {
+    const card = await setupCard()
+
+    await card.locator('ha-card')
+      .click()
+
+    await expect(page.locator('ha-more-info-dialog'))
+      .toContainText('Mock Weather')
+  })
+
   test('runs the configured action on Enter', async ({ page, setupCard }) => {
     const card = await setupCard({
       cardConfig: `
@@ -36,9 +46,9 @@ test.describe('tap_action', () => {
   })
 })
 
-test.describe('tap_action without action', () => {
-  test('is not clickable when omitted', async ({ setupCard }) => {
-    const card = await setupCard()
+test.describe('tap_action validation and none', () => {
+  test('is not clickable with action none', async ({ setupCard }) => {
+    const card = await setupCard({ cardConfig: 'tap_action: { action: none }' })
 
     await expect(card.locator('ha-card')).not.toHaveAttribute('role', 'button')
     await expect(card.locator('ha-card'))
