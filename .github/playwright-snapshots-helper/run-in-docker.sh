@@ -16,13 +16,16 @@ echo "Building Playwright image..."
 # Per-worktree tag, so a rebuild replaces any image a killed run left behind.
 IMAGE_TAG="clock-weather-card-e2e-$WORKTREE_ID"
 trap 'docker rmi "$IMAGE_TAG" >/dev/null 2>&1 || true' EXIT
-docker build -t "$IMAGE_TAG" -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_DIR"
+# Firefox rasterizes differently on arm64, so pin CI's architecture to keep baselines pixel-identical.
+PLATFORM=linux/amd64
+docker build --platform "$PLATFORM" -t "$IMAGE_TAG" -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_DIR"
 
 mkdir -p "$PROJECT_DIR/playwright-report" "$PROJECT_DIR/test-results"
 
 echo "Running Playwright tests in Docker..."
 # Host network: the HA container started via the socket is published on 127.0.0.1 only.
 docker run --rm \
+  --platform "$PLATFORM" \
   --name "$RUNNER_NAME" \
   --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
