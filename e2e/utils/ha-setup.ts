@@ -9,7 +9,7 @@ import { createContainerName, E2E_ARTIFACT_NAME, writeHaState } from './ha-state
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const HA_IMAGE = 'ghcr.io/home-assistant/home-assistant:stable'
+const HA_VERSION = process.env.HA_VERSION || 'stable'
 const HA_CONFIG_DIR = path.join(__dirname, 'ha-config')
 const PROJECT_DIR = path.join(__dirname, '..', '..')
 const DIST_DIR = path.join(PROJECT_DIR, 'dist')
@@ -44,7 +44,7 @@ export default async function globalSetup(): Promise<void> {
     '-p 127.0.0.1::8123 ' +
     `-v ${tmpDir}:/config ` +
     '-e TZ=UTC ' +
-    `${HA_IMAGE}`,
+    `ghcr.io/home-assistant/home-assistant:${HA_VERSION}`,
     { stdio: 'inherit' },
   )
 
