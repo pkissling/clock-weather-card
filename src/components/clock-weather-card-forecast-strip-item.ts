@@ -16,7 +16,7 @@ class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponen
     const attributeClass = weatherIconType === 'monochrome' ? 'attribute attribute--monochrome' : 'attribute'
 
     return html`
-      <span class="time">${label}</span>
+      <span class="time" title=${label}>${label}</span>
       <clock-weather-card-icon
         .weatherState=${condition}
         .isNight=${isNight}

@@ -29,8 +29,8 @@
     "aqi": "AQI",
     "humidity": "humidité",
     "feels-like": "Ressentie",
-    "now": "Maintenant",
-    "today": "Aujourd'hui",
+    "now": "Maint.",
+    "today": "Auj.",
     "sunrise": "Lever du soleil",
     "sunset": "Coucher du soleil"
   }

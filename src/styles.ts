@@ -139,6 +139,10 @@ export default css`
     font-size: 0.8rem;
     opacity: 0.7;
     line-height: 1;
+    max-width: 5em;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   clock-weather-card-forecast-strip-item clock-weather-card-icon {
@@ -222,6 +226,9 @@ export default css`
   clock-weather-card-forecast-list-item .label {
     font-weight: 500;
     opacity: 0.9;
+    max-width: 5em;
+    overflow-x: clip;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
