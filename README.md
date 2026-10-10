@@ -353,7 +353,7 @@ To add a new language or improve an existing translation:
 1. **New language:** Copy `src/locales/en.json` to `src/locales/<language-code>.json` and translate the values.
 2. **Update existing translation:** Edit the corresponding file in `src/locales/`.
 
-Use lowercase [BCP 47 language tags](https://en.wikipedia.org/wiki/IETF_language_tag) for the filename (e.g. `pt-br.json`, `zh-cn.json`).
+Use lowercase [BCP 47 language tags](https://en.wikipedia.org/wiki/IETF_language_tag) for the filename (e.g. `pt-br.json`, `zh-hans.json`).
 
 ### Playwright screenshots
 

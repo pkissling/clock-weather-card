@@ -38,7 +38,7 @@ class TranslationsService {
   }
 
   private normalizeLang(language: string): string {
-    // Keep lower-case, map underscores to hyphens to match filenames like pt-br, zh-cn
+    // Keep lower-case, map underscores to hyphens to match filenames like pt-br, zh-hans
     return language.toLowerCase()
       .replace('_', '-')
   }

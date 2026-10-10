@@ -39,6 +39,10 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **Clearer errors** - config errors use Home Assistant's error card with a formatted, wrapping message; missing entity data logs a warning instead of failing silently.
 - **Precipitation display** - hourly precipitation probability is rounded to 10% steps, and `0%` is shown when other columns have values.
 
+## 🐛 Bug fixes
+
+- **Serbian (Latin) and Chinese translations** - the translation files are renamed to match the language codes Home Assistant sends (`sr-latn`, `zh-hans`, `zh-hant`). Before, Serbian (Latin) showed Cyrillic text and Chinese fell back to English. **Breaking:** a card config with `locale: zh-cn`, `zh-tw` or `srlatn` no longer finds these translations - use `zh-hans`, `zh-hant` or `sr-latn` instead.
+
 ## 🛠️ Developer experience
 
 - **E2E tests against a real Home Assistant** - Playwright starts its own HA container with a mock weather integration; screenshot tests cover every weather state × icon style × day/night × animated/static.

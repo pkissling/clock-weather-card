@@ -26,7 +26,7 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
     const dotStyle = `--_dot-left: ${currentTempPercent}%;`
 
     return html`
-      <span class="label">${label}</span>
+      <span class="label" title=${label}>${label}</span>
       <clock-weather-card-icon
         .weatherState=${condition}
         .isNight=${isNight}

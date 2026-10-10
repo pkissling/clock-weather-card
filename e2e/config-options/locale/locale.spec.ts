@@ -1,4 +1,12 @@
+import { readdirSync } from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { expect, test } from '../../utils/fixtures'
+
+const LOCALES = readdirSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../src/locales'))
+  .map(file => file.replace('.json', ''))
+const FORECAST_LABELS = 'clock-weather-card-forecast-list-item .label, clock-weather-card-forecast-strip-item .time'
 
 test.describe('locale', () => {
 
@@ -178,4 +186,39 @@ test.describe('locale', () => {
     await expect(clockWeatherCard)
       .toContainText('Soleado')
   })
+
+  test('forecast labels fit their column in every bundled language', async ({ setupCard, clockWeatherCard }) => {
+    for (const locale of LOCALES) {
+      await setupCard({ cardConfig: `locale: ${locale}` })
+      const truncated = await clockWeatherCard.locator(FORECAST_LABELS)
+        .evaluateAll(els => els.filter(el => el.scrollWidth > el.clientWidth)
+          .map(el => el.textContent))
+      expect(truncated, locale)
+        .toEqual([])
+    }
+  })
+
+  test('truncates an overlong forecast label with an ellipsis and keeps the full text in its title', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: 'locale: fr' })
+    const label = clockWeatherCard.locator('clock-weather-card-forecast-list-item .label')
+      .first()
+    await expect(label)
+      .toHaveAttribute('title', 'Auj.')
+
+    const overflow = await label.evaluate((el) => {
+      el.textContent = 'Aujourd\'hui et demain'
+      return { overflows: el.scrollWidth > el.clientWidth, textOverflow: getComputedStyle(el).textOverflow }
+    })
+    expect(overflow)
+      .toEqual({ overflows: true, textOverflow: 'ellipsis' })
+  })
+
+  for (const [language, sunny] of [['sr-Latn', 'Sunčano'], ['zh-Hans', '晴'], ['zh-Hant', '晴天']]) {
+    test(`uses the ${language} translation for Home Assistant's ${language} language`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({ language, weather: { state: 'sunny' } })
+
+      await expect(clockWeatherCard)
+        .toContainText(sunny)
+    })
+  }
 })

@@ -17,13 +17,13 @@
     "exceptional": "warunki nadzwyczajne"
   },
   "day": {
-    "1": "pon.",
-    "2": "wt.",
-    "3": "śr.",
-    "4": "czw.",
-    "5": "pt.",
-    "6": "sob.",
-    "7": "niedz."
+    "1": "Pn",
+    "2": "Wt",
+    "3": "Śr",
+    "4": "Cz",
+    "5": "Pt",
+    "6": "So",
+    "7": "Nd"
   },
   "misc": {
     "aqi": "AQI",
