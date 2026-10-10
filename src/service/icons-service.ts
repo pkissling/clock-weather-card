@@ -4,7 +4,7 @@ import type { WeatherIconType } from '@/types'
 const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
 
 // Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
-const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,partly-cloudy-day-rain,partly-cloudy-night-rain,cloudy,fog-day,fog-night,hail,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,windsock,hurricane,sunrise,sunset}.svg', {
+const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,extreme-rain,not-available,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
   query: '?url&no-inline',
   import: 'default',
   eager: true
@@ -55,22 +55,26 @@ class IconsService {
     case 'lightning-rainy':
       return `thunderstorms-${dn}-rain`
     case 'pouring':
-      return 'rain'
+      return 'extreme-rain'
     case 'rainy':
-      // Matches previous choice of partly-cloudy-*-rain
-      return `partly-cloudy-${dn}-rain`
+      return 'rain'
     case 'snowy':
       return 'snow'
     case 'snowy-rainy':
       return 'sleet'
     case 'windy':
     case 'windy-variant':
+      return 'wind'
     case 'windy-exceptional':
-      return 'windsock'
+      return 'wind-alert'
     case 'exceptional':
-      return 'hurricane'
-    default:
+      return 'weather-alert'
+    case 'sunrise':
+    case 'sunset':
       return s
+    default:
+      logger.warn(`No icon for weather state "${state}", showing the not-available icon`)
+      return 'not-available'
     }
   }
 }

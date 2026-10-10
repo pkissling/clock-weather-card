@@ -14,6 +14,13 @@ test.describe('header section', () => {
       .toHaveText('4:21 PM')
   })
 
+  test('shows the not-available icon for an unknown weather state', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ weather: { state: 'unknown' } })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img'))
+      .toHaveAttribute('src', /not-available/)
+  })
+
   test('gives the details the space the weather icon does not use', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({})
     await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 400px' })

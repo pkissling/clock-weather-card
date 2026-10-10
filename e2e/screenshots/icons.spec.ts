@@ -17,6 +17,7 @@ export const supportedWeatherStates = [
   'hail',
   'windy',
   'windy-variant',
+  'windy-exceptional',
   'exceptional'
 ] as const
 

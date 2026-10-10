@@ -42,6 +42,8 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 ## 🐛 Bug fixes
 
 - **Serbian (Latin) and Chinese translations** - the translation files are renamed to match the language codes Home Assistant sends (`sr-latn`, `zh-hans`, `zh-hant`). Before, Serbian (Latin) showed Cyrillic text and Chinese fell back to English. **Breaking:** a card config with `locale: zh-cn`, `zh-tw` or `srlatn` no longer finds these translations - use `zh-hans`, `zh-hant` or `sr-latn` instead.
+- **Icon for exceptional weather** - the `exceptional` state now shows a weather alert icon (cloud with a warning triangle) instead of a hurricane, and `windy-exceptional` a wind alert icon instead of a windsock ([#49](https://github.com/pkissling/clock-weather-card/issues/49)).
+- **More fitting weather icons** - `rainy` shows a plain rain cloud instead of one with a sun or moon, `pouring` a dark heavy-rain cloud so it stands out from `rainy`, `windy` and `windy-variant` wind lines instead of a windsock, and unknown weather states a "not available" icon instead of keeping the previous icon.
 
 ## 🛠️ Developer experience
 

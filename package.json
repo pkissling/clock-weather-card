@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@lit/context": "^1.1.6",
-    "@meteocons/svg": "^0.1.0",
-    "@meteocons/svg-static": "^0.1.0",
+    "@meteocons/svg": "3.0.0-next.10",
+    "@meteocons/svg-static": "3.0.0-next.10",
     "custom-card-helpers": "2.0.0",
     "lit": "^3.3.3",
     "luxon": "^3.7.2"

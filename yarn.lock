@@ -420,17 +420,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meteocons/svg-static@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@meteocons/svg-static@npm:0.1.0"
-  checksum: 10c0/73b8887acbea13fef132f689f52ec404a1eeacd45ecddebf240f9a6903196d52e750f20f904d9525f9e665629e0dbb4b5e99bfa4009a51e9bcd04cb2466020ae
+"@meteocons/svg-static@npm:3.0.0-next.10":
+  version: 3.0.0-next.10
+  resolution: "@meteocons/svg-static@npm:3.0.0-next.10"
+  checksum: 10c0/12a770ec58237a58deaa2a4724a8460f1ece6f5a1d1e56889ec7e6288432391947812f2f3fb0d691b6ac06e3a6ae58ad652b73eef67e12c2127533093c3af255
   languageName: node
   linkType: hard
 
-"@meteocons/svg@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@meteocons/svg@npm:0.1.0"
-  checksum: 10c0/3c236ad16386436dd5c760e6324854ff58709bf65ae93e7bfdf316851858a0ad749e146671ad6c667a2e48baafd4d6fe70778b820d5a59ec2549e16447a3aa53
+"@meteocons/svg@npm:3.0.0-next.10":
+  version: 3.0.0-next.10
+  resolution: "@meteocons/svg@npm:3.0.0-next.10"
+  checksum: 10c0/07f6ccc8395234d08fcb0270962b664342fc8e0933808a4e81e0e7988befbab5300fa914b50305f87d2ba67e660d2603a704e322dc2d293f4fd938ad75860560
   languageName: node
   linkType: hard
 
@@ -985,8 +985,8 @@ __metadata:
     "@eslint/compat": "npm:^2.1.1"
     "@eslint/js": "npm:^10.0.1"
     "@lit/context": "npm:^1.1.6"
-    "@meteocons/svg": "npm:^0.1.0"
-    "@meteocons/svg-static": "npm:^0.1.0"
+    "@meteocons/svg": "npm:3.0.0-next.10"
+    "@meteocons/svg-static": "npm:3.0.0-next.10"
     "@playwright/test": "npm:^1.64.0"
     "@types/luxon": "npm:^3.7.6"
     "@types/node": "npm:^26.6.4"
