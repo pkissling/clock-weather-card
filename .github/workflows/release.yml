@@ -27,14 +27,11 @@ jobs:
           yarn install
           yarn build
 
+      # HACS installs every asset of a plugin release, so the chunks and icons ship as flat assets next to the card.
       - name: Upload to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/clock-weather-card.zip
-          asset_name: clock-weather-card.zip
-          tag: ${{ github.ref }}
-          overwrite: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.ref_name }}" dist/*.js dist/*.svg --clobber
 
       - name: Verify HACS compliance
         uses: hacs/action@main

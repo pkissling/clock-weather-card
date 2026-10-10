@@ -55,7 +55,6 @@
     "typescript-eslint": "^8.71.1",
     "vite": "^8.3.4",
     "vite-plugin-compression2": "^2.5.3",
-    "vite-plugin-zip-pack": "^1.2.4",
     "vitest": "^5.0.3",
     "yaml": "^2.9.1"
   }
