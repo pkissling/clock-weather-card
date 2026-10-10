@@ -215,7 +215,7 @@ test.describe('forecast_strip section', () => {
       .toHaveCount(1)
   })
 
-  test('formats hourly time labels in the configured locale (en-US shows "2 PM", not "14")', async ({ setupCard, clockWeatherCard }) => {
+  test('formats hourly time labels in the configured locale (en-US shows "2:00 PM", not "14:00")', async ({ setupCard, clockWeatherCard }) => {
     const forecasts: WeatherForecast[] = [
       { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
       { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 0 },
@@ -236,10 +236,10 @@ test.describe('forecast_strip section', () => {
     await expect(items.nth(0)
       .locator('.time'))
       .toHaveText('Now')
-    // The 14:00 future column renders in en-US 12-hour format with a PM suffix.
+    // The 14:00 future column renders in en-US 12-hour format.
     await expect(items.nth(1)
       .locator('.time'))
-      .toHaveText('2 PM')
+      .toHaveText('2:00 PM')
   })
 
   test('scrolls horizontally when the hours exceed the card width', async ({ setupCard, clockWeatherCard, page }) => {

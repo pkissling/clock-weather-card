@@ -76,7 +76,9 @@ export const isFormField = (field: EditorField): boolean => !field.control
 export function renderForm(ctx: FormContext, fields: EditorField[], value: Data, defaults: Data, onChange: (changes: Data) => void): TemplateResult | typeof nothing {
   const defaultOf = (f: EditorField): unknown => (typeof f.default === 'function' ? f.default(ctx) : f.default) ?? defaults[f.name]
   const data: Data = Object.fromEntries(fields.map(f => [f.name, toFormValue(f, value[f.name] ?? defaultOf(f))]))
-  const visible = fields.filter(f => isFormField(f) && (!f.visible || f.visible(data)))
+  // Conditions may depend on options rendered in another chunk (e.g. forecast_type for advanced options).
+  const visibilityData = { ...defaults, ...value, ...data }
+  const visible = fields.filter(f => isFormField(f) && (!f.visible || f.visible(visibilityData)))
   if (!visible.length) return nothing
   const schema = visible.map(f => ({
     name: f.name,

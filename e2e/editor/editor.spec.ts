@@ -89,6 +89,39 @@ test.describe('GUI editor', () => {
       .toEqual({ type: 'date', date_pattern: 'yyyy-MM-dd' })
   })
 
+  test('picks a forecast strip time format from previews', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast strip')
+      .click()
+    await editor.getByText('More options')
+      .click()
+    await editor.getByLabel('Time format')
+      .click()
+    await editor.getByText('4 PM · h a')
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { time_pattern: 'h a' } } })
+  })
+
+  test('offers the forecast list time format only for hourly forecasts', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast list')
+      .click()
+    await editor.getByText('More options')
+      .click()
+    await expect(editor.getByLabel('Time format'))
+      .toHaveCount(0)
+    await editor.getByRole('radio', { name: 'Hourly' })
+      .click()
+    await expect(editor.getByLabel('Time format'))
+      .toBeVisible()
+  })
+
   test('resets header rows to the default', async ({ page, setupCard }) => {
     await setupCard({ cardConfig: 'sections: { header: { rows: [{ segments: [{ type: time }] }] } }' })
     const editor = await openEditor(page)

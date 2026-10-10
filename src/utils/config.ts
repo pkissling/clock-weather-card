@@ -5,7 +5,7 @@ import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
-import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
+import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone } from '@/utils/luxon'
 
 export const DEFAULT_ROWS: RowConfig[] = [
   {
@@ -37,8 +37,8 @@ export const DEFAULTS = {
   sun_entity: 'sun.sun',
   sections: {
     header: { hide: false, animated_icons: true },
-    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, attribute: 'precipitation_probability' },
-    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, attribute: 'temperature' },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
+    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
 
@@ -99,6 +99,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, SECTION_FORECAST_TYPES)
   assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, SECTION_FORECAST_TYPES)
+  assertNonEmptyString('sections.forecast_strip.time_pattern', strip?.time_pattern)
+  assertNonEmptyString('sections.forecast_list.time_pattern', config.sections?.forecast_list?.time_pattern)
   assertNonEmptyString('sections.forecast_strip.attribute', strip?.attribute)
   assertNonEmptyString('sections.forecast_strip.attribute_icon', strip?.attribute_icon)
   assertNonEmptyString('sections.forecast_strip.attribute_color', strip?.attribute_color)
@@ -209,6 +211,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       roundTemperatures: strip?.round_temperatures ?? D.forecast_strip.round_temperatures,
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
       hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
+      timePattern: strip?.time_pattern ?? D.forecast_strip.time_pattern,
       attribute: strip?.attribute ?? D.forecast_strip.attribute,
       attributeRequired: strip?.attribute !== undefined,
       attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
@@ -225,6 +228,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? D.forecast_list.hide_current_temp_indicator,
       animatedIcons: list?.animated_icons ?? D.forecast_list.animated_icons,
       roundTemperatures: list?.round_temperatures ?? D.forecast_list.round_temperatures,
+      timePattern: list?.time_pattern ?? D.forecast_list.time_pattern,
       weatherIconType: list?.weather_icon_type ?? weatherIconType,
       attribute: listAttribute,
       attributeUnit: list?.attribute_unit ?? null,
