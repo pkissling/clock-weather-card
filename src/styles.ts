@@ -283,6 +283,7 @@ export default css`
     border: 2px solid var(--primary-text-color, currentColor);
     transform: translate(-50%, -50%);
     box-sizing: border-box;
+    z-index: 1;
   }
 
   .skeleton {

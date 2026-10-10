@@ -69,6 +69,28 @@ test.describe('sections.forecast_list.bar_thickness', () => {
       .toBe(20)
   })
 
+  test('keeps the current temperature dot above the next row at 100%', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        entity: weather.mock_weather
+        sections:
+          forecast_list:
+            row_height: 40px
+            bar_thickness: 100%
+      `,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+
+    const dot = clockWeatherCard.locator('clock-weather-card-forecast-list-item .dot')
+    const topmostAtDotBottom = await dot.evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      const root = el.getRootNode() as Document | ShadowRoot
+      return root.elementFromPoint(rect.left + rect.width / 2, rect.bottom - 1) === el
+    })
+    expect(topmostAtDotBottom)
+      .toBe(true)
+  })
+
   test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
