@@ -34,7 +34,7 @@ test.describe('sun_entity', () => {
     expect(daySrc)
       .toBeTruthy()
 
-    // Push a state change directly to HA — no setupCard rebuild, no page reload.
+    // Push a state change directly to HA - no setupCard rebuild, no page reload.
     // The card subscribes to hass updates via WS, so the icon should swap on the fly.
     await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
 
@@ -83,7 +83,7 @@ test.describe('sun_entity', () => {
     await expect(items)
       .toHaveCount(3)
 
-    // Index 0 is "Now" (12:00 — day); indexes 1 and 2 are the future forecasts straddling sunset.
+    // Index 0 is "Now" (12:00 - day); indexes 1 and 2 are the future forecasts straddling sunset.
     const preSunset = await items.nth(1)
       .locator('clock-weather-card-icon img')
       .getAttribute('src')

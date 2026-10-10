@@ -1,7 +1,7 @@
 import { expect, test } from '../../../utils/fixtures'
 import api from '../../../utils/ha-api'
 
-// TODO: cover more rows variations — empty rows, font_size, mixed segment types per row,
+// TODO: cover more rows variations - empty rows, font_size, mixed segment types per row,
 // reordering segments within a row, missing optional segment fields.
 test.describe('sections.header.rows', () => {
   test('renders the default 3 rows when rows is omitted', async ({ setupCard, clockWeatherCard }) => {
@@ -72,7 +72,7 @@ test.describe('sections.header.rows', () => {
     // Custom row 1: time only
     await expect(clockWeatherCard)
       .toContainText(/\d{2}:\d{2}/)
-    // Custom row 2: yyyy-MM-dd date — assert exact format
+    // Custom row 2: yyyy-MM-dd date - assert exact format
     await expect(clockWeatherCard)
       .toContainText('2026-04-27')
     // Custom row 3: numeric weather attribute (regression: getEntityAttribute must return numbers)

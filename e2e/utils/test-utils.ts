@@ -139,7 +139,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   await page.locator('clock-weather-card, hui-error-card')
     .evaluateAll((els, attribute) => els.forEach(el => el.setAttribute(attribute, '')), STALE_ATTRIBUTE)
 
-  // Independent state writes — run concurrently.
+  // Independent state writes - run concurrently.
   await Promise.all([
     api.setDashboardConfig(TEST_DASHBOARD, cardConfig),
     api.setMockWeather({
@@ -194,7 +194,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
 }
 
 async function waitForIconsSettled (page: Page, minIcons: number): Promise<void> {
-  // A config error renders an error card and no icons at all — pass in that case.
+  // A config error renders an error card and no icons at all - pass in that case.
   await expect
     .poll(async () => {
       const total = await page.locator('clock-weather-card-icon')

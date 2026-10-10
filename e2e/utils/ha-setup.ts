@@ -59,7 +59,7 @@ export default async function globalSetup(): Promise<void> {
 
     writeHaState({ haUrl, haToken: token, tmpDir, containerName })
   } catch (err) {
-    // globalTeardown doesn't run when globalSetup throws — clean up here so a
+    // globalTeardown doesn't run when globalSetup throws - clean up here so a
     // failed setup doesn't leak a running container.
     try { execSync(`docker rm -f ${containerName}`, { stdio: 'ignore' }) } catch { /* ignore */ }
     try { rmSync(tmpDir, { recursive: true, force: true }) } catch { /* ignore */ }
@@ -82,7 +82,7 @@ function assertDockerRunning(): void {
   try {
     execSync('docker info', { stdio: 'ignore', timeout: 10_000 })
   } catch {
-    throw new Error('[HA Setup] Docker daemon is not reachable — start Docker and retry.')
+    throw new Error('[HA Setup] Docker daemon is not reachable - start Docker and retry.')
   }
 }
 
@@ -113,7 +113,7 @@ function generateStorageFiles(configDir: string): void {
   const storageDir = path.join(configDir, '.storage')
   mkdirSync(storageDir, { recursive: true })
 
-  // Lovelace resources — register the card JS
+  // Lovelace resources - register the card JS
   writeStorageFile(storageDir, 'lovelace_resources', {
     items: [
       {
@@ -124,7 +124,7 @@ function generateStorageFiles(configDir: string): void {
     ],
   })
 
-  // Lovelace dashboard — register a single test dashboard (config is updated per-test via REST API)
+  // Lovelace dashboard - register a single test dashboard (config is updated per-test via REST API)
   writeStorageFile(storageDir, 'lovelace_dashboards', {
     items: [
       {

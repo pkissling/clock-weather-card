@@ -185,7 +185,7 @@ test.describe('forecast_list section', () => {
       weather: { forecast_daily: DAILY },
     })
 
-    // One divider per "section under today" — hourly + daily = 2.
+    // One divider per "section under today" - hourly + daily = 2.
     await expect(clockWeatherCard.locator('clock-weather-card-divider[orientation="horizontal"]'))
       .toHaveCount(2)
   })

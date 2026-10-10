@@ -132,7 +132,7 @@ export class ClockWeatherCard extends LitElement {
     if (!changed.has('config') && !changed.has('hass')) return
     const previous = this.resolved
     this._resolveConfig()
-    // A new resolved config can change the tick interval (HH:mm vs HH:mm:ss), locale or time zone — restart.
+    // A new resolved config can change the tick interval (HH:mm vs HH:mm:ss), locale or time zone - restart.
     if (this.resolved !== previous) this._stopClock()
     this._tryStart()
   }
@@ -154,7 +154,7 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-  // Idempotent — safe to call from any lifecycle hook.
+  // Idempotent - safe to call from any lifecycle hook.
   private _tryStart(): void {
     if (!this.resolved) return
     if (this._clock === null) {
