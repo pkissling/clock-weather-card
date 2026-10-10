@@ -5,6 +5,7 @@ import hassService from '@/service/hass-service'
 import type { SegmentConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { defaultAttributeColor, DEFAULTS } from '@/utils/config'
+import { DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
 export type CardGroup = 'essentials' | 'appearance' | 'interaction' | 'region'
@@ -44,6 +45,7 @@ const iconTypeSelector = ({ hass }: FormContext): object => ({
 const inheritedIconType = { selector: iconTypeSelector, default: ({ config }: FormContext) => config.weather_icon_type ?? DEFAULTS.weather_icon_type }
 
 const TIME_PATTERNS = ['t', 'tt', 'T', 'TT', 'HH:mm', 'HH:mm:ss', 'H:mm', 'h:mm a', 'h:mm:ss a']
+const FORECAST_TIME_PATTERNS = ['t', 'T', 'HH:mm', 'H:mm', 'h:mm a', 'H', 'h a']
 const DATE_PATTERNS = ['DDD', 'DDDD', 'DD', 'D', 'cccc, d LLLL', 'ccc, d LLL', 'd LLLL yyyy', 'LLLL d, yyyy', 'dd.MM.yyyy', 'MM/dd/yyyy', 'yyyy-MM-dd', 'cccc', 'LLLL yyyy']
 
 // Lists each pattern with a preview of now in the card's locale and time zone; patterns rendering identically are listed once.
@@ -79,6 +81,7 @@ const sectionCommon = (forecastType: SectionKey): EditorField[] => [
   { name: 'forecast_type', selector: { select: { mode: 'box', options: SECTION_FORECAST_TYPES } } },
   { name: 'count', selector: { number: { min: 1, mode: 'box', step: 1 } } },
   { name: 'attribute', selector: attributeSelector(forecastType === 'forecast_list' ? ['temperature'] : []) },
+  { name: 'time_pattern', selector: patternSelector(FORECAST_TIME_PATTERNS), default: DEFAULT_TIME_PATTERN, advanced: true, visible: d => d.forecast_type === 'hourly' },
 ]
 
 const sectionLook: EditorField[] = [
@@ -134,7 +137,7 @@ const unitFields = (attributeSelector: EditorField, hasAttribute: (d: Data) => b
 ]
 
 export const SEGMENT_FIELDS: { [T in SegmentConfig['type']]: EditorField[] } = {
-  time: [{ name: 'time_pattern', selector: patternSelector(TIME_PATTERNS), default: 't' }],
+  time: [{ name: 'time_pattern', selector: patternSelector(TIME_PATTERNS), default: DEFAULT_TIME_PATTERN }],
   date: [{ name: 'date_pattern', selector: patternSelector(DATE_PATTERNS), default: 'DDD' }],
   weather: unitFields({ name: 'attribute', selector: ({ config }: FormContext) => ({ attribute: { entity_id: config.entity } }) }, d => !!d.attribute),
   entity: [

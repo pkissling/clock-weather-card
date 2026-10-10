@@ -46,7 +46,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
     await expect(sunset.locator('clock-weather-card-icon img'))
       .toHaveAttribute('src', /\/sunset-[^/]*\.svg$/)
     expect(await columnTimes(strip))
-      .toEqual(['Now', '17', '18', '18:42', '19', '20'])
+      .toEqual(['Now', '17:00', '18:00', '18:42', '19:00', '20:00'])
   })
 
   test('inserts a sunrise column when the next rising falls within the visible hours', async ({ setupCard, clockWeatherCard }) => {
@@ -113,7 +113,7 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
     await expect(strip.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(4)
     expect(await columnTimes(strip))
-      .toEqual(['Now', '17', '18', '18:42'])
+      .toEqual(['Now', '17:00', '18:00', '18:42'])
   })
 
   test('hides sun events when hide_sunrise_sunset: true', async ({ setupCard, clockWeatherCard }) => {

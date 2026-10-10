@@ -76,7 +76,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   }
 
   /** Hourly: the entry at or before now ("Now") plus upcoming hours. Daily: today ("Today") onwards. Temperatures are in the configured unit. */
-  protected visibleRows(count: number): ForecastRow[] {
+  protected visibleRows(count: number, timePattern: string): ForecastRow[] {
     const now = this.currentDate
     const { locale, timeZone, sunEntity, temperatureUnit } = this.config
     const sourceUnit = hassService.getEntityAttributeString(this.hass, this.resolveEntityId(), 'temperature_unit')
@@ -108,7 +108,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
             forecast,
             at,
             isCurrent,
-            label: isCurrent ? nowLabel : at.toLocaleString({ hour: 'numeric' }),
+            label: isCurrent ? nowLabel : at.toFormat(timePattern),
             isNight: hassService.isNight(this.hass, sunEntity, at),
           }
         })

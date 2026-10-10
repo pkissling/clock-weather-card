@@ -116,6 +116,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
       hide_sunrise_sunset?: boolean
+      time_pattern?: string
       attribute?: string
       attribute_icon?: string
       attribute_color?: string
@@ -131,6 +132,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       hide_current_temp_indicator?: boolean
       animated_icons?: boolean
       round_temperatures?: boolean
+      time_pattern?: string
       weather_icon_type?: WeatherIconType
       attribute?: string
       attribute_unit?: string
@@ -169,6 +171,7 @@ export interface ResolvedForecastStripConfig {
   roundTemperatures: boolean
   weatherIconType: WeatherIconType
   hideSunriseSunset: boolean
+  timePattern: string
   attribute: string
   attributeRequired: boolean
   attributeIcon: string | null
@@ -183,6 +186,7 @@ export interface ResolvedForecastListConfig {
   count: number
   animatedIcons: boolean
   roundTemperatures: boolean
+  timePattern: string
   weatherIconType: WeatherIconType
   rowHeight: string
   barThickness: string

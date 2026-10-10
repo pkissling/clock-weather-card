@@ -4,7 +4,7 @@ import '@/components/clock-weather-card-divider'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import { DateTime } from 'luxon'
+import type { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
@@ -44,10 +44,10 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sunEntity, timeZone, locale, temperatureUnit } = this.config
-    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
+    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
     const now = this.currentDate
 
-    const visible = this.visibleRows(count)
+    const visible = this.visibleRows(count, timePattern)
     if (visible.length === 0) return html``
 
     const roundTemperature = (t: number): number => roundTemperatures ? Math.round(t) : t
@@ -87,7 +87,8 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
       .map(({ kind, at }): { at: DateTime, item: ForecastStripItem } => ({
         at,
         item: {
-          label: at.toLocaleString(DateTime.TIME_SIMPLE, { locale }),
+          label: at.setLocale(locale)
+            .toFormat(timePattern),
           condition: kind,
           isNight: false,
           animatedIcon: animatedIcons,

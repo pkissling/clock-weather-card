@@ -98,7 +98,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
   }
 
   private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBars {
-    const { count, roundTemperatures, hideCurrentTempIndicator, attributeUnit } = this.config.forecastList
+    const { count, roundTemperatures, hideCurrentTempIndicator, attributeUnit, timePattern } = this.config.forecastList
     const { temperatureUnit } = this.config
     const currentTempRaw = hassService.getWeatherTemperature(this.hass, entityId, 'temperature', temperatureUnit)
     if (currentTempRaw === null && !hideCurrentTempIndicator) {
@@ -108,7 +108,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     const hourly = forecastType === 'hourly'
     const format = (t: number): string => formatWithUnit(roundTemperatures ? Math.round(t) : t, attributeUnit ?? temperatureUnit)
 
-    const bars = this.visibleRows(count)
+    const bars = this.visibleRows(count, timePattern)
       .map((row, i, rows) => {
         const tempValues = hourly
           ? [row.forecast.temperature, i === 0 ? currentTempRaw ?? row.forecast.temperature : rows[i - 1].forecast.temperature]
@@ -130,7 +130,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
 
   private _attributeBars(attribute: string): ListBars {
     const unit = this.config.forecastList.attributeUnit ?? this.forecastAttributeUnit(attribute)
-    const bars = this.visibleRows(this.config.forecastList.count)
+    const bars = this.visibleRows(this.config.forecastList.count, this.config.forecastList.timePattern)
       .map((row) => {
         const value = forecastAttributeValue(row.forecast, attribute)
         return {
