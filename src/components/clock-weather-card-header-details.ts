@@ -19,7 +19,7 @@ class ClockWeatherCardHeaderDetails extends AbstractClockWeatherCardComponent {
     return html`${this.config.header.rows
       .map(rowConfig => html`
         <clock-weather-card-header-details-row
-          style="font-size: ${rowConfig.font_size ?? ''}"
+          style="font-size: ${rowConfig.font_size ?? ''}; justify-content: ${rowConfig.alignment ?? ''}"
           .rowConfig=${rowConfig}
           .currentDate=${this.currentDate}
         ></clock-weather-card-header-details-row>

@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
-import { SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
+import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { isValidLocale, isValidTimeZone } from '@/utils/luxon'
@@ -18,18 +18,16 @@ const DEFAULT_ROWS: RowConfig[] = [
   },
   {
     font_size: '4rem',
+    alignment: 'center',
     segments: [
-      { type: 'spacer' },
-      { type: 'time' },
-      { type: 'spacer' }
+      { type: 'time' }
     ]
   },
   {
+    alignment: 'center',
     segments: [
-      { type: 'spacer' },
       { type: 'icon', icon: 'mdi:calendar' },
-      { type: 'date' },
-      { type: 'spacer' }
+      { type: 'date' }
     ]
   }
 ]
@@ -92,6 +90,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
   config.sections?.header?.rows?.forEach((row, i) => {
+    assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)

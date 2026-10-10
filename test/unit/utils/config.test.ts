@@ -46,10 +46,12 @@ describe('resolveConfig', () => {
             },
             {
               font_size: '4rem',
-              segments: [{ type: 'spacer' }, { type: 'time' }, { type: 'spacer' }],
+              alignment: 'center',
+              segments: [{ type: 'time' }],
             },
             {
-              segments: [{ type: 'spacer' }, { type: 'icon', icon: 'mdi:calendar' }, { type: 'date' }, { type: 'spacer' }],
+              alignment: 'center',
+              segments: [{ type: 'icon', icon: 'mdi:calendar' }, { type: 'date' }],
             },
           ],
         },
