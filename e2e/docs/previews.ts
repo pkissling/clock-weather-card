@@ -19,10 +19,11 @@ export interface Preview {
   dark: boolean
   mock: Pick<Mock, 'weather' | 'sun' | 'language' | 'timeZone' | 'unitSystem'>
   animated: boolean
+  entities: Record<string, { state: string, attributes?: Record<string, unknown> }>
 }
 
 const PREVIEW_PATTERN = /<!--\s*(preview:[\s\S]*?)-->\s*```ya?ml\n([\s\S]*?)```/g
-const PREVIEW_KEYS = ['preview', 'theme', 'dark', 'weather', 'sun', 'language', 'time_zone', 'unit_system', 'animated']
+const PREVIEW_KEYS = ['preview', 'theme', 'dark', 'weather', 'sun', 'language', 'time_zone', 'unit_system', 'entities', 'animated']
 
 export const previewFile = (preview: Preview): string => `${preview.name}.${preview.animated ? 'gif' : 'png'}`
 export const previewImage = (preview: Preview): string => `${PREVIEWS_DIR}/${previewFile(preview)}`
@@ -67,6 +68,7 @@ export function parsePreviews(markdown: string): Preview[] {
         unitSystem: spec.unit_system as Preview['mock']['unitSystem'],
       },
       animated: spec.animated === true,
+      entities: (spec.entities ?? {}) as Preview['entities'],
     }
   })
 }
