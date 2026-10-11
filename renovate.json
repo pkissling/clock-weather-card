@@ -15,5 +15,17 @@
       "enabled": true
     }
   ],
-  "schedule": ["before 9am on tuesday"]
+  "schedule": ["before 9am on tuesday"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Docs preview themes in the README, both the preview comment and the theme link",
+      "managerFilePatterns": ["/^README\\.md$/"],
+      "matchStrings": [
+        "theme: \\{ repo: (?<depName>[\\w.-]+/[\\w.-]+), version: (?<currentValue>[^,\\s]+),",
+        "\\]\\(https://github\\.com/(?<depName>[\\w.-]+/[\\w.-]+)/tree/(?<currentValue>[^)\\s]+)\\)"
+      ],
+      "datasourceTemplate": "github-tags"
+    }
+  ]
 }

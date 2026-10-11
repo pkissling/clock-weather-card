@@ -30,11 +30,11 @@ test.describe('sections.header.rows', () => {
     await expect(firstRow)
       .toContainText('Sunny')
 
-    // Row 2: centered time. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30 → en TIME_SIMPLE.
+    // Row 2: centered time. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30.
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
       .toHaveCount(1)
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
-      .toHaveText('5:30 PM')
+      .toHaveText('17:30')
 
     // Row 3: centered calendar icon and date.
     await expect(clockWeatherCard.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:calendar"]'))
@@ -42,7 +42,7 @@ test.describe('sections.header.rows', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
       .toHaveCount(1)
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
-      .toHaveText('April 27, 2026')
+      .toHaveText('27 April 2026')
 
     await expect(clockWeatherCard.locator('clock-weather-card-spacer-segment'))
       .toHaveCount(1)

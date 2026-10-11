@@ -1,5 +1,11 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const firefox = {
+  ...devices['Desktop Firefox'],
+  // Freezes SMIL animations in the SVG icons at their first frame, so screenshots are deterministic.
+  launchOptions: { firefoxUserPrefs: { 'image.animation_mode': 'none' } },
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -29,12 +35,15 @@ export default defineConfig({
   projects: [
     {
       name: 'Desktop Firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-        // Freezes SMIL animations in the SVG icons at their first frame, so screenshots are deterministic.
-        launchOptions: { firefoxUserPrefs: { 'image.animation_mode': 'none' } },
-      },
-    }
+      testIgnore: 'docs/**',
+      use: firefox,
+    },
+    {
+      name: 'Docs previews',
+      testDir: './e2e/docs',
+      snapshotPathTemplate: '{testDir}/../../docs/previews/{arg}{ext}',
+      use: { ...firefox, viewport: { width: 500, height: 1000 }, deviceScaleFactor: 2 },
+    },
   ],
 
   /* HA container lifecycle is managed by globalSetup/globalTeardown */

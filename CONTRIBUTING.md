@@ -52,6 +52,38 @@ Visual regression tests compare Playwright screenshots. They only run inside the
 - **Locally** with `yarn test:e2e:update-snapshots`, or
 - **In CI** by running the **Update Playwright Snapshots** workflow from the Actions tab, which commits the updated snapshots to the current branch.
 
+### Docs previews
+
+Every card image in the README is rendered by the E2E suite from the YAML block it sits next to, so the images can never drift from the code. Mark a block with a `preview` comment and embed the image it renders to:
+
+````markdown
+<!-- preview: forecast-only
+theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-green }
+dark: true
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    hide: true
+```
+
+![Forecast only](docs/previews/forecast-only.png)
+
+*[iOS Dark Mode Dark Green](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3)*
+````
+
+`yarn test:e2e:update-snapshots` renders it to `docs/previews/<name>.png` (`.gif` with `animated`). The entity is always the mock weather entity, so any entity id reads naturally in the docs. Like the screenshot tests, CI fails while an image is outdated, and a unit test fails while an image is missing, not embedded or left over, or its theme is not linked.
+
+| Key | Description |
+|-----|-------------|
+| `theme` | A theme from a [HACS theme repository](https://hacs.xyz/docs/publish/theme/): its GitHub `repo`, release or tag `version` and the theme `name`. Downloaded from GitHub at test time. Defaults to the Home Assistant theme. |
+| `dark` | Render in dark mode. Defaults to `false`. |
+| `weather`, `sun` | Mock state, as in `setupCard` (e.g. `weather: { state: rainy, temperature: 12 }`). Defaults to a sunny day. |
+| `language`, `time_zone`, `unit_system` | Home Assistant settings, with the defaults of `setupCard`. |
+| `animated` | Render a seamlessly looping GIF of the icon animations instead of a PNG. Defaults to `false`. |
+
 ## New features
 
 Every line of code has to be maintained for as long as the card exists, so a feature that works is not automatically a feature that gets merged. Before you start, open a discussion in [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests) and show that others would use the feature too, e.g. through upvotes and comments from other users. Pull requests for features without that evidence may be declined, however well they are implemented.

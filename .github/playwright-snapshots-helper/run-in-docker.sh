@@ -33,6 +33,7 @@ docker run --rm \
   -e HA_VERSION \
   -v /tmp:/tmp \
   -v "$PROJECT_DIR/e2e:/work/e2e" \
+  -v "$PROJECT_DIR/docs:/work/docs" \
   -v "$PROJECT_DIR/playwright-report:/work/playwright-report" \
   -v "$PROJECT_DIR/test-results:/work/test-results" \
   "$IMAGE_TAG" "$@"

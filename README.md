@@ -7,7 +7,7 @@
 
 An iOS-inspired clock and weather card for [Home Assistant](https://www.home-assistant.io/) dashboards, available through the [Home Assistant Community Store](https://hacs.xyz).
 
-![Clock Weather Card](.github/assets/card.gif)
+![Clock Weather Card](docs/previews/hero.gif)
 
 ## Features
 
@@ -48,10 +48,108 @@ Edit your dashboard, click **Add card** and pick **Clock Weather Card**. Every o
 
 ### Minimal configuration
 
+<!-- preview: hero
+theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-green }
+dark: true
+weather: { state: sunny, temperature: 16 }
+animated: true
+-->
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
 ```
+
+The animation at the top of this page shows this configuration in the [iOS Dark Mode Dark Green](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3) theme.
+
+### Examples
+
+Every image in this README is rendered from the configuration shown next to it, so it always matches the current version of the card. Each example names the [theme](https://www.home-assistant.io/integrations/frontend/#defining-themes) it is shown in.
+
+<table>
+<tr><th>Configuration</th><th>Card</th></tr>
+<tr><td>
+
+<!-- preview: example-thunderstorm
+theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-light-mode-light-blue }
+weather: { state: lightning-rainy, temperature: 17 }
+animated: true
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![The card with an animated thunderstorm icon](docs/previews/example-thunderstorm.gif)
+
+*[iOS Light Mode Light Blue](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3)*
+
+</td></tr>
+<tr><td>
+
+<!-- preview: example-night
+theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-blue }
+dark: true
+weather: { state: clear-night, temperature: 12 }
+sun: { state: below_horizon }
+time_zone: Asia/Tokyo
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+weather_icon_type: fill
+sections:
+  forecast_strip:
+    hide: true
+```
+
+</td><td>
+
+![The card at night with filled icons](docs/previews/example-night.png)
+
+*[iOS Dark Mode Dark Blue](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3)*
+
+</td></tr>
+<tr><td>
+
+<!-- preview: example-custom-header
+language: de
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+weather_icon_type: monochrome
+sections:
+  header:
+    rows:
+      - font_size: 3.5rem
+        segments:
+          - type: time
+            time_pattern: HH:mm
+      - segments:
+          - type: date
+            date_pattern: cccc, d. MMMM
+          - type: spacer
+          - type: weather
+            attribute: temperature
+  forecast_strip:
+    hide: true
+  forecast_list:
+    count: 3
+```
+
+</td><td>
+
+![A custom German header with monochrome icons](docs/previews/example-custom-header.png)
+
+*[Home Assistant default](https://www.home-assistant.io/integrations/frontend/#themes)*
+
+</td></tr>
+</table>
 
 ### Card Options
 
@@ -290,13 +388,25 @@ Some weather providers do not include today's weather in their forecast data. If
 <details>
 <summary>What do the forecast bars represent?</summary>
 
-![image](https://user-images.githubusercontent.com/33731393/221779555-c2c25e12-4ff0-4c61-8fd7-94d5b1b214d3.png)
+<!-- preview: faq-forecast-bars
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    hide: true
+  forecast_strip:
+    hide: true
+```
+
+![Forecast list with temperature bars](docs/previews/faq-forecast-bars.png)
 
 The bars visualize the temperature range for each day relative to the overall forecast range.
 
-- The full bar spans the overall low to overall high across all forecast days (9° to 21° in the example above).
-- The colored portion represents the temperature range for that specific day (e.g. 12° to 21° on Monday).
-- The circle marks the current temperature (e.g. 16°).
+- The full bar spans the overall low to overall high across all forecast days (10° to 24° in the example above).
+- The colored portion represents the temperature range for that specific day (e.g. 15° to 24° today).
+- The circle marks the current temperature (e.g. 21°).
 
 This makes it easy to see the weather trend for the upcoming days at a glance.
 
