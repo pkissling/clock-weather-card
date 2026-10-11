@@ -9,7 +9,6 @@ const FORECAST_HOURLY: (WeatherForecast & Record<string, unknown>)[] = [
 ]
 
 const stripConfig = (attribute: string): string => `
-  entity: weather.mock_weather
   sections:
     forecast_strip:
       attribute: ${attribute}
@@ -86,6 +85,8 @@ test.describe('sections.forecast_strip.attribute', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(3)
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
+      .toHaveCount(0)
     await cardErrorMessage(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toBeNull()
   })

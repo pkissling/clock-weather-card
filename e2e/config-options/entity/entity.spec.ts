@@ -18,7 +18,6 @@ test.describe('entity', () => {
       cardConfig: `
         entity: weather.does_not_exist
       `,
-      weather: { state: 'sunny' },
     })
 
     await cardErrorMessage()
@@ -56,7 +55,6 @@ test.describe('entity', () => {
       cardConfig: `
         entity: weather.mock_weather
       `,
-      weather: { state: 'sunny' },
     })
     await expect(clockWeatherCard)
       .toContainText('Sunny')
@@ -76,7 +74,6 @@ test.describe('entity', () => {
       cardConfig: `
         entity: weather.does_not_exist
       `,
-      weather: { state: 'sunny' },
     })
     await cardErrorMessage()
       .toContain('Referenced entity "weather.does_not_exist" does not exist')

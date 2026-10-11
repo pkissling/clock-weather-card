@@ -143,7 +143,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
 
   private _renderWarning(error: Error): TemplateResult {
     return html`
-      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <clock-weather-card-divider></clock-weather-card-divider>
       <clock-weather-card-error severity="warning" .message=${error.message}></clock-weather-card-error>
     `
   }

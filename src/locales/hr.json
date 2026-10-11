@@ -26,9 +26,6 @@
     "6": "Sub"
   },
   "misc": {
-    "aqi": "AQI",
-    "humidity": "vlažnost",
-    "feels-like": "Osjet temperature",
     "now": "Sada",
     "today": "Danas",
     "sunrise": "Izlazak sunca",

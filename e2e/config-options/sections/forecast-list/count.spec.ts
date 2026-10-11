@@ -26,7 +26,6 @@ test.describe('sections.forecast_list.count', () => {
   test('truncates to the configured value', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 3
@@ -41,7 +40,6 @@ test.describe('sections.forecast_list.count', () => {
   test('renders all items when count exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 14
@@ -56,7 +54,6 @@ test.describe('sections.forecast_list.count', () => {
   test('rejects zero', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 0
@@ -72,7 +69,6 @@ test.describe('sections.forecast_list.count', () => {
   test('rejects non-integer values', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 3.5
@@ -86,7 +82,6 @@ test.describe('sections.forecast_list.count', () => {
   test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 2
@@ -98,7 +93,6 @@ test.describe('sections.forecast_list.count', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             count: 6

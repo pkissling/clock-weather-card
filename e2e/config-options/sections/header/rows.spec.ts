@@ -9,7 +9,7 @@ test.describe('sections.header.rows', () => {
   test('renders the default 3 rows when rows is omitted', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: new Date('2026-04-27T15:30:00Z'),
-      weather: { state: 'sunny', temperature: 21 },
+      weather: { temperature: 21 },
     })
 
     // 3 rows.
@@ -728,7 +728,6 @@ test.describe('sections.header.rows', () => {
       await api.setMockWeather({ entity_id: 'weather.mock_weather_2', condition: 'hail' })
       await setupCard({
         cardConfig: configWith('entity_id: weather.mock_weather_2'),
-        weather: { state: 'sunny' },
       })
 
       await expect(clockWeatherCard.locator(weatherIcon))

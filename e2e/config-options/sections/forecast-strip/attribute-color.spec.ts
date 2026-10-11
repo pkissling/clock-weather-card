@@ -3,7 +3,6 @@ import type { Locator } from '@playwright/test'
 import { expect, test } from '../../../utils/fixtures'
 
 const attributeColor = (color: string | null, iconType = 'line'): string => `
-  entity: weather.mock_weather
   sections:
     forecast_strip:
       weather_icon_type: ${iconType}

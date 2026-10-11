@@ -1,4 +1,4 @@
-import { type ActionConfig, type HomeAssistant, type LovelaceCard, type LovelaceCardConfig, type LovelaceCardEditor } from 'custom-card-helpers'
+import { type ActionConfig, type HomeAssistant, type LovelaceCardConfig } from 'custom-card-helpers'
 import { type HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 
 declare global {
@@ -14,11 +14,6 @@ declare global {
     preview?: boolean
     documentationURL?: string
     getEntitySuggestion?: (hass: HomeAssistant, entityId: string) => { config: LovelaceCardConfig } | null
-  }
-
-  interface HTMLElementTagNameMap {
-    'clock-weather-card-editor': LovelaceCardEditor
-    'hui-error-card': LovelaceCard
   }
 }
 
@@ -204,18 +199,6 @@ export const enum WeatherEntityFeature {
   FORECAST_TWICE_DAILY = 4,
 }
 
-export interface Weather extends HassEntity {
-  state: string
-  attributes: {
-    temperature?: number
-    temperature_unit: TemperatureUnit
-    humidity?: number
-    precipitation_unit: string
-    forecast?: WeatherForecast[]
-    supported_features: WeatherEntityFeature
-  }
-}
-
 export type TemperatureUnit = '°C' | '°F'
 
 export const TEMPERATURE_UNIT_SYMBOLS = { celsius: '°C', fahrenheit: '°F' } as const satisfies Record<string, TemperatureUnit>
@@ -265,17 +248,6 @@ export interface ForecastListItem {
   currentTempPercent: number
 }
 
-export interface TemperatureSensor extends HassEntity {
-  state: string
-  attributes: {
-    unit_of_measurement?: TemperatureUnit
-  }
-}
-
-export interface HumiditySensor extends HassEntity {
-  state: string
-}
-
 export type ForecastType = 'hourly' | 'daily' | 'twice_daily'
 
 export const SECTION_FORECAST_TYPES = ['hourly', 'daily'] as const satisfies readonly ForecastType[]
@@ -291,7 +263,6 @@ export interface SunEntity extends HassEntity {
   attributes: {
     next_rising?: string
     next_setting?: string
-    elevation?: number
   }
 }
 

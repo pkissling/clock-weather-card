@@ -12,7 +12,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('uses 60% of row_height by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 100px
@@ -32,7 +31,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('resolves a percentage relative to row_height', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 100px
@@ -53,7 +51,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('applies an absolute CSS length independently of row_height', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 100px
@@ -72,7 +69,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('keeps the current temperature dot above the next row at 100%', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 40px
@@ -94,7 +90,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             bar_thickness: "thick"
@@ -108,7 +103,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('rejects unitless numbers', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             bar_thickness: 0.6
@@ -122,7 +116,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
   test('updates the thickness at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 100px
@@ -138,7 +131,6 @@ test.describe('sections.forecast_list.bar_thickness', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 100px

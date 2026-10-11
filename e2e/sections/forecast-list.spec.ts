@@ -5,7 +5,6 @@ import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
 import api from '../utils/ha-api'
 
-const TODAY = new Date('2025-09-14T14:20:59+00:00')
 
 const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-14T00:00:00+00:00', condition: 'sunny',        templow: 5,  temperature: 14, precipitation_probability: 10 },
@@ -18,7 +17,6 @@ const DAILY: DailyWeatherForecast[] = [
 test.describe('forecast_list section', () => {
   test('renders one row per forecast day with low/high temperatures', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
@@ -41,7 +39,6 @@ test.describe('forecast_list section', () => {
 
   test('labels today\'s row with the localized "Today" string and uses weekday names for the rest', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { forecast_daily: DAILY },
     })
 
@@ -61,7 +58,6 @@ test.describe('forecast_list section', () => {
 
   test('renders the current-temperature dot only on today\'s row', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
@@ -81,7 +77,6 @@ test.describe('forecast_list section', () => {
     // Global range across visible days: low = 4°C, high = 19°C → 15°C span.
     // Current temp 11.5°C is exactly the midpoint → 50%.
     await setupCard({
-      date: TODAY,
       weather: { temperature: 11.5, forecast_daily: DAILY },
     })
 
@@ -95,7 +90,6 @@ test.describe('forecast_list section', () => {
 
   test('clamps the current-temperature dot to 0% when it sits below the global low', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { temperature: -100, forecast_daily: DAILY },
     })
 
@@ -108,7 +102,6 @@ test.describe('forecast_list section', () => {
 
   test('clamps the current-temperature dot to 100% when it sits above the global high', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { temperature: 100, forecast_daily: DAILY },
     })
 
@@ -122,7 +115,6 @@ test.describe('forecast_list section', () => {
   for (const { temperature, label } of [{ temperature: -100, label: '.temperature-low' }, { temperature: 100, label: '.temperature-high' }]) {
     test(`keeps the dot clamped to the bar end inside the bar, clear of ${label}`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
-        date: TODAY,
         weather: { temperature, forecast_daily: DAILY },
       })
 
@@ -146,7 +138,6 @@ test.describe('forecast_list section', () => {
   test('positions each bar proportionally to the global low/high (visible) range', async ({ setupCard, clockWeatherCard }) => {
     // Set current temp inside today's forecast range so today's bar isn't extended by the dot.
     await setupCard({
-      date: TODAY,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
@@ -166,7 +157,6 @@ test.describe('forecast_list section', () => {
     // Today's forecast says 5..14°C but the entity reports 20°C now (e.g. integration's daily
     // high hasn't caught up). The bar should expand to 5..20 so the dot sits ON the bar.
     await setupCard({
-      date: TODAY,
       weather: { temperature: 20, forecast_daily: DAILY },
     })
 
@@ -181,18 +171,16 @@ test.describe('forecast_list section', () => {
 
   test('renders a horizontal divider above the daily section', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: { forecast_daily: DAILY },
     })
 
     // One divider per "section under today" - hourly + daily = 2.
-    await expect(clockWeatherCard.locator('clock-weather-card-divider[orientation="horizontal"]'))
+    await expect(clockWeatherCard.locator('clock-weather-card-divider'))
       .toHaveCount(2)
   })
 
   test('renders an inline warning when the resolved entity does not advertise FORECAST_DAILY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       weather: {
         forecast_daily: DAILY,
         supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY],
@@ -216,7 +204,6 @@ test.describe('forecast_list section', () => {
       ...DAILY,
     ]
     await setupCard({
-      date: TODAY,
       weather: { forecast_daily: withPast },
     })
 
@@ -233,9 +220,8 @@ test.describe('forecast_list section', () => {
     const allSunny: DailyWeatherForecast[] = DAILY.slice(0, 3)
       .map(f => ({ ...f, condition: 'sunny' }))
     await setupCard({
-      date: TODAY,
       sun: { state: 'above_horizon' },
-      weather: { state: 'sunny', forecast_daily: allSunny },
+      weather: { forecast_daily: allSunny },
     })
 
     // The inlined meteocons SVGs carry their icon name as an element id.
@@ -261,7 +247,6 @@ test.describe('forecast_list section', () => {
     // Global range 4..19°C; today 5..14°C at 9°C, measured in degrees from the track's right edge.
     await setupCard({
       language: 'he',
-      date: TODAY,
       weather: { temperature: 9, forecast_daily: DAILY },
     })
 
@@ -299,7 +284,6 @@ test.describe('forecast_list column sizing', () => {
   for (const column of ['.label', '.temperature-low', '.temperature-high']) {
     test(`sizes the ${column} column to its widest text`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
-        date: TODAY,
         // "Aujourd'hui" is far wider than any weekday abbreviation; -10 / 105 make wide temperatures.
         language: 'fr',
         weather: {
@@ -328,7 +312,6 @@ test.describe('forecast_list column sizing', () => {
 
   test('keeps icons and bars vertically aligned across rows', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      date: TODAY,
       language: 'fr',
       weather: { temperature: 9, forecast_daily: DAILY },
     })
