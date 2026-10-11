@@ -141,6 +141,8 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   await page.locator('clock-weather-card, hui-error-card')
     .evaluateAll((els, attribute) => els.forEach(el => el.setAttribute(attribute, '')), STALE_ATTRIBUTE)
 
+  // The dashboard save below mounts a new card that reads the clock once, so the fixed time must already be in place.
+  await page.clock.setFixedTime(date)
   // Independent state writes - run concurrently.
   await Promise.all([
     api.setDashboardConfig(TEST_DASHBOARD, cardConfig),
@@ -161,7 +163,6 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       elevation: sunState === 'below_horizon' ? -10 : 30,
       ...(opts?.sun?.attributes ?? {}),
     }),
-    page.clock.setFixedTime(date),
     api.setLanguage(language),
     api.setTimeZone(timeZone),
     api.setUnitSystem(opts?.unitSystem ?? 'metric'),
