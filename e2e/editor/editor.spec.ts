@@ -1,4 +1,4 @@
-import { openEditor, saveEditor } from '../utils/editor'
+import { expandPanel, openEditor, saveEditor } from '../utils/editor'
 import { expect, test } from '../utils/fixtures'
 
 test.describe('GUI editor', () => {
@@ -95,8 +95,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByLabel('Time format')
       .click()
     await editor.getByText('4 PM · h a')
@@ -112,8 +111,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await expect(editor.getByLabel('Time format'))
       .toHaveCount(0)
     await editor.getByRole('radio', { name: 'Hourly' })
@@ -141,8 +139,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByRole('button', { name: 'Add color stop' })
       .click()
     await expect(editor.locator('[data-stop="50"]'))
@@ -159,8 +156,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByRole('textbox', { name: 'Color gradient 40' })
       .fill('#ff0000')
 
@@ -173,8 +169,7 @@ test.describe('GUI editor', () => {
     await setupCard()
     const editor = await openEditor(page)
 
-    await editor.getByText('Appearance')
-      .click()
+    await expandPanel(editor, 'Appearance')
     await editor.getByRole('radio', { name: 'Fill' })
       .click()
 
@@ -188,8 +183,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByRole('textbox', { name: 'Attribute color' })
       .fill('#4a90d9')
 
@@ -203,8 +197,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByRole('textbox', { name: 'Attribute color' })
       .fill('')
 
@@ -218,8 +211,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.locator('clock-weather-card-color-picker .hues')
       .click()
 
@@ -233,8 +225,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
 
     await expect(editor.locator('clock-weather-card-color-picker .marker'))
       .toBeVisible()
@@ -244,8 +235,7 @@ test.describe('GUI editor', () => {
     await setupCard({ unitSystem: 'us_customary' })
     const editor = await openEditor(page)
 
-    await editor.getByText('Appearance')
-      .click()
+    await expandPanel(editor, 'Appearance')
 
     await expect(editor.getByRole('radio', { name: 'Fahrenheit' }))
       .toBeChecked()
@@ -259,8 +249,7 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await editor.getByText('More options')
-      .click()
+    await expandPanel(editor, 'More options')
     await editor.getByRole('slider')
       .press('ArrowLeft')
 
