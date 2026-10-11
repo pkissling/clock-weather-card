@@ -91,3 +91,5 @@ User-facing strings live in `src/locales/<lang>.json`; strings of the GUI editor
 ## Commits
 
 Always use semantic commit messages ([Conventional Commits](https://www.conventionalcommits.org/)): `<type>(<optional scope>): <summary>`, e.g. `feat: add a visual card editor` or `fix(forecast): keep the bar track visible on light backgrounds`. Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Mark breaking changes with `!` after the type/scope.
+
+When creating a PR, squash its changes into a single commit so it can be rebase-merged cleanly, unless there is a strict reason for more than one.
