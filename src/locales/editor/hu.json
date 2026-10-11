@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Megjelenés",
+    "sensors": "További érzékelők",
     "interaction": "Interakció",
     "region": "Régió és idő"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Időzóna",
     "locale": "Nyelv",
     "temperature_unit": "Hőmérséklet mértékegysége",
+    "temperature_sensor": "Hőmérséklet-érzékelő",
     "tap_action": "Koppintási művelet",
     "rows": "Sorok",
     "animated_icons": "Animált ikonok",
@@ -51,6 +53,7 @@
     "text": "Szöveg"
   },
   "helpers": {
+    "temperature_sensor": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
     "sun_entity": "Ez dönt a nappali és éjszakai ikonok között",
     "time_zone": "Alapértelmezés szerint a Home Assistant időzónája",
     "locale": "Alapértelmezés szerint a Home Assistant nyelve",

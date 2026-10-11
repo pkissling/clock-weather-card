@@ -98,6 +98,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   time_zone?: string
   locale?: string
   temperature_unit?: TemperatureUnitOption
+  temperature_sensor?: string
   tap_action?: ActionConfig
   sections?: {
     header?: {
@@ -149,6 +150,7 @@ export interface ResolvedConfig {
   timeZone: string
   locale: string
   temperatureUnit: TemperatureUnit
+  temperatureSensor: string | null
   header: ResolvedHeaderConfig
   forecastStrip: ResolvedForecastStripConfig
   forecastList: ResolvedForecastListConfig

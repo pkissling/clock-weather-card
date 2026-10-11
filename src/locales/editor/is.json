@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Útlit",
+    "sensors": "Viðbótarskynjarar",
     "interaction": "Gagnvirkni",
     "region": "Svæði og tími"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Tímabelti",
     "locale": "Tungumál",
     "temperature_unit": "Hitastigseining",
+    "temperature_sensor": "Hitaskynjari",
     "tap_action": "Aðgerð við snertingu",
     "rows": "Raðir",
     "animated_icons": "Hreyfimyndatákn",
@@ -51,6 +53,7 @@
     "text": "Texti"
   },
   "helpers": {
+    "temperature_sensor": "Valfrjálst. Les núverandi hitastig úr þessum skynjara í stað veðureiningarinnar, t.d. veðurstöð eða útiskynjara",
     "sun_entity": "Ræður hvort dag- eða næturtákn eru notuð",
     "time_zone": "Sjálfgefið er tímabelti Home Assistant",
     "locale": "Sjálfgefið er tungumál Home Assistant",

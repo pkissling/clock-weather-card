@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Izgled",
+    "sensors": "Dodatni senzori",
     "interaction": "Interakcija",
     "region": "Regija i vrijeme"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Vremenska zona",
     "locale": "Jezik",
     "temperature_unit": "Jedinica temperature",
+    "temperature_sensor": "Senzor temperature",
     "tap_action": "Radnja dodira",
     "rows": "Retci",
     "animated_icons": "Animirane ikone",
@@ -51,6 +53,7 @@
     "text": "Tekst"
   },
   "helpers": {
+    "temperature_sensor": "Neobavezno. Čita trenutačnu temperaturu s ovog senzora umjesto s vremenskog entiteta, npr. meteorološke stanice ili vanjskog senzora",
     "sun_entity": "Odlučuje između dnevnih i noćnih ikona",
     "time_zone": "Zadano je vremenska zona Home Assistanta",
     "locale": "Zadano je jezik Home Assistanta",
