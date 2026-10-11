@@ -8,7 +8,7 @@ import { DEFAULT_TAP_ACTION, defaultAttributeColor, DEFAULTS } from '@/utils/con
 import { DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
-export type CardGroup = 'essentials' | 'appearance' | 'interaction' | 'region'
+export type CardGroup = 'essentials' | 'appearance' | 'sensors' | 'interaction' | 'region'
 type Data = Record<string, unknown>
 
 export interface EditorField {
@@ -70,6 +70,7 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'title', selector: text, group: 'essentials' },
   { name: 'weather_icon_type', selector: iconTypeSelector, group: 'appearance' },
   { name: 'temperature_unit', selector: { select: { mode: 'box', options: Object.keys(TEMPERATURE_UNIT_SYMBOLS) } }, default: temperatureUnitOf, group: 'appearance' },
+  { name: 'temperature_sensor', selector: { entity: { domain: 'sensor', device_class: 'temperature' } }, group: 'sensors' },
   { name: 'tap_action', selector: { ui_action: { default_action: DEFAULT_TAP_ACTION.action } }, group: 'interaction' },
   { name: 'locale', selector: ({ hass }: FormContext) => ({ select: { custom_value: true, options: localeOptions(hass) } }), default: ({ hass }: FormContext) => hassService.getLocale(hass), group: 'region' },
   { name: 'time_zone', selector: { select: { custom_value: true, options: TIME_ZONES } }, default: ({ hass }: FormContext) => hassService.getTimeZone(hass), group: 'region' },

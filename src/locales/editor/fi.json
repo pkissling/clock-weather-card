@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Ulkoasu",
+    "sensors": "Lisäanturit",
     "interaction": "Vuorovaikutus",
     "region": "Alue ja aika"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Aikavyöhyke",
     "locale": "Kieli",
     "temperature_unit": "Lämpötilayksikkö",
+    "temperature_sensor": "Lämpötila-anturi",
     "tap_action": "Napautustoiminto",
     "rows": "Rivit",
     "animated_icons": "Animoidut kuvakkeet",
@@ -51,6 +53,7 @@
     "text": "Teksti"
   },
   "helpers": {
+    "temperature_sensor": "Valinnainen. Lukee nykyisen lämpötilan tästä anturista sääentiteetin sijaan, esim. sääasemalta tai ulkoanturista",
     "sun_entity": "Valitsee päivä- tai yökuvakkeet",
     "time_zone": "Oletuksena Home Assistantin aikavyöhyke",
     "locale": "Oletuksena Home Assistantin kieli",

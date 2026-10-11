@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Darstellung",
+    "sensors": "Zusätzliche Sensoren",
     "interaction": "Interaktion",
     "region": "Region & Zeit"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Zeitzone",
     "locale": "Sprache",
     "temperature_unit": "Temperatureinheit",
+    "temperature_sensor": "Temperatursensor",
     "tap_action": "Tippen-Aktion",
     "rows": "Zeilen",
     "animated_icons": "Animierte Symbole",
@@ -51,6 +53,7 @@
     "text": "Text"
   },
   "helpers": {
+    "temperature_sensor": "Optional. Liest die aktuelle Temperatur aus diesem Sensor statt aus der Wetter-Entität, z. B. einer Wetterstation oder einem Außensensor",
     "sun_entity": "Entscheidet zwischen Tag- und Nachtsymbolen",
     "time_zone": "Standardmäßig die Zeitzone von Home Assistant",
     "locale": "Standardmäßig die Sprache von Home Assistant",

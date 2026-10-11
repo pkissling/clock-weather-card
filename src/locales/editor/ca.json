@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Aparença",
+    "sensors": "Sensors addicionals",
     "interaction": "Interacció",
     "region": "Regió i hora"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Zona horària",
     "locale": "Idioma",
     "temperature_unit": "Unitat de temperatura",
+    "temperature_sensor": "Sensor de temperatura",
     "tap_action": "Acció en tocar",
     "rows": "Files",
     "animated_icons": "Icones animades",
@@ -51,6 +53,7 @@
     "text": "Text"
   },
   "helpers": {
+    "temperature_sensor": "Opcional. Llegeix la temperatura actual d'aquest sensor en lloc de l'entitat meteorològica, p. ex. una estació meteorològica o un sensor exterior",
     "sun_entity": "Decideix entre icones de dia i de nit",
     "time_zone": "Per defecte, la zona horària de Home Assistant",
     "locale": "Per defecte, l'idioma de Home Assistant",

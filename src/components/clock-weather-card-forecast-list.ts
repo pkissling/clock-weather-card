@@ -99,10 +99,10 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
 
   private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBars {
     const { count, roundTemperatures, hideCurrentTempIndicator, attributeUnit, timePattern } = this.config.forecastList
-    const { temperatureUnit } = this.config
-    const currentTempRaw = hassService.getWeatherTemperature(this.hass, entityId, 'temperature', temperatureUnit)
+    const { temperatureUnit, temperatureSensor } = this.config
+    const currentTempRaw = hassService.getCurrentTemperature(this.hass, entityId, temperatureSensor, temperatureUnit)
     if (currentTempRaw === null && !hideCurrentTempIndicator) {
-      logger.debug(`Temperature of "${entityId}" is not numeric, hiding the current temperature indicator`)
+      logger.debug(`Temperature of "${temperatureSensor ?? entityId}" is not numeric, hiding the current temperature indicator`)
     }
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
     const hourly = forecastType === 'hourly'

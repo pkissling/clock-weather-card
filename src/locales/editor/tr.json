@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Görünüm",
+    "sensors": "Ek sensörler",
     "interaction": "Etkileşim",
     "region": "Bölge ve saat"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Saat dilimi",
     "locale": "Dil",
     "temperature_unit": "Sıcaklık birimi",
+    "temperature_sensor": "Sıcaklık sensörü",
     "tap_action": "Dokunma eylemi",
     "rows": "Satırlar",
     "animated_icons": "Hareketli simgeler",
@@ -51,6 +53,7 @@
     "text": "Metin"
   },
   "helpers": {
+    "temperature_sensor": "İsteğe bağlı. Mevcut sıcaklığı hava durumu varlığı yerine bu sensörden okur, örn. bir hava istasyonu veya dış mekân sensörü",
     "sun_entity": "Gündüz ve gece simgeleri arasında seçim yapar",
     "time_zone": "Varsayılan olarak Home Assistant saat dilimi",
     "locale": "Varsayılan olarak Home Assistant dili",
