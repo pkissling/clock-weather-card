@@ -38,11 +38,13 @@ export type MockOptions = undefined | {
       next_setting?: string
     }
   }
-  cardConfig?: string | null
+  cardConfig?: string | Record<string, unknown> | null
   date?: Date
   language?: string
   timeZone?: string
   unitSystem?: 'metric' | 'us_customary'
+  /** Name of a theme in the HA config's `themes/` directory, applied to the dashboard view. */
+  theme?: string
   /** Icons that must finish loading before setup completes (default 1). */
   expectedIcons?: number
   /** Holds back forecast pushes until the promise settles. Needs `test.use({ freshPage: true })` so no cached forecast is reused. */
@@ -128,12 +130,12 @@ const defaultForecastHourly = (now: Date): WeatherForecast[] =>
 export const setupCard = async (page: Page, opts: MockOptions): Promise<void> => {
   // Parse YAML card config, merging with defaults
   const defaults = opts?.cardConfig === null ? {} : parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
-  const overrides = opts?.cardConfig ? parseYaml(opts.cardConfig) as Partial<ClockWeatherCardConfig> : {}
+  const overrides = typeof opts?.cardConfig === 'string' ? parseYaml(opts.cardConfig) as Partial<ClockWeatherCardConfig> : opts?.cardConfig ?? {}
   const cardConfig = { ...defaults, ...overrides }
   const date = opts?.date ?? DEFAULT_DATE
 
   const sunState = opts?.sun?.state ?? 'above_horizon'
-  const language = opts?.language ?? 'en'
+  const language = opts?.language ?? 'en-GB'
   const timeZone = opts?.timeZone ?? 'Europe/Berlin'
   const haTemperatureUnit = opts?.unitSystem === 'us_customary' ? '°F' : '°C'
 
@@ -145,7 +147,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   await page.clock.setFixedTime(date)
   // Independent state writes - run concurrently.
   await Promise.all([
-    api.setDashboardConfig(TEST_DASHBOARD, cardConfig),
+    api.setDashboardConfig(TEST_DASHBOARD, cardConfig, opts?.theme),
     api.setMockWeather({
       condition: opts?.weather?.state ?? 'sunny',
       temperature: opts?.weather?.temperature ?? 21,

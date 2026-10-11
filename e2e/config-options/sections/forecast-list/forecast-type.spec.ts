@@ -34,7 +34,7 @@ test.describe('sections.forecast_list.forecast_type', () => {
 
     const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.locator('.label'))
-      .toHaveText(['Now', '3:00 PM', '4:00 PM'])
+      .toHaveText(['Now', '15:00', '16:00'])
     // The "Now" row starts from the current temperature (22°C).
     await expect(items.locator('.temperature-low'))
       .toHaveText(['21°C', '21°C', '20°C'])
@@ -80,7 +80,7 @@ test.describe('sections.forecast_list.forecast_type', () => {
     })
 
     await expect(items.locator('.label'))
-      .toHaveText(['Now', '3:00 PM', '4:00 PM'])
+      .toHaveText(['Now', '15:00', '16:00'])
   })
 
   test('renders an inline warning when the entity does not advertise FORECAST_HOURLY', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
