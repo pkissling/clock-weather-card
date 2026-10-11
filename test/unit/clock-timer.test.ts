@@ -201,6 +201,32 @@ describe('ClockWeatherCard timer behavior', () => {
     })
   })
 
+  describe('hass propagation', () => {
+    it('passes hass to the sections only when an entity the card reads changed', async () => {
+      const card = await createCard({
+        sections: { header: { rows: [{ segments: [{ type: 'entity', entity_id: 'sensor.outside' }] }] } },
+      })
+      const pushStates = (states: Record<string, unknown>): void => {
+        card.hass = { ...card.hass as object, states: { ...(card.hass as { states: object }).states, ...states } }
+        card.willUpdate(new Map([['hass', undefined]]))
+      }
+      pushStates({ 'sensor.outside': { state: '20' } })
+      const hass = card.hass
+
+      pushStates({ 'light.kitchen': { state: 'on' } })
+      expect(card.providedHass)
+        .toBe(hass)
+
+      pushStates({ 'sensor.outside': { state: '21' } })
+      expect(card.providedHass)
+        .toBe(card.hass)
+
+      pushStates({ 'weather.home': { state: 'rainy' } })
+      expect(card.providedHass)
+        .toBe(card.hass)
+    })
+  })
+
   describe('getStubConfig', () => {
     it('prefers a weather entity from the suggested entities', async () => {
       const { ClockWeatherCard } = await import('@/clock-weather-card')

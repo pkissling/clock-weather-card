@@ -46,7 +46,9 @@ console.info(
 
 @customElement('clock-weather-card')
 export class ClockWeatherCard extends LitElement {
-  @provide({ context: hassContext }) @property({ attribute: false }) public hass!: HomeAssistant
+  @property({ attribute: false }) public hass!: HomeAssistant
+  // HA replaces `hass` on every state change in the instance; consumers only get it when something they read changed.
+  @provide({ context: hassContext }) private providedHass?: HomeAssistant
   @provide({ context: errorMessageContext }) @property({ type: Boolean }) public preview = false
   @state() private config?: ClockWeatherCardConfig
   @provide({ context: configContext }) @state() private resolved?: ResolvedConfig
@@ -135,6 +137,7 @@ export class ClockWeatherCard extends LitElement {
     if (!changed.has('config') && !changed.has('hass')) return
     const previous = this.resolved
     this._resolveConfig()
+    if (this._relevantHassChanged()) this.providedHass = this.hass
     // A new resolved config can change the tick interval (HH:mm vs HH:mm:ss), locale or time zone - restart.
     if (this.resolved !== previous) this._stopClock()
     this._tryStart()
@@ -155,6 +158,17 @@ export class ClockWeatherCard extends LitElement {
       this.error = e instanceof Error ? e.message : String(e)
       logger.warn(`Invalid config: ${this.error}`)
     }
+  }
+
+  private _relevantHassChanged(): boolean {
+    const prev = this.providedHass
+    const next = this.hass
+    if (!prev || !this.resolved) return true
+    if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language) return true
+    const { entity, sunEntity, forecastStrip, forecastList, header } = this.resolved
+    const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))
+    return [entity, sunEntity, forecastStrip.entity, forecastList.entity, ...segmentEntities]
+      .some(id => id !== undefined && prev.states[id] !== next.states[id])
   }
 
   // Idempotent - safe to call from any lifecycle hook.
