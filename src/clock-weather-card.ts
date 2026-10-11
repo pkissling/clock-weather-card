@@ -500,7 +500,7 @@ export class ClockWeatherCard extends LitElement {
   private getWeather (): Weather {
     const weather = this.hass.states[this.config.entity] as unknown as Weather | undefined
     if (!weather) {
-      throw this.createError(`Weather entity "${this.config.entity}" could not be found.`)
+      throw new Error(`Weather entity "${this.config.entity}" could not be found.`)
     }
     return weather
   }
@@ -724,13 +724,13 @@ export class ClockWeatherCard extends LitElement {
     }
     this.forecastSubscriberLock = true
     await this.unsubscribeForecastEvents()
-    if (this.isLegacyWeather()) {
-      this.forecastSubscriber = async () => {}
+    if (!this.isConnected || !this.config || !this.hass || !this.hass.states[this.config.entity]) {
       this.forecastSubscriberLock = false
       return
     }
 
-    if (!this.isConnected || !this.config || !this.hass) {
+    if (this.isLegacyWeather()) {
+      this.forecastSubscriber = async () => {}
       this.forecastSubscriberLock = false
       return
     }
