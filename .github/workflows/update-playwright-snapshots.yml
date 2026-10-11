@@ -1,0 +1,32 @@
+name: Update Playwright Snapshots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-snapshots:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Pull HA Docker image
+      run: docker pull ghcr.io/home-assistant/home-assistant:stable
+
+    - name: Update snapshots
+      run: .github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots
+
+    - name: Pull latest changes
+      run: git pull --rebase
+
+    - name: Commit updated snapshots
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add e2e/**/*-snapshots/
+        if git diff --staged --quiet; then
+          echo "No snapshot changes to commit"
+        else
+          git commit -m "chore: update playwright snapshots"
+          git push
+        fi

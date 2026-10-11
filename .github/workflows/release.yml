@@ -1,10 +1,9 @@
-name: Release
+name: Bundle Release
 
 on:
   release:
     types: [published]
-  # Dispatched by release-please.yaml with the release tag as ref
-  # (releases created with GITHUB_TOKEN don't trigger release events).
+  # Releases created with GITHUB_TOKEN don't emit release events, so release-please dispatches this.
   workflow_dispatch:
 
 jobs:
@@ -20,21 +19,19 @@ jobs:
         with:
           node-version: 24
 
-      - name: Build the file
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Build
         run: |
-          cd /home/runner/work/clock-weather-card/clock-weather-card
           yarn install
           yarn build
 
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v1-release
-
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/clock-weather-card/clock-weather-card/dist/clock-weather-card.js
-          asset_name: clock-weather-card.js
-          tag: ${{ github.ref }}
-          overwrite: true
+      # HACS installs every asset of a plugin release, so the chunks and icons ship as flat assets next to the card.
+      - name: Upload to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.ref_name }}" dist/*.js dist/*.svg --clobber
 
       - name: Verify HACS compliance
         uses: hacs/action@main

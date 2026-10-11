@@ -1,0 +1,28 @@
+body:
+  - type: markdown
+    attributes:
+      value: Please check the [README](https://github.com/pkissling/clock-weather-card#readme) and [FAQ](https://github.com/pkissling/clock-weather-card#faq) first.
+  - type: input
+    id: card-version
+    attributes:
+      label: Card version
+    validations:
+      required: true
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What are you trying to achieve and what happens instead? Screenshots help.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Card configuration
+      render: yaml
