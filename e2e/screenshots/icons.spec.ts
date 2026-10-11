@@ -2,7 +2,7 @@ import { WEATHER_ICON_TYPES } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
 import { dailyForecast, DEFAULT_DATE, hourlyForecast } from '../utils/test-utils'
 
-export const supportedWeatherStates = [
+const supportedWeatherStates = [
   'rainy',
   'partlycloudy',
   'cloudy',

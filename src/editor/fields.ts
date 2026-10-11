@@ -5,7 +5,7 @@ import hassService from '@/service/hass-service'
 import type { SegmentConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { DEFAULT_TAP_ACTION, defaultAttributeColor, DEFAULTS } from '@/utils/config'
-import { DEFAULT_TIME_PATTERN } from '@/utils/luxon'
+import { DEFAULT_DATE_PATTERN, DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
 export type CardGroup = 'essentials' | 'appearance' | 'sensors' | 'interaction' | 'region'
@@ -28,7 +28,7 @@ export interface EditorField {
   visible?: (data: Data) => boolean
 }
 
-export const FORECAST_ATTRIBUTES = ['precipitation_probability', 'precipitation', 'humidity', 'wind_speed', 'wind_gust_speed', 'uv_index', 'cloud_coverage', 'apparent_temperature', 'dew_point', 'pressure']
+const FORECAST_ATTRIBUTES = ['precipitation_probability', 'precipitation', 'humidity', 'wind_speed', 'wind_gust_speed', 'uv_index', 'cloud_coverage', 'apparent_temperature', 'dew_point', 'pressure']
 
 const text = { text: {} }
 const bool = { boolean: {} }
@@ -139,7 +139,7 @@ const unitFields = (attributeSelector: EditorField, hasAttribute: (d: Data) => b
 
 export const SEGMENT_FIELDS: { [T in SegmentConfig['type']]: EditorField[] } = {
   time: [{ name: 'time_pattern', selector: patternSelector(TIME_PATTERNS), default: DEFAULT_TIME_PATTERN }],
-  date: [{ name: 'date_pattern', selector: patternSelector(DATE_PATTERNS), default: 'DDD' }],
+  date: [{ name: 'date_pattern', selector: patternSelector(DATE_PATTERNS), default: DEFAULT_DATE_PATTERN }],
   weather: unitFields({ name: 'attribute', selector: ({ config }: FormContext) => ({ attribute: { entity_id: config.entity } }) }, d => !!d.attribute),
   entity: [
     { name: 'entity_id', selector: { entity: {} }, required: true },

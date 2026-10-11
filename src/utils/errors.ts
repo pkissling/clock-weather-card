@@ -1,16 +1,12 @@
-import type { ClockWeatherCardConfig, ForecastType } from '@/types'
+import type { ForecastType } from '@/types'
 
-type ConfigAttribute = keyof {
-  [K in keyof ClockWeatherCardConfig as string extends K ? never : K]: unknown
-}
-
-export const requiredConfigMissing = (attribute: ConfigAttribute): Error =>
+export const requiredConfigMissing = (attribute: string): Error =>
   new Error(`Config option "${attribute}" is required`)
 
 export const entityNotFound = (entityId: string): Error =>
   new Error(`Referenced entity "${entityId}" does not exist`)
 
-export const invalidConfigValue = (attribute: ConfigAttribute | string, value: string, expected: string): Error =>
+export const invalidConfigValue = (attribute: string, value: string, expected: string): Error =>
   new Error(`Config option "${attribute}" has invalid value "${value}", expected ${expected}`)
 
 export const optionRequiresValue = (attribute: string, otherAttribute: string, otherValue: string): Error =>

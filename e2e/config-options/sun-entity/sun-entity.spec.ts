@@ -5,14 +5,12 @@ test.describe('sun_entity', () => {
   test('icon switches between day and night based on the configured sun entity state', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       sun: { state: 'above_horizon' },
-      weather: { state: 'sunny' },
     })
     const daySrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
 
     await setupCard({
       sun: { state: 'below_horizon' },
-      weather: { state: 'sunny' },
     })
     const nightSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
@@ -27,7 +25,6 @@ test.describe('sun_entity', () => {
   test('icon swaps live when the sun entity state changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       sun: { state: 'above_horizon' },
-      weather: { state: 'sunny' },
     })
     const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
     const daySrc = await icon.getAttribute('src')
@@ -65,7 +62,6 @@ test.describe('sun_entity', () => {
   test('renders an error card when the configured sun_entity does not exist', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sun_entity: sun.does_not_exist
       `,
     })
@@ -89,7 +85,6 @@ test.describe('sun_entity', () => {
         },
       },
       weather: {
-        state: 'sunny',
         forecast_hourly: [
           { datetime: '2025-09-14T12:00:00+00:00', condition: 'sunny', temperature: 24, precipitation_probability: 0 },
           { datetime: '2025-09-14T17:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },

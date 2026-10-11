@@ -15,7 +15,6 @@ test.describe('sections.forecast_list.gradient', () => {
   test('rejects non-string gradient values', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             gradient:
@@ -74,7 +73,6 @@ test.describe('sections.forecast_list.gradient', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             gradient:

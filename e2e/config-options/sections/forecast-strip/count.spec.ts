@@ -25,7 +25,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('truncates to the configured value', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 3
@@ -40,7 +39,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('renders all items when count exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 10
@@ -55,7 +53,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('rejects zero', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 0
@@ -71,7 +68,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('rejects negative values', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: -1
@@ -87,7 +83,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('rejects non-integer values', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 3.5
@@ -103,7 +98,6 @@ test.describe('sections.forecast_strip.count', () => {
   test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 4
@@ -115,7 +109,6 @@ test.describe('sections.forecast_strip.count', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 7

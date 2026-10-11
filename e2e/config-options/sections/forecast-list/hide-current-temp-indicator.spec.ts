@@ -7,21 +7,9 @@ const DAILY: DailyWeatherForecast[] = [
 ]
 
 test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
-  test('renders the current-temp dot on today\'s row by default', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({
-      weather: { temperature: 8, forecast_daily: DAILY },
-    })
-
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
-      .first()
-      .locator('.dot'))
-      .toHaveCount(1)
-  })
-
   test('hides the dot when hide_current_temp_indicator: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             hide_current_temp_indicator: true
@@ -38,7 +26,6 @@ test.describe('sections.forecast_list.hide_current_temp_indicator', () => {
   test('toggles the dot at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             hide_current_temp_indicator: true

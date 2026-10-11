@@ -2,7 +2,6 @@ import { expect, test } from '../../../utils/fixtures'
 import { dailyForecast, DEFAULT_DATE } from '../../../utils/test-utils'
 
 const unitConfig = (unit: string | null): string => `
-  entity: weather.mock_weather
   sections:
     forecast_list:
       forecast_type: daily

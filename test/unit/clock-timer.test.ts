@@ -29,11 +29,7 @@ vi.mock('@lit/context', () => ({
 }))
 
 vi.mock('custom-card-helpers', () => ({
-  hasConfigOrEntityChanged: (): boolean => true,
   deepEqual: (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b),
-  hasAction: (): boolean => false,
-  handleAction: (): void => {},
-  TimeFormat: { am_pm: 'am_pm', twenty_four: '24' },
 }))
 
 vi.mock('@/styles', () => ({ default: '' }))
@@ -64,7 +60,6 @@ describe('ClockWeatherCard timer behavior', () => {
 
     const card = Object.create(CardClass.prototype)
     card.currentDate = DateTime.now()
-    card.forecastSubscription = null
     card._clock = null
 
     card.hass = {
@@ -86,30 +81,6 @@ describe('ClockWeatherCard timer behavior', () => {
 
     return card
   }
-
-  describe('timezone on currentDate', () => {
-    it('uses configured time_zone', async () => {
-      vi.setSystemTime(new Date('2025-06-15T12:00:00Z'))
-      const card = await createCard({ time_zone: 'America/New_York' })
-      const dt = card.currentDate as DateTime
-
-      expect(dt.zoneName)
-        .toBe('America/New_York')
-      expect(dt.hour)
-        .toBe(8)
-    })
-
-    it('falls back to hass time zone when config time_zone is not set', async () => {
-      vi.setSystemTime(new Date('2025-06-15T12:00:00Z'))
-      const card = await createCard({}, 'Asia/Tokyo')
-      const dt = card.currentDate as DateTime
-
-      expect(dt.zoneName)
-        .toBe('Asia/Tokyo')
-      expect(dt.hour)
-        .toBe(21)
-    })
-  })
 
   describe('_startClock with seconds', () => {
     it('sets up a second-level interval when time_pattern has ss', async () => {

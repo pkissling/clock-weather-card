@@ -26,9 +26,6 @@
     "7": "Ned"
   },
   "misc": {
-    "aqi": "AQI",
-    "humidity": "vlažnost",
-    "feels-like": "Občutek temperature",
     "now": "Zdaj",
     "today": "Danes",
     "sunrise": "Sončni vzhod",

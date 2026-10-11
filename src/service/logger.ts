@@ -17,8 +17,6 @@ class Logger {
     this.logMessagePrefix = `clock-weather-card ${version}:`
   }
 
-  public info = (msg: string, ...optionalParams: unknown[]): void => this.emit('info', console.log, msg, optionalParams)
-
   public warn = (msg: string, ...optionalParams: unknown[]): void => this.emit('warn', console.warn, msg, optionalParams)
 
   public error = (msg: string, ...optionalParams: unknown[]): void => this.emit('error', console.error, msg, optionalParams)

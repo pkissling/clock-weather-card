@@ -24,7 +24,6 @@ import { configNeedsSeconds, startClock } from '@/utils/luxon'
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
 
-// This puts your card into the UI card picker dialog
 window.customCards = window.customCards || []
 if (!window.customCards.some(card => card.type === 'clock-weather-card')) window.customCards.push({
   type: 'clock-weather-card',

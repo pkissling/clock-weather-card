@@ -4,7 +4,6 @@ test.describe('sections.header.animated_icons', () => {
   test('animated_icons: false renders a static SVG without SMIL animation tags', async ({ page, setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'sections: { header: { animated_icons: false } }',
-      weather: { state: 'sunny' },
     })
     const src = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
       .getAttribute('src')
