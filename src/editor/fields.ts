@@ -51,7 +51,7 @@ const DATE_PATTERNS = ['DDD', 'DDDD', 'DD', 'D', 'cccc, d LLLL', 'ccc, d LLL', '
 // Lists each pattern with a preview of now in the card's locale and time zone; patterns rendering identically are listed once.
 const patternSelector = (patterns: string[]) => ({ hass, config }: FormContext): object => {
   const now = DateTime.now()
-    .setLocale(config.locale || hassService.getLocale(hass))
+    .setLocale(hassService.withHourCycle(hass, config.locale || hassService.getLocale(hass)))
     .setZone(config.time_zone || hassService.getTimeZone(hass))
   const byPreview = new Map<string, string>()
   for (const pattern of patterns) if (!byPreview.has(now.toFormat(pattern))) byPreview.set(now.toFormat(pattern), pattern)

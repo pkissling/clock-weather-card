@@ -91,6 +91,18 @@ describe('resolveConfig', () => {
       })
   })
 
+  it.each([
+    ['12', 'de', 'de-u-hc-h12'],
+    ['24', 'de', 'de-u-hc-h23'],
+    ['language', 'de', 'de'],
+    ['24', 'en-u-hc-h12', 'en-u-hc-h12'],
+  ])('applies the HA time format %s to locale %s', (timeFormat, locale, expected) => {
+    const resolved = resolveConfig(config({ locale }), { ...hass, locale: { time_format: timeFormat } } as unknown as HomeAssistant)
+
+    expect(resolved.locale)
+      .toBe(expected)
+  })
+
   it('prefers configured time zone and locale over hass', () => {
     const resolved = resolveConfig(config({ time_zone: 'America/New_York', locale: 'fr' }), hass)
 
