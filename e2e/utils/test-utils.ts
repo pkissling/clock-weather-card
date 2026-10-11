@@ -41,6 +41,7 @@ export type MockOptions = undefined | {
   cardConfig?: string | Record<string, unknown> | null
   date?: Date
   language?: string
+  timeFormat?: '12' | '24' | 'language' | 'system'
   timeZone?: string
   unitSystem?: 'metric' | 'us_customary'
   /** Name of a theme in the HA config's `themes/` directory, applied to the dashboard view. */
@@ -136,6 +137,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
 
   const sunState = opts?.sun?.state ?? 'above_horizon'
   const language = opts?.language ?? 'en-GB'
+  const timeFormat = opts?.timeFormat ?? '24'
   const timeZone = opts?.timeZone ?? 'Europe/Berlin'
   const haTemperatureUnit = opts?.unitSystem === 'us_customary' ? '°F' : '°C'
 
@@ -165,7 +167,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       elevation: sunState === 'below_horizon' ? -10 : 30,
       ...(opts?.sun?.attributes ?? {}),
     }),
-    api.setLanguage(language),
+    api.setLanguage(language, timeFormat),
     api.setTimeZone(timeZone),
     api.setUnitSystem(opts?.unitSystem ?? 'metric'),
   ])
@@ -185,12 +187,12 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     .first()
   await card.waitFor({ state: 'visible' })
   // Language, time zone and unit system reach the frontend via separate subscriptions, so the sync token alone doesn't cover them on a reused page.
-  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeZone, temperatureUnit: haTemperatureUnit }
+  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeFormat, timeZone, temperatureUnit: haTemperatureUnit }
   await expect
-    .poll(() => card.evaluate((el, { entity, token, language, timeZone, temperatureUnit }) => {
+    .poll(() => card.evaluate((el, { entity, token, language, timeFormat, timeZone, temperatureUnit }) => {
       if (el.localName === 'hui-error-card') return true
       const hass = (el as unknown as { hass?: HomeAssistant }).hass
-      return hass?.states[entity]?.state === token && hass.language === language && hass.config.time_zone === timeZone
+      return hass?.states[entity]?.state === token && hass.language === language && hass.locale.time_format === timeFormat && hass.config.time_zone === timeZone
         && hass.config.unit_system.temperature === temperatureUnit
     }, expected))
     .toBe(true)

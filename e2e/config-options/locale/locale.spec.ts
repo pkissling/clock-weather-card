@@ -213,6 +213,54 @@ test.describe('locale', () => {
       .toEqual({ overflows: true, textOverflow: 'ellipsis' })
   })
 
+  test('follows the language when the Home Assistant profile time format is "language"', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'en', timeFormat: 'language' })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
+      .toHaveText('4:20 PM')
+  })
+
+  test('follows the 24-hour time format of the Home Assistant profile', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'en', timeFormat: '24' })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
+      .toHaveText('16:20')
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .time')
+      .nth(1))
+      .toHaveText('17:00')
+  })
+
+  test('follows the 12-hour time format of the Home Assistant profile over a 24-hour locale', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ timeFormat: '12' })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
+      .toHaveText('4:20 pm')
+  })
+
+  test('an explicit time_pattern wins over the time format of the Home Assistant profile', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      timeFormat: '24',
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: time
+                    time_pattern: h:mm a
+      `,
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
+      .toHaveText('4:20 pm')
+  })
+
+  test('keeps the translations when the Home Assistant profile sets a time format', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'zh-Hant', timeFormat: '24', weather: { state: 'sunny' } })
+
+    await expect(clockWeatherCard)
+      .toContainText('晴天')
+  })
+
   for (const [language, sunny] of [['sr-Latn', 'Sunčano'], ['zh-Hans', '晴'], ['zh-Hant', '晴天']]) {
     test(`uses the ${language} translation for Home Assistant's ${language} language`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({ language, weather: { state: 'sunny' } })
