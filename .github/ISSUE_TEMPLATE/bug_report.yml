@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Issues are for bugs only.** Feature requests and changes go to [Ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas), questions and configuration help to [Q&A](https://github.com/pkissling/clock-weather-card/discussions/categories/q-a). Issues that aren't bugs are moved to Discussions.
+        **Issues are for bugs only.** Feature requests and changes go to [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests), questions and configuration help to [Help & Configuration](https://github.com/pkissling/clock-weather-card/discussions/categories/help-configuration). Issues that aren't bugs are moved to Discussions.
   - type: checkboxes
     attributes:
       label: Checklist

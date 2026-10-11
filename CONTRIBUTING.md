@@ -1,6 +1,6 @@
 # Contributing
 
-Before working on a new feature, please discuss it in [Ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas) first. Issues are for bugs only.
+Before working on a new feature, please discuss it in [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests) first. Issues are for bugs only.
 
 ## Development
 
@@ -54,7 +54,7 @@ Visual regression tests compare Playwright screenshots. They only run inside the
 
 ## New features
 
-Every line of code has to be maintained for as long as the card exists, so a feature that works is not automatically a feature that gets merged. Before you start, open a discussion in [Ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas) and show that others would use the feature too, e.g. through upvotes and comments from other users. Pull requests for features without that evidence may be declined, however well they are implemented.
+Every line of code has to be maintained for as long as the card exists, so a feature that works is not automatically a feature that gets merged. Before you start, open a discussion in [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests) and show that others would use the feature too, e.g. through upvotes and comments from other users. Pull requests for features without that evidence may be declined, however well they are implemented.
 
 Every new feature or bug fix needs an [E2E test](#e2e-tests) that proves it works as expected. Pull requests without one won't be merged. Use the `setupCard` fixture and pass only what the test depends on - it defaults to a fully populated card. For example, from [`e2e/config-options/title/title.spec.ts`](e2e/config-options/title/title.spec.ts):
 
