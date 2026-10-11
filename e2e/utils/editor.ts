@@ -23,3 +23,11 @@ export const saveEditor = async (page: Page): Promise<Record<string, unknown>> =
   delete config.type
   return config
 }
+
+export const expandPanel = async (editor: Locator, name: string): Promise<void> => {
+  await editor.getByText(name)
+    .click()
+  // ha-expansion-panel clips its content during the 300ms height transition, so clicks into it get lost until then.
+  await expect(editor.getByRole('region', { name }))
+    .toHaveCSS('overflow', 'visible')
+}
