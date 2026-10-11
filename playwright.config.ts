@@ -27,6 +27,8 @@ export default defineConfig({
     /* baseURL is set by the sharedContext fixture in e2e/utils/fixtures.ts, since HA's port is only known after globalSetup. */
     /* Trace export on passing icon-heavy tests takes 30s+ and blows the test timeout. */
     trace: 'retain-on-failure',
+    /* Matches HA's default zone (e2e/utils/ha-config/configuration.yaml), as the user profile defaults to the browser's zone. */
+    timezoneId: 'Europe/Berlin',
   },
 
   /* Configure projects for major browsers */
