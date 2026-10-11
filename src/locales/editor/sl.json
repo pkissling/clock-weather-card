@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Videz",
+    "sensors": "Dodatni senzorji",
     "interaction": "Interakcija",
     "region": "Regija in čas"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Časovni pas",
     "locale": "Jezik",
     "temperature_unit": "Enota temperature",
+    "temperature_sensor": "Temperaturni senzor",
     "tap_action": "Dejanje ob dotiku",
     "rows": "Vrstice",
     "animated_icons": "Animirane ikone",
@@ -51,6 +53,7 @@
     "text": "Besedilo"
   },
   "helpers": {
+    "temperature_sensor": "Neobvezno. Trenutno temperaturo bere s tega senzorja namesto iz vremenske entitete, npr. z vremenske postaje ali zunanjega senzorja",
     "sun_entity": "Določa izbiro med dnevnimi in nočnimi ikonami",
     "time_zone": "Privzeto časovni pas Home Assistanta",
     "locale": "Privzeto jezik Home Assistanta",

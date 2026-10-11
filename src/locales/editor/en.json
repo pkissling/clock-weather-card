@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Appearance",
+    "sensors": "Additional sensors",
     "interaction": "Interaction",
     "region": "Region & time"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Time zone",
     "locale": "Language",
     "temperature_unit": "Temperature unit",
+    "temperature_sensor": "Temperature sensor",
     "tap_action": "Tap action",
     "rows": "Rows",
     "animated_icons": "Animated icons",
@@ -51,6 +53,7 @@
     "text": "Text"
   },
   "helpers": {
+    "temperature_sensor": "Optional. Reads the current temperature from this sensor instead of the weather entity, e.g. a weather station or outdoor sensor",
     "sun_entity": "Decides between day and night icons",
     "time_zone": "Defaults to the time zone of Home Assistant",
     "locale": "Defaults to the language of Home Assistant",

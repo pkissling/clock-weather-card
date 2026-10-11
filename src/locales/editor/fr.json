@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Apparence",
+    "sensors": "Capteurs supplémentaires",
     "interaction": "Interaction",
     "region": "Région et heure"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Fuseau horaire",
     "locale": "Langue",
     "temperature_unit": "Unité de température",
+    "temperature_sensor": "Capteur de température",
     "tap_action": "Action d'appui",
     "rows": "Lignes",
     "animated_icons": "Icônes animées",
@@ -51,6 +53,7 @@
     "text": "Texte"
   },
   "helpers": {
+    "temperature_sensor": "Facultatif. Lit la température actuelle depuis ce capteur au lieu de l'entité météo, p. ex. une station météo ou un capteur extérieur",
     "sun_entity": "Détermine les icônes de jour ou de nuit",
     "time_zone": "Par défaut, le fuseau horaire de Home Assistant",
     "locale": "Par défaut, la langue de Home Assistant",

@@ -23,10 +23,12 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @property() public unitAttribute?: string
 
   public render (): TemplateResult {
-    const { entity, locale, temperatureUnit, sunEntity } = this.config
+    const { entity, locale, temperatureUnit, temperatureSensor, sunEntity } = this.config
     if (this.attribute) {
       if (!this.unitAttribute && hassService.isWeatherTemperatureAttribute(this.attribute)) {
-        const temperature = hassService.getWeatherTemperature(this.hass, entity, this.attribute, temperatureUnit)
+        const temperature = this.attribute === 'temperature'
+          ? hassService.getCurrentTemperature(this.hass, entity, temperatureSensor, temperatureUnit)
+          : hassService.getWeatherTemperature(this.hass, entity, this.attribute, temperatureUnit)
         if (temperature === null) return html``
         return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
       }

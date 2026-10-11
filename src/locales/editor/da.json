@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Udseende",
+    "sensors": "Yderligere sensorer",
     "interaction": "Interaktion",
     "region": "Region og tid"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Tidszone",
     "locale": "Sprog",
     "temperature_unit": "Temperaturenhed",
+    "temperature_sensor": "Temperatursensor",
     "tap_action": "Tryk-handling",
     "rows": "Rækker",
     "animated_icons": "Animerede ikoner",
@@ -51,6 +53,7 @@
     "text": "Tekst"
   },
   "helpers": {
+    "temperature_sensor": "Valgfri. Læser den aktuelle temperatur fra denne sensor i stedet for vejrentiteten, f.eks. en vejrstation eller udendørssensor",
     "sun_entity": "Afgør valget mellem dag- og natikoner",
     "time_zone": "Standard er Home Assistants tidszone",
     "locale": "Standard er Home Assistants sprog",

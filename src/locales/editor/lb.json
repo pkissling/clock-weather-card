@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Ausgesinn",
+    "sensors": "Zousätzlech Sensoren",
     "interaction": "Interaktioun",
     "region": "Regioun & Zäit"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Zäitzon",
     "locale": "Sprooch",
     "temperature_unit": "Temperatureenheet",
+    "temperature_sensor": "Temperatursensor",
     "tap_action": "Tipp-Aktioun",
     "rows": "Zeilen",
     "animated_icons": "Animéiert Iconen",
@@ -51,6 +53,7 @@
     "text": "Text"
   },
   "helpers": {
+    "temperature_sensor": "Optional. Liest déi aktuell Temperatur vun dësem Sensor amplaz vun der Wieder-Entitéit, z. B. enger Wiederstatioun oder engem Baussesensor",
     "sun_entity": "Entscheet tëscht Dag- an Nuechticonen",
     "time_zone": "Standard ass d'Zäitzon vun Home Assistant",
     "locale": "Standard ass d'Sprooch vun Home Assistant",

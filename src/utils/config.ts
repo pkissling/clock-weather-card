@@ -6,6 +6,7 @@ import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone } from '@/utils/luxon'
+import { isTemperatureUnit } from '@/utils/temperature'
 
 export const DEFAULT_ROWS: RowConfig[] = [
   {
@@ -86,6 +87,16 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
 
   assertEntityExists(config.entity)
   assertEntityExists(config.sun_entity)
+  assertNonEmptyString('temperature_sensor', config.temperature_sensor)
+  assertEntityExists(config.temperature_sensor)
+  const sensor = config.temperature_sensor
+  const sensorState = sensor ? hassService.getEntityState(hass, sensor) : null
+  // Sensors are briefly unavailable or unknown, e.g. while Home Assistant starts, which must not break the card.
+  if (sensor && sensorState !== 'unavailable' && sensorState !== 'unknown') {
+    const unit = hassService.getEntityUnitOfMeasurement(hass, sensor)
+    if (!isTemperatureUnit(unit)) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with unit °C or °F, got "${unit}"`)
+    if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with a numeric state, got "${sensorState}"`)
+  }
   assertEntityExists(config.sections?.forecast_strip?.weather_entity)
   assertEntityExists(config.sections?.forecast_list?.weather_entity)
 
@@ -197,6 +208,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     timeZone: config.time_zone || hassService.getTimeZone(hass),
     locale: config.locale || hassService.getLocale(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
+    temperatureSensor: config.temperature_sensor ?? null,
     header: {
       hidden: header?.hide ?? D.header.hide,
       rows: header?.rows ?? DEFAULT_ROWS,

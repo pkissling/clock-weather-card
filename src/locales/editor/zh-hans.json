@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "外观",
+    "sensors": "附加传感器",
     "interaction": "交互",
     "region": "地区和时间"
   },
@@ -22,6 +23,7 @@
     "time_zone": "时区",
     "locale": "语言",
     "temperature_unit": "温度单位",
+    "temperature_sensor": "温度传感器",
     "tap_action": "点击动作",
     "rows": "行",
     "animated_icons": "动画图标",
@@ -51,6 +53,7 @@
     "text": "文本"
   },
   "helpers": {
+    "temperature_sensor": "可选。从此传感器而非天气实体读取当前温度，例如气象站或室外传感器",
     "sun_entity": "用于决定显示白天或夜间图标",
     "time_zone": "默认为 Home Assistant 的时区",
     "locale": "默认为 Home Assistant 的语言",

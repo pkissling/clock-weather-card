@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Välimus",
+    "sensors": "Lisaandurid",
     "interaction": "Interaktsioon",
     "region": "Piirkond ja aeg"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Ajavöönd",
     "locale": "Keel",
     "temperature_unit": "Temperatuuriühik",
+    "temperature_sensor": "Temperatuuriandur",
     "tap_action": "Puudutuse toiming",
     "rows": "Read",
     "animated_icons": "Animeeritud ikoonid",
@@ -51,6 +53,7 @@
     "text": "Tekst"
   },
   "helpers": {
+    "temperature_sensor": "Valikuline. Loeb praeguse temperatuuri ilmaüksuse asemel sellelt andurilt, nt ilmajaamast või välisandurilt",
     "sun_entity": "Määrab päeva- või ööikoonid",
     "time_zone": "Vaikimisi Home Assistanti ajavöönd",
     "locale": "Vaikimisi Home Assistanti keel",

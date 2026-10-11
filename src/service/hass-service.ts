@@ -4,7 +4,7 @@ import { DateTime, type Zone } from 'luxon'
 import logger from '@/service/logger'
 import type { ForecastType, SunEntity, TemperatureUnit, WeatherForecastEvent } from '@/types'
 import { WeatherEntityFeature } from '@/types'
-import { convertTemperature, isTemperatureUnit } from '@/utils/temperature'
+import { convertTemperature, isTemperatureUnit, toDisplayTemperature } from '@/utils/temperature'
 
 const FORECAST_FEATURE_BIT: Record<ForecastType, WeatherEntityFeature> = {
   daily: WeatherEntityFeature.FORECAST_DAILY,
@@ -91,6 +91,19 @@ class HassService {
     const value = this.getEntityAttribute(hass, entityId, attribute)
     if (typeof value !== 'number' || !Number.isFinite(value)) return null
     return convertTemperature(value, this.getEntityAttributeString(hass, entityId, 'temperature_unit'), toUnit)
+  }
+
+  public getCurrentTemperature(hass: HomeAssistant, weatherEntityId: string, sensorId: string | null, toUnit: TemperatureUnit): number | null {
+    return sensorId === null
+      ? this.getWeatherTemperature(hass, weatherEntityId, 'temperature', toUnit)
+      : this.getSensorTemperature(hass, sensorId, toUnit)
+  }
+
+  public getSensorTemperature(hass: HomeAssistant, sensorId: string | null, toUnit: TemperatureUnit): number | null {
+    if (sensorId === null) return null
+    const temperature = toDisplayTemperature(this.getEntityState(hass, sensorId), this.getEntityUnitOfMeasurement(hass, sensorId), toUnit)
+    // Sensor states carry their raw precision, unlike weather entities.
+    return temperature === null ? null : Math.round(temperature * 10) / 10
   }
 
   public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {
