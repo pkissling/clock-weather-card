@@ -3,12 +3,12 @@ import '@/components/clock-weather-card-divider'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement } from 'lit/decorators.js'
 
 import AbstractForecastSection, { type ForecastRow } from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ForecastListItem, SectionForecastType } from '@/types'
+import { customElement } from '@/utils/custom-element'
 import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { toCelsius } from '@/utils/temperature'
