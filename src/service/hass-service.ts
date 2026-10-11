@@ -72,7 +72,10 @@ class HassService {
   }
 
   public getTimeZone(hass: HomeAssistant): string {
-    return hass.config.time_zone
+    return (hass.locale as { time_zone?: string } | undefined)?.time_zone === 'local'
+      ? Intl.DateTimeFormat()
+        .resolvedOptions().timeZone
+      : hass.config.time_zone
   }
 
   public getTemperatureUnit(hass: HomeAssistant): TemperatureUnit {
