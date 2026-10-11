@@ -233,25 +233,6 @@ test.describe('sections.header.rows', () => {
         .toContain('Config option "sections.header.rows[0].segments[0].unit" has invalid value "%", expected a string')
     })
 
-    test(`rejects a ${type} segment unit combined with show_unit: false`, async ({ setupCard, cardErrorMessage }) => {
-      await api.setEntityState('sensor.demo', '42')
-      await setupCard({
-        cardConfig: `
-        sections:
-          header:
-            rows:
-              - segments:
-                  - type: ${type}
-                    ${extra}
-                    unit: '%'
-                    show_unit: false
-      `,
-      })
-
-      await cardErrorMessage()
-        .toContain('Config option "sections.header.rows[0].segments[0].unit" requires "sections.header.rows[0].segments[0].show_unit" to be "true"')
-    })
-
     test(`rejects a non-string ${type} segment unit_attribute`, async ({ setupCard, cardErrorMessage }) => {
       await api.setEntityState('sensor.demo', '42')
       await setupCard({
@@ -511,6 +492,7 @@ test.describe('sections.header.rows', () => {
                 - segments:
                     - type: weather
                       attribute: humidity
+                      unit: ' %'
                       show_unit: false
         `,
       })
@@ -620,6 +602,7 @@ test.describe('sections.header.rows', () => {
                 - segments:
                     - type: entity
                       entity_id: sensor.demo
+                      unit: ' deg'
                       show_unit: false
         `,
       })
