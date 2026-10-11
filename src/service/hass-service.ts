@@ -74,6 +74,10 @@ class HassService {
     return hourCycle && !locale.includes('-u-') ? `${locale}-u-hc-${hourCycle}` : locale
   }
 
+  public getNumberFormat(hass: HomeAssistant): string {
+    return hass.locale?.number_format ?? 'language'
+  }
+
   public getTimeZone(hass: HomeAssistant): string {
     return (hass.locale as { time_zone?: string } | undefined)?.time_zone === 'local'
       ? Intl.DateTimeFormat()
@@ -127,13 +131,6 @@ class HassService {
 
   public getDisplayPrecision(hass: HomeAssistant, entityId: string): number | null {
     return (hass as HomeAssistant & HassEntities).entities?.[entityId]?.display_precision ?? null
-  }
-
-  public formatWithDisplayPrecision(hass: HomeAssistant, entityId: string, value: unknown): unknown {
-    const precision = this.getDisplayPrecision(hass, entityId)
-    if (precision === null || value === '' || !Number.isFinite(Number(value))) return value
-    return Number(value)
-      .toFixed(precision)
   }
 
   public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {

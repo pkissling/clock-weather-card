@@ -10,6 +10,7 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
+import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
 
 @customElement('clock-weather-card-entity-segment')
@@ -31,20 +32,26 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
     const unit = this.resolveUnit()
     const { temperatureUnit } = this.config
     const temperature = toDisplayTemperature(value, unit, temperatureUnit)
-    if (temperature !== null) {
-      const displayUnit = this.showUnit ? this.unit ?? temperatureUnit : ''
-      return html`<span>${this.format(temperature)}${displayUnit}</span>`
-    }
+    const precision = this.attribute ? null : hassService.getDisplayPrecision(this.hass, this.entityId)
+    if (temperature !== null) return this.renderValue(formatNumber(temperature, this.config, precision), temperatureUnit)
 
     if (this.showUnit && this.unit === undefined && unit === null) {
       logger.warn(`Unit attribute "${this.unitAttribute ?? 'unit_of_measurement'}" not found for entity "${this.entityId}"`)
     }
-    const displayUnit = this.showUnit ? this.unit ?? unit ?? '' : ''
-    return html`<span>${this.format(value)}${displayUnit}</span>`
+    const text = this.isNumeric(value, unit, precision) ? formatNumber(Number(value), this.config, precision) : String(value)
+    return this.renderValue(text, unit)
   }
 
-  private format (value: unknown): unknown {
-    return this.attribute ? value : hassService.formatWithDisplayPrecision(this.hass, this.entityId, value)
+  private renderValue (text: string, unit: string | null): TemplateResult {
+    return html`<span>${text}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+  }
+
+  private isNumeric (value: unknown, unit: string | null, precision: number | null): boolean {
+    if (typeof value === 'number') return true
+    if (value === '' || Number.isNaN(Number(value))) return false
+    // Like HA, a numeric-looking state only counts for numeric entities, so e.g. a zip code isn't grouped.
+    const hasStateClass = hassService.getEntityAttribute(this.hass, this.entityId, 'state_class') !== undefined
+    return unit !== null || hasStateClass || precision !== null
   }
 
   private resolveUnit (): string | null {

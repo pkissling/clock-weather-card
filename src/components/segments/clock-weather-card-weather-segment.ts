@@ -11,6 +11,7 @@ import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
+import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
 
 @customElement('clock-weather-card-weather-segment')
@@ -30,11 +31,8 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
           ? hassService.getCurrentTemperature(this.hass, entity, temperatureSensor, temperatureUnit)
           : hassService.getWeatherTemperature(this.hass, entity, this.attribute, temperatureUnit)
         if (temperature === null) return html``
-        const displayTemperature = this.attribute === 'temperature' && temperatureSensor
-          ? hassService.formatWithDisplayPrecision(this.hass, temperatureSensor, temperature)
-          : temperature
-        const displayUnit = this.showUnit ? this.unit ?? temperatureUnit : ''
-        return html`<span>${displayTemperature}${displayUnit}</span>`
+        const precision = this.attribute === 'temperature' && temperatureSensor ? hassService.getDisplayPrecision(this.hass, temperatureSensor) : null
+        return html`<span>${formatNumber(temperature, this.config, precision)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
       }
       const value = hassService.getEntityAttribute(this.hass, entity, this.attribute)
       if (value === undefined) logger.warn(`Attribute "${this.attribute}" not found on weather entity "${entity}"`)
@@ -43,9 +41,8 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
         ? hassService.getEntityAttributeString(this.hass, entity, this.unitAttribute)
         : hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute)
       const temperature = toDisplayTemperature(value, unit, temperatureUnit)
-      if (temperature !== null) return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
-      const displayUnit = this.showUnit ? this.unit ?? unit ?? '' : ''
-      return html`<span>${value}${displayUnit}</span>`
+      if (temperature !== null) return html`<span>${formatNumber(temperature, this.config)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
+      return html`<span>${typeof value === 'number' ? formatNumber(value, this.config) : value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
     }
 
     const state = hassService.getEntityState(this.hass, entity)

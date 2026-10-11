@@ -11,6 +11,7 @@ import type { ForecastListItem, SectionForecastType } from '@/types'
 import { customElement } from '@/utils/custom-element'
 import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
+import { formatNumber } from '@/utils/number'
 import { toCelsius } from '@/utils/temperature'
 
 // A CSS % height would resolve against the grid area, so a percentage is made relative to the row height.
@@ -103,7 +104,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     }
     const currentTempC = currentTempRaw === null ? null : toCelsius(currentTempRaw, temperatureUnit)
     const hourly = forecastType === 'hourly'
-    const format = (t: number): string => formatWithUnit(roundTemperatures ? Math.round(t) : t, attributeUnit ?? temperatureUnit)
+    const format = (t: number): string => formatWithUnit(formatNumber(roundTemperatures ? Math.round(t) : t, this.config), attributeUnit ?? temperatureUnit)
 
     return this.visibleRows(count, timePattern)
       .map((row, i, rows) => {
@@ -132,7 +133,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
         return {
           row,
           lowLabel: null,
-          highLabel: value === null ? null : formatWithUnit(value, unit),
+          highLabel: value === null ? null : formatWithUnit(formatNumber(value, this.config), unit),
           span: value === null ? null : { from: Math.min(0, value), to: Math.max(0, value) },
           current: null,
         }

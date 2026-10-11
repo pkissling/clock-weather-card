@@ -11,6 +11,7 @@ import translationsService from '@/service/translations-service'
 import type { ForecastStripItem, SectionForecastType } from '@/types'
 import { customElement } from '@/utils/custom-element'
 import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
+import { formatNumber } from '@/utils/number'
 
 @customElement('clock-weather-card-forecast-strip')
 class ClockWeatherCardForecastStrip extends AbstractForecastSection {
@@ -50,14 +51,14 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     const visible = this.visibleRows(count, timePattern)
     if (visible.length === 0) return html``
 
-    const roundTemperature = (t: number): number => roundTemperatures ? Math.round(t) : t
+    const roundTemperature = (t: number): string => formatNumber(roundTemperatures ? Math.round(t) : t, this.config)
 
     const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
     const roundAttribute = (v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
     const attributeValues = visible.map(({ forecast }) => roundAttribute(forecastAttributeValue(forecast, attribute)))
     const showAttribute = attributeValues.some(v => v !== null && v !== 0)
     const attributeItem = (value: number | null): ForecastStripItem['attribute'] => showAttribute
-      ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(value, attributeUnit) }
+      ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(formatNumber(value, this.config), attributeUnit) }
       : null
 
     const sensorTemperature = forecastType === 'hourly' ? hassService.getSensorTemperature(this.hass, temperatureSensor, temperatureUnit) : null

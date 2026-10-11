@@ -56,6 +56,7 @@ export type MockOptions = undefined | {
   date?: Date
   language?: string
   timeFormat?: '12' | '24' | 'language' | 'system'
+  numberFormat?: string
   timeZone?: string
   /** The user's profile time zone setting: the browser's zone (`local`, HA's default) or HA's (`server`). Defaults to `server` when `timeZone` is set. */
   userTimeZone?: 'local' | 'server'
@@ -188,6 +189,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   const sunState = opts?.sun?.state ?? 'above_horizon'
   const language = opts?.language ?? 'en-GB'
   const timeFormat = opts?.timeFormat ?? '24'
+  const numberFormat = opts?.numberFormat ?? 'language'
   const timeZone = opts?.timeZone ?? 'Europe/Berlin'
   // HA defaults the profile to the browser's zone, but a test that picks HA's zone wants it rendered.
   const userTimeZone = opts?.userTimeZone ?? (opts?.timeZone ? 'server' : 'local')
@@ -213,7 +215,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
       elevation: sunState === 'below_horizon' ? -10 : 30,
       ...(opts?.sun?.attributes ?? {}),
     }),
-    haApi.setLanguage(language, timeFormat, userTimeZone),
+    haApi.setLanguage(language, timeFormat, numberFormat, userTimeZone),
     haApi.setTimeZone(timeZone),
     haApi.setUnitSystem(opts?.unitSystem ?? 'metric'),
   ])
@@ -234,12 +236,13 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
     .first()
   await card.waitFor({ state: 'visible' })
   // Language, time zone and unit system reach the frontend via separate subscriptions, so the sync token alone doesn't cover them on a reused page.
-  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeFormat, timeZone, userTimeZone, temperatureUnit: haTemperatureUnit }
+  const expected = { entity: SYNC_ENTITY, token: syncToken, language, timeFormat, numberFormat, timeZone, userTimeZone, temperatureUnit: haTemperatureUnit }
   await expect
-    .poll(() => card.evaluate((el, { entity, token, language, timeFormat, timeZone, userTimeZone, temperatureUnit }) => {
+    .poll(() => card.evaluate((el, { entity, token, language, timeFormat, numberFormat, timeZone, userTimeZone, temperatureUnit }) => {
       if (el.localName === 'hui-error-card') return true
       const hass = (el as unknown as { hass?: HomeAssistant }).hass
-      return hass?.states[entity]?.state === token && hass.language === language && hass.locale.time_format === timeFormat && hass.config.time_zone === timeZone
+      return hass?.states[entity]?.state === token && hass.language === language && hass.locale.time_format === timeFormat
+        && hass.locale.number_format === numberFormat && hass.config.time_zone === timeZone
         && (hass.locale as { time_zone?: string }).time_zone === userTimeZone
         && hass.config.unit_system.temperature === temperatureUnit
     }, expected))
