@@ -124,10 +124,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       if ('show_unit' in segment) assertBoolean(`sections.header.rows[${i}].segments[${j}].show_unit`, segment.show_unit)
       if (segment.type === 'weather' || segment.type === 'entity') {
         const path = `sections.header.rows[${i}].segments[${j}]`
-        if ('unit' in segment) {
-          if (typeof segment.unit !== 'string') throw invalidConfigValue(`${path}.unit`, String(segment.unit), 'a string')
-          if (segment.show_unit === false) throw optionRequiresValue(`${path}.unit`, `${path}.show_unit`, 'true')
-        }
+        if ('unit' in segment && typeof segment.unit !== 'string') throw invalidConfigValue(`${path}.unit`, String(segment.unit), 'a string')
         if ('unit_attribute' in segment) {
           if (typeof segment.unit_attribute !== 'string') throw invalidConfigValue(`${path}.unit_attribute`, String(segment.unit_attribute), 'a string')
           const entityId = segment.type === 'entity' ? segment.entity_id : config.entity
