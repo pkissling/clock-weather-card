@@ -307,8 +307,8 @@ _Thanks to @deprecatedcoder for this explanation from [#143](https://github.com/
 ## Feedback and support
 
 - **Bugs** - something is broken or behaves differently than documented: open an [issue](https://github.com/pkissling/clock-weather-card/issues/new/choose).
-- **Feature requests and changes** - start a discussion in [Ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas), where others can upvote and discuss them. Once an idea is agreed on, it becomes an issue for implementation.
-- **Questions and configuration help** - ask in [Q&A](https://github.com/pkissling/clock-weather-card/discussions/categories/q-a).
+- **Feature requests and changes** - start a discussion in [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests), where others can upvote and discuss them. Once an idea is agreed on, it becomes an issue for implementation.
+- **Questions and configuration help** - ask in [Help & Configuration](https://github.com/pkissling/clock-weather-card/discussions/categories/help-configuration).
 
 Issues that aren't bugs are moved to Discussions.
 

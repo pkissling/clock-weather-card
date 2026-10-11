@@ -3,7 +3,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea! Please search the [existing ideas](https://github.com/pkissling/clock-weather-card/discussions/categories/ideas) first and upvote one that matches instead of opening a duplicate. Once an idea is agreed on, it becomes an issue for implementation.
+        Thanks for the idea! Please search the [existing feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests) first and upvote one that matches instead of opening a duplicate. Once an idea is agreed on, it becomes an issue for implementation.
   - type: textarea
     attributes:
       label: What problem does this solve?

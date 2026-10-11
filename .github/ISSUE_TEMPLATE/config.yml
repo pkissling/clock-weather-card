@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💡 Feature request or change
-    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=ideas
+    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=feature-requests
     about: Suggest a new feature or a change to existing behavior. Upvote existing ideas instead of opening duplicates.
   - name: ❓ Question or help with configuration
-    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=q-a
+    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=help-configuration
     about: Ask how to set something up, or get help with your config.
+  - name: 🧪 v3 beta feedback
+    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=v3-beta-feedback
+    about: Report bugs, migration questions and feedback on the v3 beta.
