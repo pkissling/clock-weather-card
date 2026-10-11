@@ -8,7 +8,7 @@ import { type ActionConfig, deepEqual, type HomeAssistant } from 'custom-card-he
 import type { CSSResultGroup, PropertyValues, TemplateResult } from 'lit'
 import { LitElement, nothing } from 'lit'
 import { html } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import { configContext, errorMessageContext, hassContext } from '@/context'
@@ -16,6 +16,7 @@ import logger from '@/service/logger'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
 import { DEFAULT_TAP_ACTION, resolveConfig } from '@/utils/config'
+import { customElement } from '@/utils/custom-element'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
 import { configNeedsSeconds, startClock } from '@/utils/luxon'
@@ -25,7 +26,7 @@ import { version } from '../package.json'
 
 // This puts your card into the UI card picker dialog
 window.customCards = window.customCards || []
-window.customCards.push({
+if (!window.customCards.some(card => card.type === 'clock-weather-card')) window.customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
   description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',

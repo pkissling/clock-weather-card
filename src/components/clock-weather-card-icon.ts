@@ -1,11 +1,12 @@
 import type { PropertyValues, TemplateResult } from 'lit'
 import { html, nothing } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import iconsService from '@/service/icons-service'
 import logger from '@/service/logger'
 import type { WeatherIconType } from '@/types'
+import { customElement } from '@/utils/custom-element'
 
 @customElement('clock-weather-card-icon')
 class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
