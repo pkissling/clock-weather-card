@@ -85,6 +85,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     }
   }
 
+  const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
+
   assertEntityExists(config.entity)
   assertEntityExists(config.sun_entity)
   assertNonEmptyString('temperature_sensor', config.temperature_sensor)
@@ -97,30 +99,29 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     if (!isTemperatureUnit(unit)) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with unit °C or °F, got "${unit}"`)
     if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with a numeric state, got "${sensorState}"`)
   }
-  assertEntityExists(config.sections?.forecast_strip?.weather_entity)
-  assertEntityExists(config.sections?.forecast_list?.weather_entity)
+  assertEntityExists(strip?.weather_entity)
+  assertEntityExists(list?.weather_entity)
 
-  const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
   if (strip?.hide_sunrise_sunset === true && (strip.forecast_type ?? 'hourly') !== 'hourly') {
     throw optionRequiresValue('sections.forecast_strip.hide_sunrise_sunset', 'sections.forecast_strip.forecast_type', 'hourly')
   }
 
   assertEnumValue('weather_icon_type', config.weather_icon_type, WEATHER_ICON_TYPES)
   assertEnumValue('temperature_unit', config.temperature_unit, Object.keys(TEMPERATURE_UNIT_SYMBOLS))
-  assertEnumValue('sections.header.weather_icon_type', config.sections?.header?.weather_icon_type, WEATHER_ICON_TYPES)
-  assertEnumValue('sections.forecast_strip.weather_icon_type', config.sections?.forecast_strip?.weather_icon_type, WEATHER_ICON_TYPES)
-  assertEnumValue('sections.forecast_list.weather_icon_type', config.sections?.forecast_list?.weather_icon_type, WEATHER_ICON_TYPES)
-  assertEnumValue('sections.forecast_strip.forecast_type', config.sections?.forecast_strip?.forecast_type, SECTION_FORECAST_TYPES)
-  assertEnumValue('sections.forecast_list.forecast_type', config.sections?.forecast_list?.forecast_type, SECTION_FORECAST_TYPES)
+  assertEnumValue('sections.header.weather_icon_type', header?.weather_icon_type, WEATHER_ICON_TYPES)
+  assertEnumValue('sections.forecast_strip.weather_icon_type', strip?.weather_icon_type, WEATHER_ICON_TYPES)
+  assertEnumValue('sections.forecast_list.weather_icon_type', list?.weather_icon_type, WEATHER_ICON_TYPES)
+  assertEnumValue('sections.forecast_strip.forecast_type', strip?.forecast_type, SECTION_FORECAST_TYPES)
+  assertEnumValue('sections.forecast_list.forecast_type', list?.forecast_type, SECTION_FORECAST_TYPES)
   assertNonEmptyString('sections.forecast_strip.time_pattern', strip?.time_pattern)
-  assertNonEmptyString('sections.forecast_list.time_pattern', config.sections?.forecast_list?.time_pattern)
+  assertNonEmptyString('sections.forecast_list.time_pattern', list?.time_pattern)
   assertNonEmptyString('sections.forecast_strip.attribute', strip?.attribute)
   assertNonEmptyString('sections.forecast_strip.attribute_icon', strip?.attribute_icon)
   assertNonEmptyString('sections.forecast_strip.attribute_color', strip?.attribute_color)
   assertNonEmptyString('sections.forecast_list.attribute', list?.attribute)
   assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
-  config.sections?.header?.rows?.forEach((row, i) => {
+  header?.rows?.forEach((row, i) => {
     assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
     row.segments?.forEach((segment, j) => {
       assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
@@ -158,14 +159,14 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertBoolean('sections.forecast_list.animated_icons', list?.animated_icons)
   assertBoolean('sections.forecast_list.round_temperatures', list?.round_temperatures)
 
-  assertPositiveInteger('sections.forecast_strip.count', config.sections?.forecast_strip?.count)
-  assertPositiveInteger('sections.forecast_list.count', config.sections?.forecast_list?.count)
+  assertPositiveInteger('sections.forecast_strip.count', strip?.count)
+  assertPositiveInteger('sections.forecast_list.count', list?.count)
 
   assertCssLength('sections.header.weather_icon_size', header?.weather_icon_size)
-  assertCssLength('sections.forecast_list.row_height', config.sections?.forecast_list?.row_height)
-  assertCssLength('sections.forecast_list.bar_thickness', config.sections?.forecast_list?.bar_thickness)
+  assertCssLength('sections.forecast_list.row_height', list?.row_height)
+  assertCssLength('sections.forecast_list.bar_thickness', list?.bar_thickness)
 
-  const gradient = config.sections?.forecast_list?.gradient
+  const gradient = list?.gradient
   if (gradient !== undefined) {
     if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
       throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of values to colors')
@@ -196,7 +197,6 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
   const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
   const D = DEFAULTS.sections
   const weatherIconType = config.weather_icon_type || DEFAULTS.weather_icon_type
-  const listAttribute = list?.attribute ?? D.forecast_list.attribute
   return {
     entity: config.entity,
     title: config.title ?? null,
@@ -241,7 +241,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       roundTemperatures: list?.round_temperatures ?? D.forecast_list.round_temperatures,
       timePattern: list?.time_pattern ?? D.forecast_list.time_pattern,
       weatherIconType: list?.weather_icon_type ?? weatherIconType,
-      attribute: listAttribute,
+      attribute: list?.attribute ?? D.forecast_list.attribute,
       attributeUnit: list?.attribute_unit ?? null,
       gradient: list?.gradient ?? DEFAULT_GRADIENT,
     },

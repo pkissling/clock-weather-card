@@ -46,7 +46,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -63,7 +62,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -80,7 +78,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -97,7 +94,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -115,7 +111,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -132,7 +127,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard)
@@ -150,7 +144,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
 
     await cardErrorMessage()
@@ -167,7 +160,6 @@ test.describe('locale', () => {
               - segments:
                   - type: weather
       `,
-      weather: { state: 'sunny' },
     })
     await expect(clockWeatherCard)
       .toContainText('Sunny')
@@ -255,7 +247,7 @@ test.describe('locale', () => {
   })
 
   test('keeps the translations when the Home Assistant profile sets a time format', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({ language: 'zh-Hant', timeFormat: '24', weather: { state: 'sunny' } })
+    await setupCard({ language: 'zh-Hant', timeFormat: '24' })
 
     await expect(clockWeatherCard)
       .toContainText('晴天')
@@ -263,7 +255,7 @@ test.describe('locale', () => {
 
   for (const [language, sunny] of [['sr-Latn', 'Sunčano'], ['zh-Hans', '晴'], ['zh-Hant', '晴天']]) {
     test(`uses the ${language} translation for Home Assistant's ${language} language`, async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({ language, weather: { state: 'sunny' } })
+      await setupCard({ language })
 
       await expect(clockWeatherCard)
         .toContainText(sunny)

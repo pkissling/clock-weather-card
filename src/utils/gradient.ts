@@ -49,7 +49,6 @@ export function toHex(rgb: [number, number, number]): string {
 
 export function interpolateColor(stops: ColorStop[], temp: number): string {
   if (stops.length === 0) return '#888888'
-  if (stops.length === 1) return stops[0].color
   if (temp <= stops[0].temp) return stops[0].color
   if (temp >= stops[stops.length - 1].temp) return stops[stops.length - 1].color
 
@@ -57,12 +56,9 @@ export function interpolateColor(stops: ColorStop[], temp: number): string {
     const a = stops[i]
     const b = stops[i + 1]
     if (temp >= a.temp && temp <= b.temp) {
-      const rgbA = toRgb(a.color)
-      const rgbB = toRgb(b.color)
-      // Fall back to the lower stop's color when one of the configured values is not a
-      // hex / rgb() string we can parse - the gradient still renders, just without a
-      // smooth blend at this exact bracket.
-      if (!rgbA || !rgbB) return a.color
+      // validateConfig only admits colors toRgb parses.
+      const rgbA = toRgb(a.color)!
+      const rgbB = toRgb(b.color)!
       const t = (temp - a.temp) / (b.temp - a.temp)
       return toHex([
         rgbA[0] + (rgbB[0] - rgbA[0]) * t,
@@ -75,11 +71,6 @@ export function interpolateColor(stops: ColorStop[], temp: number): string {
 }
 
 export function gradientStopsForRange(stops: ColorStop[], lowC: number, highC: number): GradientStop[] {
-  if (stops.length === 0) return [{ percent: 0, color: '#888888' }, { percent: 100, color: '#888888' }]
-  if (highC <= lowC) {
-    const c = interpolateColor(stops, lowC)
-    return [{ percent: 0, color: c }, { percent: 100, color: c }]
-  }
   const result: GradientStop[] = [{ percent: 0, color: interpolateColor(stops, lowC) }]
   for (const s of stops) {
     if (s.temp > lowC && s.temp < highC) {

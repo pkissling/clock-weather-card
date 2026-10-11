@@ -26,7 +26,6 @@ test.describe('time_zone', () => {
 
   test('falls back to HA time zone when configured time_zone is empty', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
-      timeZone: 'Europe/Berlin',
       cardConfig: 'time_zone: \'\'',
       date: new Date('2025-06-15T12:00:00Z'),
     })
@@ -38,7 +37,6 @@ test.describe('time_zone', () => {
 
   test('renders an error card when configured time_zone is invalid', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
-      timeZone: 'Europe/Berlin',
       cardConfig: 'time_zone: NotARealTimeZone',
       date: new Date('2025-06-15T12:00:00Z'),
     })

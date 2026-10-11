@@ -6,14 +6,12 @@ test.describe('sections.header.weather_icon_type', () => {
   test('falls back to the top-level weather_icon_type by default', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'weather_icon_type: fill',
-      weather: { state: 'sunny' },
     })
     const inheritedSrc = await clockWeatherCard.locator(HEADER_ICON)
       .getAttribute('src')
 
     await setupCard({
       cardConfig: 'sections: { header: { weather_icon_type: fill } }',
-      weather: { state: 'sunny' },
     })
     const explicitSrc = await clockWeatherCard.locator(HEADER_ICON)
       .getAttribute('src')
@@ -27,7 +25,6 @@ test.describe('sections.header.weather_icon_type', () => {
   test('overrides the top-level weather_icon_type when set', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'weather_icon_type: line',
-      weather: { state: 'sunny' },
     })
     const inheritedSrc = await clockWeatherCard.locator(HEADER_ICON)
       .getAttribute('src')
@@ -39,7 +36,6 @@ test.describe('sections.header.weather_icon_type', () => {
           header:
             weather_icon_type: fill
       `,
-      weather: { state: 'sunny' },
     })
     const overrideSrc = await clockWeatherCard.locator(HEADER_ICON)
       .getAttribute('src')
@@ -84,14 +80,12 @@ test.describe('sections.header.weather_icon_type', () => {
   test('updates weather_icon_type at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'sections: { header: { weather_icon_type: line } }',
-      weather: { state: 'sunny' },
     })
     const lineSrc = await clockWeatherCard.locator(HEADER_ICON)
       .getAttribute('src')
 
     await setupCard({
       cardConfig: 'sections: { header: { weather_icon_type: monochrome } }',
-      weather: { state: 'sunny' },
     })
 
     await expect(clockWeatherCard.locator(HEADER_ICON))

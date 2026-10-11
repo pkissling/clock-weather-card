@@ -90,23 +90,12 @@ export default css`
   clock-weather-card-divider {
     display: block;
     background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
-    margin: 2px 0;
-  }
-
-  clock-weather-card-divider[orientation="horizontal"] {
-    width: 100%;
     height: 1px;
+    margin: 2px 0;
   }
 
   .card-content > :first-child > clock-weather-card-divider:first-child {
     display: none;
-  }
-
-  clock-weather-card-divider[orientation="vertical"] {
-    width: 1px;
-    height: auto;
-    align-self: stretch;
-    margin: 0 2px;
   }
 
   clock-weather-card-forecast-strip {

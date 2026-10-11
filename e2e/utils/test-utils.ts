@@ -33,7 +33,6 @@ export type MockOptions = undefined | {
   sun?: {
     state?: 'above_horizon' | 'below_horizon'
     attributes?: {
-      elevation?: number
       next_rising?: string
       next_setting?: string
     }

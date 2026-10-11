@@ -9,7 +9,7 @@ import { errorMessageContext, hassContext } from '@/context'
 import type { ClockWeatherCardConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
 
-export type ClockWeatherCardErrorSeverity = 'error' | 'warning'
+type ClockWeatherCardErrorSeverity = 'error' | 'warning'
 
 type HuiErrorCard = HTMLElement & {
   setConfig: (c: unknown) => void

@@ -1,7 +1,6 @@
 import { expect, test } from '../../../utils/fixtures'
 
 const attributeIcon = (icon: string | null): string => `
-  entity: weather.mock_weather
   sections:
     forecast_strip:
       attribute: precipitation_probability

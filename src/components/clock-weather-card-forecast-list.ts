@@ -13,10 +13,7 @@ import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attribu
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { toCelsius } from '@/utils/temperature'
 
-/**
- * A percentage `bar_thickness` is relative to the row height (a CSS `%` height would resolve against
- * the grid area instead), so translate it into a `calc()` on the row-height variable.
- */
+// A CSS % height would resolve against the grid area, so a percentage is made relative to the row height.
 const toBarThicknessCss = (thickness: string): string => {
   const percent = /^(\d+(?:\.\d+)?)%$/.exec(thickness.trim())
   return percent
@@ -40,7 +37,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
 
   protected renderSkeleton(): TemplateResult {
     return html`
-      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <clock-weather-card-divider></clock-weather-card-divider>
       <div class="rows" aria-busy="true" style=${this._rowsStyle()}>
         ${Array.from({ length: this.config.forecastList.count }, () => html`
           <span class="skeleton skeleton--label"></span>
@@ -55,13 +52,13 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
 
   protected renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { gradient, animatedIcons, weatherIconType, attribute } = this.config.forecastList
-    const { bars, domain } = attribute === 'temperature'
+    const bars = attribute === 'temperature'
       ? this._temperatureBars(entityId, forecastType)
       : this._attributeBars(attribute)
     if (bars.length === 0) return html``
 
     const stops = normalizeGradient(gradient)
-    const extent = [...domain, ...bars.flatMap(b => b.span ? [b.span.from, b.span.to] : [])]
+    const extent = bars.flatMap(b => b.span ? [b.span.from, b.span.to] : [])
     const globalLow = Math.min(...extent)
     const range = Math.max(...extent) - globalLow
     const percentFor = (v: number): number => range === 0
@@ -69,7 +66,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
       : Math.max(0, Math.min(100, ((v - globalLow) / range) * 100))
 
     return html`
-      <clock-weather-card-divider orientation="horizontal"></clock-weather-card-divider>
+      <clock-weather-card-divider></clock-weather-card-divider>
       <div class="rows" style=${this._rowsStyle()}>
         ${bars.map(({ row, lowLabel, highLabel, span, current }) => {
     const item: ForecastListItem = {
@@ -97,7 +94,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     return `--cwc-list-row-height: ${rowHeight}; --cwc-list-bar-thickness: ${toBarThicknessCss(barThickness)}`
   }
 
-  private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBars {
+  private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBar[] {
     const { count, roundTemperatures, hideCurrentTempIndicator, attributeUnit, timePattern } = this.config.forecastList
     const { temperatureUnit, temperatureSensor } = this.config
     const currentTempRaw = hassService.getCurrentTemperature(this.hass, entityId, temperatureSensor, temperatureUnit)
@@ -108,7 +105,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     const hourly = forecastType === 'hourly'
     const format = (t: number): string => formatWithUnit(roundTemperatures ? Math.round(t) : t, attributeUnit ?? temperatureUnit)
 
-    const bars = this.visibleRows(count, timePattern)
+    return this.visibleRows(count, timePattern)
       .map((row, i, rows) => {
         const tempValues = hourly
           ? [row.forecast.temperature, i === 0 ? currentTempRaw ?? row.forecast.temperature : rows[i - 1].forecast.temperature]
@@ -125,12 +122,11 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
           current: row.isCurrent && !hideCurrentTempIndicator ? currentTempC : null,
         }
       })
-    return { bars, domain: [] }
   }
 
-  private _attributeBars(attribute: string): ListBars {
+  private _attributeBars(attribute: string): ListBar[] {
     const unit = this.config.forecastList.attributeUnit ?? this.forecastAttributeUnit(attribute)
-    const bars = this.visibleRows(this.config.forecastList.count, this.config.forecastList.timePattern)
+    return this.visibleRows(this.config.forecastList.count, this.config.forecastList.timePattern)
       .map((row) => {
         const value = forecastAttributeValue(row.forecast, attribute)
         return {
@@ -141,19 +137,15 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
           current: null,
         }
       })
-    return { bars, domain: [0] }
   }
 }
 
-interface ListBars {
-  bars: {
-    row: ForecastRow
-    lowLabel: string | null
-    highLabel: string | null
-    span: { from: number, to: number } | null
-    current: number | null
-  }[]
-  domain: number[]
+interface ListBar {
+  row: ForecastRow
+  lowLabel: string | null
+  highLabel: string | null
+  span: { from: number, to: number } | null
+  current: number | null
 }
 
 export default ClockWeatherCardForecastList
