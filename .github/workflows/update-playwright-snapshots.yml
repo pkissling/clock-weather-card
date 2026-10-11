@@ -2,13 +2,27 @@ name: Update Playwright Snapshots
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Playwright Tests]
+    types: [completed]
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   update-snapshots:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'failure' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch != 'main')
     runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v7
+      with:
+        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
 
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
@@ -20,6 +34,7 @@ jobs:
       run: git pull --rebase
 
     - name: Commit updated snapshots and docs previews
+      id: commit
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -28,3 +43,11 @@ jobs:
         git add docs/previews/
         git diff --staged --quiet || git commit -m "docs: update card previews"
         git push
+        echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+    # Pushes with GITHUB_TOKEN don't trigger workflows, so re-run the tests on the new commit explicitly.
+    - name: Re-run Playwright tests
+      if: github.event_name == 'workflow_run' && steps.commit.outputs.head != github.event.workflow_run.head_sha
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: gh workflow run playwright.yml -R ${{ github.repository }} --ref ${{ github.event.workflow_run.head_branch }}
