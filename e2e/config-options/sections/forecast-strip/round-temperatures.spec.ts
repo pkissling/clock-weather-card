@@ -33,7 +33,6 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             round_temperatures: false
@@ -59,7 +58,6 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             round_temperatures: false

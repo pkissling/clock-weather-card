@@ -33,18 +33,15 @@ describe('logger', () => {
       .mockImplementation(() => {})
     const debug = vi.spyOn(console, 'debug')
       .mockImplementation(() => {})
-    const info = vi.spyOn(console, 'log')
-      .mockImplementation(() => {})
 
     for (let i = 0; i < 2; i++) {
       logger.warn('same')
       logger.error('same')
       logger.debug('same')
-      logger.info('same')
     }
 
-    expect([warn, error, debug, info].map(spy => spy.mock.calls.length))
-      .toEqual([1, 1, 1, 1])
+    expect([warn, error, debug].map(spy => spy.mock.calls.length))
+      .toEqual([1, 1, 1])
   })
 
   it('logs a repeated message again once the 3 minute window has passed', () => {

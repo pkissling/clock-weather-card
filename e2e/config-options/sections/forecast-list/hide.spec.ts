@@ -14,7 +14,6 @@ test.describe('sections.forecast_list.hide', () => {
   test('hides the section when hide: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             hide: true
@@ -39,7 +38,6 @@ test.describe('sections.forecast_list.hide', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             hide: true
@@ -58,7 +56,6 @@ test.describe('sections.forecast_list.hide', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             hide: true

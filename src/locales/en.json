@@ -26,9 +26,6 @@
     "7": "Sun"
   },
   "misc": {
-    "aqi": "AQI",
-    "humidity": "Humidity",
-    "feels-like": "Feels like",
     "now": "Now",
     "today": "Today",
     "sunrise": "Sunrise",

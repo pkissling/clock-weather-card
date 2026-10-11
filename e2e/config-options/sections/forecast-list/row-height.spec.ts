@@ -12,7 +12,6 @@ test.describe('sections.forecast_list.row_height', () => {
   test('applies the configured row height to the icon and the row', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 48px
@@ -38,7 +37,6 @@ test.describe('sections.forecast_list.row_height', () => {
   test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: "tall"
@@ -52,7 +50,6 @@ test.describe('sections.forecast_list.row_height', () => {
   test('updates the row height at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 20px
@@ -67,7 +64,6 @@ test.describe('sections.forecast_list.row_height', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             row_height: 56px

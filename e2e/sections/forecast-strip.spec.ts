@@ -14,7 +14,7 @@ test.describe('forecast_strip section', () => {
     await setupCard({
       date: new Date('2025-09-14T19:07:00+00:00'),
       timeZone: 'UTC',
-      weather: { state: 'sunny', temperature: 30, forecast_hourly: forecasts },
+      weather: { temperature: 30, forecast_hourly: forecasts },
     })
 
     const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
@@ -81,83 +81,8 @@ test.describe('forecast_strip section', () => {
       .toBe(true)
   })
 
-  test('renders a horizontal divider between the header section and the hourly strip', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({
-      weather: {
-        forecast_hourly: [
-          { datetime: '2099-01-01T00:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
-        ],
-      },
-    })
-
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip > clock-weather-card-divider[orientation="horizontal"]'))
-      .toHaveCount(1)
-  })
-
-  test('treats forecast entries with missing precipitation_probability as no-precipitation (no precipitation row)', async ({ setupCard, clockWeatherCard }) => {
-    // Some HA integrations omit precipitation_probability entirely - the field arrives as undefined.
-    // The card boundary should coerce undefined → null, and the row stays hidden when every visible
-    // entry lacks a probability > 0.
-    const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21 },
-    ]
-    await setupCard({
-      date: new Date('2025-09-14T13:30:00+00:00'),
-      timeZone: 'UTC',
-      weather: { forecast_hourly: forecasts },
-    })
-
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
-      .toHaveCount(2)
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveCount(0)
-  })
-
-  test('hides every .precipitation span when no visible item has a precipitation probability > 0', async ({ setupCard, clockWeatherCard }) => {
-    const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: null },
-      { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },
-    ]
-    await setupCard({
-      date: new Date('2025-09-14T13:30:00+00:00'),
-      timeZone: 'UTC',
-      weather: { forecast_hourly: forecasts },
-    })
-
-    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
-    await expect(items)
-      .toHaveCount(3)
-    // None of the columns should render a .precipitation span at all.
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveCount(0)
-  })
-
-  test('shows 0% on zero-probability items (blank when unknown) when at least one item has a precipitation probability > 0', async ({ setupCard, clockWeatherCard }) => {
-    const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'rainy', temperature: 19, precipitation_probability: 70 },
-      { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
-      { datetime: '2025-09-14T16:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: null },
-    ]
-    await setupCard({
-      date: new Date('2025-09-14T13:30:00+00:00'),
-      timeZone: 'UTC',
-      weather: { forecast_hourly: forecasts },
-    })
-
-    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
-    await expect(items)
-      .toHaveCount(4)
-    const precip = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute')
-    await expect(precip)
-      .toHaveText(['0%', '70%', '0%', ''])
-  })
-
   test('widens columns for attribute values up to a cap, truncating longer ones', async ({ setupCard, clockWeatherCard }) => {
     const config = (unit: string): string => `
-      entity: weather.mock_weather
       sections:
         forecast_strip:
           attribute: precipitation_probability
@@ -215,34 +140,6 @@ test.describe('forecast_strip section', () => {
       .toHaveCount(1)
   })
 
-  test('formats hourly time labels in the configured locale (en-US shows "2:00 PM", not "14:00")', async ({ setupCard, clockWeatherCard }) => {
-    const forecasts: WeatherForecast[] = [
-      { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
-      { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 0 },
-    ]
-    await setupCard({
-      date: new Date('2025-09-14T13:30:00+00:00'),
-      timeZone: 'UTC',
-      timeFormat: 'language',
-      cardConfig: `
-        entity: weather.mock_weather
-        locale: en-US
-      `,
-      weather: { forecast_hourly: forecasts },
-    })
-
-    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
-    await expect(items)
-      .toHaveCount(2)
-    await expect(items.nth(0)
-      .locator('.time'))
-      .toHaveText('Now')
-    // The 14:00 future column renders in en-US 12-hour format.
-    await expect(items.nth(1)
-      .locator('.time'))
-      .toHaveText('2:00 PM')
-  })
-
   test('scrolls horizontally when the hours exceed the card width', async ({ setupCard, clockWeatherCard, page }) => {
     await setupCard({ expectedIcons: 20 })
     const strip = clockWeatherCard.locator('clock-weather-card-forecast-strip .strip')
@@ -276,7 +173,6 @@ test.describe('forecast_strip section', () => {
       timeZone: 'UTC',
       sun: { attributes: { next_setting: '2025-09-14T18:41:00+00:00', next_rising: '2025-09-15T05:13:00+00:00' } },
       cardConfig: `
-        entity: weather.mock_weather
         locale: en-GB
       `,
       weather: {

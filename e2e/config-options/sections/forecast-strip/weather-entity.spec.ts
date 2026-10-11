@@ -23,7 +23,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
     })
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.mock_weather_2
@@ -42,7 +41,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
   test('renders an error card when the override entity does not exist', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.does_not_exist
@@ -69,7 +67,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.mock_weather_2
@@ -93,7 +90,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.mock_weather_2
@@ -109,7 +105,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.mock_weather
@@ -142,7 +137,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_entity: weather.mock_weather_2

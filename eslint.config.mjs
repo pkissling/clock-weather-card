@@ -1,7 +1,6 @@
 import { includeIgnoreFile } from '@eslint/compat'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import globals from 'globals'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import ts from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
@@ -73,50 +72,18 @@ export default [
     },
   },
 
-  // Browser globals for app code
-  {
-    files: ['src/**/*.ts'],
-    languageOptions: {
-      globals: globals.browser,
-    },
-  },
-
-  // E2E tests (browser + node globals)
   {
     files: ['e2e/**/*.ts'],
-    languageOptions: {
-      globals: { ...globals.node, ...globals.browser },
-    },
     rules: {
       'no-console': 'off',
       'no-restricted-imports': 'off',
     },
   },
 
-  // Unit tests (node globals, relaxed rules)
   {
     files: ['test/**/*.ts'],
-    languageOptions: {
-      globals: globals.node,
-    },
     rules: {
-      'no-console': 'off',
       'no-restricted-imports': 'off',
-    },
-  },
-
-  // Tooling configs (Node env)
-  {
-    files: ['vite.config.ts', 'vitest.config.ts', 'playwright.config.ts'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-      globals: globals.node,
-    },
-    rules: {
-      'simpleImportSort/imports': 'error',
-      'simpleImportSort/exports': 'error',
-      'no-console': 'off',
     },
   },
 ]

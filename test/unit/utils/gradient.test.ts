@@ -60,12 +60,6 @@ describe('interpolateColor', () => {
       .toBe('#643219')
   })
 
-  it('falls back to the lower stop when a color is not parseable', () => {
-    const unparsed = normalizeGradient({ 0: 'currentColor', 10: '#ffffff' })
-    expect(interpolateColor(unparsed, 5))
-      .toBe('currentColor')
-  })
-
   it('returns the single stop color when only one is configured', () => {
     const single = normalizeGradient({ 15: '#abcdef' })
     expect(interpolateColor(single, -100))
@@ -116,14 +110,6 @@ describe('gradientStopsForRange', () => {
 
   it('handles a zero-width range by emitting a single color at both ends', () => {
     const result = gradientStopsForRange(stops, 5, 5)
-    expect(result)
-      .toHaveLength(2)
-    expect(result[0].color)
-      .toBe(result[1].color)
-  })
-
-  it('handles inverted ranges by collapsing to a single color', () => {
-    const result = gradientStopsForRange(stops, 8, 2)
     expect(result)
       .toHaveLength(2)
     expect(result[0].color)

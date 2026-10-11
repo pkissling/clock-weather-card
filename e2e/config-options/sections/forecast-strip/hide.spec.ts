@@ -24,7 +24,6 @@ test.describe('sections.forecast_strip.hide', () => {
   test('hides the section when hide: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             hide: true
@@ -53,7 +52,6 @@ test.describe('sections.forecast_strip.hide', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             hide: true
@@ -77,7 +75,6 @@ test.describe('sections.forecast_strip.hide', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             hide: true

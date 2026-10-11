@@ -9,7 +9,6 @@ const FORECAST_DAILY: DailyWeatherForecast[] = dailyForecast(DEFAULT_DATE, ['sun
 ][i])
 
 const listConfig = (attribute: string): string => `
-  entity: weather.mock_weather
   sections:
     forecast_list:
       attribute: ${attribute}
@@ -57,7 +56,6 @@ test.describe('sections.forecast_list.attribute', () => {
   test('converts temperature attributes to the card\'s temperature_unit', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         temperature_unit: fahrenheit
         sections:
           forecast_list:
@@ -73,7 +71,6 @@ test.describe('sections.forecast_list.attribute', () => {
   test('applies gradient keys in the attribute\'s units', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_list:
             attribute: precipitation_probability

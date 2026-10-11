@@ -27,7 +27,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       timeZone: 'UTC',
       sun: SUN,
       cardConfig: `
-        entity: weather.mock_weather
         locale: en-GB
       `,
       weather: { forecast_hourly: FORECAST_HOURLY },
@@ -56,7 +55,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       timeZone: 'UTC',
       sun: { state: 'below_horizon', ...SUN },
       cardConfig: `
-        entity: weather.mock_weather
         locale: en-GB
       `,
       weather: { forecast_hourly: sunnyHours(date, 3) },
@@ -80,7 +78,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       date: NOW,
       sun: SUN,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             count: 2
@@ -100,7 +97,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       timeZone: 'UTC',
       sun: SUN,
       cardConfig: `
-        entity: weather.mock_weather
         locale: en-GB
         sections:
           forecast_strip:
@@ -121,7 +117,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       date: NOW,
       sun: SUN,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             hide_sunrise_sunset: true
@@ -140,7 +135,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
       date: NOW,
       sun: SUN,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             hide_sunrise_sunset: true
@@ -164,7 +158,6 @@ test.describe('sections.forecast_strip.hide_sunrise_sunset', () => {
   test('rejects hide_sunrise_sunset: true for a non-hourly forecast_type', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             forecast_type: daily

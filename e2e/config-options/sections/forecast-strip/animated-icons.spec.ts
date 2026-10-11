@@ -11,7 +11,6 @@ test.describe('sections.forecast_strip.animated_icons', () => {
   test('loads animated assets when sections.forecast_strip.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             animated_icons: false
@@ -24,7 +23,6 @@ test.describe('sections.forecast_strip.animated_icons', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             animated_icons: true
@@ -43,7 +41,6 @@ test.describe('sections.forecast_strip.animated_icons', () => {
   test('updates animated_icons at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             animated_icons: false
@@ -56,7 +53,6 @@ test.describe('sections.forecast_strip.animated_icons', () => {
 
     await setupCard({
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             animated_icons: true

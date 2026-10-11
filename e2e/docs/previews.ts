@@ -12,7 +12,7 @@ export const PREVIEWS_DIR = 'docs/previews'
 
 type Mock = NonNullable<MockOptions>
 
-export interface Preview {
+interface Preview {
   name: string
   cardConfig: Record<string, unknown>
   theme?: ThemeRef

@@ -13,7 +13,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         weather_icon_type: line
       `,
       weather: { forecast_hourly: FORECAST },
@@ -25,7 +24,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         weather_icon_type: fill
       `,
       weather: { forecast_hourly: FORECAST },
@@ -45,7 +43,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         weather_icon_type: line
       `,
       weather: { forecast_hourly: FORECAST },
@@ -57,7 +54,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         weather_icon_type: line
         sections:
           forecast_strip:
@@ -76,7 +72,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_icon_type: gradient
@@ -98,7 +93,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: new Date('2025-09-14T18:30:00+00:00'),
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_icon_type: line
@@ -112,7 +106,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: new Date('2025-09-14T18:30:00+00:00'),
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_icon_type: monochrome
@@ -135,7 +128,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_icon_type: line
@@ -149,7 +141,6 @@ test.describe('sections.forecast_strip.weather_icon_type', () => {
     await setupCard({
       date: FIXED_NOW,
       cardConfig: `
-        entity: weather.mock_weather
         sections:
           forecast_strip:
             weather_icon_type: monochrome

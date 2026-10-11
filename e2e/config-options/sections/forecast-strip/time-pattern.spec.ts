@@ -5,7 +5,6 @@ import { hourlyForecast } from '../../../utils/test-utils'
 const NOW = new Date('2025-09-14T16:30:00+00:00')
 
 const patternConfig = (pattern: string | null, locale = 'en-GB'): string => `
-  entity: weather.mock_weather
   locale: ${locale}
 ${pattern === null ? '' : `  sections:\n    forecast_strip:\n      time_pattern: "${pattern}"`}
 `

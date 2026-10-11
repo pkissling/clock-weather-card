@@ -13,8 +13,6 @@ export default defineConfig({
   testDir: './e2e',
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* No retries */
-  retries: 0,
   /* The whole suite shares one HA container. */
   workers: 1,
   /* Baselines are rendered in the pinned Docker image; host fonts would never match them. */

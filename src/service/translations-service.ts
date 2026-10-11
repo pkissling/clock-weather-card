@@ -12,9 +12,9 @@ class TranslationsService {
   public register(namespace: string, locales: Record<string, unknown>): void {
     for (const [path, data] of Object.entries(locales)) {
       const lang = path.match(/\/([^/]+)\.json$/)?.[1]
-      if (!lang || !data) continue
+      if (!lang) continue
       const translations = this.translationsByLang.get(lang) ?? new Map<string, string>()
-      for (const [key, value] of this.flattenTranslations(data as Record<string, unknown>, namespace)) translations.set(key, value)
+      this.flatten(data as Record<string, unknown>, namespace, translations)
       this.translationsByLang.set(lang, translations)
     }
   }
@@ -32,7 +32,7 @@ class TranslationsService {
     const lang = this.normalizeLang(language)
 
     const langDict = this.translationsByLang.get(lang)
-    if (langDict && langDict.has(key)) return langDict.get(key) as string
+    if (langDict?.has(key)) return langDict.get(key)!
 
     const baseLang = lang.split('-')[0]
     const baseLangDict = this.translationsByLang.get(baseLang)
@@ -40,32 +40,25 @@ class TranslationsService {
     if (!langDict && !baseLangDict) logger.warn(`No translations for language "${language}", falling back to English`)
 
     const enFallback = this.translationsByLang.get('en')
-    if (enFallback?.has(key)) return enFallback.get(key) as string
+    if (enFallback?.has(key)) return enFallback.get(key)!
 
     logger.warn(`Translation for key "${key}" not found for language "${language}" nor fallback (en).`)
     return key
   }
 
   private normalizeLang(language: string): string {
-    // Keep lower-case, drop Unicode extensions (-u-hc-h23), map underscores to hyphens to match filenames like pt-br, zh-hans
+    // Unicode extensions (-u-hc-h23) are not part of the locale file names.
     return language.toLowerCase()
       .split('-u-')[0]
       .replace('_', '-')
   }
 
-  private flattenTranslations(obj: Record<string, unknown>, prefix = ''): Translations {
-    const acc: Translations = new Map()
-    return Object.entries(obj)
-      .reduce((acc, [key, value]) => {
-        const newKey = prefix ? `${prefix}.${key}` : key
-        if (typeof value == 'string') {
-          acc.set(newKey, value)
-        } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-          const nested = this.flattenTranslations(value as Record<string, unknown>, newKey)
-          for (const [nKey, nVal] of nested.entries()) acc.set(nKey, nVal)
-        }
-        return acc
-      }, acc)
+  private flatten(obj: Record<string, unknown>, prefix: string, into: Translations): void {
+    for (const [key, value] of Object.entries(obj)) {
+      const path = prefix ? `${prefix}.${key}` : key
+      if (typeof value === 'string') into.set(path, value)
+      else if (value && typeof value === 'object') this.flatten(value as Record<string, unknown>, path, into)
+    }
   }
 }
 
