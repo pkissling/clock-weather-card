@@ -32,6 +32,7 @@ sun: { state: below_horizon }
 language: de
 time_zone: America/New_York
 unit_system: us_customary
+entities: { sensor.uv: { state: '5', attributes: { icon: mdi:sun } } }
 animated: true
 `))
     expect(preview)
@@ -45,6 +46,7 @@ animated: true
           timeZone: 'America/New_York',
           unitSystem: 'us_customary',
         },
+        entities: { 'sensor.uv': { state: '5', attributes: { icon: 'mdi:sun' } } },
         animated: true,
       })
     expect(previewImage(preview))

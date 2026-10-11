@@ -90,13 +90,16 @@ export const dailyForecast = (
 // behavior is driven by the config knob, not by fixture length. Conditions/temps cover the
 // visual variants the section needs to render.
 const DEFAULT_DAILY_ROWS = [
-  { condition: 'sunny', templow: 15, temperature: 24, precipitation_probability: 10 },
-  { condition: 'partlycloudy', templow: 13, temperature: 22, precipitation_probability: 20 },
-  { condition: 'cloudy', templow: 12, temperature: 20, precipitation_probability: 40 },
-  { condition: 'rainy', templow: 10, temperature: 18, precipitation_probability: 80 },
-  { condition: 'sunny', templow: 14, temperature: 23, precipitation_probability: 5 },
-  { condition: 'partlycloudy', templow: 12, temperature: 21, precipitation_probability: 15 },
-  { condition: 'cloudy', templow: 11, temperature: 19, precipitation_probability: 30 },
+  { condition: 'sunny', templow: 15, temperature: 24, precipitation_probability: 10, aqi: 42, wind_speed: 8 },
+  { condition: 'partlycloudy', templow: 13, temperature: 22, precipitation_probability: 20, aqi: 35, wind_speed: 14 },
+  { condition: 'cloudy', templow: 12, temperature: 20, precipitation_probability: 40, aqi: 28, wind_speed: 22 },
+  { condition: 'rainy', templow: 10, temperature: 18, precipitation_probability: 80, aqi: 18, wind_speed: 31 },
+  { condition: 'sunny', templow: 14, temperature: 23, precipitation_probability: 5, aqi: 55, wind_speed: 11 },
+  { condition: 'partlycloudy', templow: 12, temperature: 21, precipitation_probability: 15, aqi: 61, wind_speed: 17 },
+  { condition: 'cloudy', templow: 11, temperature: 19, precipitation_probability: 30, aqi: 47, wind_speed: 25 },
+  { condition: 'rainy', templow: 9, temperature: 17, precipitation_probability: 70, aqi: 24, wind_speed: 28 },
+  { condition: 'sunny', templow: 13, temperature: 22, precipitation_probability: 10, aqi: 39, wind_speed: 9 },
+  { condition: 'partlycloudy', templow: 14, temperature: 24, precipitation_probability: 20, aqi: 44, wind_speed: 12 },
 ]
 
 const defaultForecastDaily = (now: Date): DailyWeatherForecast[] =>

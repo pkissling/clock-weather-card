@@ -9,6 +9,8 @@ An iOS-inspired clock and weather card for [Home Assistant](https://www.home-ass
 
 ![Clock Weather Card](docs/previews/hero.gif)
 
+*Shown in the [iOS Dark Mode Dark Green](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3) theme from [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes) by [Bas Nijholt](https://github.com/basnijholt).*
+
 ## Features
 
 - **A header you compose yourself** - arrange the clock, date, current weather, any entity, icons and text in rows of segments.
@@ -59,65 +61,166 @@ type: custom:clock-weather-card
 entity: weather.home
 ```
 
-The animation at the top of this page shows this configuration in the [iOS Dark Mode Dark Green](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3) theme.
+The animation at the top of this page shows this configuration.
 
 ### Examples
 
-Every image in this README is rendered from the configuration shown next to it, so it always matches the current version of the card. Each example names the [theme](https://www.home-assistant.io/integrations/frontend/#defining-themes) it is shown in.
+From a single temperature to an air quality forecast: each example highlights a few options, shown in a different community theme. See the tables after them for every option.
 
 <table>
 <tr><th>Configuration</th><th>Card</th></tr>
 <tr><td>
 
-<!-- preview: example-thunderstorm
-theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-light-mode-light-blue }
+**Just the weather** - a larger header icon with `fill` icons and only the temperature in large letters.
+
+<!-- preview: example-temperature-only
+theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
+dark: true
 weather: { state: lightning-rainy, temperature: 17 }
 animated: true
 -->
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
+weather_icon_type: fill
 sections:
+  header:
+    weather_icon_size: 10rem
+    rows:
+      - font_size: 5rem
+        alignment: center
+        segments:
+          - type: weather
+            attribute: temperature
+  forecast_strip:
+    hide: true
   forecast_list:
     hide: true
 ```
 
 </td><td>
 
-![The card with an animated thunderstorm icon](docs/previews/example-thunderstorm.gif)
+![A large animated thunderstorm icon next to the temperature in large letters](docs/previews/example-temperature-only.gif)
 
-*[iOS Light Mode Light Blue](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3)*
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 </td></tr>
 <tr><td>
 
-<!-- preview: example-night
-theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-blue }
+**Header and daily strip** - the strip shows the coming days instead of hours, with `flat` icons.
+
+<!-- preview: example-daily-strip
+theme: { repo: aFFekopp/noctis, version: 3.3.5, name: noctis }
 dark: true
-weather: { state: clear-night, temperature: 12 }
-sun: { state: below_horizon }
-time_zone: Asia/Tokyo
+weather: { state: partlycloudy, temperature: 19 }
 -->
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
-weather_icon_type: fill
+weather_icon_type: flat
 sections:
   forecast_strip:
+    forecast_type: daily
+  forecast_list:
     hide: true
 ```
 
 </td><td>
 
-![The card at night with filled icons](docs/previews/example-night.png)
+![The header above a daily forecast strip](docs/previews/example-daily-strip.png)
 
-*[iOS Dark Mode Dark Blue](https://github.com/basnijholt/lovelace-ios-themes/tree/v3.0.3)*
+*[Noctis](https://github.com/aFFekopp/noctis/tree/3.3.5)*
 
 </td></tr>
 <tr><td>
 
-<!-- preview: example-custom-header
-language: de
+**Custom header with daily list** - your own rows of segments above the coming days, without the strip.
+
+<!-- preview: example-header-list
+theme: { repo: Madelena/Metrology-for-Hass, version: v.1.9.1, name: Metro Blue }
+weather: { state: cloudy, temperature: 18, humidity: 72 }
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 4.5rem
+        segments:
+          - type: time
+            time_pattern: HH:mm
+      - segments:
+          - type: date
+            date_pattern: EEE, d MMM
+          - type: spacer
+          - type: icon
+            icon: mdi:water-percent
+          - type: weather
+            attribute: humidity
+          - type: icon
+            icon: mdi:thermometer
+          - type: weather
+            attribute: temperature
+  forecast_strip:
+    hide: true
+  forecast_list:
+    count: 7
+```
+
+</td><td>
+
+![A custom header with time, date, humidity and temperature above a seven-day forecast list](docs/previews/example-header-list.png)
+
+*[Metro Blue](https://github.com/Madelena/Metrology-for-Hass/tree/v.1.9.1)*
+
+</td></tr>
+<tr><td>
+
+**Air quality at a glance** - a header with just the weather icon and the current AQI, above a list that charts the AQI forecast with your own `gradient`.
+
+<!-- preview: example-aqi-gradient
+theme: { repo: piitaya/lovelace-mushroom-themes, version: v0.0.11, name: Mushroom Shadow }
+weather: { state: partlycloudy, extra_attributes: { aqi: 38 } }
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 3.5rem
+        alignment: center
+        segments:
+          - type: icon
+            icon: mdi:leaf
+          - type: weather
+            attribute: aqi
+            unit: " AQI"
+  forecast_strip:
+    hide: true
+  forecast_list:
+    attribute: aqi
+    gradient:
+      0: "#00F5D4"
+      20: "#00BBF9"
+      40: "#9B5DE5"
+      60: "#F15BB5"
+```
+
+</td><td>
+
+![A header with the current air quality index above a list of AQI bars in a cyan to pink gradient](docs/previews/example-aqi-gradient.png)
+
+*[Mushroom Shadow](https://github.com/piitaya/lovelace-mushroom-themes/tree/v0.0.11)*
+
+</td></tr>
+<tr><td>
+
+**Wind forecast** - the strip shows any forecast attribute, here the wind speed with your own icon and color next to `monochrome` icons.
+
+<!-- preview: example-wind
+theme: { repo: TilmanGriesel/graphite, version: 2.7.6, name: Graphite Light }
 -->
 ```yaml
 type: custom:clock-weather-card
@@ -125,28 +228,62 @@ entity: weather.home
 weather_icon_type: monochrome
 sections:
   header:
-    rows:
-      - font_size: 3.5rem
-        segments:
-          - type: time
-            time_pattern: HH:mm
-      - segments:
-          - type: date
-            date_pattern: cccc, d. MMMM
-          - type: spacer
-          - type: weather
-            attribute: temperature
-  forecast_strip:
     hide: true
+  forecast_strip:
+    forecast_type: daily
+    attribute: wind_speed
+    attribute_icon: mdi:weather-windy
+    attribute_color: "#0288D1"
   forecast_list:
-    count: 3
+    hide: true
 ```
 
 </td><td>
 
-![A custom German header with monochrome icons](docs/previews/example-custom-header.png)
+![A daily forecast strip showing the wind speed in blue](docs/previews/example-wind.png)
 
-*[Home Assistant default](https://www.home-assistant.io/integrations/frontend/#themes)*
+*[Graphite Light](https://github.com/TilmanGriesel/graphite/tree/2.7.6)*
+
+</td></tr>
+<tr><td>
+
+**Your own sensors** - `text` and `entity` segments show anything from Home Assistant, here a template sensor with the next event of a calendar.
+
+<!-- preview: example-next-appointment
+theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Latte }
+weather: { state: sunny, temperature: 23 }
+entities:
+  sensor.next_appointment: { state: '18:00 Dinner' }
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 4rem
+        alignment: center
+        segments:
+          - type: time
+      - alignment: center
+        segments:
+          - type: icon
+            icon: mdi:calendar-clock
+          - type: text
+            text: "Next appointment:"
+          - type: entity
+            entity_id: sensor.next_appointment
+  forecast_strip:
+    hide: true
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![A header with the time and the next calendar appointment](docs/previews/example-next-appointment.png)
+
+*[Catppuccin Latte](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 </td></tr>
 </table>
@@ -430,7 +567,6 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the develo
 ## Credits
 
 - Weather icons: [Meteocons](https://github.com/basmilius/meteocons) by [Bas Milius](https://github.com/basmilius) (MIT License).
-- Theme used in the screenshots: [lovelace-ios-themes](https://github.com/basnijholt/lovelace-ios-themes) by [Bas Nijholt](https://github.com/basnijholt).
 
 ## License
 
