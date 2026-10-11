@@ -9,7 +9,7 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **New default header.** The large weather icon sits next to three rows: current temperature and weather state, a large clock, and the date. Humidity, apparent temperature and AQI are no longer built in - add them as segments.
 - **`time_format` removed.** Use `time_pattern` on a `time` segment: `HH:mm` / `HH:mm:ss` for 24-hour, `hh:mm a` / `h:mm a` for 12-hour ([Luxon tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens)).
 - **Default `time_pattern` / `date_pattern` are locale-aware.** When omitted, time and date use the localized Luxon tokens `t` / `DDD` - e.g. `15:27` and `27 April 2026` for `en-GB`, `3:27 PM` and `April 27, 2026` for `en-US`. v2 rendered a fixed `HH:mm` / `ccc, d.MM.yy`. Set the pattern explicitly to keep the old look.
-- **`use_browser_time` removed.** The clock always uses `time_zone`, falling back to the Home Assistant time zone.
+- **Time zone follows your Home Assistant profile; `use_browser_time` removed.** When `time_zone` is unset, the card uses the time zone from the Localization settings of your Home Assistant user profile, like the rest of the Home Assistant UI. Home Assistant defaults this to your browser's time zone, while v2 used the server's. So on a device in a different time zone than the server, the card now shows the device's local time. To keep the v2 behavior, set `time_zone` or switch the profile setting to the server time zone.
 - **Invalid config values now raise a card error** naming the offending option and the expected value, instead of rendering silently wrong.
 
 ## ✨ New features
@@ -74,5 +74,5 @@ I recommend starting from scratch (see above). If you'd rather convert an existi
 | `apparent_sensor` | `entity` segment with `entity_id: <sensor>` (or `weather` segment with `attribute: apparent_temperature`) |
 | `aqi_sensor` | `entity` segment with `entity_id: <sensor>` |
 | `show_decimal` | Removed. Header segments show the value as provided by the entity; forecast sections use `round_temperatures`. |
-| `use_browser_time` | Removed. Set `time_zone` if the HA time zone isn't the one you want. |
+| `use_browser_time` | Removed. The card follows the time zone in your Home Assistant profile (browser time by default); set `time_zone` to override it. |
 | `tap_action` | Tap opens more-info by default, configurable via `tap_action`; hold and double tap are not supported. |

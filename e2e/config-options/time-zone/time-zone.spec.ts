@@ -24,6 +24,30 @@ test.describe('time_zone', () => {
       .toContainText('21:00')
   })
 
+  test('falls back to the browser time zone when the user profile uses the local time zone', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      timeZone: 'Asia/Tokyo',
+      userTimeZone: 'local',
+      date: new Date('2025-06-15T12:00:00Z'),
+    })
+
+    // Browser runs in Europe/Berlin (playwright.config.ts) → 14:00, not Tokyo's 21:00
+    await expect(clockWeatherCard)
+      .toContainText('14:00')
+  })
+
+  test('prefers the configured time_zone over the user profile time zone', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: 'time_zone: America/New_York',
+      timeZone: 'Asia/Tokyo',
+      userTimeZone: 'local',
+      date: new Date('2025-06-15T12:00:00Z'),
+    })
+
+    await expect(clockWeatherCard)
+      .toContainText('08:00')
+  })
+
   test('falls back to HA time zone when configured time_zone is empty', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: 'time_zone: \'\'',
