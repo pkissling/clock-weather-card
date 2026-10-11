@@ -113,48 +113,50 @@ test.describe('sections.header.rows', () => {
               - type: text
                 text: Short
   `
-  type Box = Awaited<ReturnType<Locator['boundingBox']>>
-  const alignedBoxes = (clockWeatherCard: Locator): Promise<[Box, Box]> => Promise.all([
-    clockWeatherCard.locator('clock-weather-card-header-details-row')
-      .nth(1)
-      .boundingBox(),
-    clockWeatherCard.locator('clock-weather-card-text-segment')
-      .nth(1)
-      .boundingBox(),
-  ])
+  // HA applies the language's text direction asynchronously, so a single measurement can catch the old layout.
+  const alignedGaps = async (clockWeatherCard: Locator): Promise<{ left: number, right: number }> => {
+    const [row, segment] = await Promise.all([
+      clockWeatherCard.locator('clock-weather-card-header-details-row')
+        .nth(1)
+        .boundingBox(),
+      clockWeatherCard.locator('clock-weather-card-text-segment')
+        .nth(1)
+        .boundingBox(),
+    ])
+    return { left: segment!.x - row!.x, right: row!.x + row!.width - segment!.x - segment!.width }
+  }
 
   test('alignment: center centers the row\'s segments', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ cardConfig: alignedRowConfig('center') })
-    const [row, segment] = await alignedBoxes(clockWeatherCard)
 
-    expect(segment!.x - row!.x)
-      .toBeCloseTo(row!.x + row!.width - segment!.x - segment!.width, 0)
-    expect(segment!.x)
-      .toBeGreaterThan(row!.x + 1)
+    await expect.poll(async () => {
+      const { left, right } = await alignedGaps(clockWeatherCard)
+      return Math.abs(left - right)
+    })
+      .toBeLessThan(0.5)
+    expect((await alignedGaps(clockWeatherCard)).left)
+      .toBeGreaterThan(1)
   })
 
   test('alignment: right moves the row\'s segments to the right edge', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ cardConfig: alignedRowConfig('right') })
-    const [row, segment] = await alignedBoxes(clockWeatherCard)
 
-    expect(segment!.x + segment!.width)
-      .toBeCloseTo(row!.x + row!.width, 0)
+    await expect.poll(async () => Math.abs((await alignedGaps(clockWeatherCard)).right))
+      .toBeLessThan(0.5)
   })
 
   test('alignment: right stays on the right edge in an RTL language', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ language: 'he', cardConfig: alignedRowConfig('right') })
-    const [row, segment] = await alignedBoxes(clockWeatherCard)
 
-    expect(segment!.x + segment!.width)
-      .toBeCloseTo(row!.x + row!.width, 0)
+    await expect.poll(async () => Math.abs((await alignedGaps(clockWeatherCard)).right))
+      .toBeLessThan(0.5)
   })
 
   test('alignment: left stays on the left edge in an RTL language', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ language: 'he', cardConfig: alignedRowConfig('left') })
-    const [row, segment] = await alignedBoxes(clockWeatherCard)
 
-    expect(segment!.x)
-      .toBeCloseTo(row!.x, 0)
+    await expect.poll(async () => Math.abs((await alignedGaps(clockWeatherCard)).left))
+      .toBeLessThan(0.5)
   })
 
   test('rejects an unknown row alignment', async ({ setupCard, cardErrorMessage }) => {
