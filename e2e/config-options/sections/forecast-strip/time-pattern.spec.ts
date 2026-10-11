@@ -12,6 +12,7 @@ ${pattern === null ? '' : `  sections:\n    forecast_strip:\n      time_pattern:
 
 const setup = (cardConfig: string): MockOptions => ({
   date: NOW,
+  timeFormat: 'language',
   timeZone: 'UTC',
   cardConfig,
   sun: { attributes: { next_setting: '2025-09-14T18:42:00+00:00', next_rising: '2025-09-15T05:13:00+00:00' } },

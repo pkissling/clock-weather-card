@@ -223,6 +223,7 @@ test.describe('forecast_strip section', () => {
     await setupCard({
       date: new Date('2025-09-14T13:30:00+00:00'),
       timeZone: 'UTC',
+      timeFormat: 'language',
       cardConfig: `
         entity: weather.mock_weather
         locale: en-US
