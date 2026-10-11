@@ -87,3 +87,7 @@ Prefer throwing a config error in `validateConfig` over warning when the mistake
 ## Translations
 
 User-facing strings live in `src/locales/<lang>.json`; strings of the GUI editor live in `src/locales/editor/<lang>.json`, so they load only with the editor. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).
+
+## Commits
+
+Always use semantic commit messages ([Conventional Commits](https://www.conventionalcommits.org/)): `<type>(<optional scope>): <summary>`, e.g. `feat: add a visual card editor` or `fix(forecast): keep the bar track visible on light backgrounds`. Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Mark breaking changes with `!` after the type/scope.
