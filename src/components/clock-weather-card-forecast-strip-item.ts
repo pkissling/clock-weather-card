@@ -2,10 +2,11 @@ import '@/components/clock-weather-card-icon'
 
 import type { TemplateResult } from 'lit'
 import { html, nothing } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import type { ForecastStripItem } from '@/types'
+import { customElement } from '@/utils/custom-element'
 
 @customElement('clock-weather-card-forecast-strip-item')
 class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponent {

@@ -4,12 +4,13 @@ import '@/editor/clock-weather-card-color-picker'
 
 import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
 import type { ClockWeatherCardConfig, RowConfig } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
+import { customElement } from '@/utils/custom-element'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 
 const SECTION_ICONS: Record<SectionKey, string> = {

@@ -2,13 +2,14 @@ import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ResolvedConfig } from '@/types'
+import { customElement } from '@/utils/custom-element'
 import { toDisplayTemperature } from '@/utils/temperature'
 
 @customElement('clock-weather-card-entity-segment')

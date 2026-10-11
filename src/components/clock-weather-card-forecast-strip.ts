@@ -3,13 +3,13 @@ import '@/components/clock-weather-card-divider'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
 import hassService from '@/service/hass-service'
 import translationsService from '@/service/translations-service'
 import type { ForecastStripItem, SectionForecastType } from '@/types'
+import { customElement } from '@/utils/custom-element'
 import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
 
 @customElement('clock-weather-card-forecast-strip')

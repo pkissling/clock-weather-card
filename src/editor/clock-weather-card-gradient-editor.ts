@@ -2,10 +2,11 @@ import '@/editor/clock-weather-card-color-picker'
 
 import type { HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js'
 
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { editorT, fireEvent } from '@/editor/form'
+import { customElement } from '@/utils/custom-element'
 import { type ColorStop, DEFAULT_GRADIENT, normalizeGradient } from '@/utils/gradient'
 
 @customElement('clock-weather-card-gradient-editor')
