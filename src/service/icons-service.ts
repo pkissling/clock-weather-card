@@ -21,8 +21,7 @@ class IconsService {
 
   public getWeatherMdiIcon(weatherState: string, isNight: boolean): string {
     const s = weatherState.toLowerCase()
-    if (s === 'clear-night') return 'mdi:weather-night'
-    if (s === 'sunny' || s === 'clear') return isNight ? 'mdi:weather-night' : 'mdi:weather-sunny'
+    if (s === 'sunny' || s === 'clear' || s === 'clear-night') return isNight ? 'mdi:weather-night' : 'mdi:weather-sunny'
     if (s === 'partlycloudy') return isNight ? 'mdi:weather-night-partly-cloudy' : 'mdi:weather-partly-cloudy'
     if (s === 'windy-exceptional') return 'mdi:weather-windy'
     if (s === 'exceptional') return 'mdi:alert-circle-outline'
@@ -38,7 +37,6 @@ class IconsService {
 
     switch (s) {
     case 'clear-night':
-      return 'clear-night'
     case 'clear':
     case 'sunny':
       return `clear-${dn}`

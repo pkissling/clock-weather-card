@@ -42,6 +42,26 @@ test.describe('sun_entity', () => {
       .not.toHaveAttribute('src', daySrc!)
   })
 
+  for (const state of ['sunny', 'clear-night']) {
+    test(`a clear "${state}" sky follows the sun entity in the header text and icon`, async ({ setupCard, clockWeatherCard }) => {
+      const header = clockWeatherCard.locator('clock-weather-card-header')
+      const icon = header.locator('clock-weather-card-icon img')
+
+      await setupCard({ sun: { state: 'above_horizon' }, weather: { state } })
+      await expect(header)
+        .toContainText('Sunny')
+      await expect(icon)
+        .toHaveAttribute('src', /clear-day/)
+
+      await setupCard({ sun: { state: 'below_horizon' }, weather: { state } })
+      await expect(header)
+        .toContainText('Clear')
+      await expect(header).not.toContainText('Sunny')
+      await expect(icon)
+        .toHaveAttribute('src', /clear-night/)
+    })
+  }
+
   test('renders an error card when the configured sun_entity does not exist', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
