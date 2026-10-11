@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 
 import { expect, test } from '../utils/fixtures'
+import api from '../utils/ha-api'
 import { captureAnimation, type Clip } from './animation'
 import { collectPreviews, previewFile } from './previews'
 import { installThemes } from './themes'
@@ -16,11 +17,15 @@ test.beforeAll(async () => {
 for (const preview of previews) {
   test(preview.name, async ({ page, setupCard, cardErrorMessage }, testInfo) => {
     test.setTimeout(120_000)
+    for (const [entityId, { state, attributes }] of Object.entries(preview.entities)) await api.setEntityState(entityId, state, attributes)
     await page.emulateMedia({ colorScheme: preview.dark ? 'dark' : 'light' })
     const card = await setupCard({ ...preview.mock, theme: preview.theme?.name, cardConfig: preview.cardConfig })
     await cardErrorMessage()
       .toBeNull()
     await waitForBackgroundImages(page)
+    // The theme only applies to the view, so HA's toolbar would show in the padding above the card.
+    await page.locator('hui-root .header')
+      .evaluate((el: HTMLElement) => { el.style.visibility = 'hidden' })
 
     const measureClip = async (): Promise<Clip> => {
       const box = (await card.boundingBox())!

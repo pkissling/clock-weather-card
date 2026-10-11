@@ -82,6 +82,7 @@ sections:
 | `dark` | Render in dark mode. Defaults to `false`. |
 | `weather`, `sun` | Mock state, as in `setupCard` (e.g. `weather: { state: rainy, temperature: 12 }`). Defaults to a sunny day. |
 | `language`, `time_zone`, `unit_system` | Home Assistant settings, with the defaults of `setupCard`. |
+| `entities` | States of extra entities the config references, e.g. `entities: { sensor.uv_index: { state: '5' } }` with optional `attributes`. |
 | `animated` | Render a seamlessly looping GIF of the icon animations instead of a PNG. Defaults to `false`. |
 
 ## New features
