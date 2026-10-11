@@ -9,11 +9,12 @@ import '@/components/segments/clock-weather-card-weather-segment'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import type { RowConfig, SegmentConfig } from '@/types'
+import { customElement } from '@/utils/custom-element'
 
 @customElement('clock-weather-card-header-details-row')
 class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent {
