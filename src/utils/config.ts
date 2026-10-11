@@ -203,7 +203,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     sunEntity: config.sun_entity ?? DEFAULTS.sun_entity,
     weatherIconType,
     timeZone: config.time_zone || hassService.getTimeZone(hass),
-    locale: config.locale || hassService.getLocale(hass),
+    locale: hassService.withHourCycle(hass, config.locale || hassService.getLocale(hass)),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     temperatureSensor: config.temperature_sensor ?? null,
     header: {

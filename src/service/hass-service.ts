@@ -60,6 +60,17 @@ class HassService {
     return hass.language
   }
 
+  // Luxon's localized tokens (e.g. `t`) follow the locale's hour cycle, so HA's 12/24h profile setting is applied as a Unicode extension.
+  public withHourCycle(hass: HomeAssistant, locale: string): string {
+    const timeFormat: string | undefined = hass.locale?.time_format
+    const hourCycle = timeFormat === '12' ? 'h12'
+      : timeFormat === '24' ? 'h23'
+        : timeFormat === 'system' ? new Intl.DateTimeFormat(undefined, { hour: 'numeric' })
+          .resolvedOptions().hour12 ? 'h12' : 'h23'
+          : undefined
+    return hourCycle && !locale.includes('-u-') ? `${locale}-u-hc-${hourCycle}` : locale
+  }
+
   public getTimeZone(hass: HomeAssistant): string {
     return hass.config.time_zone
   }

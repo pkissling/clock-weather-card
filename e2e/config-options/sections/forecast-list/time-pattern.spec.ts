@@ -6,6 +6,7 @@ const NOW = new Date('2025-09-14T16:30:00+00:00')
 
 const setup = (listConfig: string, locale = 'en-GB'): MockOptions => ({
   date: NOW,
+  timeFormat: 'language',
   timeZone: 'UTC',
   cardConfig: `
     locale: ${locale}
