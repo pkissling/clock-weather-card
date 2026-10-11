@@ -1,9 +1,10 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult, unsafeCSS } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { property } from 'lit/decorators.js'
 
 import { controlStyles } from '@/editor/controls'
 import { editorT, fireEvent } from '@/editor/form'
+import { customElement } from '@/utils/custom-element'
 import { toHex, toRgb } from '@/utils/gradient'
 
 const hueToHex = (hue: number): string => {

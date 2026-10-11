@@ -1,6 +1,6 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
@@ -8,6 +8,7 @@ import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/edi
 import type { ClockWeatherCardConfig, RowConfig, SegmentConfig } from '@/types'
 import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
+import { customElement } from '@/utils/custom-element'
 
 type Focus = { row: number, item: number | 'settings' | 'adding' }
 

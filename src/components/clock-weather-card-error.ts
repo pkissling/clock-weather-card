@@ -2,11 +2,12 @@ import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import { errorMessageContext, hassContext } from '@/context'
 import type { ClockWeatherCardConfig } from '@/types'
+import { customElement } from '@/utils/custom-element'
 
 export type ClockWeatherCardErrorSeverity = 'error' | 'warning'
 
