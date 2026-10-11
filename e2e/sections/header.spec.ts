@@ -5,13 +5,13 @@ test.describe('header section', () => {
     await setupCard({ date: new Date('2025-09-14T14:20:00Z') })
     const time = clockWeatherCard.locator('clock-weather-card-time-segment')
     await expect(time)
-      .toHaveText('4:20 PM')
+      .toHaveText('16:20')
 
     await page.clock.setFixedTime(new Date('2025-09-14T14:21:00Z'))
     await page.clock.runFor('01:00')
 
     await expect(time)
-      .toHaveText('4:21 PM')
+      .toHaveText('16:21')
   })
 
   test('shows the not-available icon for an unknown weather state', async ({ setupCard, clockWeatherCard }) => {
@@ -27,7 +27,7 @@ test.describe('header section', () => {
     try {
       const time = clockWeatherCard.locator('clock-weather-card-time-segment')
       await expect(time)
-        .toHaveText('4:20 PM')
+        .toHaveText('16:20')
       await expect.poll(() => time.evaluate(el => el.scrollWidth <= el.clientWidth))
         .toBe(true)
     } finally {

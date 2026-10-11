@@ -35,6 +35,7 @@ export default async function globalSetup(): Promise<void> {
   // HA only serves /local when www/ exists at startup; the built card is copied in once the build finishes.
   const wwwDir = path.join(tmpDir, 'www')
   mkdirSync(wwwDir, { recursive: true })
+  mkdirSync(path.join(tmpDir, 'themes'))
 
   console.log(`[HA Setup] Starting Home Assistant container ${containerName}...`)
   // `-p 127.0.0.1::8123` lets Docker pick a free host port, so concurrent

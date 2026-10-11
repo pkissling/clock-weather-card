@@ -66,6 +66,8 @@ If Playwright snapshots need to be updated, always regenerate them via `yarn tes
 
 After implementing a feature or fixing a bug, always check whether `README.md` needs to be amended to reflect the change. Config options are documented in the `Card Options`, `Sections Options`, `Row Options` and `Segment Types` tables; also check behavior descriptions, usage instructions and screenshots. If anything is affected, update it as part of the same change.
 
+Card images in the README are rendered from the YAML block next to them (see `Docs previews` in `CONTRIBUTING.md`). Add a preview instead of a hand-made screenshot, and regenerate the previews with `yarn test:e2e:update-snapshots` after a visual change.
+
 ## Config validation
 
 When introducing a new config attribute on `ClockWeatherCardConfig` (in `src/types.ts`), always extend `validateConfig` in `src/utils/config.ts` to validate it where applicable (entity existence, enum membership, positive integer, shape of nested objects, etc.). Each invalid value should throw via `invalidConfigValue(path, value)` (from `src/utils/errors.ts`) so the card surfaces a clear error instead of silently misrendering, and add an E2E test that asserts the error message for an invalid value.

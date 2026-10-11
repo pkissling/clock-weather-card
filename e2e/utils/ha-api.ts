@@ -11,13 +11,14 @@ class HaApi {
   private get baseUrl(): string { return this.state.haUrl }
   private get token(): string { return this.state.haToken }
 
-  async setDashboardConfig(urlPath: string, cardConfig: Record<string, unknown>): Promise<void> {
+  async setDashboardConfig(urlPath: string, cardConfig: Record<string, unknown>, theme?: string): Promise<void> {
     return this.wsRequest({
       type: 'lovelace/config/save',
       url_path: urlPath,
       config: {
         views: [{
           title: 'Test',
+          theme,
           cards: [{ type: 'custom:clock-weather-card', ...cardConfig }],
         }],
       },
@@ -60,6 +61,10 @@ class HaApi {
       unit_system: unitSystem,
     })
     this.unitSystem = unitSystem
+  }
+
+  async getThemes(): Promise<{ themes: Record<string, unknown> }> {
+    return this.wsRequest({ type: 'frontend/get_themes' })
   }
 
   private wsRequest<T = void>(payload: Record<string, unknown>): Promise<T> {
