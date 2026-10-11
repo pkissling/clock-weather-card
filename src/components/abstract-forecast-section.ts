@@ -17,6 +17,7 @@ import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastAttributeNotFound, forecastNotSupported } from '@/utils/errors'
+import { minuteChanged } from '@/utils/luxon'
 import { convertTemperature } from '@/utils/temperature'
 
 export interface ForecastRow {
@@ -30,7 +31,8 @@ export interface ForecastRow {
 abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() protected hass!: HomeAssistant
   @consume({ context: configContext, subscribe: true }) @state() protected config!: ResolvedConfig
-  @property({ attribute: false }) public currentDate!: DateTime
+  // Forecast rows only change per minute, so per-second clock ticks must not recompute them.
+  @property({ attribute: false, hasChanged: minuteChanged }) public currentDate!: DateTime
   @state() protected forecasts: WeatherForecast[] = []
   // Reflected so e2e tests can wait for the first forecast payload.
   @property({ type: Boolean, reflect: true, attribute: 'data-loaded' }) private _loaded = false

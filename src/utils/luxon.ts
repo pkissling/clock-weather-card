@@ -44,6 +44,9 @@ export function startClock(needsSeconds: boolean, onTick: () => void): ClockHand
   }
 }
 
+export const minuteChanged = (next?: DateTime, prev?: DateTime): boolean =>
+  !next || !prev || !next.hasSame(prev, 'minute')
+
 export const isValidTimeZone = (timeZone: string): boolean =>
   DateTime.now()
     .setZone(timeZone).isValid
