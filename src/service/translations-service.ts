@@ -1,0 +1,71 @@
+import logger from '@/service/logger'
+
+type Translations = Map<string, string>
+
+class TranslationsService {
+  private translationsByLang = new Map<string, Translations>()
+
+  constructor() {
+    this.register('', import.meta.glob('../locales/*.json', { eager: true, import: 'default' }))
+  }
+
+  public register(namespace: string, locales: Record<string, unknown>): void {
+    for (const [path, data] of Object.entries(locales)) {
+      const lang = path.match(/\/([^/]+)\.json$/)?.[1]
+      if (!lang || !data) continue
+      const translations = this.translationsByLang.get(lang) ?? new Map<string, string>()
+      for (const [key, value] of this.flattenTranslations(data as Record<string, unknown>, namespace)) translations.set(key, value)
+      this.translationsByLang.set(lang, translations)
+    }
+  }
+
+  public get languages(): string[] {
+    return [...this.translationsByLang.keys()]
+  }
+
+  public has(key: string): boolean {
+    return this.translationsByLang.get('en')
+      ?.has(key) ?? false
+  }
+
+  public t(language: string, key: string): string {
+    const lang = this.normalizeLang(language)
+
+    const langDict = this.translationsByLang.get(lang)
+    if (langDict && langDict.has(key)) return langDict.get(key) as string
+
+    const baseLang = lang.split('-')[0]
+    const baseLangDict = this.translationsByLang.get(baseLang)
+    if (baseLang !== lang && baseLangDict?.has(key)) return baseLangDict.get(key)!
+    if (!langDict && !baseLangDict) logger.warn(`No translations for language "${language}", falling back to English`)
+
+    const enFallback = this.translationsByLang.get('en')
+    if (enFallback?.has(key)) return enFallback.get(key) as string
+
+    logger.warn(`Translation for key "${key}" not found for language "${language}" nor fallback (en).`)
+    return key
+  }
+
+  private normalizeLang(language: string): string {
+    // Keep lower-case, map underscores to hyphens to match filenames like pt-br, zh-hans
+    return language.toLowerCase()
+      .replace('_', '-')
+  }
+
+  private flattenTranslations(obj: Record<string, unknown>, prefix = ''): Translations {
+    const acc: Translations = new Map()
+    return Object.entries(obj)
+      .reduce((acc, [key, value]) => {
+        const newKey = prefix ? `${prefix}.${key}` : key
+        if (typeof value == 'string') {
+          acc.set(newKey, value)
+        } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+          const nested = this.flattenTranslations(value as Record<string, unknown>, newKey)
+          for (const [nKey, nVal] of nested.entries()) acc.set(nKey, nVal)
+        }
+        return acc
+      }, acc)
+  }
+}
+
+export default new TranslationsService()
