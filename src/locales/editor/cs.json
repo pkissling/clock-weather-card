@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Vzhled",
+    "sensors": "Další senzory",
     "interaction": "Interakce",
     "region": "Oblast a čas"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Časové pásmo",
     "locale": "Jazyk",
     "temperature_unit": "Jednotka teploty",
+    "temperature_sensor": "Teplotní senzor",
     "tap_action": "Akce při klepnutí",
     "rows": "Řádky",
     "animated_icons": "Animované ikony",
@@ -51,6 +53,7 @@
     "text": "Text"
   },
   "helpers": {
+    "temperature_sensor": "Volitelné. Čte aktuální teplotu z tohoto senzoru místo z entity počasí, např. z meteostanice nebo venkovního senzoru",
     "sun_entity": "Rozhoduje mezi denními a nočními ikonami",
     "time_zone": "Ve výchozím nastavení časové pásmo Home Assistant",
     "locale": "Ve výchozím nastavení jazyk Home Assistant",

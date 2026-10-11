@@ -30,6 +30,7 @@ describe('resolveConfig', () => {
         timeZone: 'Europe/Berlin',
         locale: 'de',
         temperatureUnit: '°C',
+        temperatureSensor: null,
         header: {
           hidden: false,
           animatedIcons: true,

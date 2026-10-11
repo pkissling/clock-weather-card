@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "모양",
+    "sensors": "추가 센서",
     "interaction": "상호작용",
     "region": "지역 및 시간"
   },
@@ -22,6 +23,7 @@
     "time_zone": "시간대",
     "locale": "언어",
     "temperature_unit": "온도 단위",
+    "temperature_sensor": "온도 센서",
     "tap_action": "탭 동작",
     "rows": "행",
     "animated_icons": "애니메이션 아이콘",
@@ -51,6 +53,7 @@
     "text": "텍스트"
   },
   "helpers": {
+    "temperature_sensor": "선택 사항. 현재 온도를 날씨 엔터티 대신 이 센서에서 읽습니다(예: 기상 관측소 또는 실외 센서)",
     "sun_entity": "낮 아이콘과 밤 아이콘을 결정합니다",
     "time_zone": "기본값은 Home Assistant의 시간대입니다",
     "locale": "기본값은 Home Assistant의 언어입니다",

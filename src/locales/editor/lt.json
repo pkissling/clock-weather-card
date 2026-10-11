@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Išvaizda",
+    "sensors": "Papildomi jutikliai",
     "interaction": "Sąveika",
     "region": "Regionas ir laikas"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Laiko juosta",
     "locale": "Kalba",
     "temperature_unit": "Temperatūros vienetas",
+    "temperature_sensor": "Temperatūros jutiklis",
     "tap_action": "Bakstelėjimo veiksmas",
     "rows": "Eilutės",
     "animated_icons": "Animuotos piktogramos",
@@ -51,6 +53,7 @@
     "text": "Tekstas"
   },
   "helpers": {
+    "temperature_sensor": "Neprivaloma. Dabartinė temperatūra nuskaitoma iš šio jutiklio vietoj orų objekto, pvz., iš orų stoties ar lauko jutiklio",
     "sun_entity": "Nusprendžia tarp dienos ir nakties piktogramų",
     "time_zone": "Pagal numatytuosius nustatymus Home Assistant laiko juosta",
     "locale": "Pagal numatytuosius nustatymus Home Assistant kalba",

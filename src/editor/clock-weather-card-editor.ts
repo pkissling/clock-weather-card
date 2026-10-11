@@ -21,6 +21,7 @@ const SECTION_ICONS: Record<SectionKey, string> = {
 
 const GROUP_ICONS: Record<Exclude<CardGroup, 'essentials'>, string> = {
   appearance: 'mdi:palette-outline',
+  sensors: 'mdi:gauge',
   interaction: 'mdi:gesture-tap',
   region: 'mdi:earth',
 }
@@ -51,7 +52,7 @@ export class ClockWeatherCardEditor extends LitElement {
 
   protected render(): TemplateResult | typeof nothing {
     if (!this.hass || !this._config) return nothing
-    const groups = ['appearance', 'interaction', 'region'] as const
+    const groups = ['appearance', 'sensors', 'interaction', 'region'] as const
     return html`
       ${this._renderFields(CARD_FIELDS.filter(f => f.group === 'essentials'), [], this._config, DEFAULTS)}
       <div class="sections">

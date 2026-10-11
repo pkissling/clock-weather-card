@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Wygląd",
+    "sensors": "Dodatkowe czujniki",
     "interaction": "Interakcja",
     "region": "Region i czas"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Strefa czasowa",
     "locale": "Język",
     "temperature_unit": "Jednostka temperatury",
+    "temperature_sensor": "Czujnik temperatury",
     "tap_action": "Akcja dotknięcia",
     "rows": "Wiersze",
     "animated_icons": "Animowane ikony",
@@ -51,6 +53,7 @@
     "text": "Tekst"
   },
   "helpers": {
+    "temperature_sensor": "Opcjonalne. Odczytuje bieżącą temperaturę z tego czujnika zamiast z encji pogody, np. ze stacji pogodowej lub czujnika zewnętrznego",
     "sun_entity": "Decyduje o wyborze ikon dziennych lub nocnych",
     "time_zone": "Domyślnie strefa czasowa Home Assistant",
     "locale": "Domyślnie język Home Assistant",

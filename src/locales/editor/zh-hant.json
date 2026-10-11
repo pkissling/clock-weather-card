@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "外觀",
+    "sensors": "附加感測器",
     "interaction": "互動",
     "region": "地區與時間"
   },
@@ -22,6 +23,7 @@
     "time_zone": "時區",
     "locale": "語言",
     "temperature_unit": "溫度單位",
+    "temperature_sensor": "溫度感測器",
     "tap_action": "點擊動作",
     "rows": "列",
     "animated_icons": "動畫圖示",
@@ -51,6 +53,7 @@
     "text": "文字"
   },
   "helpers": {
+    "temperature_sensor": "選填。從此感測器而非天氣實體讀取目前溫度，例如氣象站或戶外感測器",
     "sun_entity": "用於決定顯示白天或夜間圖示",
     "time_zone": "預設為 Home Assistant 的時區",
     "locale": "預設為 Home Assistant 的語言",

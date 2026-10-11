@@ -6,6 +6,7 @@
   },
   "groups": {
     "appearance": "Uiterlijk",
+    "sensors": "Extra sensoren",
     "interaction": "Interactie",
     "region": "Regio & tijd"
   },
@@ -22,6 +23,7 @@
     "time_zone": "Tijdzone",
     "locale": "Taal",
     "temperature_unit": "Temperatuureenheid",
+    "temperature_sensor": "Temperatuursensor",
     "tap_action": "Tikactie",
     "rows": "Rijen",
     "animated_icons": "Geanimeerde pictogrammen",
@@ -51,6 +53,7 @@
     "text": "Tekst"
   },
   "helpers": {
+    "temperature_sensor": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
     "sun_entity": "Bepaalt de keuze tussen dag- en nachtpictogrammen",
     "time_zone": "Standaard de tijdzone van Home Assistant",
     "locale": "Standaard de taal van Home Assistant",

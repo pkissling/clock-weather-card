@@ -43,7 +43,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
   }
 
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
-    const { sunEntity, timeZone, locale, temperatureUnit } = this.config
+    const { sunEntity, timeZone, locale, temperatureUnit, temperatureSensor } = this.config
     const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
     const now = this.currentDate
 
@@ -60,8 +60,11 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
       ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(value, attributeUnit) }
       : null
 
-    const forecastItems = visible.map(({ forecast, at, label, isNight }, i): { at: DateTime, item: ForecastStripItem } => {
+    const sensorTemperature = forecastType === 'hourly' ? hassService.getSensorTemperature(this.hass, temperatureSensor, temperatureUnit) : null
+
+    const forecastItems = visible.map(({ forecast, at, label, isNight, isCurrent }, i): { at: DateTime, item: ForecastStripItem } => {
       const templow = forecastType === 'daily' ? forecast.templow ?? null : null
+      const temperature = isCurrent && sensorTemperature !== null ? sensorTemperature : forecast.temperature
       return {
         at,
         item: {
@@ -70,8 +73,8 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
           isNight,
           animatedIcon: animatedIcons,
           weatherIconType,
-          temperature: roundTemperature(templow === null ? forecast.temperature : Math.max(forecast.temperature, templow)),
-          temperatureLow: templow === null ? null : roundTemperature(Math.min(forecast.temperature, templow)),
+          temperature: roundTemperature(templow === null ? temperature : Math.max(temperature, templow)),
+          temperatureLow: templow === null ? null : roundTemperature(Math.min(temperature, templow)),
           temperatureUnit,
           attribute: attributeItem(attributeValues[i]),
         },
