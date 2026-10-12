@@ -12,6 +12,7 @@ import { property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
 import { configContext, errorMessageContext, hassContext } from '@/context'
+import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
@@ -160,15 +161,22 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
+  // HA replaces `hass` on every state change anywhere, so only propagate changes the card actually renders.
   private _relevantHassChanged(): boolean {
     const prev = this.providedHass
     const next = this.hass
     if (!prev || !this.resolved) return true
     if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language) return true
+
     const { entity, sunEntity, temperatureSensor, forecastStrip, forecastList, header } = this.resolved
     const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))
-    return [entity, sunEntity, temperatureSensor, forecastStrip.entity, forecastList.entity, ...segmentEntities]
-      .some(id => id != null && prev.states[id] !== next.states[id])
+    const watched = [entity, sunEntity, temperatureSensor, forecastStrip.entity, forecastList.entity, ...segmentEntities]
+      .filter(id => id != null)
+
+    const stateChanged = (id: string): boolean => prev.states[id] !== next.states[id]
+    // Display precision lives in the entity registry, not the state object, so it changes independently.
+    const precisionChanged = (id: string): boolean => hassService.getDisplayPrecision(prev, id) !== hassService.getDisplayPrecision(next, id)
+    return watched.some(id => stateChanged(id) || precisionChanged(id))
   }
 
   // Idempotent - safe to call from any lifecycle hook.

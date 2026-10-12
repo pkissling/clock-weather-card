@@ -162,7 +162,7 @@ sections:
 | `time_zone` | string | no | Home Assistant time zone | IANA time zone name (e.g. `Europe/Berlin`) used to render the clock. When unset, falls back to the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
-| `temperature_sensor` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown with at most one decimal and rounded per section by `round_temperatures`. While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
+| `temperature_sensor` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown with the sensor's display precision (at most one decimal if none is set) and rounded per section by `round_temperatures`. While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
 | `tap_action` | object | no | `more-info` | [Action](https://www.home-assistant.io/dashboards/actions/) to run when the card is tapped, e.g. `navigate`, `url`, `more-info` (of `entity`) or `perform-action`. Set `action: none` to make the card not clickable. |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
 
@@ -297,7 +297,7 @@ Displays the current weather state (localized) or a specific weather entity attr
 
 #### `entity`
 
-Displays a Home Assistant entity's state and unit.
+Displays a Home Assistant entity's state and unit. A numeric state is rounded to the entity's display precision when one is set in Home Assistant.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|

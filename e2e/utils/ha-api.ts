@@ -123,6 +123,19 @@ class HaApi {
     }
   }
 
+  async setMockSensor(entityId: string, state: number | string, unitOfMeasurement?: string): Promise<void> {
+    return this.callService('mock_weather', 'set_sensor', { entity_id: entityId, state, unit_of_measurement: unitOfMeasurement })
+  }
+
+  async setDisplayPrecision(entityId: string, precision: number | null): Promise<void> {
+    return this.wsRequest({
+      type: 'config/entity_registry/update',
+      entity_id: entityId,
+      options_domain: 'sensor',
+      options: { display_precision: precision },
+    })
+  }
+
   async setMockWeather(data: Record<string, unknown>): Promise<void> {
     return this.callService('mock_weather', 'set_weather', data)
   }

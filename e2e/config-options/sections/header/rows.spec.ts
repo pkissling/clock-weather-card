@@ -611,6 +611,30 @@ test.describe('sections.header.rows', () => {
         .toHaveText('42')
     })
 
+    test('formats the state with the entity\'s display precision', async ({ setupCard, clockWeatherCard }) => {
+      await api.setMockSensor('sensor.mock_sensor', 1234.5678, 'W')
+      await api.setDisplayPrecision('sensor.mock_sensor', 1)
+      await setupCard({
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.mock_sensor
+        `,
+      })
+      const segment = clockWeatherCard.locator('clock-weather-card-entity-segment')
+      await expect(segment)
+        .toHaveText('1234.6W')
+
+      await api.setMockSensor('sensor.mock_sensor', 42, '°C')
+      await api.setDisplayPrecision('sensor.mock_sensor', 2)
+
+      await expect(segment)
+        .toHaveText('42.00°C')
+    })
+
     test('renders state without unit when entity has no unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
       await api.setEntityState('sensor.demo', 'on', {})
       await setupCard({
