@@ -63,3 +63,22 @@ set_weather:
       example: true
       selector:
         boolean:
+set_sensor:
+  name: Set sensor state
+  description: Set the state and unit of a mock sensor.
+  fields:
+    entity_id:
+      name: Entity ID
+      example: sensor.mock_sensor
+      selector:
+        text:
+    state:
+      name: State
+      example: 21.5
+      selector:
+        text:
+    unit_of_measurement:
+      name: Unit of measurement
+      example: "°C"
+      selector:
+        text:

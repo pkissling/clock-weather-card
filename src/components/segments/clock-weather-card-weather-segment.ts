@@ -30,7 +30,11 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
           ? hassService.getCurrentTemperature(this.hass, entity, temperatureSensor, temperatureUnit)
           : hassService.getWeatherTemperature(this.hass, entity, this.attribute, temperatureUnit)
         if (temperature === null) return html``
-        return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
+        const displayTemperature = this.attribute === 'temperature' && temperatureSensor
+          ? hassService.formatWithDisplayPrecision(this.hass, temperatureSensor, temperature)
+          : temperature
+        const displayUnit = this.showUnit ? this.unit ?? temperatureUnit : ''
+        return html`<span>${displayTemperature}${displayUnit}</span>`
       }
       const value = hassService.getEntityAttribute(this.hass, entity, this.attribute)
       if (value === undefined) logger.warn(`Attribute "${this.attribute}" not found on weather entity "${entity}"`)
@@ -40,7 +44,8 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
         : hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute)
       const temperature = toDisplayTemperature(value, unit, temperatureUnit)
       if (temperature !== null) return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
-      return html`<span>${value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+      const displayUnit = this.showUnit ? this.unit ?? unit ?? '' : ''
+      return html`<span>${value}${displayUnit}</span>`
     }
 
     const state = hassService.getEntityState(this.hass, entity)
