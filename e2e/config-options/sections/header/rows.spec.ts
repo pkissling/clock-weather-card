@@ -1,7 +1,7 @@
 import type { Locator } from '@playwright/test'
 
 import { expect, test } from '../../../utils/fixtures'
-import api from '../../../utils/ha-api'
+import haApi from '../../../utils/ha-api'
 
 // TODO: cover more rows variations - empty rows, font_size, mixed segment types per row,
 // reordering segments within a row, missing optional segment fields.
@@ -216,8 +216,8 @@ test.describe('sections.header.rows', () => {
   for (const [type, extra, entityId] of [['weather', 'attribute: humidity', 'weather.mock_weather'], ['entity', 'entity_id: sensor.demo', 'sensor.demo']]) {
 
     test(`rejects a non-string ${type} segment unit`, async ({ setupCard, cardErrorMessage }) => {
-      await api.setEntityState('sensor.demo', '42')
       await setupCard({
+        entities: { 'sensor.demo': { state: '42' } },
         cardConfig: `
         sections:
           header:
@@ -234,8 +234,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test(`rejects a non-string ${type} segment unit_attribute`, async ({ setupCard, cardErrorMessage }) => {
-      await api.setEntityState('sensor.demo', '42')
       await setupCard({
+        entities: { 'sensor.demo': { state: '42' } },
         cardConfig: `
         sections:
           header:
@@ -252,8 +252,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test(`rejects a ${type} segment unit_attribute that is missing on the entity`, async ({ setupCard, cardErrorMessage }) => {
-      await api.setEntityState('sensor.demo', '42')
       await setupCard({
+        entities: { 'sensor.demo': { state: '42' } },
         cardConfig: `
         sections:
           header:
@@ -504,8 +504,8 @@ test.describe('sections.header.rows', () => {
 
   test.describe('entity segment', () => {
     test('renders entity state with the entity\'s unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C' })
       await setupCard({
+        entities: { 'sensor.demo': { state: '42', attributes: { unit_of_measurement: '°C' } } },
         cardConfig: `
           sections:
             header:
@@ -521,8 +521,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('renders an attribute value with the entity\'s unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', 'on', { brightness: 75, unit_of_measurement: '%' })
       await setupCard({
+        entities: { 'sensor.demo': { state: 'on', attributes: { brightness: 75, unit_of_measurement: '%' } } },
         cardConfig: `
           sections:
             header:
@@ -539,8 +539,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('uses unit_attribute when configured (overrides unit_of_measurement)', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C', custom_unit: 'kWh' })
       await setupCard({
+        entities: { 'sensor.demo': { state: '42', attributes: { unit_of_measurement: '°C', custom_unit: 'kWh' } } },
         cardConfig: `
           sections:
             header:
@@ -557,8 +557,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('prefers the configured unit over unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', '42', { unit_of_measurement: 'W' })
       await setupCard({
+        entities: { 'sensor.demo': { state: '42', attributes: { unit_of_measurement: 'W' } } },
         cardConfig: `
           sections:
             header:
@@ -575,8 +575,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('prefers the configured unit over the converted temperature unit', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', '50', { unit_of_measurement: '°F' })
       await setupCard({
+        entities: { 'sensor.demo': { state: '50', attributes: { unit_of_measurement: '°F' } } },
         cardConfig: `
           sections:
             header:
@@ -593,8 +593,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('show_unit: false hides the unit', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', '42', { unit_of_measurement: '°C' })
       await setupCard({
+        entities: { 'sensor.demo': { state: '42', attributes: { unit_of_measurement: '°C' } } },
         cardConfig: `
           sections:
             header:
@@ -612,9 +612,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('formats the state with the entity\'s display precision', async ({ setupCard, clockWeatherCard }) => {
-      await api.setMockSensor('sensor.mock_sensor', 1234.5678, 'W')
-      await api.setDisplayPrecision('sensor.mock_sensor', 1)
       await setupCard({
+        entities: { 'sensor.mock_sensor': { state: 1234.5678, attributes: { unit_of_measurement: 'W' }, displayPrecision: 1 } },
         cardConfig: `
           sections:
             header:
@@ -628,16 +627,16 @@ test.describe('sections.header.rows', () => {
       await expect(segment)
         .toHaveText('1234.6W')
 
-      await api.setMockSensor('sensor.mock_sensor', 42, '°C')
-      await api.setDisplayPrecision('sensor.mock_sensor', 2)
+      await haApi.setMockSensor('sensor.mock_sensor', 42, '°C')
+      await haApi.setDisplayPrecision('sensor.mock_sensor', 2)
 
       await expect(segment)
         .toHaveText('42.00°C')
     })
 
     test('renders state without unit when entity has no unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
-      await api.setEntityState('sensor.demo', 'on', {})
       await setupCard({
+        entities: { 'sensor.demo': { state: 'on' } },
         cardConfig: `
           sections:
             header:
@@ -653,8 +652,8 @@ test.describe('sections.header.rows', () => {
     })
 
     test('rejects an attribute that is missing on the entity', async ({ setupCard, cardErrorMessage }) => {
-      await api.setEntityState('sensor.demo', 'on', { unit_of_measurement: '%' })
       await setupCard({
+        entities: { 'sensor.demo': { state: 'on', attributes: { unit_of_measurement: '%' } } },
         cardConfig: `
           sections:
             header:
@@ -688,8 +687,8 @@ test.describe('sections.header.rows', () => {
 
     test('renders numeric attribute values', async ({ setupCard, clockWeatherCard }) => {
       // Regression: getEntityAttribute used to filter to string|null, dropping numbers.
-      await api.setEntityState('sensor.demo', 'on', { count: 7 })
       await setupCard({
+        entities: { 'sensor.demo': { state: 'on', attributes: { count: 7 } } },
         cardConfig: `
           sections:
             header:
@@ -742,15 +741,15 @@ test.describe('sections.header.rows', () => {
       await expect(clockWeatherCard.locator(weatherIcon))
         .toHaveAttribute('icon', 'mdi:weather-partly-cloudy')
 
-      await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+      await haApi.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
 
       await expect(clockWeatherCard.locator(weatherIcon))
         .toHaveAttribute('icon', 'mdi:weather-night-partly-cloudy')
     })
 
     test('uses the configured entity_id instead of the card entity', async ({ setupCard, clockWeatherCard }) => {
-      await api.setMockWeather({ entity_id: 'weather.mock_weather_2', condition: 'hail' })
       await setupCard({
+        secondaryWeather: { state: 'hail' },
         cardConfig: configWith('entity_id: weather.mock_weather_2'),
       })
 
