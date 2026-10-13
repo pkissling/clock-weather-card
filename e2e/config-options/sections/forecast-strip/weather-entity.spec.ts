@@ -1,7 +1,6 @@
 import type { WeatherForecast } from '../../../../src/types'
 import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
-import api from '../../../utils/ha-api'
 
 const PRIMARY_HOURLY: WeatherForecast[] = [
   { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 20, precipitation_probability: 0 },
@@ -17,11 +16,8 @@ const SECONDARY_HOURLY: WeatherForecast[] = [
 
 test.describe('sections.forecast_strip.weather_entity', () => {
   test('renders forecasts from the override entity when configured', async ({ setupCard, clockWeatherCard }) => {
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      forecast_hourly: SECONDARY_HOURLY,
-    })
     await setupCard({
+      secondaryWeather: { forecast_hourly: SECONDARY_HOURLY },
       cardConfig: `
         sections:
           forecast_strip:
@@ -57,15 +53,11 @@ test.describe('sections.forecast_strip.weather_entity', () => {
     await setupCard({
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      forecast_hourly: SECONDARY_HOURLY,
-    })
-
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(PRIMARY_HOURLY.length)
 
     await setupCard({
+      secondaryWeather: { forecast_hourly: SECONDARY_HOURLY },
       cardConfig: `
         sections:
           forecast_strip:
@@ -82,13 +74,8 @@ test.describe('sections.forecast_strip.weather_entity', () => {
   })
 
   test('replaces the warning with the strip when the override entity flips to one that supports hourly (no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      forecast_hourly: SECONDARY_HOURLY,
-      supported_features: WeatherEntityFeature.FORECAST_DAILY,
-    })
-
     await setupCard({
+      secondaryWeather: { forecast_hourly: SECONDARY_HOURLY, supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY] },
       cardConfig: `
         sections:
           forecast_strip:
@@ -119,12 +106,6 @@ test.describe('sections.forecast_strip.weather_entity', () => {
   })
 
   test('replaces the strip with the warning when the override entity flips to one that does not support hourly (no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      forecast_hourly: SECONDARY_HOURLY,
-      supported_features: WeatherEntityFeature.FORECAST_DAILY,
-    })
-
     await setupCard({
       weather: { forecast_hourly: PRIMARY_HOURLY },
     })
@@ -136,6 +117,7 @@ test.describe('sections.forecast_strip.weather_entity', () => {
       .toBeNull()
 
     await setupCard({
+      secondaryWeather: { forecast_hourly: SECONDARY_HOURLY, supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY] },
       cardConfig: `
         sections:
           forecast_strip:

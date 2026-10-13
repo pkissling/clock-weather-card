@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
-import api from './ha-api'
+import haApi from './ha-api'
 import { TEST_DASHBOARD } from './ha-setup'
 
 export const openEditor = async (page: Page): Promise<Locator> => {
@@ -19,7 +19,7 @@ export const saveEditor = async (page: Page): Promise<Record<string, unknown>> =
     .click()
   await expect(page.locator('clock-weather-card-editor'))
     .toHaveCount(0)
-  const config = await api.getCardConfig(TEST_DASHBOARD)
+  const config = await haApi.getCardConfig(TEST_DASHBOARD)
   delete config.type
   return config
 }
