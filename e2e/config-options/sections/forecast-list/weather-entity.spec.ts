@@ -1,7 +1,5 @@
 import type { DailyWeatherForecast } from '../../../../src/types'
-import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
-import api from '../../../utils/ha-api'
 
 const PRIMARY: DailyWeatherForecast[] = [
   { datetime: '2025-09-14T00:00:00+00:00', condition: 'sunny',  templow: 5, temperature: 14, precipitation_probability: 0 },
@@ -15,13 +13,8 @@ const SECONDARY: DailyWeatherForecast[] = [
 
 test.describe('sections.forecast_list.weather_entity', () => {
   test('renders forecasts from the override entity when configured', async ({ setupCard, clockWeatherCard }) => {
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      temperature: -3,
-      forecast_daily: SECONDARY,
-      supported_features: WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY,
-    })
     await setupCard({
+      secondaryWeather: { temperature: -3, forecast_daily: SECONDARY },
       cardConfig: `
         sections:
           forecast_list:
@@ -57,16 +50,11 @@ test.describe('sections.forecast_list.weather_entity', () => {
     await setupCard({
       weather: { forecast_daily: PRIMARY },
     })
-    await api.setMockWeather({
-      entity_id: 'weather.mock_weather_2',
-      forecast_daily: SECONDARY,
-      supported_features: WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY,
-    })
-
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
       .toHaveCount(PRIMARY.length)
 
     await setupCard({
+      secondaryWeather: { forecast_daily: SECONDARY },
       cardConfig: `
         sections:
           forecast_list:

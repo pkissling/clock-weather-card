@@ -1,7 +1,7 @@
 import type { WeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
-import api from '../utils/ha-api'
+import haApi from '../utils/ha-api'
 import { hourlyForecast } from '../utils/test-utils'
 
 test.describe('forecast_strip section', () => {
@@ -226,7 +226,7 @@ test.describe('forecast_strip section', () => {
         .toHaveCount(0)
 
       integrationLoaded = true
-      await api.setMockWeather({ temperature: 22 })
+      await haApi.setMockWeather({ temperature: 22 })
 
       await expect(items)
         .not.toHaveCount(0)

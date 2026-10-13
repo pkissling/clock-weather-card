@@ -112,6 +112,18 @@ class HaApi {
     }
   }
 
+  async removeEntityState(entityId: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/api/states/${entityId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${this.token}` },
+    })
+
+    if (!response.ok && response.status !== 404) {
+      const text = await response.text()
+      throw new Error(`Failed to remove state of ${entityId}: ${response.status} ${text}`)
+    }
+  }
+
   async callService(domain: string, service: string, data: Record<string, unknown> = {}): Promise<void> {
     const response = await fetch(`${this.baseUrl}/api/services/${domain}/${service}`, {
       method: 'POST',
@@ -128,7 +140,7 @@ class HaApi {
     }
   }
 
-  async setMockSensor(entityId: string, state: number | string, unitOfMeasurement?: string): Promise<void> {
+  async setMockSensor(entityId: string, state: number | string | null, unitOfMeasurement?: string): Promise<void> {
     return this.callService('mock_weather', 'set_sensor', { entity_id: entityId, state, unit_of_measurement: unitOfMeasurement })
   }
 

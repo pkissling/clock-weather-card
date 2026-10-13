@@ -1,6 +1,6 @@
 import type { DailyWeatherForecast, WeatherForecast } from '../../../src/types'
 import { expect, test } from '../../utils/fixtures'
-import api from '../../utils/ha-api'
+import haApi from '../../utils/ha-api'
 
 const SENSOR = 'sensor.e2e_outdoor_temperature'
 const NOW = new Date('2025-09-14T18:00:00+00:00')
@@ -25,8 +25,8 @@ const cardConfig = (sections = ''): string => `
 
 test.describe('temperature_sensor', () => {
   test('replaces the current temperature everywhere, converted and limited to one decimal', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState(SENSOR, '74.31', { unit_of_measurement: '°F' })
     await setupCard({
+      entities: { [SENSOR]: { state: '74.31', attributes: { unit_of_measurement: '°F' } } },
       date: NOW,
       cardConfig: cardConfig(`
     forecast_list:
@@ -49,8 +49,8 @@ test.describe('temperature_sensor', () => {
   })
 
   test('keeps the sensor decimal when round_temperatures is false', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState(SENSOR, '23.46', { unit_of_measurement: '°C' })
     await setupCard({
+      entities: { [SENSOR]: { state: '23.46', attributes: { unit_of_measurement: '°C' } } },
       date: NOW,
       cardConfig: cardConfig(`
     forecast_strip:
@@ -71,8 +71,8 @@ test.describe('temperature_sensor', () => {
   })
 
   test('stretches today\'s daily bar to the sensor temperature', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState(SENSOR, '25', { unit_of_measurement: '°C' })
     await setupCard({
+      entities: { [SENSOR]: { state: '25', attributes: { unit_of_measurement: '°C' } } },
       date: NOW,
       cardConfig: cardConfig(),
       weather: { temperature: 10, forecast_daily: DAILY },
@@ -87,8 +87,8 @@ test.describe('temperature_sensor', () => {
   })
 
   test('hides the current temperature while the sensor is unavailable', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState(SENSOR, 'unavailable', { unit_of_measurement: '°C' })
     await setupCard({
+      entities: { [SENSOR]: { state: 'unavailable', attributes: { unit_of_measurement: '°C' } } },
       date: NOW,
       cardConfig: cardConfig(),
       weather: { temperature: 10, forecast_hourly: HOURLY },
@@ -102,32 +102,32 @@ test.describe('temperature_sensor', () => {
   })
 
   test('follows sensor updates and recovers from unavailable (no reload)', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState(SENSOR, 'unavailable', { unit_of_measurement: '°C' })
-    await setupCard({ cardConfig: cardConfig() })
+    await setupCard({ cardConfig: cardConfig(), entities: { [SENSOR]: { state: 'unavailable', attributes: { unit_of_measurement: '°C' } } } })
     const segment = clockWeatherCard.locator('clock-weather-card-weather-segment')
     await expect(segment)
       .toHaveText('')
 
-    await api.setEntityState(SENSOR, '18.2', { unit_of_measurement: '°C' })
+    await haApi.setEntityState(SENSOR, '18.2', { unit_of_measurement: '°C' })
 
     await expect(segment)
       .toHaveText('18.2°C')
   })
 
   test('follows the sensor\'s display precision', async ({ setupCard, clockWeatherCard }) => {
-    await api.setMockSensor('sensor.mock_sensor', 23.46, '°C')
-    await api.setDisplayPrecision('sensor.mock_sensor', 0)
-    await setupCard({ cardConfig: cardConfig()
-      .replace(SENSOR, 'sensor.mock_sensor') })
+    await setupCard({
+      cardConfig: cardConfig()
+        .replace(SENSOR, 'sensor.mock_sensor'),
+      entities: { 'sensor.mock_sensor': { state: 23.46, attributes: { unit_of_measurement: '°C' }, displayPrecision: 0 } },
+    })
     const segment = clockWeatherCard.locator('clock-weather-card-weather-segment')
     await expect(segment)
       .toHaveText('23°C')
 
-    await api.setDisplayPrecision('sensor.mock_sensor', 2)
+    await haApi.setDisplayPrecision('sensor.mock_sensor', 2)
 
     await expect(segment)
       .toHaveText('23.46°C')
-    await api.setMockSensor('sensor.mock_sensor', 23.5, '°C')
+    await haApi.setMockSensor('sensor.mock_sensor', 23.5, '°C')
     await expect(segment)
       .toHaveText('23.50°C')
   })
@@ -140,16 +140,14 @@ test.describe('temperature_sensor', () => {
   })
 
   test('rejects a sensor without a temperature unit', async ({ setupCard, cardErrorMessage }) => {
-    await api.setEntityState(SENSOR, '42', { unit_of_measurement: '%' })
-    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}` })
+    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}`, entities: { [SENSOR]: { state: '42', attributes: { unit_of_measurement: '%' } } } })
 
     await cardErrorMessage()
       .toContain(`Config option "temperature_sensor" has invalid value "${SENSOR}", expected a sensor with unit °C or °F, got "%"`)
   })
 
   test('rejects a sensor with a non-numeric state', async ({ setupCard, cardErrorMessage }) => {
-    await api.setEntityState(SENSOR, 'warm', { unit_of_measurement: '°C' })
-    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}` })
+    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}`, entities: { [SENSOR]: { state: 'warm', attributes: { unit_of_measurement: '°C' } } } })
 
     await cardErrorMessage()
       .toContain(`Config option "temperature_sensor" has invalid value "${SENSOR}", expected a sensor with a numeric state, got "warm"`)

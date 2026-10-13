@@ -6,10 +6,12 @@ import { parse as parseYaml } from 'yaml'
 
 import type { ClockWeatherCardConfig, DailyWeatherForecast, WeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
-import api from './ha-api'
+import haApi from './ha-api'
 import { TEST_DASHBOARD } from './ha-setup'
 
 const WEATHER_ENTITY = 'weather.mock_weather'
+const SECONDARY_WEATHER_ENTITY = 'weather.mock_weather_2'
+const MOCK_SENSOR = 'sensor.mock_sensor'
 const SYNC_ENTITY = 'sensor.e2e_sync'
 const STALE_ATTRIBUTE = 'data-e2e-stale'
 
@@ -18,18 +20,31 @@ const DEFAULT_SUPPORTED_FEATURES: WeatherEntityFeature[] = [
   WeatherEntityFeature.FORECAST_HOURLY,
 ]
 
+type MockWeather = {
+  state?: string
+  temperature?: number
+  temperatureUnit?: '°C' | '°F'
+  humidity?: number
+  dew_point?: number
+  extra_attributes?: Record<string, unknown>
+  forecast_daily?: DailyWeatherForecast[]
+  forecast_hourly?: WeatherForecast[]
+  supportedFeatures?: WeatherEntityFeature[]
+}
+
+export type MockEntity = {
+  state: string | number
+  attributes?: Record<string, unknown>
+  /** Only for `sensor.mock_sensor`, the one entity with a registry entry. */
+  displayPrecision?: number
+}
+
 export type MockOptions = undefined | {
-  weather?: {
-    state?: string
-    temperature?: number
-    temperatureUnit?: '°C' | '°F'
-    humidity?: number
-    dew_point?: number
-    extra_attributes?: Record<string, unknown>
-    forecast_daily?: DailyWeatherForecast[]
-    forecast_hourly?: WeatherForecast[]
-    supportedFeatures?: WeatherEntityFeature[]
-  }
+  weather?: MockWeather
+  /** State of `weather.mock_weather_2`, for sections with their own `weather_entity`. */
+  secondaryWeather?: MockWeather
+  /** Further entities; those of a previous setup that are missing here are removed. */
+  entities?: Record<string, MockEntity>
   sun?: {
     state?: 'above_horizon' | 'below_horizon'
     attributes?: {
@@ -132,6 +147,37 @@ const defaultForecastHourly = (now: Date): WeatherForecast[] =>
     }),
   )
 
+const mockWeatherData = (weather: MockWeather | undefined, date: Date): Record<string, unknown> => ({
+  condition: weather?.state ?? 'sunny',
+  temperature: weather?.temperature ?? 21,
+  temperature_unit: weather?.temperatureUnit ?? '°C',
+  humidity: weather?.humidity ?? 50,
+  dew_point: weather?.dew_point ?? null,
+  extra_attributes: weather?.extra_attributes ?? {},
+  forecast_daily: weather?.forecast_daily ?? defaultForecastDaily(date),
+  forecast_hourly: weather?.forecast_hourly ?? defaultForecastHourly(date),
+  supported_features: (weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
+    .reduce((acc, f) => acc | f, 0),
+})
+
+const setEntity = async (entityId: string, { state, attributes = {}, displayPrecision }: MockEntity): Promise<void> => {
+  if (entityId !== MOCK_SENSOR) {
+    if (displayPrecision !== undefined) throw new Error(`displayPrecision needs a registry entry, which only ${MOCK_SENSOR} has`)
+    return haApi.setEntityState(entityId, String(state), attributes)
+  }
+  await Promise.all([
+    haApi.setMockSensor(entityId, state, attributes.unit_of_measurement as string | undefined),
+    haApi.setDisplayPrecision(entityId, displayPrecision ?? null),
+  ])
+}
+
+const removeEntity = async (entityId: string): Promise<void> => {
+  if (entityId !== MOCK_SENSOR) return haApi.removeEntityState(entityId)
+  await Promise.all([haApi.setMockSensor(entityId, null), haApi.setDisplayPrecision(entityId, null)])
+}
+
+let previousEntities: string[] = []
+
 export const setupCard = async (page: Page, opts: MockOptions): Promise<void> => {
   // Parse YAML card config, merging with defaults
   const defaults = opts?.cardConfig === null ? {} : parseYaml(DEFAULT_CARD_CONFIG) as ClockWeatherCardConfig
@@ -146,6 +192,7 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   // HA defaults the profile to the browser's zone, but a test that picks HA's zone wants it rendered.
   const userTimeZone = opts?.userTimeZone ?? (opts?.timeZone ? 'server' : 'local')
   const haTemperatureUnit = opts?.unitSystem === 'us_customary' ? '°F' : '°C'
+  const entities = opts?.entities ?? {}
 
   // HA replaces the card element on every dashboard save, so a fresh element proves the new config landed.
   await page.locator('clock-weather-card, hui-error-card')
@@ -155,32 +202,26 @@ export const setupCard = async (page: Page, opts: MockOptions): Promise<void> =>
   await page.clock.setFixedTime(date)
   // Independent state writes - run concurrently.
   await Promise.all([
-    api.setDashboardConfig(TEST_DASHBOARD, cardConfig, opts?.theme),
-    api.setMockWeather({
-      condition: opts?.weather?.state ?? 'sunny',
-      temperature: opts?.weather?.temperature ?? 21,
-      temperature_unit: opts?.weather?.temperatureUnit ?? '°C',
-      humidity: opts?.weather?.humidity ?? 50,
-      dew_point: opts?.weather?.dew_point ?? null,
-      extra_attributes: opts?.weather?.extra_attributes ?? {},
-      forecast_daily: opts?.weather?.forecast_daily ?? defaultForecastDaily(date),
-      forecast_hourly: opts?.weather?.forecast_hourly ?? defaultForecastHourly(date),
-      supported_features: (opts?.weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
-        .reduce((acc, f) => acc | f, 0),
-      hold_forecast: opts?.delayForecast !== undefined,
-    }),
-    api.setEntityState('sun.sun', sunState, {
+    haApi.setDashboardConfig(TEST_DASHBOARD, cardConfig, opts?.theme),
+    haApi.setMockWeather({ ...mockWeatherData(opts?.weather, date), hold_forecast: opts?.delayForecast !== undefined }),
+    haApi.setMockWeather({ ...mockWeatherData(opts?.secondaryWeather, date), entity_id: SECONDARY_WEATHER_ENTITY }),
+    ...Object.entries(entities)
+      .map(([entityId, entity]) => setEntity(entityId, entity)),
+    ...previousEntities.filter(entityId => !(entityId in entities))
+      .map(removeEntity),
+    haApi.setEntityState('sun.sun', sunState, {
       elevation: sunState === 'below_horizon' ? -10 : 30,
       ...(opts?.sun?.attributes ?? {}),
     }),
-    api.setLanguage(language, timeFormat, userTimeZone),
-    api.setTimeZone(timeZone),
-    api.setUnitSystem(opts?.unitSystem ?? 'metric'),
+    haApi.setLanguage(language, timeFormat, userTimeZone),
+    haApi.setTimeZone(timeZone),
+    haApi.setUnitSystem(opts?.unitSystem ?? 'metric'),
   ])
-  void opts?.delayForecast?.then(() => api.setMockWeather({ hold_forecast: false }))
+  previousEntities = Object.keys(entities)
+  void opts?.delayForecast?.then(() => haApi.setMockWeather({ hold_forecast: false }))
   // HA pushes events to the browser in order, so once the card sees this token it has every update above.
   const syncToken = randomUUID()
-  await api.setEntityState(SYNC_ENTITY, syncToken)
+  await haApi.setEntityState(SYNC_ENTITY, syncToken)
 
   // Skip goto on follow-up calls so HA's live WS push hits the mounted card without a reload.
   if (!page.url()

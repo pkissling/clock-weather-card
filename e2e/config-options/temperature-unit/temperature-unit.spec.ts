@@ -1,6 +1,5 @@
 import type { DailyWeatherForecast, WeatherForecast } from '../../../src/types'
 import { expect, test } from '../../utils/fixtures'
-import api from '../../utils/ha-api'
 
 const NOW = new Date('2025-09-14T18:00:00+00:00')
 const HOURLY: WeatherForecast[] = [
@@ -152,9 +151,8 @@ test.describe('temperature_unit', () => {
   })
 
   test('converts entity segments with a temperature unit', async ({ setupCard, clockWeatherCard }) => {
-    await api.setEntityState('sensor.demo_temperature', '20.5', { unit_of_measurement: '°C' })
-    await api.setEntityState('sensor.demo_humidity', '45', { unit_of_measurement: '%' })
     await setupCard({
+      entities: { 'sensor.demo_temperature': { state: '20.5', attributes: { unit_of_measurement: '°C' } }, 'sensor.demo_humidity': { state: '45', attributes: { unit_of_measurement: '%' } } },
       cardConfig: `
         temperature_unit: fahrenheit
         sections:
