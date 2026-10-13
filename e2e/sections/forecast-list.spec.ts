@@ -3,7 +3,7 @@ import type { Locator } from '@playwright/test'
 import type { DailyWeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
 import { expect, test } from '../utils/fixtures'
-import api from '../utils/ha-api'
+import haApi from '../utils/ha-api'
 
 
 const DAILY: DailyWeatherForecast[] = [
@@ -235,7 +235,7 @@ test.describe('forecast_list section', () => {
     await expect(rows.nth(2))
       .toHaveAttribute('src', /clear-day/)
 
-    await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+    await haApi.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
     await expect(rows.nth(0))
       .toHaveAttribute('src', /clear-night/)
     await expect(rows.nth(1))

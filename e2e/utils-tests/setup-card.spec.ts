@@ -55,3 +55,30 @@ test.describe('setupCard', () => {
       .toEqual(['10%', '50%', '10%', '50%'])
   })
 })
+
+test.describe('setupCard entities', () => {
+  test('removes entities of the previous setup that a follow-up call does not list', async ({ setupCard, clockWeatherCard }) => {
+    const hassEntity = (entityId: string): Promise<{ state?: string, displayPrecision?: number }> => clockWeatherCard.evaluate((el, id) => {
+      const hass = (el as unknown as { hass: { states: Record<string, { state: string }>, entities: Record<string, { display_precision?: number }> } }).hass
+      return { state: hass.states[id]?.state, displayPrecision: hass.entities[id]?.display_precision }
+    }, entityId)
+
+    await setupCard({
+      entities: {
+        'sensor.e2e_leftover': { state: '42' },
+        'sensor.mock_sensor': { state: 1.5, attributes: { unit_of_measurement: 'W' }, displayPrecision: 2 },
+      },
+    })
+    await expect.poll(() => hassEntity('sensor.e2e_leftover'))
+      .toEqual({ state: '42' })
+    await expect.poll(() => hassEntity('sensor.mock_sensor'))
+      .toEqual({ state: '1.5', displayPrecision: 2 })
+
+    await setupCard({})
+
+    await expect.poll(() => hassEntity('sensor.e2e_leftover'))
+      .toEqual({})
+    await expect.poll(() => hassEntity('sensor.mock_sensor'))
+      .toEqual({ state: 'unknown' })
+  })
+})

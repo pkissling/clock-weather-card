@@ -3,7 +3,7 @@ import { cpSync, existsSync, mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 
-import api from '../utils/ha-api'
+import haApi from '../utils/ha-api'
 import { readHaState } from '../utils/ha-state'
 
 export interface ThemeRef {
@@ -29,8 +29,8 @@ export async function installThemes(refs: ThemeRef[]): Promise<void> {
       rmSync(tmp, { recursive: true, force: true })
     }
   }))
-  await api.callService('frontend', 'reload_themes')
-  const available = Object.keys((await api.getThemes()).themes)
+  await haApi.callService('frontend', 'reload_themes')
+  const available = Object.keys((await haApi.getThemes()).themes)
   for (const { repo, version, name } of refs) {
     if (!available.includes(name)) throw new Error(`Theme "${name}" not found in ${repo}@${version}, available: ${available.join(', ')}`)
   }

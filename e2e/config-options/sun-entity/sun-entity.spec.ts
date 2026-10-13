@@ -1,5 +1,5 @@
 import { expect, test } from '../../utils/fixtures'
-import api from '../../utils/ha-api'
+import haApi from '../../utils/ha-api'
 
 test.describe('sun_entity', () => {
   test('icon switches between day and night based on the configured sun entity state', async ({ setupCard, clockWeatherCard }) => {
@@ -33,7 +33,7 @@ test.describe('sun_entity', () => {
 
     // Push a state change directly to HA - no setupCard rebuild, no page reload.
     // The card subscribes to hass updates via WS, so the icon should swap on the fly.
-    await api.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+    await haApi.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
 
     await expect(icon)
       .not.toHaveAttribute('src', daySrc!)
