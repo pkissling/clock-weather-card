@@ -114,6 +114,24 @@ test.describe('temperature_sensor', () => {
       .toHaveText('18.2°C')
   })
 
+  test('follows the sensor\'s display precision', async ({ setupCard, clockWeatherCard }) => {
+    await api.setMockSensor('sensor.mock_sensor', 23.46, '°C')
+    await api.setDisplayPrecision('sensor.mock_sensor', 0)
+    await setupCard({ cardConfig: cardConfig()
+      .replace(SENSOR, 'sensor.mock_sensor') })
+    const segment = clockWeatherCard.locator('clock-weather-card-weather-segment')
+    await expect(segment)
+      .toHaveText('23°C')
+
+    await api.setDisplayPrecision('sensor.mock_sensor', 2)
+
+    await expect(segment)
+      .toHaveText('23.46°C')
+    await api.setMockSensor('sensor.mock_sensor', 23.5, '°C')
+    await expect(segment)
+      .toHaveText('23.50°C')
+  })
+
   test('rejects a sensor that does not exist', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({ cardConfig: 'temperature_sensor: sensor.does_not_exist' })
 

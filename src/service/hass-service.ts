@@ -14,6 +14,9 @@ const FORECAST_FEATURE_BIT: Record<ForecastType, WeatherEntityFeature> = {
 
 type UnitSource = { attribute: string } | { fixed: string }
 
+// custom-card-helpers' HomeAssistant predates the entity registry display entries.
+type HassEntities = { entities?: Record<string, { display_precision?: number } | undefined> }
+
 const WEATHER_ATTRIBUTE_UNITS: Record<string, UnitSource> = {
   temperature: { attribute: 'temperature_unit' },
   apparent_temperature: { attribute: 'temperature_unit' },
@@ -117,7 +120,20 @@ class HassService {
     if (sensorId === null) return null
     const temperature = toDisplayTemperature(this.getEntityState(hass, sensorId), this.getEntityUnitOfMeasurement(hass, sensorId), toUnit)
     // Sensor states carry their raw precision, unlike weather entities.
-    return temperature === null ? null : Math.round(temperature * 10) / 10
+    if (temperature === null) return null
+    const precision = this.getDisplayPrecision(hass, sensorId) ?? 1
+    return Number(temperature.toFixed(precision))
+  }
+
+  public getDisplayPrecision(hass: HomeAssistant, entityId: string): number | null {
+    return (hass as HomeAssistant & HassEntities).entities?.[entityId]?.display_precision ?? null
+  }
+
+  public formatWithDisplayPrecision(hass: HomeAssistant, entityId: string, value: unknown): unknown {
+    const precision = this.getDisplayPrecision(hass, entityId)
+    if (precision === null || value === '' || !Number.isFinite(Number(value))) return value
+    return Number(value)
+      .toFixed(precision)
   }
 
   public getEntityUnitOfMeasurement(hass: HomeAssistant, entityId: string): string | null {

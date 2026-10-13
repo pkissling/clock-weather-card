@@ -14,6 +14,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     hass.data[DOMAIN] = {}
 
     await async_load_platform(hass, "weather", DOMAIN, {}, config)
+    await async_load_platform(hass, "sensor", DOMAIN, {}, config)
 
     async def handle_set_weather(call: ServiceCall) -> None:
         """Handle the set_weather service call."""
@@ -53,5 +54,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         entity.async_write_ha_state()
 
     hass.services.async_register(DOMAIN, "set_weather", handle_set_weather)
+
+    async def handle_set_sensor(call: ServiceCall) -> None:
+        """Handle the set_sensor service call."""
+        sensor = hass.data[DOMAIN]["sensors"][call.data["entity_id"]]
+        sensor._attr_native_value = call.data.get("state")
+        sensor._attr_native_unit_of_measurement = call.data.get("unit_of_measurement")
+        sensor.async_write_ha_state()
+
+    hass.services.async_register(DOMAIN, "set_sensor", handle_set_sensor)
 
     return True
