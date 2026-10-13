@@ -31,12 +31,20 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
     const unit = this.resolveUnit()
     const { temperatureUnit } = this.config
     const temperature = toDisplayTemperature(value, unit, temperatureUnit)
-    if (temperature !== null) return html`<span>${temperature}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
+    if (temperature !== null) {
+      const displayUnit = this.showUnit ? this.unit ?? temperatureUnit : ''
+      return html`<span>${this.format(temperature)}${displayUnit}</span>`
+    }
 
     if (this.showUnit && this.unit === undefined && unit === null) {
       logger.warn(`Unit attribute "${this.unitAttribute ?? 'unit_of_measurement'}" not found for entity "${this.entityId}"`)
     }
-    return html`<span>${value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+    const displayUnit = this.showUnit ? this.unit ?? unit ?? '' : ''
+    return html`<span>${this.format(value)}${displayUnit}</span>`
+  }
+
+  private format (value: unknown): unknown {
+    return this.attribute ? value : hassService.formatWithDisplayPrecision(this.hass, this.entityId, value)
   }
 
   private resolveUnit (): string | null {
