@@ -1,5 +1,6 @@
 import { expect, test } from '../../utils/fixtures'
 import haApi from '../../utils/ha-api'
+import { hourlyForecast } from '../../utils/test-utils'
 
 test.describe('sun_entity', () => {
   test('icon switches between day and night based on the configured sun entity state', async ({ setupCard, clockWeatherCard }) => {
@@ -112,4 +113,30 @@ test.describe('sun_entity', () => {
       .toBeTruthy()
     expect(preSunset).not.toBe(postSunset)
   })
+  for (const { event, time, before, after } of [
+    { event: 'sunrise', time: '06:29', before: { state: 'below_horizon', icon: /clear-night/ }, after: { state: 'above_horizon', icon: /clear-day/ } },
+    { event: 'sunset', time: '18:29', before: { state: 'above_horizon', icon: /clear-day/ }, after: { state: 'below_horizon', icon: /clear-night/ } },
+  ] as const) {
+    test(`the hourly "Now" icon switches at ${event}, although its entry started before it`, async ({ setupCard, clockWeatherCard }) => {
+      const now = new Date(`2025-09-14T${time}:00Z`)
+      const attributes = { next_rising: '2025-09-15T06:30:00+00:00', next_setting: '2025-09-14T18:30:00+00:00' }
+      await setupCard({
+        date: now,
+        timeZone: 'UTC',
+        sun: { state: before.state, attributes },
+        weather: { forecast_hourly: hourlyForecast(now, ['sunny', 'sunny'], () => ({ temperature: 10, precipitation_probability: 0 })) },
+      })
+      const nowColumn = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+        .first()
+      const icon = nowColumn.locator('clock-weather-card-icon img')
+      await expect(nowColumn.locator('.time'))
+        .toHaveText('Now')
+      await expect(icon)
+        .toHaveAttribute('src', before.icon)
+
+      await haApi.setEntityState('sun.sun', after.state, { ...attributes, elevation: after.state === 'below_horizon' ? -1 : 1 })
+      await expect(icon)
+        .toHaveAttribute('src', after.icon)
+    })
+  }
 })
