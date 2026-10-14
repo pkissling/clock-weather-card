@@ -121,7 +121,6 @@
     "move_left": "왼쪽으로 이동",
     "move_right": "오른쪽으로 이동",
     "delete": "삭제",
-    "row_settings": "행 설정",
     "add_stop": "색상 지점 추가"
   },
   "row": "행",
