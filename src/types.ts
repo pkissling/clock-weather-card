@@ -144,6 +144,7 @@ export interface ResolvedConfig {
   weatherIconType: WeatherIconType
   timeZone: string
   locale: string
+  numberFormat: string
   temperatureUnit: TemperatureUnit
   temperatureSensor: string | null
   header: ResolvedHeaderConfig
@@ -224,7 +225,7 @@ export type ForecastStripItem = {
   weatherIconType: WeatherIconType
   attribute: { icon: string | null, color: string | null, value: string | null } | null
 } & (
-  | { temperature: number, temperatureLow: number | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
+  | { temperature: string, temperatureLow: string | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }
 )
 

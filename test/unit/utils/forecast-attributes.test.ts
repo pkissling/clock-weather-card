@@ -25,11 +25,11 @@ describe('forecastAttributeValue', () => {
 
 describe('formatWithUnit', () => {
   it.each([
-    [12, null, '12'],
-    [12, '', '12'],
-    [40, '%', '40%'],
-    [21, '°C', '21°C'],
-    [12, 'km/h', '12 km/h'],
+    ['12', null, '12'],
+    ['12', '', '12'],
+    ['40', '%', '40%'],
+    ['21', '°C', '21°C'],
+    ['12', 'km/h', '12 km/h'],
   ])('formats %s with unit %o as %s', (value, unit, expected) => {
     expect(formatWithUnit(value, unit))
       .toBe(expected)
