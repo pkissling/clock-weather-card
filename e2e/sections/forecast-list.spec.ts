@@ -328,4 +328,26 @@ test.describe('forecast_list column sizing', () => {
     }
   })
 
+
+  test.describe('bar track color', () => {
+    test.use({ freshPage: true })
+
+    test('follows the theme', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({})
+      await clockWeatherCard.evaluate(el => (el as HTMLElement).style.setProperty('--ha-bar-background-color', 'rgb(1, 2, 3)'))
+
+      await expect(clockWeatherCard.locator('.bar-track')
+        .first())
+        .toHaveCSS('background-color', 'rgb(1, 2, 3)')
+    })
+
+    test('can be set for the card only', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({})
+      await clockWeatherCard.evaluate(el => (el as HTMLElement).style.setProperty('--clock-weather-card-bar-track-color', 'rgb(4, 5, 6)'))
+
+      await expect(clockWeatherCard.locator('.bar-track')
+        .first())
+        .toHaveCSS('background-color', 'rgb(4, 5, 6)')
+    })
+  })
 })
