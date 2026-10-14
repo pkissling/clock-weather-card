@@ -1,0 +1,142 @@
+import { expect, test } from '../../utils/fixtures'
+import haApi from '../../utils/ha-api'
+import { hourlyForecast } from '../../utils/test-utils'
+
+test.describe('sun_entity', () => {
+  test('icon switches between day and night based on the configured sun entity state', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      sun: { state: 'above_horizon' },
+    })
+    const daySrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+      .getAttribute('src')
+
+    await setupCard({
+      sun: { state: 'below_horizon' },
+    })
+    const nightSrc = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+      .getAttribute('src')
+
+    expect(daySrc)
+      .toBeTruthy()
+    expect(nightSrc)
+      .toBeTruthy()
+    expect(nightSrc).not.toBe(daySrc)
+  })
+
+  test('icon swaps live when the sun entity state changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      sun: { state: 'above_horizon' },
+    })
+    const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+    const daySrc = await icon.getAttribute('src')
+    expect(daySrc)
+      .toBeTruthy()
+
+    // Push a state change directly to HA - no setupCard rebuild, no page reload.
+    // The card subscribes to hass updates via WS, so the icon should swap on the fly.
+    await haApi.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
+
+    await expect(icon)
+      .not.toHaveAttribute('src', daySrc!)
+  })
+
+  for (const state of ['sunny', 'clear-night']) {
+    test(`a clear "${state}" sky follows the sun entity in the header text and icon`, async ({ setupCard, clockWeatherCard }) => {
+      const header = clockWeatherCard.locator('clock-weather-card-header')
+      const icon = header.locator('clock-weather-card-icon img')
+
+      await setupCard({ sun: { state: 'above_horizon' }, weather: { state } })
+      await expect(header)
+        .toContainText('Sunny')
+      await expect(icon)
+        .toHaveAttribute('src', /clear-day/)
+
+      await setupCard({ sun: { state: 'below_horizon' }, weather: { state } })
+      await expect(header)
+        .toContainText('Clear')
+      await expect(header).not.toContainText('Sunny')
+      await expect(icon)
+        .toHaveAttribute('src', /clear-night/)
+    })
+  }
+
+  test('renders an error card when the configured sun_entity does not exist', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sun_entity: sun.does_not_exist
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Referenced entity "sun.does_not_exist" does not exist')
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
+      .toHaveCount(0)
+  })
+
+  test('hourly forecast icons pick day/night variants per item using the sun entity attributes', async ({ setupCard, clockWeatherCard }) => {
+    // Fix "now" at 12:00 UTC. Sunset is at 18:00 UTC, sunrise the following morning at 06:00 UTC.
+    // We stage two forecast hours that straddle the sunset boundary.
+    await setupCard({
+      date: new Date('2025-09-14T12:00:00Z'),
+      sun: {
+        state: 'above_horizon',
+        attributes: {
+          next_setting: '2025-09-14T18:00:00+00:00',
+          next_rising: '2025-09-15T06:00:00+00:00',
+        },
+      },
+      weather: {
+        forecast_hourly: [
+          { datetime: '2025-09-14T12:00:00+00:00', condition: 'sunny', temperature: 24, precipitation_probability: 0 },
+          { datetime: '2025-09-14T17:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },
+          { datetime: '2025-09-14T19:00:00+00:00', condition: 'sunny', temperature: 19, precipitation_probability: 0 },
+        ],
+      },
+    })
+
+    // Hour columns only: the 18:00 sunset column sits between 17:00 and 19:00.
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:not(:has(.label ha-icon))')
+    await expect(items)
+      .toHaveCount(3)
+
+    // Index 0 is "Now" (12:00 - day); indexes 1 and 2 are the future forecasts straddling sunset.
+    const preSunset = await items.nth(1)
+      .locator('clock-weather-card-icon img')
+      .getAttribute('src')
+    const postSunset = await items.nth(2)
+      .locator('clock-weather-card-icon img')
+      .getAttribute('src')
+
+    expect(preSunset)
+      .toBeTruthy()
+    expect(postSunset)
+      .toBeTruthy()
+    expect(preSunset).not.toBe(postSunset)
+  })
+  for (const { event, time, before, after } of [
+    { event: 'sunrise', time: '06:29', before: { state: 'below_horizon', icon: /clear-night/ }, after: { state: 'above_horizon', icon: /clear-day/ } },
+    { event: 'sunset', time: '18:29', before: { state: 'above_horizon', icon: /clear-day/ }, after: { state: 'below_horizon', icon: /clear-night/ } },
+  ] as const) {
+    test(`the hourly "Now" icon switches at ${event}, although its entry started before it`, async ({ setupCard, clockWeatherCard }) => {
+      const now = new Date(`2025-09-14T${time}:00Z`)
+      const attributes = { next_rising: '2025-09-15T06:30:00+00:00', next_setting: '2025-09-14T18:30:00+00:00' }
+      await setupCard({
+        date: now,
+        timeZone: 'UTC',
+        sun: { state: before.state, attributes },
+        weather: { forecast_hourly: hourlyForecast(now, ['sunny', 'sunny'], () => ({ temperature: 10, precipitation_probability: 0 })) },
+      })
+      const nowColumn = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+        .first()
+      const icon = nowColumn.locator('clock-weather-card-icon img')
+      await expect(nowColumn.locator('.time'))
+        .toHaveText('Now')
+      await expect(icon)
+        .toHaveAttribute('src', before.icon)
+
+      await haApi.setEntityState('sun.sun', after.state, { ...attributes, elevation: after.state === 'below_horizon' ? -1 : 1 })
+      await expect(icon)
+        .toHaveAttribute('src', after.icon)
+    })
+  }
+})

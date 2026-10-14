@@ -1,0 +1,101 @@
+import type { WeatherForecast } from '../../../../src/types'
+import { WeatherEntityFeature } from '../../../../src/types'
+import { expect, test } from '../../../utils/fixtures'
+
+const FORECAST_HOURLY: WeatherForecast[] = [
+  { datetime: '2025-09-14T14:00:00+00:00', condition: 'sunny', temperature: 22, precipitation_probability: 0 },
+  { datetime: '2025-09-14T15:00:00+00:00', condition: 'sunny', temperature: 21, precipitation_probability: 10 },
+  { datetime: '2025-09-14T16:00:00+00:00', condition: 'cloudy', temperature: 20, precipitation_probability: 30 },
+  { datetime: '2025-09-14T17:00:00+00:00', condition: 'rainy', temperature: 18, precipitation_probability: 80 },
+]
+
+test.describe('sections.forecast_strip.hide', () => {
+  test('renders the hourly forecast section by default', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
+      .toHaveCount(1)
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
+      .toHaveCount(FORECAST_HOURLY.length)
+  })
+
+  test('hides the section when hide: true', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            hide: true
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
+      .toHaveCount(0)
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
+      .toHaveCount(1)
+  })
+
+  test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: {
+        forecast_hourly: FORECAST_HOURLY,
+        supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
+      },
+    })
+    const section = clockWeatherCard.locator('clock-weather-card-forecast-strip')
+    await expect(section)
+      .toBeVisible()
+    await cardErrorMessage(section)
+      .toBe('Entity "weather.mock_weather" does not support hourly forecasts')
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            hide: true
+      `,
+      weather: {
+        forecast_hourly: FORECAST_HOURLY,
+        supportedFeatures: [WeatherEntityFeature.FORECAST_DAILY],
+      },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
+      .toHaveCount(0)
+  })
+
+  test('removes the section at runtime when hide flips to true (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
+      .toHaveCount(1)
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            hide: true
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
+      .toHaveCount(0)
+  })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            hide: fals
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_strip.hide" has invalid value "fals", expected true or false')
+  })
+})

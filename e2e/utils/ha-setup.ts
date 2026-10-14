@@ -1,0 +1,247 @@
+import { execSync, spawn } from 'child_process'
+import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'fs'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import { createContainerName, E2E_ARTIFACT_NAME, writeHaState } from './ha-state.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const HA_VERSION = process.env.HA_VERSION || 'stable'
+const HA_CONFIG_DIR = path.join(__dirname, 'ha-config')
+const PROJECT_DIR = path.join(__dirname, '..', '..')
+const DIST_DIR = path.join(PROJECT_DIR, 'dist')
+
+export const TEST_DASHBOARD = 'clock-weather-card'
+
+export default async function globalSetup(): Promise<void> {
+  assertDockerRunning()
+
+  // Inside the Playwright container every worktree is mounted at /work, so run-in-docker.sh passes the host path.
+  const containerName = createContainerName(process.env.E2E_PROJECT_DIR ?? PROJECT_DIR)
+  assertNoActiveRun(containerName)
+
+  console.log('[HA Setup] Preparing HA config directory...')
+  const tmpDir = mkdtempSync(path.join(os.tmpdir(), `${E2E_ARTIFACT_NAME}-`))
+
+  // Copy HA config fixtures (configuration.yaml + custom_components)
+  cpSync(HA_CONFIG_DIR, tmpDir, { recursive: true })
+
+  // Generate .storage files for dashboards and resources
+  generateStorageFiles(tmpDir)
+
+  // HA only serves /local when www/ exists at startup; the built card is copied in once the build finishes.
+  const wwwDir = path.join(tmpDir, 'www')
+  mkdirSync(wwwDir, { recursive: true })
+  mkdirSync(path.join(tmpDir, 'themes'))
+
+  console.log(`[HA Setup] Starting Home Assistant container ${containerName}...`)
+  // `-p 127.0.0.1::8123` lets Docker pick a free host port, so concurrent
+  // sessions never race for the same port.
+  execSync(
+    `docker run -d --name ${containerName} ` +
+    '-p 127.0.0.1::8123 ' +
+    `-v ${tmpDir}:/config ` +
+    '-e TZ=UTC ' +
+    `ghcr.io/home-assistant/home-assistant:${HA_VERSION}`,
+    { stdio: 'inherit' },
+  )
+
+  try {
+    const haUrl = `http://127.0.0.1:${getMappedPort(containerName)}`
+
+    console.log(`[HA Setup] Building card while waiting for Home Assistant on ${haUrl}...`)
+    await Promise.all([buildCard(wwwDir), waitForHA(haUrl)])
+
+    console.log('[HA Setup] Completing onboarding...')
+    const token = await completeOnboarding(haUrl)
+
+    writeHaState({ haUrl, haToken: token, tmpDir, containerName })
+  } catch (err) {
+    // globalTeardown doesn't run when globalSetup throws - clean up here so a
+    // failed setup doesn't leak a running container.
+    try { execSync(`docker rm -f ${containerName}`, { stdio: 'ignore' }) } catch { /* ignore */ }
+    try { rmSync(tmpDir, { recursive: true, force: true }) } catch { /* ignore */ }
+    throw err
+  }
+
+  console.log('[HA Setup] Home Assistant is ready!')
+}
+
+async function buildCard(wwwDir: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    spawn('yarn', ['build'], { cwd: PROJECT_DIR, stdio: 'inherit' })
+      .on('error', reject)
+      .on('exit', code => code === 0 ? resolve() : reject(new Error(`yarn build exited with code ${code}`)))
+  })
+  cpSync(DIST_DIR, wwwDir, { recursive: true })
+}
+
+function assertDockerRunning(): void {
+  try {
+    execSync('docker info', { stdio: 'ignore', timeout: 10_000 })
+  } catch {
+    throw new Error('[HA Setup] Docker daemon is not reachable - start Docker and retry.')
+  }
+}
+
+function assertNoActiveRun(containerName: string): void {
+  const existing = execSync(`docker ps -aq --filter name=^${containerName}$`, { encoding: 'utf-8' })
+    .trim()
+  if (existing) {
+    throw new Error(
+      `[HA Setup] An e2e run is already active in this worktree (container ${containerName}). ` +
+      `If it isn't, remove it with \`docker rm -f ${containerName}\`.`,
+    )
+  }
+}
+
+function getMappedPort(containerName: string): number {
+  // Output is e.g. "127.0.0.1:49153"
+  const output = execSync(`docker port ${containerName} 8123`, { encoding: 'utf-8' })
+    .trim()
+  const port = Number(output.split('\n')[0].split(':')
+    .pop())
+  if (!Number.isInteger(port) || port <= 0) {
+    throw new Error(`Could not determine mapped HA port from "${output}"`)
+  }
+  return port
+}
+
+function generateStorageFiles(configDir: string): void {
+  const storageDir = path.join(configDir, '.storage')
+  mkdirSync(storageDir, { recursive: true })
+
+  // Lovelace resources - register the card JS
+  writeStorageFile(storageDir, 'lovelace_resources', {
+    items: [
+      {
+        id: 'clock_weather_card',
+        type: 'module',
+        url: '/local/clock-weather-card.js',
+      },
+    ],
+  })
+
+  // Lovelace dashboard - register a single test dashboard (config is updated per-test via REST API)
+  writeStorageFile(storageDir, 'lovelace_dashboards', {
+    items: [
+      {
+        id: TEST_DASHBOARD,
+        icon: 'mdi:test-tube',
+        title: 'Test',
+        url_path: TEST_DASHBOARD,
+        require_admin: false,
+        show_in_sidebar: true,
+        mode: 'storage',
+      },
+    ],
+  })
+
+  // Seed the dashboard with an initial config so the REST API endpoint is available
+  writeStorageFile(storageDir, `lovelace.${TEST_DASHBOARD}`, {
+    config: {
+      views: [{ title: 'Test', cards: [] }],
+    },
+  })
+}
+
+function writeStorageFile(storageDir: string, key: string, data: unknown): void {
+  writeFileSync(
+    path.join(storageDir, key),
+    JSON.stringify({
+      version: 1,
+      minor_version: 1,
+      key,
+      data,
+    }, null, 2) + '\n',
+  )
+}
+
+async function waitForHA(baseUrl: string, timeoutMs = 120_000): Promise<void> {
+  const start = Date.now()
+  const interval = 250
+
+  while (Date.now() - start < timeoutMs) {
+    try {
+      const response = await fetch(`${baseUrl}/api/onboarding`)
+      // Any HTTP response means HA is up
+      if (response.status > 0) return
+    } catch {
+      // Not ready yet (connection refused)
+    }
+    await new Promise(resolve => setTimeout(resolve, interval))
+  }
+
+  throw new Error(`Home Assistant did not start within ${timeoutMs / 1000}s`)
+}
+
+async function completeOnboarding(baseUrl: string): Promise<string> {
+  const clientId = `${baseUrl}/`
+
+  // Step 1: Create user
+  const userRes = await fetch(`${baseUrl}/api/onboarding/users`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: clientId,
+      name: 'Test',
+      username: 'test',
+      password: 'test1234',
+      language: 'en',
+    }),
+  })
+
+  if (!userRes.ok) {
+    const text = await userRes.text()
+    throw new Error(`Onboarding user creation failed: ${userRes.status} ${text}`)
+  }
+
+  const { auth_code } = await userRes.json() as { auth_code: string }
+
+  // Step 2: Exchange auth code for token
+  const tokenRes = await fetch(`${baseUrl}/auth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code: auth_code,
+      client_id: clientId,
+    }),
+  })
+
+  if (!tokenRes.ok) {
+    const text = await tokenRes.text()
+    throw new Error(`Token exchange failed: ${tokenRes.status} ${text}`)
+  }
+
+  const { access_token } = await tokenRes.json() as { access_token: string }
+
+  // Step 3: Complete remaining onboarding steps
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${access_token}`,
+  }
+
+  await fetch(`${baseUrl}/api/onboarding/core_config`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({}),
+  })
+
+  await fetch(`${baseUrl}/api/onboarding/analytics`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({}),
+  })
+
+  await fetch(`${baseUrl}/api/onboarding/integration`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ client_id: clientId, redirect_uri: `${baseUrl}/auth/authorize` }),
+  })
+
+  return access_token
+}

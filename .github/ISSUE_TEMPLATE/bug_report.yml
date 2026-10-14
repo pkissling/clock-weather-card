@@ -1,0 +1,62 @@
+name: 🐞 Bug report
+description: Something is broken or behaves differently than documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Issues are for bugs only.** Feature requests and changes go to [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests), questions and configuration help to [Help & Configuration](https://github.com/pkissling/clock-weather-card/discussions/categories/help-configuration). Issues that aren't bugs are moved to Discussions.
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      options:
+        - label: I'm on the latest version of the card and of Home Assistant.
+          required: true
+        - label: I cleared my browser cache and reloaded the page.
+          required: true
+        - label: I read the [FAQ](https://github.com/pkissling/clock-weather-card#faq) and searched the [existing issues](https://github.com/pkissling/clock-weather-card/issues?q=is%3Aissue).
+          required: true
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: What you see, and what you expected instead. Screenshots help.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Add the card with the config below
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Card configuration
+      description: The card's YAML from the dashboard's code editor.
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Card version
+      placeholder: e.g. 3.0.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Home Assistant version
+      placeholder: e.g. 2026.10.1
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Browser and operating system
+      placeholder: e.g. Chrome 141 on macOS 26, Home Assistant Companion app on Android 16
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Browser console errors
+      description: Open the browser's developer tools (F12), reload the dashboard and paste any errors from the console.
+      render: shell

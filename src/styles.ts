@@ -2,132 +2,340 @@ import { css } from 'lit'
 
 export default css`
 
-  ha-card {
-    --bar-height: 1.5rem;
-    height: 100%;
+  ha-card.clickable {
+    cursor: pointer;
   }
 
-  clock-weather-card-today {
-    display: flex;
+  h1.card-header {
+    padding-bottom: 0px;
   }
 
-  clock-weather-card-today-left {
-    display: flex;
-    width: 35%;
+  clock-weather-card-error hui-error-card {
+    overflow-wrap: anywhere;
+  }
+
+  clock-weather-card-header {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    justify-content: center;
+    container-type: inline-size;
   }
 
-  .grow-img {
-    max-width: 100%;
-    max-height: 100%;
+  clock-weather-card-header > clock-weather-card-icon {
+    display: block;
+    justify-self: center;
+    /* The glyph fills the middle 80% of the box; the img's -10% margins crop the rest. */
+    width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
   }
 
-  clock-weather-card-today-right {
-    display: flex;
-    width: 65%;
-    justify-content: space-around;
-    align-items: center;
+  /* Meteocons clouds are near-white and vanish on light backgrounds without an outline. */
+  clock-weather-card-icon img {
+    filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.35));
   }
 
-  clock-weather-card-today-right-wrap {
+  clock-weather-card-header > clock-weather-card-icon img {
+    display: block;
+    width: 100%;
+    margin: -10% 0;
+  }
+
+  clock-weather-card-header-details {
     display: flex;
     flex-direction: column;
-  }
-
-  clock-weather-card-today-right-wrap-top {
-    width: 100%;
-    text-align: end;
-    display: block;
-  }
-
-  clock-weather-card-today-right-wrap-center {
-    display: flex;
-    height: 4rem;
-    font-size: 3.5rem;
-    white-space: nowrap;
-    align-items: center;
-    justify-content: center;
-  }
-
-  clock-weather-card-today-right-wrap-bottom {
-    display: flex;
-    justify-content: start;
-  }
-
-  clock-weather-card-forecast {
-    display: block;
-  }
-
-  clock-weather-card-forecast-row {
-    display: grid;
-    grid-template-columns: var(--col-one-size) 2rem 2.1rem auto 2.1rem;
-    align-items: center;
-    grid-gap: 0.5rem;
-  }
-
-  forecast-text {
-    text-align: var(--text-align);
-    white-space: nowrap;
-    text-overflow: clip;
-  }
-
-  forecast-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  forecast-temperature-bar {
-    position: relative;
-    width: 100%;
-    height: var(--bar-height);
-    border-radius: calc(var(--bar-height) / 2);
+    justify-self: center;
+    min-width: 0;
+    max-width: 100%;
     overflow: hidden;
   }
 
-  forecast-temperature-bar-background {
-    left: 0%;
-    right: 100%;
-    width: 100%;
-    opacity: 0.25;
-    background: var(--light-primary-color);
+  clock-weather-card-header-details-row {
+    display: flex;
+    align-items: center;
   }
 
-  forecast-temperature-bar-current-indicator-dot {
-    --border-width: 2px;
-    background-color: var(--primary-text-color);
-    border-radius: 50%;
-    width: var(--bar-height);
-    box-shadow: inset 0 0 0 var(--border-width) var(--text-light-primary-color);
-    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
+  /* A flex gap would also pad around spacers, widening the row beyond its content. */
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) ~ :not(clock-weather-card-spacer-segment) {
+    margin-inline-start: 8px;
   }
 
-  forecast-temperature-bar-range {
-    border-radius: calc(var(--bar-height) / 2);
-    left: var(--start-percent);
-    right: calc(100% - var(--end-percent));
-    background: linear-gradient(to right, var(--gradient));
+  clock-weather-card-header-details-row > :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) + :not(clock-weather-card-spacer-segment),
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) + :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) {
+    margin-inline-start: 4px;
+  }
+
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) ~ clock-weather-card-spacer-segment + :not(clock-weather-card-spacer-segment) {
+    margin-inline-start: 16px;
+  }
+
+  clock-weather-card-spacer-segment {
+    flex: 1;
+  }
+
+  clock-weather-card-time-segment,
+  clock-weather-card-date-segment,
+  clock-weather-card-weather-segment,
+  clock-weather-card-entity-segment {
+    white-space: nowrap;
     overflow: hidden;
-    min-width: var(--bar-height);
-    margin-left: calc(var(--move-right) * -1 * var(--bar-height));
+    text-overflow: ellipsis;
+    line-height: 1;
   }
 
-  forecast-temperature-bar-current-indicator {
-    opacity: 0.75;
-    left: var(--position);
+  clock-weather-card-icon-segment {
+    display: flex;
+    align-items: center;
+    line-height: 1;
   }
 
-  forecast-temperature-bar-current-indicator,
-  forecast-temperature-bar-current-indicator-dot,
-  forecast-temperature-bar-background,
-  forecast-temperature-bar-range {
+  clock-weather-card-divider {
+    display: block;
+    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    height: 1px;
+    margin: 2px 0;
+  }
+
+  .card-content > :first-child > clock-weather-card-divider:first-child {
+    display: none;
+  }
+
+  clock-weather-card-forecast-strip {
+    display: block;
+  }
+
+  clock-weather-card-forecast-strip .strip {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  clock-weather-card-forecast-strip-item,
+  clock-weather-card-forecast-strip .skeleton-item {
+    flex: 0 0 auto;
+    min-width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 7px;
+  }
+
+  clock-weather-card-forecast-strip-item:first-of-type,
+  clock-weather-card-forecast-strip .skeleton-item:first-of-type {
+    padding-inline-start: 0;
+  }
+
+  clock-weather-card-forecast-strip-item .time {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    line-height: 1;
+    max-width: 5em;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  clock-weather-card-forecast-strip-item clock-weather-card-icon {
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
+
+  clock-weather-card-forecast-strip-item clock-weather-card-icon img {
+    width: 100%;
     height: 100%;
-    position: absolute;
+    display: block;
   }
 
-  aqi {
-    padding: 2px;
-    border-radius: 5px;
+  clock-weather-card-forecast-strip-item .label {
+    display: inline-flex;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    --mdc-icon-size: 1em;
   }
+
+  clock-weather-card-forecast-strip-item .temperature-low {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  clock-weather-card-forecast-strip-item .attribute {
+    font-size: 0.72rem;
+    opacity: 0.65;
+    color: var(--info-color, #4a90d9);
+    line-height: 1;
+    min-height: 0.72rem;
+    display: flex;
+    max-width: 5rem;
+    align-items: center;
+    gap: 2px;
+    margin-top: 2px;
+  }
+
+  clock-weather-card-forecast-strip-item .attribute-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  clock-weather-card-forecast-strip-item .attribute--monochrome {
+    color: inherit;
+  }
+
+  clock-weather-card-forecast-strip-item .attribute ha-icon {
+    --mdc-icon-size: 1em;
+    display: inline-flex;
+    flex: none;
+  }
+
+  clock-weather-card-forecast-list {
+    display: block;
+  }
+
+  /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
+  clock-weather-card-forecast-list .rows {
+    display: grid;
+    grid-template-columns: max-content var(--cwc-list-row-height) max-content 1fr max-content;
+    grid-auto-rows: minmax(var(--cwc-list-row-height), auto);
+    align-items: center;
+    column-gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  clock-weather-card-forecast-list-item {
+    --_bar-thickness: var(--cwc-list-bar-thickness);
+    --_dot-size: max(14px, calc(var(--_bar-thickness) + 8px));
+    display: contents;
+  }
+
+  clock-weather-card-forecast-list-item .label {
+    max-width: 5em;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  clock-weather-card-forecast-list-item clock-weather-card-icon {
+    width: var(--cwc-list-row-height);
+    height: var(--cwc-list-row-height);
+    display: block;
+  }
+
+  clock-weather-card-forecast-list-item clock-weather-card-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  clock-weather-card-forecast-list-item .temperature-low,
+  clock-weather-card-forecast-list-item .temperature-high {
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  clock-weather-card-forecast-list-item .temperature-low {
+    text-align: end;
+  }
+
+  clock-weather-card-forecast-list-item .temperature-high {
+    text-align: start;
+  }
+
+  clock-weather-card-forecast-list-item .bar-track {
+    position: relative;
+    height: var(--_bar-thickness);
+    min-height: 8px;
+    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    border-radius: 999px;
+    box-shadow: 0 0 1px rgb(0 0 0 / 0.35);
+  }
+
+  clock-weather-card-forecast-list-item:dir(rtl) .bar-track {
+    transform: scaleX(-1);
+  }
+
+  clock-weather-card-forecast-list-item .bar-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+  }
+
+  clock-weather-card-forecast-list-item .dot {
+    position: absolute;
+    top: 50%;
+    left: clamp(calc(var(--_dot-size) / 2), var(--_dot-left), calc(100% - var(--_dot-size) / 2));
+    width: var(--_dot-size);
+    height: var(--_dot-size);
+    border-radius: 50%;
+    background: var(--card-background-color, var(--ha-card-background, #fff));
+    border: 2px solid var(--primary-text-color, currentColor);
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
+  .skeleton {
+    display: block;
+    border-radius: 999px;
+    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    animation: cwc-skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes cwc-skeleton-pulse {
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+    }
+  }
+
+  clock-weather-card-forecast-strip .skeleton--time {
+    width: 1.6rem;
+    height: 0.8rem;
+  }
+
+  clock-weather-card-forecast-strip .skeleton--icon {
+    width: 28px;
+    height: 28px;
+    margin: 6px;
+    border-radius: 50%;
+  }
+
+  clock-weather-card-forecast-strip .skeleton--label {
+    width: 1.8rem;
+    height: 0.95rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--label {
+    width: 2.4rem;
+    height: 0.9rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--icon {
+    width: 70%;
+    aspect-ratio: 1;
+    justify-self: center;
+    border-radius: 50%;
+  }
+
+  clock-weather-card-forecast-list .skeleton--temperature {
+    width: 1.8rem;
+    height: 0.9rem;
+  }
+
+  clock-weather-card-forecast-list .skeleton--bar {
+    height: var(--cwc-list-bar-thickness);
+    min-height: 8px;
+  }
+
 `
