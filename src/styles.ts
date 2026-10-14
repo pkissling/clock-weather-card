@@ -148,7 +148,7 @@ export default css`
 
   clock-weather-card-forecast-strip-item .label {
     display: inline-flex;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     line-height: 1;
     --mdc-icon-size: 1em;
@@ -203,6 +203,7 @@ export default css`
     align-items: center;
     column-gap: 8px;
     font-size: 0.9rem;
+    font-weight: 500;
     line-height: 1;
   }
 
@@ -213,8 +214,6 @@ export default css`
   }
 
   clock-weather-card-forecast-list-item .label {
-    font-weight: 500;
-    opacity: 0.9;
     max-width: 5em;
     overflow-x: clip;
     text-overflow: ellipsis;
@@ -236,7 +235,6 @@ export default css`
   clock-weather-card-forecast-list-item .temperature-low,
   clock-weather-card-forecast-list-item .temperature-high {
     font-variant-numeric: tabular-nums;
-    opacity: 0.85;
     line-height: 1;
   }
 
