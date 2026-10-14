@@ -16,6 +16,7 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import styles from '@/styles'
 import type { ClockHandle, ClockWeatherCardConfig, ResolvedConfig } from '@/types'
+import { estimateCardSize } from '@/utils/card-size'
 import { DEFAULT_TAP_ACTION, resolveConfig } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 import { isDev } from '@/utils/development'
@@ -114,6 +115,21 @@ export class ClockWeatherCard extends LitElement {
       throw requiredConfigMissing('entity')
     }
     this.config = config
+  }
+
+  // Resolves on demand: masonry asks before the card is connected, so `resolved` may not exist yet.
+  public getCardSize(): number {
+    if (!this.config || !this.hass) return 1
+    try {
+      return estimateCardSize(resolveConfig(this.config, this.hass))
+    } catch (e) {
+      logger.warn(`Cannot estimate the card size: ${e instanceof Error ? e.message : String(e)}`)
+      return 1
+    }
+  }
+
+  public getGridOptions(): { columns: number, min_columns: number } {
+    return { columns: 12, min_columns: 6 }
   }
 
   public static getStubConfig (_: HomeAssistant, entities: string[], entitiesFallback: string[]): Omit<ClockWeatherCardConfig, 'type'> {
