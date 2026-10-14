@@ -127,7 +127,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
 export const ROW_FIELDS: EditorField[] = [
   { name: 'segments', control: 'segments' },
   { name: 'alignment', selector: { select: { mode: 'box', options: ROW_ALIGNMENTS } }, default: () => document.dir === 'rtl' ? 'right' : 'left' },
-  { name: 'font_size', selector: text },
+  { name: 'font_size', selector: text, default: '1em' },
 ]
 
 const unitFields = (attributeSelector: EditorField, hasAttribute: (d: Data) => boolean): EditorField[] => [

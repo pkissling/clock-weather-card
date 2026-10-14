@@ -71,6 +71,24 @@ test.describe('GUI editor', () => {
       .toEqual({ alignment: 'center', segments: [{ type: 'icon', icon: 'mdi:calendar' }, { type: 'date' }, { type: 'text', text: 'Hello' }] })
   })
 
+  test('sets the font size of a header row', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await expect(editor.locator('[data-row="0"]')
+      .getByRole('textbox', { name: 'Font size' }))
+      .toHaveValue('1em')
+    await editor.locator('[data-row="1"]')
+      .getByRole('textbox', { name: 'Font size' })
+      .fill('2rem')
+
+    const config = await saveEditor(page)
+    expect((config.sections as { header: { rows: { font_size?: string }[] } }).header.rows[1].font_size)
+      .toBe('2rem')
+  })
+
   test('picks a date format from previews', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)
