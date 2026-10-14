@@ -625,7 +625,7 @@ test.describe('sections.header.rows', () => {
       })
       const segment = clockWeatherCard.locator('clock-weather-card-entity-segment')
       await expect(segment)
-        .toHaveText('1234.6W')
+        .toHaveText('1,234.6W')
 
       await haApi.setMockSensor('sensor.mock_sensor', 42, '°C')
       await haApi.setDisplayPrecision('sensor.mock_sensor', 2)

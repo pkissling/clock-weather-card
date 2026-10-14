@@ -29,6 +29,7 @@ describe('resolveConfig', () => {
         weatherIconType: 'line',
         timeZone: 'Europe/Berlin',
         locale: 'de',
+        numberFormat: 'language',
         temperatureUnit: '°C',
         temperatureSensor: null,
         header: {

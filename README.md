@@ -19,7 +19,7 @@ An iOS-inspired clock and weather card for [Home Assistant](https://www.home-ass
 - **Any forecast attribute** - show wind speed, humidity, UV index or any other numeric attribute in the strip or as bars.
 - **Sunrise and sunset** - marked in the hourly strip.
 - **Fully customizable** - set your own color gradient for the forecast bars, pick icon styles and sizes per section, tune row heights, bar thickness, font sizes and alignment, choose date and time formats, and show or hide every section.
-- **Localized** - Dozens of languages, locale-aware date and time formats, any time zone, and Celsius or Fahrenheit.
+- **Localized** - Dozens of languages, locale-aware date, time and number formats, any time zone, and Celsius or Fahrenheit.
 - **Visual editor** - set the card up in the dashboard UI, no YAML required.
 
 ## Installation
@@ -297,7 +297,7 @@ sections:
 | `sun_entity` | string | no | `sun.sun` | Entity ID of the sun entity, used to determine day/night icons |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | `line` | Visual style of the weather icons ([meteocons](https://github.com/basmilius/meteocons)). Applies to all sections; each section can override it with its own `weather_icon_type`. |
 | `time_zone` | string | no | Home Assistant profile time zone | IANA time zone name (e.g. `Europe/Berlin`) used for all times and dates on the card (clock, date, forecast times, sunrise/sunset). When unset, follows the time zone setting in the user's Home Assistant profile: the browser's time zone if set to local, otherwise the time zone configured in Home Assistant. |
-| `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. |
+| `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. Numbers follow the number format of your Home Assistant profile; its "Auto" setting uses this locale. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
 | `temperature_sensor` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown with the sensor's display precision (at most one decimal if none is set) and rounded per section by `round_temperatures`. While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
 | `tap_action` | object | no | `more-info` | [Action](https://www.home-assistant.io/dashboards/actions/) to run when the card is tapped, e.g. `navigate`, `url`, `more-info` (of `entity`) or `perform-action`. Set `action: none` to make the card not clickable. |

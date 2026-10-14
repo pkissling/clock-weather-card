@@ -26,6 +26,7 @@ v3 is a ground-up rewrite. The fixed today/forecast layout is replaced by three 
 - **Animated icons per section** - `animated_icons` on each section (on for the header, off for the forecast sections by default).
 - **Header icon size** - `sections.header.weather_icon_size`; by default the icon matches the height of the header rows.
 - **`temperature_unit`** - show all temperatures in `celsius` or `fahrenheit`, converting the weather entity's values and `°C`/`°F` entity segments.
+- **Number format from your HA profile** - temperatures, attribute values and numeric entity states use the number format set in your Home Assistant profile.
 - **Units everywhere** - known weather attributes get their unit automatically; override with `unit` or `unit_attribute` on `weather` and `entity` segments.
 - **`tap_action`** - any Home Assistant [action](https://www.home-assistant.io/dashboards/actions/) (`navigate`, `url`, `more-info`, `perform-action`, …). Defaults to `more-info`; `none` makes the card not clickable.
 - **Per-section weather entity** - `forecast_strip` and `forecast_list` accept their own `weather_entity`.

@@ -33,20 +33,22 @@ class HaApi {
   // Most tests keep the defaults, and each update makes the frontend refetch its config, so unchanged values are skipped.
   private language?: string
   private timeFormat?: string
+  private numberFormat?: string
   private userTimeZone?: string
   private timeZone?: string
   private unitSystem?: string
 
-  // HA stores the user's time format and time zone preferences alongside the language, so all are written together.
-  async setLanguage(language: string, timeFormat: string, userTimeZone: 'local' | 'server'): Promise<void> {
-    if (language === this.language && timeFormat === this.timeFormat && userTimeZone === this.userTimeZone) return
+  // HA stores the user's time format, number format and time zone preferences alongside the language, so all are written together.
+  async setLanguage(language: string, timeFormat: string, numberFormat: string, userTimeZone: 'local' | 'server'): Promise<void> {
+    if (language === this.language && timeFormat === this.timeFormat && numberFormat === this.numberFormat && userTimeZone === this.userTimeZone) return
     await this.wsRequest({
       type: 'frontend/set_user_data',
       key: 'language',
-      value: { language, time_format: timeFormat, time_zone: userTimeZone },
+      value: { language, time_format: timeFormat, number_format: numberFormat, time_zone: userTimeZone },
     })
     this.language = language
     this.timeFormat = timeFormat
+    this.numberFormat = numberFormat
     this.userTimeZone = userTimeZone
   }
 
