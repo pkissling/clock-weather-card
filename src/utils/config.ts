@@ -204,6 +204,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     weatherIconType,
     timeZone: config.time_zone || hassService.getTimeZone(hass),
     locale: hassService.withHourCycle(hass, config.locale || hassService.getLocale(hass)),
+    numberFormat: hassService.getNumberFormat(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     temperatureSensor: config.temperature_sensor ?? null,
     header: {

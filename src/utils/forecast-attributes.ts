@@ -5,7 +5,7 @@ export function forecastAttributeValue(forecast: WeatherForecast, attribute: str
   return typeof value === 'number' && Number.isFinite(value) ? value : null
 }
 
-export function formatWithUnit(value: number, unit: string | null | undefined): string {
-  if (!unit) return String(value)
+export function formatWithUnit(value: string, unit: string | null | undefined): string {
+  if (!unit) return value
   return /^\p{L}/u.test(unit) ? `${value} ${unit}` : `${value}${unit}`
 }
