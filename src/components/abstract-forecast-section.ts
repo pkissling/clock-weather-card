@@ -111,7 +111,8 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
             at,
             isCurrent,
             label: isCurrent ? nowLabel : at.toFormat(timePattern),
-            isNight: hassService.isNight(this.hass, sunEntity, at),
+            // The "Now" entry may have started before sunrise/sunset, so it follows the live sun state like the header.
+            isNight: hassService.isNight(this.hass, sunEntity, isCurrent ? undefined : at),
           }
         })
     }
