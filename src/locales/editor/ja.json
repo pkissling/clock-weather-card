@@ -121,7 +121,6 @@
     "move_left": "左へ移動",
     "move_right": "右へ移動",
     "delete": "削除",
-    "row_settings": "行の設定",
     "add_stop": "カラーストップを追加"
   },
   "row": "行",

@@ -10,7 +10,7 @@ import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 
-type Focus = { row: number, item: number | 'settings' | 'adding' }
+type Focus = { row: number, item: number | 'adding' }
 
 const NEW_SEGMENTS: { [T in SegmentConfig['type']]: SegmentConfig } = {
   time: { type: 'time' },
@@ -72,7 +72,6 @@ export class ClockWeatherCardRowsEditor extends LitElement {
       <div class="row ${focus ? 'focused' : ''}" data-row=${index}>
         <div class="row-head">
           <span class="row-title">${this.t('row')} ${index + 1}</span>
-          ${iconButton('mdi:tune-variant', this.t('actions.row_settings'), () => this._toggle({ row: index, item: 'settings' }), false, focus?.item === 'settings')}
           ${iconButton('mdi:arrow-up', this.t('actions.move_up'), () => this._emit(move(this.rows, index, index - 1)), index === 0)}
           ${iconButton('mdi:arrow-down', this.t('actions.move_down'), () => this._emit(move(this.rows, index, index + 1)), index === last)}
           ${iconButton('mdi:delete-outline', this.t('actions.delete'), () => this._emit(this.rows.filter((_, i) => i !== index)))}
@@ -88,11 +87,9 @@ export class ClockWeatherCardRowsEditor extends LitElement {
           ><ha-icon icon="mdi:plus"></ha-icon></button>
         </div>
         ${focus?.item === 'adding' ? this._renderTray(row, index) : nothing}
-        ${focus?.item === 'settings' ? html`
-          <div class="panel">
-            ${renderForm({ hass: this.hass, config: this.config }, ROW_FIELDS, row as unknown as Data, {}, changes => this._updateRow(index, { ...row, ...changes } as RowConfig))}
-          </div>
-        ` : nothing}
+        <div class="row-settings">
+          ${renderForm({ hass: this.hass, config: this.config }, ROW_FIELDS, row as unknown as Data, {}, changes => this._updateRow(index, { ...row, ...changes } as RowConfig))}
+        </div>
         ${typeof focus?.item === 'number' && row.segments[focus.item] ? this._renderSegmentPanel(row, index, focus.item) : nothing}
       </div>
     `
@@ -296,6 +293,12 @@ export class ClockWeatherCardRowsEditor extends LitElement {
       padding: 12px 4px 4px;
       border-top: 1px solid var(--divider-color);
       animation: appear 150ms ease;
+    }
+    .row-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
     }
     .panel-head {
       display: flex;
