@@ -55,7 +55,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
     const roundAttribute = (v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
     const attributeValues = visible.map(({ forecast }) => roundAttribute(forecastAttributeValue(forecast, attribute)))
-    const showAttribute = attributeValues.some(v => v !== null && v !== 0)
+    const showAttribute = attributeValues.some(v => v !== null)
     const attributeItem = (value: number | null): ForecastStripItem['attribute'] => showAttribute
       ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(value, attributeUnit) }
       : null
