@@ -223,30 +223,20 @@ test.describe('GUI editor', () => {
       .toEqual({ entity: 'weather.mock_weather' })
   })
 
-  test('shows the color picked from the gradient as hex', async ({ page, setupCard }) => {
+  test('picks the attribute color from the native color picker', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)
 
     await editor.getByText('Forecast strip')
       .click()
     await expandPanel(editor, 'More options')
-    await editor.locator('clock-weather-card-color-picker .hues')
-      .click()
+    await editor.locator('clock-weather-card-color-picker input[type="color"]')
+      .fill('#4a90d9')
 
     await expect(editor.getByRole('textbox', { name: 'Attribute color' }))
-      .toHaveValue(/^#[0-9a-f]{6}$/)
-  })
-
-  test('marks the current color on the gradient', async ({ page, setupCard }) => {
-    await setupCard()
-    const editor = await openEditor(page)
-
-    await editor.getByText('Forecast strip')
-      .click()
-    await expandPanel(editor, 'More options')
-
-    await expect(editor.locator('clock-weather-card-color-picker .marker'))
-      .toBeVisible()
+      .toHaveValue('#4a90d9')
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attribute_color: '#4a90d9' } } })
   })
 
   test('preselects the defaults of Home Assistant', async ({ page, setupCard }) => {
