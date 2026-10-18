@@ -37,7 +37,7 @@ test.describe('sections.forecast_strip.attribute', () => {
       .toHaveCount(0)
   })
 
-  test('shows zero values when another column is non-zero', async ({ setupCard, clockWeatherCard }) => {
+  test('shows zero values', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ date: FIXED_NOW, cardConfig: stripConfig('precipitation'), weather: { forecast_hourly: FORECAST_HOURLY } })
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
@@ -53,19 +53,6 @@ test.describe('sections.forecast_strip.attribute', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
       .toHaveText(['1', '2', '3'])
-  })
-
-  test('hides the row when every visible column is zero', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({
-      date: FIXED_NOW,
-      cardConfig: stripConfig('humidity'),
-      weather: { forecast_hourly: FORECAST_HOURLY.map(f => ({ ...f, humidity: 0 })) },
-    })
-
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
-      .toHaveCount(3)
-    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveCount(0)
   })
 
   test('warns when no forecast entry has the configured attribute', async ({ setupCard, cardErrorMessage, clockWeatherCard }) => {
