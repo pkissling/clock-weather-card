@@ -328,4 +328,18 @@ test.describe('forecast_list column sizing', () => {
     }
   })
 
+  test('truncates an overlong label with an ellipsis and keeps the full text in its title', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard()
+    const label = clockWeatherCard.locator('clock-weather-card-forecast-list-item .label')
+      .first()
+    await expect(label)
+      .toHaveAttribute('title', await label.textContent() ?? '')
+
+    const overflow = await label.evaluate((el) => {
+      el.textContent = 'An overlong forecast label'
+      return { overflows: el.scrollWidth > el.clientWidth, textOverflow: getComputedStyle(el).textOverflow }
+    })
+    expect(overflow)
+      .toEqual({ overflows: true, textOverflow: 'ellipsis' })
+  })
 })
