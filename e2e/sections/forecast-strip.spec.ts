@@ -232,4 +232,19 @@ test.describe('forecast_strip section', () => {
         .not.toHaveCount(0)
     })
   })
+
+  test('truncates an overlong label with an ellipsis and keeps the full text in its title', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard()
+    const label = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .time')
+      .first()
+    await expect(label)
+      .toHaveAttribute('title', await label.textContent() ?? '')
+
+    const overflow = await label.evaluate((el) => {
+      el.textContent = 'An overlong forecast label'
+      return { overflows: el.scrollWidth > el.clientWidth, textOverflow: getComputedStyle(el).textOverflow }
+    })
+    expect(overflow)
+      .toEqual({ overflows: true, textOverflow: 'ellipsis' })
+  })
 })
