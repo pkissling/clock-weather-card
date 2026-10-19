@@ -27,7 +27,7 @@ test.describe('header section', () => {
     try {
       const time = clockWeatherCard.locator('clock-weather-card-time-segment')
       await expect(time)
-        .toHaveText('16:20')
+        .toHaveText('10:20')
       await expect.poll(() => time.evaluate(el => el.scrollWidth <= el.clientWidth))
         .toBe(true)
     } finally {

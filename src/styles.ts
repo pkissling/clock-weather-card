@@ -250,7 +250,7 @@ export default css`
     position: relative;
     height: var(--_bar-thickness);
     min-height: 8px;
-    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    background-color: var(--clock-weather-card-bar-track-color, color-mix(in srgb, var(--secondary-text-color, #727272) 10%, transparent));
     border-radius: 999px;
     box-shadow: 0 0 1px rgb(0 0 0 / 0.35);
   }

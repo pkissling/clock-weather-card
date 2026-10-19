@@ -2,7 +2,7 @@ import type { WeatherForecast } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 
 function makeHourly(count: number): WeatherForecast[] {
-  const base = Date.UTC(2025, 8, 14, 12, 0, 0)
+  const base = Date.UTC(2025, 8, 14, 6, 0, 0)
   return Array.from({ length: count }, (_, i) => ({
     datetime: new Date(base + i * 60 * 60 * 1000)
       .toISOString(),
