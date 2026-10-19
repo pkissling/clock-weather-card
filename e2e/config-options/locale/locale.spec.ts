@@ -176,24 +176,24 @@ test.describe('locale', () => {
     await setupCard({ language: 'en', timeFormat: 'language' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
-      .toHaveText('4:20 PM')
+      .toHaveText('10:20 AM')
   })
 
   test('follows the 24-hour time format of the Home Assistant profile', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ language: 'en', timeFormat: '24' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
-      .toHaveText('16:20')
+      .toHaveText('10:20')
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .time')
       .nth(1))
-      .toHaveText('17:00')
+      .toHaveText('11:00')
   })
 
   test('follows the 12-hour time format of the Home Assistant profile over a 24-hour locale', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ timeFormat: '12' })
 
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
-      .toHaveText('4:20 pm')
+      .toHaveText('10:20 am')
   })
 
   test('an explicit time_pattern wins over the time format of the Home Assistant profile', async ({ setupCard, clockWeatherCard }) => {
@@ -210,7 +210,7 @@ test.describe('locale', () => {
     })
 
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
-      .toHaveText('4:20 pm')
+      .toHaveText('10:20 am')
   })
 
   test('keeps the translations when the Home Assistant profile sets a time format', async ({ setupCard, clockWeatherCard }) => {
