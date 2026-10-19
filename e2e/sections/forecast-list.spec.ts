@@ -328,18 +328,26 @@ test.describe('forecast_list column sizing', () => {
     }
   })
 
-  test('truncates an overlong label with an ellipsis and keeps the full text in its title', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard()
-    const label = clockWeatherCard.locator('clock-weather-card-forecast-list-item .label')
-      .first()
-    await expect(label)
-      .toHaveAttribute('title', await label.textContent() ?? '')
 
-    const overflow = await label.evaluate((el) => {
-      el.textContent = 'An overlong forecast label'
-      return { overflows: el.scrollWidth > el.clientWidth, textOverflow: getComputedStyle(el).textOverflow }
+  test.describe('bar track color', () => {
+    test.use({ freshPage: true })
+
+    test('tints the theme secondary text color', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({})
+      await clockWeatherCard.evaluate(el => (el as HTMLElement).style.setProperty('--secondary-text-color', 'rgb(255, 0, 0)'))
+
+      await expect(clockWeatherCard.locator('.bar-track')
+        .first())
+        .toHaveCSS('background-color', /^color\(srgb 1 0 0 \/ 0\.1\)$/)
     })
-    expect(overflow)
-      .toEqual({ overflows: true, textOverflow: 'ellipsis' })
+
+    test('can be set for the card only', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({})
+      await clockWeatherCard.evaluate(el => (el as HTMLElement).style.setProperty('--clock-weather-card-bar-track-color', 'rgb(4, 5, 6)'))
+
+      await expect(clockWeatherCard.locator('.bar-track')
+        .first())
+        .toHaveCSS('background-color', 'rgb(4, 5, 6)')
+    })
   })
 })

@@ -73,7 +73,7 @@ const DEFAULT_CARD_CONFIG = `
 entity: ${WEATHER_ENTITY}
 `
 
-export const DEFAULT_DATE = new Date('2025-09-14T14:20:59+00:00')
+export const DEFAULT_DATE = new Date('2025-09-14T08:20:59+00:00')
 
 // The `datetime`/`condition` computed by the series builder win over anything `entry` returns,
 // so callers can feed whole row records without accidentally overriding the schedule.

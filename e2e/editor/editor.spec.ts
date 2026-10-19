@@ -116,7 +116,7 @@ test.describe('GUI editor', () => {
     await expandPanel(editor, 'More options')
     await editor.getByLabel('Time format')
       .click()
-    await editor.getByText('4 PM · h a')
+    await editor.getByText('10 AM · h a')
       .click()
 
     expect(await saveEditor(page))
