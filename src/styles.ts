@@ -106,6 +106,7 @@ export default css`
 
   clock-weather-card-forecast-strip .strip {
     display: flex;
+    justify-content: space-between;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
@@ -124,6 +125,10 @@ export default css`
   clock-weather-card-forecast-strip-item:first-of-type,
   clock-weather-card-forecast-strip .skeleton-item:first-of-type {
     padding-inline-start: 0;
+  }
+
+  clock-weather-card-forecast-strip-item:last-of-type {
+    padding-inline-end: 0;
   }
 
   clock-weather-card-forecast-strip-item .time {
