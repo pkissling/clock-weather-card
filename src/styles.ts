@@ -42,6 +42,7 @@ export default css`
   clock-weather-card-header-details {
     display: flex;
     flex-direction: column;
+    row-gap: 2px;
     justify-self: center;
     min-width: 0;
     max-width: 100%;
