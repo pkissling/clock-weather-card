@@ -38,7 +38,9 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
     if (this.showUnit && this.unit === undefined && unit === null) {
       logger.warn(`Unit attribute "${this.unitAttribute ?? 'unit_of_measurement'}" not found for entity "${this.entityId}"`)
     }
-    const text = this.isNumeric(value, unit, precision) ? formatNumber(Number(value), this.config, precision) : String(value)
+    const text = this.isNumeric(value, unit, precision)
+      ? formatNumber(Number(value), this.config, precision)
+      : hassService.formatEntityValue(this.hass, this.entityId, this.attribute)
     return this.renderValue(text, unit)
   }
 

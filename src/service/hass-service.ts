@@ -1,4 +1,5 @@
 import type { HomeAssistant } from 'custom-card-helpers'
+import type { HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 import { DateTime, type Zone } from 'luxon'
 
 import logger from '@/service/logger'
@@ -16,6 +17,12 @@ type UnitSource = { attribute: string } | { fixed: string }
 
 // custom-card-helpers' HomeAssistant predates the entity registry display entries.
 type HassEntities = { entities?: Record<string, { display_precision?: number } | undefined> }
+
+// custom-card-helpers' HomeAssistant predates HA's entity formatters.
+type HassFormatters = {
+  formatEntityState: (stateObj: HassEntity) => string
+  formatEntityAttributeValue: (stateObj: HassEntity, attribute: string) => string
+}
 
 const WEATHER_ATTRIBUTE_UNITS: Record<string, UnitSource> = {
   temperature: { attribute: 'temperature_unit' },
@@ -96,6 +103,17 @@ class HassService {
 
   public getEntityAttribute(hass: HomeAssistant, entityId: string, attribute: string): unknown {
     return hass.states[entityId]?.attributes[attribute]
+  }
+
+  public formattersChanged(prev: HomeAssistant, next: HomeAssistant): boolean {
+    const formatter = (hass: HomeAssistant): unknown => (hass as HomeAssistant & HassFormatters).formatEntityState
+    return formatter(prev) !== formatter(next)
+  }
+
+  public formatEntityValue(hass: HomeAssistant, entityId: string, attribute?: string): string {
+    const stateObj = hass.states[entityId]
+    const { formatEntityState, formatEntityAttributeValue } = hass as HomeAssistant & HassFormatters
+    return attribute === undefined ? formatEntityState(stateObj) : formatEntityAttributeValue(stateObj, attribute)
   }
 
   public getEntityAttributeString(hass: HomeAssistant, entityId: string, attribute: string): string | null {

@@ -645,7 +645,7 @@ test.describe('sections.header.rows', () => {
         .toHaveText('42.00°C')
     })
 
-    test('renders state without unit when entity has no unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
+    test('renders the translated state without unit when entity has no unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
         entities: { 'sensor.demo': { state: 'on' } },
         cardConfig: `
@@ -659,7 +659,59 @@ test.describe('sections.header.rows', () => {
       })
 
       await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
-        .toHaveText('on')
+        .toHaveText('On')
+    })
+
+    test('formats a timestamp state like Home Assistant', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        entities: { 'sensor.demo': { state: '2026-10-22T05:31:00+00:00', attributes: { device_class: 'timestamp' } } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+        .toHaveText('22 October 2026 at 07:31')
+    })
+
+    test('formats a timestamp attribute like Home Assistant', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        sun: { attributes: { next_rising: '2026-10-22T05:31:00+00:00' } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sun.sun
+                      attribute: next_rising
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+        .toHaveText('22 October 2026 at 07:31:00')
+    })
+
+    test('translates the state like Home Assistant', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        entities: { 'binary_sensor.demo': { state: 'on', attributes: { device_class: 'door' } } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: binary_sensor.demo
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+        .toHaveText('Open')
     })
 
     test('rejects an attribute that is missing on the entity', async ({ setupCard, cardErrorMessage }) => {
