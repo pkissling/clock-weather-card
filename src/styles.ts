@@ -79,6 +79,8 @@ export default css`
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1;
+    padding-block: 0.2em;
+    margin-block: -0.2em;
   }
 
   clock-weather-card-icon-segment {
