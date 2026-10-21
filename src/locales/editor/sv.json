@@ -50,7 +50,8 @@
     "unit_attribute": "Enhetsattribut",
     "entity_id": "Entitet",
     "icon": "Ikon",
-    "text": "Text"
+    "text": "Text",
+    "template": "Mall"
   },
   "helpers": {
     "temperature_sensor": "Valfritt. Läser aktuell temperatur från denna sensor i stället för väderentiteten, t.ex. en väderstation eller utomhussensor",
@@ -100,6 +101,7 @@
     "icon": "Ikon",
     "weather_icon": "Väderikon",
     "text": "Text",
+    "template": "Mall",
     "spacer": "Mellanrum"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Valfri MDI-ikon",
     "weather_icon": "Ikon för aktuellt väder",
     "text": "Statisk text",
+    "template": "Jinja-mall",
     "spacer": "Trycker isär grannar"
   },
   "actions": {

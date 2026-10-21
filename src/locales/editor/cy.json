@@ -50,7 +50,8 @@
     "unit_attribute": "Priodwedd uned",
     "entity_id": "Endid",
     "icon": "Eicon",
-    "text": "Testun"
+    "text": "Testun",
+    "template": "Templed"
   },
   "helpers": {
     "temperature_sensor": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
@@ -100,6 +101,7 @@
     "icon": "Eicon",
     "weather_icon": "Eicon tywydd",
     "text": "Testun",
+    "template": "Templed",
     "spacer": "Bwlch"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Unrhyw eicon MDI",
     "weather_icon": "Eicon y tywydd presennol",
     "text": "Testun sefydlog",
+    "template": "Templed Jinja",
     "spacer": "Yn gwthio cymdogion ar wahân"
   },
   "actions": {

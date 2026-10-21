@@ -50,7 +50,8 @@
     "unit_attribute": "Atributo de unidad",
     "entity_id": "Entidad",
     "icon": "Icono",
-    "text": "Texto"
+    "text": "Texto",
+    "template": "Plantilla"
   },
   "helpers": {
     "temperature_sensor": "Opcional. Lee la temperatura actual de este sensor en lugar de la entidad meteorológica, p. ej. una estación meteorológica o un sensor exterior",
@@ -100,6 +101,7 @@
     "icon": "Icono",
     "weather_icon": "Icono del tiempo",
     "text": "Texto",
+    "template": "Plantilla",
     "spacer": "Espaciador"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Cualquier icono MDI",
     "weather_icon": "Icono del tiempo actual",
     "text": "Texto fijo",
+    "template": "Plantilla Jinja",
     "spacer": "Separa los elementos vecinos"
   },
   "actions": {

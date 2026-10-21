@@ -50,7 +50,8 @@
     "unit_attribute": "Atribut unitate",
     "entity_id": "Entitate",
     "icon": "Pictogramă",
-    "text": "Text"
+    "text": "Text",
+    "template": "Șablon"
   },
   "helpers": {
     "temperature_sensor": "Opțional. Citește temperatura curentă de la acest senzor în locul entității meteo, de ex. o stație meteo sau un senzor exterior",
@@ -100,6 +101,7 @@
     "icon": "Pictogramă",
     "weather_icon": "Pictogramă meteo",
     "text": "Text",
+    "template": "Șablon",
     "spacer": "Distanțier"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Orice pictogramă MDI",
     "weather_icon": "Pictograma vremii curente",
     "text": "Text static",
+    "template": "Șablon Jinja",
     "spacer": "Îndepărtează elementele vecine"
   },
   "actions": {

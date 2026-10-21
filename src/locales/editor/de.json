@@ -50,7 +50,8 @@
     "unit_attribute": "Einheitsattribut",
     "entity_id": "Entität",
     "icon": "Symbol",
-    "text": "Text"
+    "text": "Text",
+    "template": "Template"
   },
   "helpers": {
     "temperature_sensor": "Optional. Liest die aktuelle Temperatur aus diesem Sensor statt aus der Wetter-Entität, z. B. einer Wetterstation oder einem Außensensor",
@@ -100,6 +101,7 @@
     "icon": "Symbol",
     "weather_icon": "Wettersymbol",
     "text": "Text",
+    "template": "Template",
     "spacer": "Abstand"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Ein beliebiges MDI-Symbol",
     "weather_icon": "Symbol des aktuellen Wetters",
     "text": "Statischer Text",
+    "template": "Jinja-Template",
     "spacer": "Schiebt Nachbarn auseinander"
   },
   "actions": {

@@ -20,6 +20,7 @@ const NEW_SEGMENTS: { [T in SegmentConfig['type']]: SegmentConfig } = {
   icon: { type: 'icon', icon: 'mdi:star-outline' },
   weather_icon: { type: 'weather_icon' },
   text: { type: 'text', text: '' },
+  template: { type: 'template', template: '' },
   spacer: { type: 'spacer' },
 }
 

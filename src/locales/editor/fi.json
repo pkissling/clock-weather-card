@@ -50,7 +50,8 @@
     "unit_attribute": "Yksikön attribuutti",
     "entity_id": "Kohde",
     "icon": "Kuvake",
-    "text": "Teksti"
+    "text": "Teksti",
+    "template": "Malli"
   },
   "helpers": {
     "temperature_sensor": "Valinnainen. Lukee nykyisen lämpötilan tästä anturista sääentiteetin sijaan, esim. sääasemalta tai ulkoanturista",
@@ -100,6 +101,7 @@
     "icon": "Kuvake",
     "weather_icon": "Sääkuvake",
     "text": "Teksti",
+    "template": "Malli",
     "spacer": "Välistys"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Mikä tahansa MDI-kuvake",
     "weather_icon": "Nykyisen sään kuvake",
     "text": "Kiinteä teksti",
+    "template": "Jinja-malli",
     "spacer": "Työntää viereiset osat erilleen"
   },
   "actions": {

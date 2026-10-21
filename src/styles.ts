@@ -301,6 +301,11 @@ export default css`
     }
   }
 
+  clock-weather-card-template-segment .skeleton--text {
+    width: 4em;
+    height: 0.8em;
+  }
+
   clock-weather-card-forecast-strip .skeleton--time {
     width: 1.6rem;
     height: 0.8rem;

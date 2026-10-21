@@ -50,7 +50,8 @@
     "unit_attribute": "Eenheet-Attribut",
     "entity_id": "Entitéit",
     "icon": "Icon",
-    "text": "Text"
+    "text": "Text",
+    "template": "Template"
   },
   "helpers": {
     "temperature_sensor": "Optional. Liest déi aktuell Temperatur vun dësem Sensor amplaz vun der Wieder-Entitéit, z. B. enger Wiederstatioun oder engem Baussesensor",
@@ -100,6 +101,7 @@
     "icon": "Icon",
     "weather_icon": "Wiedericon",
     "text": "Text",
+    "template": "Template",
     "spacer": "Ofstandshalter"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Iergendeen MDI-Icon",
     "weather_icon": "Icon vum aktuelle Wieder",
     "text": "Statesch Text",
+    "template": "Jinja-Template",
     "spacer": "Dréckt d'Noperen auserneen"
   },
   "actions": {

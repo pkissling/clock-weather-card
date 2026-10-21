@@ -50,7 +50,8 @@
     "unit_attribute": "Enhetsattributt",
     "entity_id": "Entitet",
     "icon": "Ikon",
-    "text": "Tekst"
+    "text": "Tekst",
+    "template": "Mal"
   },
   "helpers": {
     "temperature_sensor": "Valgfritt. Leser gjeldende temperatur fra denne sensoren i stedet for værentiteten, f.eks. en værstasjon eller utendørssensor",
@@ -100,6 +101,7 @@
     "icon": "Ikon",
     "weather_icon": "Værikon",
     "text": "Tekst",
+    "template": "Mal",
     "spacer": "Mellomrom"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Hvilket som helst MDI-ikon",
     "weather_icon": "Ikon for nåværende vær",
     "text": "Statisk tekst",
+    "template": "Jinja-mal",
     "spacer": "Skyver naboer fra hverandre"
   },
   "actions": {

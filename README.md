@@ -472,6 +472,15 @@ Displays static text.
 | `type` | string | **yes** | - | `text` |
 | `text` | string | **yes** | - | Text to display |
 
+#### `template`
+
+Displays the result of a Home Assistant [template](https://www.home-assistant.io/docs/configuration/templating/), re-rendered by Home Assistant whenever an entity it references changes.
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `template` |
+| `template` | string | **yes** | - | Template to render, e.g. `{{ states('binary_sensor.front_door') }}` |
+
 #### `spacer`
 
 A flexible spacer that fills the remaining horizontal space, pushing the segments before and after it apart. To position a whole row, use the row's `alignment` instead.
