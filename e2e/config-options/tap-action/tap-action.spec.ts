@@ -29,21 +29,23 @@ test.describe('tap_action', () => {
       .toContainText('Mock Weather')
   })
 
-  test('runs the configured action on Enter', async ({ page, setupCard }) => {
-    const card = await setupCard({
-      cardConfig: `
-        tap_action:
-          action: navigate
-          navigation_path: '#tapped'
-      `,
+  for (const key of ['Enter', 'Space']) {
+    test(`runs the configured action on ${key}`, async ({ page, setupCard }) => {
+      const card = await setupCard({
+        cardConfig: `
+          tap_action:
+            action: navigate
+            navigation_path: '#tapped-${key}'
+        `,
+      })
+
+      await card.locator('ha-card')
+        .press(key)
+
+      await expect(page)
+        .toHaveURL(new RegExp(`#tapped-${key}$`))
     })
-
-    await card.locator('ha-card')
-      .press('Enter')
-
-    await expect(page)
-      .toHaveURL(/#tapped$/)
-  })
+  }
 })
 
 test.describe('tap_action validation and none', () => {
