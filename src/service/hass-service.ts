@@ -43,9 +43,9 @@ class HassService {
     if (at === undefined) return sun.state === 'below_horizon'
     const { sunrise, sunset } = this.getNextSunEvents(hass, sunEntityId, at.zone)
     if (!sunrise || !sunset) return false
-    const timeOfDay = (dt: DateTime): number => dt.hour * 3600 + dt.minute * 60 + dt.second
-    const atSec = timeOfDay(at)
-    return atSec < timeOfDay(sunrise) || atSec >= timeOfDay(sunset)
+    // Shifts an event by whole days to its last occurrence at or before `at`, so a sunset after midnight still counts.
+    const lastBefore = (event: DateTime): DateTime => event.minus({ days: Math.ceil(event.diff(at, 'days').days) })
+    return lastBefore(sunset) > lastBefore(sunrise)
   }
 
   public getNextSunEvents(hass: HomeAssistant, sunEntityId: string, zone: Zone | string): { sunrise: DateTime | null, sunset: DateTime | null } {
