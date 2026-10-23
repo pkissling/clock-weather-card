@@ -32,6 +32,26 @@ test.describe('forecast_strip section', () => {
       .toContainText('90%')
   })
 
+  test('renders a placeholder for a missing temperature and the not-available icon for a missing condition', async ({ setupCard, clockWeatherCard }) => {
+    const forecasts = [
+      { datetime: '2025-09-14T19:00:00+00:00', condition: 'sunny', temperature: 15 },
+      { datetime: '2025-09-14T20:00:00+00:00', condition: 'cloudy', temperature: null },
+      { datetime: '2025-09-14T21:00:00+00:00', condition: null, temperature: 13 },
+    ] as WeatherForecast[]
+    await setupCard({
+      date: new Date('2025-09-14T19:07:00+00:00'),
+      timeZone: 'UTC',
+      weather: { forecast_hourly: forecasts },
+    })
+
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+    await expect(items.locator('.label'))
+      .toHaveText(['15°C', '–', '13°C'])
+    await expect(items.nth(2)
+      .locator('clock-weather-card-icon img'))
+      .toHaveAttribute('src', /not-available/)
+  })
+
   test('omits the "Now" column when no forecast entry sits before "now"', async ({ setupCard, clockWeatherCard }) => {
     const future: WeatherForecast[] = [
       { datetime: '2025-09-14T20:00:00+00:00', condition: 'sunny', temperature: 18, precipitation_probability: 0 },

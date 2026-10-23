@@ -213,9 +213,9 @@ export type TemperatureUnitOption = keyof typeof TEMPERATURE_UNIT_SYMBOLS
 
 export interface WeatherForecast {
   datetime: string
-  temperature: number
-  condition: string
-  templow?: number
+  temperature?: number | null
+  condition?: string | null
+  templow?: number | null
   precipitation_probability?: number | null
 }
 
@@ -231,7 +231,7 @@ export type ForecastStripItem = {
   weatherIconType: WeatherIconType
   attribute: { icon: string | null, color: string | null, value: string | null } | null
 } & (
-  | { temperature: string, temperatureLow: string | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
+  | { temperature: string | null, temperatureLow: string | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }
 )
 

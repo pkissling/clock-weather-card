@@ -37,6 +37,38 @@ test.describe('forecast_list section', () => {
       .toHaveText('19°C')
   })
 
+  test('handles days without temperatures, templow or condition', async ({ setupCard, clockWeatherCard }) => {
+    const daily = [
+      DAILY[0],
+      { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: null, temperature: null },
+      { datetime: '2025-09-16T00:00:00+00:00', condition: null, templow: 5, temperature: 17 },
+      { datetime: '2025-09-17T00:00:00+00:00', condition: 'rainy', templow: null, temperature: 19 },
+    ] as DailyWeatherForecast[]
+    await setupCard({ weather: { forecast_daily: daily } })
+
+    const rows = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+    await expect(rows)
+      .toHaveCount(4)
+    await expect(rows.nth(1)
+      .locator('.temperature-low'))
+      .toHaveText('–')
+    await expect(rows.nth(1)
+      .locator('.temperature-high'))
+      .toHaveText('–')
+    await expect(rows.nth(1)
+      .locator('.bar-fill'))
+      .toHaveAttribute('style', /left: 0%; right: 100%/)
+    await expect(rows.nth(2)
+      .locator('clock-weather-card-icon img'))
+      .toHaveAttribute('src', /not-available/)
+    await expect(rows.nth(3)
+      .locator('.temperature-low'))
+      .toHaveText('19°C')
+    await expect(rows.nth(3)
+      .locator('.temperature-high'))
+      .toHaveText('19°C')
+  })
+
   test('labels today\'s row with the localized "Today" string and uses weekday names for the rest', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { forecast_daily: DAILY },

@@ -174,6 +174,8 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, forecastType, forecasts => {
       if (forecasts) logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
       else this.failedEntityState = this.hass.states[entityId]
+      forecasts?.filter(f => typeof f.temperature !== 'number' || typeof f.condition !== 'string')
+        .forEach(f => logger.warn(`${forecastType} forecast entry of "${entityId}" at ${f.datetime} has no temperature or condition`))
       this.forecasts = forecasts ?? []
       this._loaded = true
     })
