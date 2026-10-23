@@ -177,6 +177,20 @@ test.describe('sections.header.rows', () => {
       .toContain('Config option "sections.header.rows[1].alignment" has invalid value "middle", expected one of "left", "center", "right"')
   })
 
+  test('rejects a row without segments', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - alignment: center
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].segments" is required')
+  })
+
   test('renders a text segment with its static text', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `
