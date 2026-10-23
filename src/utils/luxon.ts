@@ -22,21 +22,19 @@ function patternNeedsSeconds(pattern: string | undefined): boolean {
 
 export function startClock(needsSeconds: boolean, onTick: () => void): ClockHandle {
   const periodMs = needsSeconds ? 1000 : 60_000
-  const delayMs = periodMs - (Date.now() % periodMs)
-  let intervalId: number | null = null
+  let timeoutId: number
+  // Recomputes the delay on every tick, so a late tick (sleep, background throttling) realigns to the next boundary.
+  const schedule = (): void => {
+    timeoutId = window.setTimeout(() => {
+      onTick()
+      schedule()
+    }, periodMs - (Date.now() % periodMs))
+  }
 
   onTick()
-  const timeoutId = window.setTimeout(() => {
-    onTick()
-    intervalId = window.setInterval(onTick, periodMs)
-  }, delayMs)
+  schedule()
 
-  return {
-    stop: () => {
-      clearTimeout(timeoutId)
-      if (intervalId !== null) clearInterval(intervalId)
-    }
-  }
+  return { stop: () => clearTimeout(timeoutId) }
 }
 
 export const minuteChanged = (next?: DateTime, prev?: DateTime): boolean =>
