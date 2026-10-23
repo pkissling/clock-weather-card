@@ -51,7 +51,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     const visible = this.visibleRows(count, timePattern)
     if (visible.length === 0) return html``
 
-    const roundTemperature = (t: number): string => formatNumber(roundTemperatures ? Math.round(t) : t, this.config)
+    const roundTemperature = (t: number | null): string | null => t === null ? null : formatNumber(roundTemperatures ? Math.round(t) : t, this.config)
 
     const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
     const roundAttribute = (v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
@@ -65,17 +65,17 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     const forecastItems = visible.map(({ forecast, at, label, isNight, isCurrent }, i): { at: DateTime, item: ForecastStripItem } => {
       const templow = forecastType === 'daily' ? forecast.templow ?? null : null
-      const temperature = isCurrent && sensorTemperature !== null ? sensorTemperature : forecast.temperature
+      const temperature = isCurrent && sensorTemperature !== null ? sensorTemperature : forecast.temperature ?? null
       return {
         at,
         item: {
           label,
-          condition: forecast.condition,
+          condition: forecast.condition ?? '',
           isNight,
           animatedIcon: animatedIcons,
           weatherIconType,
-          temperature: roundTemperature(templow === null ? temperature : Math.max(temperature, templow)),
-          temperatureLow: templow === null ? null : roundTemperature(Math.min(temperature, templow)),
+          temperature: roundTemperature(templow === null || temperature === null ? temperature : Math.max(temperature, templow)),
+          temperatureLow: templow === null ? null : roundTemperature(temperature === null ? templow : Math.min(temperature, templow)),
           temperatureUnit,
           attribute: attributeItem(attributeValues[i]),
         },

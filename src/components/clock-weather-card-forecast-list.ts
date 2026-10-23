@@ -9,7 +9,7 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ForecastListItem, SectionForecastType } from '@/types'
 import { customElement } from '@/utils/custom-element'
-import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
+import { forecastAttributeValue, formatWithUnit, MISSING_VALUE } from '@/utils/forecast-attributes'
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { formatNumber } from '@/utils/number'
 import { toCelsius } from '@/utils/temperature'
@@ -72,7 +72,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
         ${bars.map(({ row, lowLabel, highLabel, span, current }) => {
     const item: ForecastListItem = {
       label: row.label,
-      condition: row.forecast.condition,
+      condition: row.forecast.condition ?? '',
       isNight: row.isNight,
       animatedIcon: animatedIcons,
       weatherIconType,
@@ -108,11 +108,13 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
 
     return this.visibleRows(count, timePattern)
       .map((row, i, rows) => {
-        const tempValues = hourly
+        const tempValues = (hourly
           ? [row.forecast.temperature, i === 0 ? currentTempRaw ?? row.forecast.temperature : rows[i - 1].forecast.temperature]
-          : [row.forecast.templow ?? row.forecast.temperature, row.forecast.temperature]
+          : [row.forecast.templow ?? row.forecast.temperature, row.forecast.temperature])
+          .filter((t): t is number => typeof t === 'number')
         // Some integrations leave today's forecasted `temperature` below the current value; keep the dot inside the bar.
         if (!hourly && row.isCurrent && currentTempRaw !== null) tempValues.push(currentTempRaw)
+        if (tempValues.length === 0) return { row, lowLabel: MISSING_VALUE, highLabel: MISSING_VALUE, span: null, current: null }
         const lowRaw = Math.min(...tempValues)
         const highRaw = Math.max(...tempValues)
         return {

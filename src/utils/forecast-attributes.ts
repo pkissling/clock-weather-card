@@ -1,5 +1,7 @@
 import type { WeatherForecast } from '@/types'
 
+export const MISSING_VALUE = '–'
+
 export function forecastAttributeValue(forecast: WeatherForecast, attribute: string): number | null {
   const value = (forecast as unknown as Record<string, unknown>)[attribute]
   return typeof value === 'number' && Number.isFinite(value) ? value : null
