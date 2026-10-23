@@ -113,6 +113,36 @@ test.describe('sun_entity', () => {
       .toBeTruthy()
     expect(preSunset).not.toBe(postSunset)
   })
+  test('hourly forecast icons stay in daytime when sunset falls after midnight', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      date: new Date('2025-06-21T12:00:00Z'),
+      timeZone: 'UTC',
+      sun: {
+        state: 'above_horizon',
+        attributes: {
+          next_setting: '2025-06-22T00:30:00+00:00',
+          next_rising: '2025-06-22T03:00:00+00:00',
+        },
+      },
+      weather: {
+        forecast_hourly: [
+          { datetime: '2025-06-21T12:00:00+00:00', condition: 'sunny', temperature: 20 },
+          { datetime: '2025-06-21T13:00:00+00:00', condition: 'sunny', temperature: 20 },
+          { datetime: '2025-06-22T01:00:00+00:00', condition: 'sunny', temperature: 12 },
+          { datetime: '2025-06-22T04:00:00+00:00', condition: 'sunny', temperature: 12 },
+        ],
+      },
+    })
+
+    const icons = clockWeatherCard.locator('clock-weather-card-forecast-strip-item:not(:has(.label ha-icon)) clock-weather-card-icon img')
+    await expect(icons.nth(1))
+      .toHaveAttribute('src', /clear-day/)
+    await expect(icons.nth(2))
+      .toHaveAttribute('src', /clear-night/)
+    await expect(icons.nth(3))
+      .toHaveAttribute('src', /clear-day/)
+  })
+
   for (const { event, time, before, after } of [
     { event: 'sunrise', time: '06:29', before: { state: 'below_horizon', icon: /clear-night/ }, after: { state: 'above_horizon', icon: /clear-day/ } },
     { event: 'sunset', time: '18:29', before: { state: 'above_horizon', icon: /clear-day/ }, after: { state: 'below_horizon', icon: /clear-night/ } },
