@@ -34,9 +34,8 @@
     "round_temperatures": "Avrund temperaturer",
     "hide_sunrise_sunset": "Skjul soloppgang og solnedgang",
     "attribute": "Attributt",
-    "attribute_icon": "Attributtikon",
+    "attributes": "Attributter",
     "attribute_unit": "Attributtenhet",
-    "attribute_color": "Attributtfarge",
     "row_height": "Radhøyde",
     "bar_thickness": "Stolpetykkelse",
     "hide_current_temp_indicator": "Skjul punkt for nåværende temperatur",
@@ -50,6 +49,7 @@
     "unit_attribute": "Enhetsattributt",
     "entity_id": "Entitet",
     "icon": "Ikon",
+    "color": "Farge",
     "text": "Tekst"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Legg til rad",
     "add_segment": "Legg til segment",
+    "add_attribute": "Legg til attributt",
     "reset": "Tilbakestill til standard",
     "move_up": "Flytt opp",
     "move_down": "Flytt ned",

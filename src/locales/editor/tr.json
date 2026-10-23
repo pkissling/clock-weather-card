@@ -34,9 +34,8 @@
     "round_temperatures": "Sıcaklıkları yuvarla",
     "hide_sunrise_sunset": "Gün doğumunu ve batımını gizle",
     "attribute": "Öznitelik",
-    "attribute_icon": "Öznitelik simgesi",
+    "attributes": "Öznitelikler",
     "attribute_unit": "Öznitelik birimi",
-    "attribute_color": "Öznitelik rengi",
     "row_height": "Satır yüksekliği",
     "bar_thickness": "Çubuk kalınlığı",
     "hide_current_temp_indicator": "Güncel sıcaklık noktasını gizle",
@@ -50,6 +49,7 @@
     "unit_attribute": "Birim özniteliği",
     "entity_id": "Varlık",
     "icon": "Simge",
+    "color": "Renk",
     "text": "Metin"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Satır ekle",
     "add_segment": "Segment ekle",
+    "add_attribute": "Öznitelik ekle",
     "reset": "Varsayılana sıfırla",
     "move_up": "Yukarı taşı",
     "move_down": "Aşağı taşı",

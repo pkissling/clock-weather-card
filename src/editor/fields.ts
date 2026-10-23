@@ -4,7 +4,7 @@ import { editorT, type FormContext, localeOptions, NO_UNIT, TIME_ZONES, weatherI
 import hassService from '@/service/hass-service'
 import type { SegmentConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
-import { DEFAULT_TAP_ACTION, defaultAttributeColor, DEFAULTS } from '@/utils/config'
+import { DEFAULT_TAP_ACTION, DEFAULTS } from '@/utils/config'
 import { DEFAULT_DATE_PATTERN, DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
@@ -16,7 +16,7 @@ export interface EditorField {
   // Rendered by ha-form; a function builds context-dependent selectors.
   selector?: object | ((ctx: FormContext, value: unknown) => object)
   // Rendered by a dedicated control instead of ha-form.
-  control?: 'section-toggle' | 'rows' | 'segments' | 'gradient' | 'color' | 'percent'
+  control?: 'section-toggle' | 'rows' | 'segments' | 'attributes' | 'gradient' | 'percent'
   // An empty string is a meaningful value, offered as an explicit choice.
   allowEmpty?: boolean
   // Shown preselected while unset; picking it removes the option again. A function resolves defaults that depend on Home Assistant.
@@ -28,7 +28,7 @@ export interface EditorField {
   visible?: (data: Data) => boolean
 }
 
-const FORECAST_ATTRIBUTES = ['precipitation_probability', 'precipitation', 'humidity', 'wind_speed', 'wind_gust_speed', 'uv_index', 'cloud_coverage', 'apparent_temperature', 'dew_point', 'pressure']
+export const FORECAST_ATTRIBUTES = ['precipitation_probability', 'precipitation', 'humidity', 'wind_speed', 'wind_gust_speed', 'uv_index', 'cloud_coverage', 'apparent_temperature', 'dew_point', 'pressure']
 
 const text = { text: {} }
 const bool = { boolean: {} }
@@ -77,11 +77,10 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'sun_entity', selector: { entity: { domain: 'sun' } }, group: 'region' },
 ]
 
-const sectionCommon = (forecastType: SectionKey): EditorField[] => [
+const sectionCommon: EditorField[] = [
   { name: 'hide', control: 'section-toggle' },
   { name: 'forecast_type', selector: { select: { mode: 'box', options: SECTION_FORECAST_TYPES } } },
   { name: 'count', selector: { number: { min: 1, mode: 'box', step: 1 } } },
-  { name: 'attribute', selector: attributeSelector(forecastType === 'forecast_list' ? ['temperature'] : []) },
   { name: 'time_pattern', selector: patternSelector(FORECAST_TIME_PATTERNS), default: DEFAULT_TIME_PATTERN, advanced: true, visible: d => d.forecast_type === 'hourly' },
 ]
 
@@ -101,20 +100,14 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
     { name: 'weather_icon_type', ...inheritedIconType, advanced: true },
   ],
   forecast_strip: [
-    ...sectionCommon('forecast_strip'),
-    { name: 'attribute_icon', selector: { icon: {} }, default: ({ config }: FormContext) => config.sections?.forecast_strip?.attribute ? undefined : 'mdi:water', advanced: true },
-    { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true },
-    {
-      name: 'attribute_color',
-      control: 'color',
-      default: ({ config }: FormContext) => defaultAttributeColor(config.sections?.forecast_strip, config.sections?.forecast_strip?.weather_icon_type ?? config.weather_icon_type ?? DEFAULTS.weather_icon_type) ?? undefined,
-      advanced: true,
-    },
+    ...sectionCommon,
+    { name: 'attributes', control: 'attributes' },
     { name: 'hide_sunrise_sunset', selector: bool, advanced: true, visible: d => d.forecast_type === 'hourly' },
     ...sectionLook,
   ],
   forecast_list: [
-    ...sectionCommon('forecast_list'),
+    ...sectionCommon,
+    { name: 'attribute', selector: attributeSelector(['temperature']) },
     { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true },
     { name: 'gradient', control: 'gradient', advanced: true },
     { name: 'row_height', selector: text, advanced: true },
@@ -123,6 +116,14 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
     ...sectionLook,
   ],
 }
+
+// Defaults depend on the entry's attribute, so the attributes editor passes them in.
+export const STRIP_ATTRIBUTE_FIELDS: EditorField[] = [
+  { name: 'attribute', selector: attributeSelector(), required: true },
+  { name: 'icon', selector: { icon: {} } },
+  { name: 'unit', selector: unitSelector, allowEmpty: true },
+  { name: 'color' },
+]
 
 export const ROW_FIELDS: EditorField[] = [
   { name: 'segments', control: 'segments' },

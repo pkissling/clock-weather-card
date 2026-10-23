@@ -34,9 +34,8 @@
     "round_temperatures": "温度取整",
     "hide_sunrise_sunset": "隐藏日出和日落",
     "attribute": "属性",
-    "attribute_icon": "属性图标",
+    "attributes": "属性",
     "attribute_unit": "属性单位",
-    "attribute_color": "属性颜色",
     "row_height": "行高",
     "bar_thickness": "条形粗细",
     "hide_current_temp_indicator": "隐藏当前温度圆点",
@@ -50,6 +49,7 @@
     "unit_attribute": "单位属性",
     "entity_id": "实体",
     "icon": "图标",
+    "color": "颜色",
     "text": "文本"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "添加行",
     "add_segment": "添加片段",
+    "add_attribute": "添加属性",
     "reset": "恢复默认",
     "move_up": "上移",
     "move_down": "下移",

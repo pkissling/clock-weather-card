@@ -34,9 +34,8 @@
     "round_temperatures": "Zaokrúhľovať teploty",
     "hide_sunrise_sunset": "Skryť východ a západ slnka",
     "attribute": "Atribút",
-    "attribute_icon": "Ikona atribútu",
+    "attributes": "Atribúty",
     "attribute_unit": "Jednotka atribútu",
-    "attribute_color": "Farba atribútu",
     "row_height": "Výška riadka",
     "bar_thickness": "Hrúbka pruhu",
     "hide_current_temp_indicator": "Skryť bod aktuálnej teploty",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribút jednotky",
     "entity_id": "Entita",
     "icon": "Ikona",
+    "color": "Farba",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Pridať riadok",
     "add_segment": "Pridať segment",
+    "add_attribute": "Pridať atribút",
     "reset": "Obnoviť predvolené",
     "move_up": "Posunúť nahor",
     "move_down": "Posunúť nadol",

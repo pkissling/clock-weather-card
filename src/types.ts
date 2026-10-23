@@ -76,6 +76,13 @@ export type SegmentConfig =
 
 export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
 
+export interface ForecastStripAttributeConfig {
+  attribute: string
+  icon?: string
+  unit?: string
+  color?: string
+}
+
 export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
 
 export interface RowConfig {
@@ -113,10 +120,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       weather_icon_type?: WeatherIconType
       hide_sunrise_sunset?: boolean
       time_pattern?: string
-      attribute?: string
-      attribute_icon?: string
-      attribute_color?: string
-      attribute_unit?: string
+      attributes?: ForecastStripAttributeConfig[]
     }
     forecast_list?: {
       hide?: boolean
@@ -170,11 +174,15 @@ export interface ResolvedForecastStripConfig {
   weatherIconType: WeatherIconType
   hideSunriseSunset: boolean
   timePattern: string
+  attributes: ResolvedForecastStripAttribute[]
+  attributesRequired: boolean
+}
+
+export interface ResolvedForecastStripAttribute {
   attribute: string
-  attributeRequired: boolean
-  attributeIcon: string | null
-  attributeColor: string | null
-  attributeUnit: string | null
+  icon: string | null
+  unit: string | null
+  color: string | null
 }
 
 export interface ResolvedForecastListConfig {
@@ -223,7 +231,7 @@ export type ForecastStripItem = {
   isNight: boolean
   animatedIcon: boolean
   weatherIconType: WeatherIconType
-  attribute: { icon: string | null, color: string | null, value: string | null } | null
+  attributes: { icon: string | null, color: string | null, value: string | null }[]
 } & (
   | { temperature: string, temperatureLow: string | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }

@@ -34,9 +34,8 @@
     "round_temperatures": "Zaokroži temperature",
     "hide_sunrise_sunset": "Skrij sončni vzhod in zahod",
     "attribute": "Atribut",
-    "attribute_icon": "Ikona atributa",
+    "attributes": "Atributi",
     "attribute_unit": "Enota atributa",
-    "attribute_color": "Barva atributa",
     "row_height": "Višina vrstice",
     "bar_thickness": "Debelina traku",
     "hide_current_temp_indicator": "Skrij piko trenutne temperature",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribut enote",
     "entity_id": "Entiteta",
     "icon": "Ikona",
+    "color": "Barva",
     "text": "Besedilo"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Dodaj vrstico",
     "add_segment": "Dodaj segment",
+    "add_attribute": "Dodaj atribut",
     "reset": "Ponastavi na privzeto",
     "move_up": "Premakni gor",
     "move_down": "Premakni dol",

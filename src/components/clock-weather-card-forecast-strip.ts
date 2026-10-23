@@ -23,9 +23,9 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     return this.config.forecastStrip.entity
   }
 
-  protected requiredAttribute(): string | null {
-    const { attribute, attributeRequired } = this.config.forecastStrip
-    return attributeRequired ? attribute : null
+  protected requiredAttributes(): string[] {
+    const { attributes, attributesRequired } = this.config.forecastStrip
+    return attributesRequired ? attributes.map(a => a.attribute) : []
   }
 
   protected renderSkeleton(): TemplateResult {
@@ -45,7 +45,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sunEntity, timeZone, locale, temperatureUnit, temperatureSensor } = this.config
-    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
+    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attributes } = this.config.forecastStrip
     const now = this.currentDate
 
     const visible = this.visibleRows(count, timePattern)
@@ -53,13 +53,16 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     const roundTemperature = (t: number): string => formatNumber(roundTemperatures ? Math.round(t) : t, this.config)
 
-    const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
-    const roundAttribute = (v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
-    const attributeValues = visible.map(({ forecast }) => roundAttribute(forecastAttributeValue(forecast, attribute)))
-    const showAttribute = attributeValues.some(v => v !== null)
-    const attributeItem = (value: number | null): ForecastStripItem['attribute'] => showAttribute
-      ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(formatNumber(value, this.config), attributeUnit) }
-      : null
+    const roundAttribute = (attribute: string, v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
+    const attributeRows = attributes.map(({ attribute, icon, color, unit }) => {
+      const values = visible.map(({ forecast }) => roundAttribute(attribute, forecastAttributeValue(forecast, attribute)))
+      return { icon, color, unit: unit ?? this.forecastAttributeUnit(attribute), values }
+    })
+      .filter(({ values }) => values.some(v => v !== null))
+    const attributeItems = (index: number | null): ForecastStripItem['attributes'] => attributeRows.map(({ icon, color, unit, values }) => {
+      const value = index === null ? null : values[index]
+      return { icon, color, value: value === null ? null : formatWithUnit(formatNumber(value, this.config), unit) }
+    })
 
     const sensorTemperature = forecastType === 'hourly' ? hassService.getSensorTemperature(this.hass, temperatureSensor, temperatureUnit) : null
 
@@ -77,7 +80,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
           temperature: roundTemperature(templow === null ? temperature : Math.max(temperature, templow)),
           temperatureLow: templow === null ? null : roundTemperature(Math.min(temperature, templow)),
           temperatureUnit,
-          attribute: attributeItem(attributeValues[i]),
+          attributes: attributeItems(i),
         },
       }
     })
@@ -98,7 +101,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
           animatedIcon: animatedIcons,
           weatherIconType,
           sunEvent: { kind, label: translationsService.t(locale, kind === 'sunrise' ? 'misc.sunrise' : 'misc.sunset') },
-          attribute: attributeItem(null),
+          attributes: attributeItems(null),
         },
       }))
 

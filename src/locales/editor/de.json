@@ -34,9 +34,8 @@
     "round_temperatures": "Temperaturen runden",
     "hide_sunrise_sunset": "Sonnenauf- und -untergang ausblenden",
     "attribute": "Attribut",
-    "attribute_icon": "Attributsymbol",
+    "attributes": "Attribute",
     "attribute_unit": "Attributeinheit",
-    "attribute_color": "Attributfarbe",
     "row_height": "Zeilenhöhe",
     "bar_thickness": "Balkenstärke",
     "hide_current_temp_indicator": "Punkt der aktuellen Temperatur ausblenden",
@@ -50,6 +49,7 @@
     "unit_attribute": "Einheitsattribut",
     "entity_id": "Entität",
     "icon": "Symbol",
+    "color": "Farbe",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Zeile hinzufügen",
     "add_segment": "Segment hinzufügen",
+    "add_attribute": "Attribut hinzufügen",
     "reset": "Auf Standard zurücksetzen",
     "move_up": "Nach oben",
     "move_down": "Nach unten",

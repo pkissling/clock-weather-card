@@ -34,9 +34,8 @@
     "round_temperatures": "עגל טמפרטורות",
     "hide_sunrise_sunset": "הסתר זריחה ושקיעה",
     "attribute": "מאפיין",
-    "attribute_icon": "סמל מאפיין",
+    "attributes": "מאפיינים",
     "attribute_unit": "יחידת מאפיין",
-    "attribute_color": "צבע מאפיין",
     "row_height": "גובה שורה",
     "bar_thickness": "עובי פס",
     "hide_current_temp_indicator": "הסתר נקודת טמפרטורה נוכחית",
@@ -50,6 +49,7 @@
     "unit_attribute": "מאפיין יחידה",
     "entity_id": "ישות",
     "icon": "סמל",
+    "color": "צבע",
     "text": "טקסט"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "הוסף שורה",
     "add_segment": "הוסף מקטע",
+    "add_attribute": "הוסף מאפיין",
     "reset": "אפס לברירת מחדל",
     "move_up": "הזז למעלה",
     "move_down": "הזז למטה",

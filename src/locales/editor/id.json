@@ -34,9 +34,8 @@
     "round_temperatures": "Bulatkan suhu",
     "hide_sunrise_sunset": "Sembunyikan matahari terbit dan terbenam",
     "attribute": "Atribut",
-    "attribute_icon": "Ikon atribut",
+    "attributes": "Atribut",
     "attribute_unit": "Satuan atribut",
-    "attribute_color": "Warna atribut",
     "row_height": "Tinggi baris",
     "bar_thickness": "Ketebalan batang",
     "hide_current_temp_indicator": "Sembunyikan titik suhu saat ini",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribut satuan",
     "entity_id": "Entitas",
     "icon": "Ikon",
+    "color": "Warna",
     "text": "Teks"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Tambah baris",
     "add_segment": "Tambah segmen",
+    "add_attribute": "Tambah atribut",
     "reset": "Atur ulang ke bawaan",
     "move_up": "Pindah ke atas",
     "move_down": "Pindah ke bawah",

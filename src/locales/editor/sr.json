@@ -34,9 +34,8 @@
     "round_temperatures": "Заокружи температуре",
     "hide_sunrise_sunset": "Сакриј излазак и залазак сунца",
     "attribute": "Атрибут",
-    "attribute_icon": "Иконица атрибута",
+    "attributes": "Атрибути",
     "attribute_unit": "Јединица атрибута",
-    "attribute_color": "Боја атрибута",
     "row_height": "Висина реда",
     "bar_thickness": "Дебљина траке",
     "hide_current_temp_indicator": "Сакриј тачку тренутне температуре",
@@ -50,6 +49,7 @@
     "unit_attribute": "Атрибут јединице",
     "entity_id": "Ентитет",
     "icon": "Иконица",
+    "color": "Боја",
     "text": "Текст"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Додај ред",
     "add_segment": "Додај сегмент",
+    "add_attribute": "Додај атрибут",
     "reset": "Врати на подразумевано",
     "move_up": "Помери горе",
     "move_down": "Помери доле",

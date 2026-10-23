@@ -67,11 +67,8 @@ describe('resolveConfig', () => {
           weatherIconType: 'line',
           hideSunriseSunset: false,
           timePattern: 't',
-          attribute: 'precipitation_probability',
-          attributeRequired: false,
-          attributeIcon: 'mdi:water',
-          attributeColor: '#3988EF',
-          attributeUnit: null,
+          attributes: [{ attribute: 'precipitation_probability', icon: 'mdi:water', unit: null, color: '#3988EF' }],
+          attributesRequired: false,
         },
         forecastList: {
           hidden: false,
@@ -158,11 +155,17 @@ describe('resolveConfig', () => {
       .toMatchObject({ entity: 'weather.list', weatherIconType: 'monochrome', count: 3 })
   })
 
-  it('drops the default strip icon once a custom attribute is configured', () => {
-    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed' } } }), hass).forecastStrip.attributeIcon)
+  it('gives only precipitation probability a default strip icon and color', () => {
+    const attributes = [{ attribute: 'wind_speed' }, { attribute: 'wind_speed', icon: 'mdi:weather-windy', color: '#ff0000' }, { attribute: 'precipitation_probability' }]
+
+    expect(resolveConfig(config({ sections: { forecast_strip: { attributes } } }), hass).forecastStrip.attributes)
+      .toEqual([
+        { attribute: 'wind_speed', icon: null, unit: null, color: null },
+        { attribute: 'wind_speed', icon: 'mdi:weather-windy', unit: null, color: '#ff0000' },
+        { attribute: 'precipitation_probability', icon: 'mdi:water', unit: null, color: '#3988EF' },
+      ])
+    expect(resolveConfig(config({ sections: { forecast_strip: { weather_icon_type: 'monochrome' } } }), hass).forecastStrip.attributes[0].color)
       .toBeNull()
-    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed', attribute_icon: 'mdi:weather-windy' } } }), hass).forecastStrip.attributeIcon)
-      .toBe('mdi:weather-windy')
   })
 
   it('prefers a configured gradient over the attribute default', () => {

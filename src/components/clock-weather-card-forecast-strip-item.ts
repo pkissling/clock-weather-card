@@ -13,7 +13,7 @@ class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponen
   @property({ attribute: false }) public item!: ForecastStripItem
 
   public render(): TemplateResult {
-    const { label, condition, isNight, animatedIcon, weatherIconType, temperature, temperatureLow, temperatureUnit, sunEvent, attribute } = this.item
+    const { label, condition, isNight, animatedIcon, weatherIconType, temperature, temperatureLow, temperatureUnit, sunEvent, attributes } = this.item
     const attributeClass = weatherIconType === 'monochrome' ? 'attribute attribute--monochrome' : 'attribute'
 
     return html`
@@ -28,9 +28,7 @@ class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponen
     ? html`<span class="label"><ha-icon icon=${sunEvent.kind === 'sunrise' ? 'mdi:arrow-up' : 'mdi:arrow-down'} title=${sunEvent.label} aria-label=${sunEvent.label}></ha-icon></span>`
     : html`<span class="label">${temperature}${temperatureUnit}</span>`}
       ${temperatureLow === null || temperatureLow === undefined ? nothing : html`<span class="temperature-low">${temperatureLow}${temperatureUnit}</span>`}
-      ${attribute
-    ? html`<span class=${attributeClass} style=${attribute.color ? `color: ${attribute.color}` : nothing}>${attribute.value !== null ? html`${attribute.icon ? html`<ha-icon icon=${attribute.icon}></ha-icon>` : nothing}<span class="attribute-value">${attribute.value}</span>` : nothing}</span>`
-    : nothing}
+      ${attributes.map(attribute => html`<span class=${attributeClass} style=${attribute.color ? `color: ${attribute.color}` : nothing}>${attribute.value !== null ? html`${attribute.icon ? html`<ha-icon icon=${attribute.icon}></ha-icon>` : nothing}<span class="attribute-value">${attribute.value}</span>` : nothing}</span>`)}
     `
   }
 }

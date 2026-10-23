@@ -34,9 +34,8 @@
     "round_temperatures": "Zaokruži temperature",
     "hide_sunrise_sunset": "Sakrij izlazak i zalazak sunca",
     "attribute": "Atribut",
-    "attribute_icon": "Ikonica atributa",
+    "attributes": "Atributi",
     "attribute_unit": "Jedinica atributa",
-    "attribute_color": "Boja atributa",
     "row_height": "Visina reda",
     "bar_thickness": "Debljina trake",
     "hide_current_temp_indicator": "Sakrij tačku trenutne temperature",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribut jedinice",
     "entity_id": "Entitet",
     "icon": "Ikonica",
+    "color": "Boja",
     "text": "Tekst"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Dodaj red",
     "add_segment": "Dodaj segment",
+    "add_attribute": "Dodaj atribut",
     "reset": "Vrati na podrazumevano",
     "move_up": "Pomeri gore",
     "move_down": "Pomeri dole",

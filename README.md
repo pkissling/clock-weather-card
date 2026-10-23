@@ -231,9 +231,10 @@ sections:
     hide: true
   forecast_strip:
     forecast_type: daily
-    attribute: wind_speed
-    attribute_icon: mdi:weather-windy
-    attribute_color: "#0288D1"
+    attributes:
+      - attribute: wind_speed
+        icon: mdi:weather-windy
+        color: "#0288D1"
   forecast_list:
     hide: true
 ```
@@ -321,7 +322,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 
 #### `forecast_strip`
 
-Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Attribute columns without a value stay blank, and the row is hidden entirely when no visible column has a value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one row per configured forecast attribute (precipitation probability by default, see `attributes`). Attribute columns without a value stay blank, and an attribute row is hidden entirely when no visible column has a value. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
 
 In hourly mode, the first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
@@ -342,10 +343,24 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
 | `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
 | `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) format pattern for the hourly and sunrise/sunset column labels. The default `t` is the localized short time, e.g. `15:00` or `3:00 PM` depending on the locale and the time format in your Home Assistant profile; `H` shows only the hour. |
-| `attribute` | string | no | `precipitation_probability` | Any numeric forecast attribute provided by the weather entity (e.g. `wind_speed`, `humidity`, `uv_index`), shown in the row below the temperature. See [Forecast attributes](#forecast-attributes). |
-| `attribute_icon` | string | no | `mdi:water` if `attribute` is unset, otherwise none | Icon shown before each attribute value. |
-| `attribute_unit` | string | no | resolved unit (see [Forecast attributes](#forecast-attributes)) | Unit shown after each attribute value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |
-| `attribute_color` | string | no | `#3988EF` if `attribute` is unset, otherwise the theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the attribute row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
+| `attributes` | list | no | `[{ attribute: precipitation_probability }]` | Forecast attributes shown below the temperature, one row each, top to bottom. Set to `[]` to show none. See the table below and [Forecast attributes](#forecast-attributes). |
+
+Each entry of `attributes` accepts:
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `attribute` | string | yes | - | Any numeric forecast attribute provided by the weather entity (e.g. `precipitation_probability`, `precipitation`, `wind_speed`, `humidity`, `uv_index`). |
+| `icon` | string | no | `mdi:water` for `precipitation_probability`, otherwise none | Icon shown before each value. |
+| `unit` | string | no | resolved unit (see [Forecast attributes](#forecast-attributes)) | Unit shown after each value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |
+| `color` | string | no | `#3988EF` for `precipitation_probability`, otherwise the theme's info color (text color with `weather_icon_type: monochrome`) | CSS color of the row, e.g. `"#4a90d9"` or `var(--warning-color)`. Applies regardless of `weather_icon_type`. |
+
+```yaml
+forecast_strip:
+  attributes:
+    - attribute: precipitation_probability
+    - attribute: precipitation
+      icon: mdi:weather-pouring
+```
 
 #### `forecast_list`
 
@@ -388,7 +403,7 @@ gradient:
 
 #### Forecast attributes
 
-`forecast_strip.attribute` and `forecast_list.attribute` accept any numeric attribute of the weather entity's forecast entries, shown as provided (no rounding, except that the strip rounds `precipitation_probability` to the nearest 10); non-numeric values are treated as missing. If no forecast entry has the configured attribute, the section renders an inline warning instead (the strip's default `precipitation_probability` is exempt and simply hides the row). The unit is resolved the same way as for the [`weather` segment](#weather) (e.g. `wind_speed_unit` for `wind_speed`, `%` for `humidity`, otherwise the entity's `<attribute>_unit` attribute).
+`forecast_strip.attributes[].attribute` and `forecast_list.attribute` accept any numeric attribute of the weather entity's forecast entries, shown as provided (no rounding, except that the strip rounds `precipitation_probability` to the nearest 10); non-numeric values are treated as missing. If no forecast entry has a configured attribute, the section renders an inline warning instead (the strip's default `attributes` are exempt and simply hide the row). The unit is resolved the same way as for the [`weather` segment](#weather) (e.g. `wind_speed_unit` for `wind_speed`, `%` for `humidity`, otherwise the entity's `<attribute>_unit` attribute).
 
 ### Row Options
 

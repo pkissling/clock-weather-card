@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
 import { property, state } from 'lit/decorators.js'
 
-import { controlStyles, iconButton, textButton } from '@/editor/controls'
+import { controlStyles, iconButton, move, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/editor/form'
 import type { ClockWeatherCardConfig, RowConfig, SegmentConfig } from '@/types'
@@ -21,12 +21,6 @@ const NEW_SEGMENTS: { [T in SegmentConfig['type']]: SegmentConfig } = {
   weather_icon: { type: 'weather_icon' },
   text: { type: 'text', text: '' },
   spacer: { type: 'spacer' },
-}
-
-const move = <T>(list: T[], from: number, to: number): T[] => {
-  const next = [...list]
-  next.splice(to, 0, ...next.splice(from, 1))
-  return next
 }
 
 @customElement('clock-weather-card-rows-editor')
@@ -168,27 +162,10 @@ export class ClockWeatherCardRowsEditor extends LitElement {
 
   static styles = [controlStyles, css`
     .row {
-      border: 1px solid var(--divider-color);
-      border-radius: 12px;
-      padding: 4px 8px 8px;
       transition: border-color 120ms ease;
     }
     .row.focused {
       border-color: var(--primary-color);
-    }
-    .row-head {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-    .row-title {
-      flex: 1;
-      color: var(--secondary-text-color);
-      font-size: 0.75em;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding-left: 4px;
     }
     .chips {
       display: flex;

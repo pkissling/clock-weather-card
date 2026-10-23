@@ -1,7 +1,7 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
-import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
+import type { ClockWeatherCardConfig, ForecastStripAttributeConfig, ResolvedConfig, ResolvedForecastStripAttribute, RowConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
@@ -40,16 +40,26 @@ export const DEFAULTS = {
   sun_entity: 'sun.sun',
   sections: {
     header: { hide: false, animated_icons: true },
-    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, time_pattern: DEFAULT_TIME_PATTERN },
     forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
 
-type StripConfig = NonNullable<ClockWeatherCardConfig['sections']>['forecast_strip']
+export const DEFAULT_STRIP_ATTRIBUTES: ForecastStripAttributeConfig[] = [{ attribute: 'precipitation_probability' }]
 
-// The default precipitation row gets its own color; custom attributes and monochrome icons use the theme colors.
-export const defaultAttributeColor = (strip: StripConfig, weatherIconType: string): string | null =>
-  strip?.attribute || weatherIconType === 'monochrome' ? null : '#3988EF'
+export const defaultAttributeIcon = (attribute: string): string | null =>
+  attribute === 'precipitation_probability' ? 'mdi:water' : null
+
+// Precipitation probability gets its own color; other attributes and monochrome icons use the theme colors.
+export const defaultAttributeColor = (attribute: string, weatherIconType: string): string | null =>
+  attribute !== 'precipitation_probability' || weatherIconType === 'monochrome' ? null : '#3988EF'
+
+const resolveStripAttribute = ({ attribute, icon, unit, color }: ForecastStripAttributeConfig, weatherIconType: string): ResolvedForecastStripAttribute => ({
+  attribute,
+  icon: icon ?? defaultAttributeIcon(attribute),
+  unit: unit ?? null,
+  color: color ?? defaultAttributeColor(attribute, weatherIconType),
+})
 
 function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): void {
   const assertEntityExists = (id: string | undefined): void => {
@@ -115,12 +125,17 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertEnumValue('sections.forecast_list.forecast_type', list?.forecast_type, SECTION_FORECAST_TYPES)
   assertNonEmptyString('sections.forecast_strip.time_pattern', strip?.time_pattern)
   assertNonEmptyString('sections.forecast_list.time_pattern', list?.time_pattern)
-  assertNonEmptyString('sections.forecast_strip.attribute', strip?.attribute)
-  assertNonEmptyString('sections.forecast_strip.attribute_icon', strip?.attribute_icon)
-  assertNonEmptyString('sections.forecast_strip.attribute_color', strip?.attribute_color)
   assertNonEmptyString('sections.forecast_list.attribute', list?.attribute)
-  assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
+  if (strip?.attributes !== undefined && !Array.isArray(strip.attributes)) throw invalidConfigValue('sections.forecast_strip.attributes', String(strip.attributes), 'a list')
+  strip?.attributes?.forEach((entry, i) => {
+    const path = `sections.forecast_strip.attributes[${i}]`
+    if (typeof entry !== 'object' || entry === null) throw invalidConfigValue(path, String(entry), 'an object with an "attribute"')
+    assertNonEmptyString(`${path}.attribute`, entry.attribute ?? null)
+    assertNonEmptyString(`${path}.icon`, entry.icon)
+    assertString(`${path}.unit`, entry.unit)
+    assertNonEmptyString(`${path}.color`, entry.color)
+  })
   header?.rows?.forEach((row, i) => {
     assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
     row.segments?.forEach((segment, j) => {
@@ -224,11 +239,8 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
       hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
       timePattern: strip?.time_pattern ?? D.forecast_strip.time_pattern,
-      attribute: strip?.attribute ?? D.forecast_strip.attribute,
-      attributeRequired: strip?.attribute !== undefined,
-      attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
-      attributeColor: strip?.attribute_color ?? defaultAttributeColor(strip, strip?.weather_icon_type ?? weatherIconType),
-      attributeUnit: strip?.attribute_unit ?? null,
+      attributes: (strip?.attributes ?? DEFAULT_STRIP_ATTRIBUTES).map(entry => resolveStripAttribute(entry, strip?.weather_icon_type ?? weatherIconType)),
+      attributesRequired: strip?.attributes !== undefined,
     },
     forecastList: {
       hidden: list?.hide ?? D.forecast_list.hide,

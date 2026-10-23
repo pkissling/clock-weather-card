@@ -34,9 +34,8 @@
     "round_temperatures": "Arrodoneix les temperatures",
     "hide_sunrise_sunset": "Amaga la sortida i la posta del sol",
     "attribute": "Atribut",
-    "attribute_icon": "Icona de l'atribut",
+    "attributes": "Atributs",
     "attribute_unit": "Unitat de l'atribut",
-    "attribute_color": "Color de l'atribut",
     "row_height": "Alçada de fila",
     "bar_thickness": "Gruix de la barra",
     "hide_current_temp_indicator": "Amaga el punt de temperatura actual",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribut d'unitat",
     "entity_id": "Entitat",
     "icon": "Icona",
+    "color": "Color",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Afegeix una fila",
     "add_segment": "Afegeix un segment",
+    "add_attribute": "Afegeix un atribut",
     "reset": "Restableix els valors predeterminats",
     "move_up": "Mou amunt",
     "move_down": "Mou avall",

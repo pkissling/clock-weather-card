@@ -34,9 +34,8 @@
     "round_temperatures": "Zaokrąglaj temperatury",
     "hide_sunrise_sunset": "Ukryj wschód i zachód słońca",
     "attribute": "Atrybut",
-    "attribute_icon": "Ikona atrybutu",
+    "attributes": "Atrybuty",
     "attribute_unit": "Jednostka atrybutu",
-    "attribute_color": "Kolor atrybutu",
     "row_height": "Wysokość wiersza",
     "bar_thickness": "Grubość paska",
     "hide_current_temp_indicator": "Ukryj punkt bieżącej temperatury",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atrybut jednostki",
     "entity_id": "Encja",
     "icon": "Ikona",
+    "color": "Kolor",
     "text": "Tekst"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Dodaj wiersz",
     "add_segment": "Dodaj segment",
+    "add_attribute": "Dodaj atrybut",
     "reset": "Przywróć domyślne",
     "move_up": "Przenieś w górę",
     "move_down": "Przenieś w dół",

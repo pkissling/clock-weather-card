@@ -34,9 +34,8 @@
     "round_temperatures": "Avrunda temperaturer",
     "hide_sunrise_sunset": "Dölj soluppgång och solnedgång",
     "attribute": "Attribut",
-    "attribute_icon": "Attributikon",
+    "attributes": "Attribut",
     "attribute_unit": "Attributenhet",
-    "attribute_color": "Attributfärg",
     "row_height": "Radhöjd",
     "bar_thickness": "Stapeltjocklek",
     "hide_current_temp_indicator": "Dölj punkt för aktuell temperatur",
@@ -50,6 +49,7 @@
     "unit_attribute": "Enhetsattribut",
     "entity_id": "Entitet",
     "icon": "Ikon",
+    "color": "Färg",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Lägg till rad",
     "add_segment": "Lägg till segment",
+    "add_attribute": "Lägg till attribut",
     "reset": "Återställ till standard",
     "move_up": "Flytta upp",
     "move_down": "Flytta ner",

@@ -85,9 +85,10 @@ test.describe('forecast_strip section', () => {
     const config = (unit: string): string => `
       sections:
         forecast_strip:
-          attribute: precipitation_probability
-          attribute_icon: mdi:gauge
-          attribute_unit: "${unit}"
+          attributes:
+            - attribute: precipitation_probability
+              icon: mdi:gauge
+              unit: "${unit}"
     `
     const value = clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute-value')
       .first()

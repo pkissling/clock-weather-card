@@ -34,9 +34,8 @@
     "round_temperatures": "Pyöristä lämpötilat",
     "hide_sunrise_sunset": "Piilota auringonnousu ja -lasku",
     "attribute": "Attribuutti",
-    "attribute_icon": "Attribuutin kuvake",
+    "attributes": "Attribuutit",
     "attribute_unit": "Attribuutin yksikkö",
-    "attribute_color": "Attribuutin väri",
     "row_height": "Rivin korkeus",
     "bar_thickness": "Palkin paksuus",
     "hide_current_temp_indicator": "Piilota nykyisen lämpötilan piste",
@@ -50,6 +49,7 @@
     "unit_attribute": "Yksikön attribuutti",
     "entity_id": "Kohde",
     "icon": "Kuvake",
+    "color": "Väri",
     "text": "Teksti"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Lisää rivi",
     "add_segment": "Lisää osa",
+    "add_attribute": "Lisää attribuutti",
     "reset": "Palauta oletus",
     "move_up": "Siirrä ylös",
     "move_down": "Siirrä alas",

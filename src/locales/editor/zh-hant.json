@@ -34,9 +34,8 @@
     "round_temperatures": "溫度取整數",
     "hide_sunrise_sunset": "隱藏日出與日落",
     "attribute": "屬性",
-    "attribute_icon": "屬性圖示",
+    "attributes": "屬性",
     "attribute_unit": "屬性單位",
-    "attribute_color": "屬性顏色",
     "row_height": "列高",
     "bar_thickness": "長條粗細",
     "hide_current_temp_indicator": "隱藏目前溫度圓點",
@@ -50,6 +49,7 @@
     "unit_attribute": "單位屬性",
     "entity_id": "實體",
     "icon": "圖示",
+    "color": "顏色",
     "text": "文字"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "新增列",
     "add_segment": "新增區段",
+    "add_attribute": "新增屬性",
     "reset": "重設為預設",
     "move_up": "上移",
     "move_down": "下移",

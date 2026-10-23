@@ -34,9 +34,8 @@
     "round_temperatures": "Námunda hitastig",
     "hide_sunrise_sunset": "Fela sólarupprás og sólsetur",
     "attribute": "Eigind",
-    "attribute_icon": "Tákn eigindar",
+    "attributes": "Eigindir",
     "attribute_unit": "Eining eigindar",
-    "attribute_color": "Litur eigindar",
     "row_height": "Hæð raðar",
     "bar_thickness": "Þykkt stiku",
     "hide_current_temp_indicator": "Fela punkt núverandi hitastigs",
@@ -50,6 +49,7 @@
     "unit_attribute": "Eigind einingar",
     "entity_id": "Eining",
     "icon": "Tákn",
+    "color": "Litur",
     "text": "Texti"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Bæta við röð",
     "add_segment": "Bæta við hluta",
+    "add_attribute": "Bæta við eigind",
     "reset": "Endurstilla á sjálfgefið",
     "move_up": "Færa upp",
     "move_down": "Færa niður",

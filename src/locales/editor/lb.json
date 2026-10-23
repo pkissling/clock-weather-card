@@ -34,9 +34,8 @@
     "round_temperatures": "Temperaturen ronnen",
     "hide_sunrise_sunset": "Sonnenopgang an -ënnergang verstoppen",
     "attribute": "Attribut",
-    "attribute_icon": "Attribut-Icon",
+    "attributes": "Attributer",
     "attribute_unit": "Attribut-Eenheet",
-    "attribute_color": "Attribut-Faarf",
     "row_height": "Zeilenhéicht",
     "bar_thickness": "Balkendécht",
     "hide_current_temp_indicator": "Punkt vun der aktueller Temperatur verstoppen",
@@ -50,6 +49,7 @@
     "unit_attribute": "Eenheet-Attribut",
     "entity_id": "Entitéit",
     "icon": "Icon",
+    "color": "Faarf",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Zeil derbäisetzen",
     "add_segment": "Segment derbäisetzen",
+    "add_attribute": "Attribut derbäisetzen",
     "reset": "Op Standard zrécksetzen",
     "move_up": "No uewen réckelen",
     "move_down": "No ënnen réckelen",

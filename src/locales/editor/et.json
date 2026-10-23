@@ -34,9 +34,8 @@
     "round_temperatures": "Ümarda temperatuurid",
     "hide_sunrise_sunset": "Peida päikesetõus ja -loojang",
     "attribute": "Atribuut",
-    "attribute_icon": "Atribuudi ikoon",
+    "attributes": "Atribuudid",
     "attribute_unit": "Atribuudi ühik",
-    "attribute_color": "Atribuudi värv",
     "row_height": "Rea kõrgus",
     "bar_thickness": "Riba paksus",
     "hide_current_temp_indicator": "Peida praeguse temperatuuri punkt",
@@ -50,6 +49,7 @@
     "unit_attribute": "Ühiku atribuut",
     "entity_id": "Olem",
     "icon": "Ikoon",
+    "color": "Värv",
     "text": "Tekst"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Lisa rida",
     "add_segment": "Lisa segment",
+    "add_attribute": "Lisa atribuut",
     "reset": "Lähtesta vaikeväärtusele",
     "move_up": "Liiguta üles",
     "move_down": "Liiguta alla",

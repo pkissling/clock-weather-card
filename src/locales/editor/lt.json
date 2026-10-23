@@ -34,9 +34,8 @@
     "round_temperatures": "Apvalinti temperatūras",
     "hide_sunrise_sunset": "Slėpti saulėtekį ir saulėlydį",
     "attribute": "Atributas",
-    "attribute_icon": "Atributo piktograma",
+    "attributes": "Atributai",
     "attribute_unit": "Atributo vienetas",
-    "attribute_color": "Atributo spalva",
     "row_height": "Eilutės aukštis",
     "bar_thickness": "Juostos storis",
     "hide_current_temp_indicator": "Slėpti dabartinės temperatūros tašką",
@@ -50,6 +49,7 @@
     "unit_attribute": "Vieneto atributas",
     "entity_id": "Objektas",
     "icon": "Piktograma",
+    "color": "Spalva",
     "text": "Tekstas"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Pridėti eilutę",
     "add_segment": "Pridėti segmentą",
+    "add_attribute": "Pridėti atributą",
     "reset": "Atkurti numatytuosius",
     "move_up": "Perkelti aukštyn",
     "move_down": "Perkelti žemyn",

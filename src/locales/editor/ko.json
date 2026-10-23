@@ -34,9 +34,8 @@
     "round_temperatures": "온도 반올림",
     "hide_sunrise_sunset": "일출 및 일몰 숨기기",
     "attribute": "속성",
-    "attribute_icon": "속성 아이콘",
+    "attributes": "속성",
     "attribute_unit": "속성 단위",
-    "attribute_color": "속성 색상",
     "row_height": "행 높이",
     "bar_thickness": "막대 두께",
     "hide_current_temp_indicator": "현재 온도 점 숨기기",
@@ -50,6 +49,7 @@
     "unit_attribute": "단위 속성",
     "entity_id": "구성요소",
     "icon": "아이콘",
+    "color": "색상",
     "text": "텍스트"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "행 추가",
     "add_segment": "세그먼트 추가",
+    "add_attribute": "속성 추가",
     "reset": "기본값으로 재설정",
     "move_up": "위로 이동",
     "move_down": "아래로 이동",

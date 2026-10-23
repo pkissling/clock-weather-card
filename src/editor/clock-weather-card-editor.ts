@@ -1,6 +1,6 @@
 import '@/editor/clock-weather-card-rows-editor'
+import '@/editor/clock-weather-card-attributes-editor'
 import '@/editor/clock-weather-card-gradient-editor'
-import '@/editor/clock-weather-card-color-picker'
 
 import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
@@ -8,8 +8,8 @@ import { property, state } from 'lit/decorators.js'
 
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
-import type { ClockWeatherCardConfig, RowConfig } from '@/types'
-import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
+import type { ClockWeatherCardConfig, ForecastStripAttributeConfig, RowConfig } from '@/types'
+import { DEFAULT_ROWS, DEFAULT_STRIP_ATTRIBUTES, DEFAULTS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 
@@ -139,8 +139,10 @@ export class ClockWeatherCardEditor extends LitElement {
     const defaults = DEFAULTS.sections[key]
     const type = (section.forecast_type as string | undefined) ?? defaults.forecast_type
     const count = (section.count as number | undefined) ?? defaults.count
-    const attribute = (section.attribute as string | undefined) ?? defaults.attribute
-    return [this.t(`options.${type}`), `${count} ${this.t('entries')}`, attributeLabel(this.hass!, attribute)].join(' · ')
+    const attributes = key === 'forecast_list'
+      ? [(section.attribute as string | undefined) ?? DEFAULTS.sections.forecast_list.attribute]
+      : ((section.attributes as ForecastStripAttributeConfig[] | undefined) ?? DEFAULT_STRIP_ATTRIBUTES).map(a => a.attribute)
+    return [this.t(`options.${type}`), `${count} ${this.t('entries')}`, ...attributes.map(a => attributeLabel(this.hass!, a))].join(' · ')
   }
 
   // Groups consecutive ha-form fields into one form and renders custom controls in between, keeping field order.
@@ -155,10 +157,6 @@ export class ClockWeatherCardEditor extends LitElement {
     return chunks.map(chunk => isFormField(chunk[0])
       ? html`${renderForm(this.ctx, chunk, value, defaults, changes => this._update(path, changes))}`
       : this._renderControl(chunk[0], path, value, defaults))
-  }
-
-  private _default(field: EditorField): unknown {
-    return typeof field.default === 'function' ? field.default(this.ctx) : field.default
   }
 
   private _renderControl(field: EditorField, path: string[], value: Data, defaults: Data): TemplateResult {
@@ -195,14 +193,14 @@ export class ClockWeatherCardEditor extends LitElement {
         ></clock-weather-card-rows-editor>
       `
     }
-    if (field.control === 'color') {
+    if (field.control === 'attributes') {
       return html`
-        <clock-weather-card-color-picker
+        <clock-weather-card-attributes-editor
           .hass=${this.hass}
-          .label=${this.t(`fields.${field.name}`)}
-          .value=${(value[field.name] ?? this._default(field)) as string | undefined}
-          @color-changed=${(e: CustomEvent<string | null>) => this._update(path, { [field.name]: e.detail === this._default(field) ? undefined : e.detail })}
-        ></clock-weather-card-color-picker>
+          .config=${this._config}
+          .entries=${(value.attributes as ForecastStripAttributeConfig[] | undefined) ?? DEFAULT_STRIP_ATTRIBUTES}
+          @attributes-changed=${(e: CustomEvent<ForecastStripAttributeConfig[]>) => this._update(path, { attributes: deepEqual(e.detail, DEFAULT_STRIP_ATTRIBUTES) ? undefined : e.detail })}
+        ></clock-weather-card-attributes-editor>
       `
     }
     return html`
@@ -318,7 +316,7 @@ export class ClockWeatherCardEditor extends LitElement {
       margin: 0;
       accent-color: var(--primary-color);
     }
-    .more ha-form, .group ha-form, .more clock-weather-card-gradient-editor, .more clock-weather-card-color-picker {
+    .more ha-form, .group ha-form, .more clock-weather-card-gradient-editor {
       display: block;
       padding-bottom: 12px;
     }

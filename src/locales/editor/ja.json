@@ -34,9 +34,8 @@
     "round_temperatures": "温度を丸める",
     "hide_sunrise_sunset": "日の出と日の入りを非表示",
     "attribute": "属性",
-    "attribute_icon": "属性アイコン",
+    "attributes": "属性",
     "attribute_unit": "属性の単位",
-    "attribute_color": "属性の色",
     "row_height": "行の高さ",
     "bar_thickness": "バーの太さ",
     "hide_current_temp_indicator": "現在の温度の点を非表示",
@@ -50,6 +49,7 @@
     "unit_attribute": "単位の属性",
     "entity_id": "エンティティ",
     "icon": "アイコン",
+    "color": "色",
     "text": "テキスト"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "行を追加",
     "add_segment": "セグメントを追加",
+    "add_attribute": "属性を追加",
     "reset": "デフォルトに戻す",
     "move_up": "上へ移動",
     "move_down": "下へ移動",

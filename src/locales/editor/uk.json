@@ -34,9 +34,8 @@
     "round_temperatures": "Округлювати температуру",
     "hide_sunrise_sunset": "Приховати схід і захід сонця",
     "attribute": "Атрибут",
-    "attribute_icon": "Значок атрибута",
+    "attributes": "Атрибути",
     "attribute_unit": "Одиниця атрибута",
-    "attribute_color": "Колір атрибута",
     "row_height": "Висота рядка",
     "bar_thickness": "Товщина смуги",
     "hide_current_temp_indicator": "Приховати точку поточної температури",
@@ -50,6 +49,7 @@
     "unit_attribute": "Атрибут одиниці",
     "entity_id": "Об'єкт",
     "icon": "Значок",
+    "color": "Колір",
     "text": "Текст"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Додати рядок",
     "add_segment": "Додати сегмент",
+    "add_attribute": "Додати атрибут",
     "reset": "Скинути до типових",
     "move_up": "Перемістити вгору",
     "move_down": "Перемістити вниз",

@@ -34,9 +34,8 @@
     "round_temperatures": "Rotunjește temperaturile",
     "hide_sunrise_sunset": "Ascunde răsăritul și apusul",
     "attribute": "Atribut",
-    "attribute_icon": "Pictogramă atribut",
+    "attributes": "Atribute",
     "attribute_unit": "Unitate atribut",
-    "attribute_color": "Culoare atribut",
     "row_height": "Înălțime rând",
     "bar_thickness": "Grosime bară",
     "hide_current_temp_indicator": "Ascunde punctul temperaturii curente",
@@ -50,6 +49,7 @@
     "unit_attribute": "Atribut unitate",
     "entity_id": "Entitate",
     "icon": "Pictogramă",
+    "color": "Culoare",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Adaugă rând",
     "add_segment": "Adaugă segment",
+    "add_attribute": "Adaugă atribut",
     "reset": "Resetează la implicit",
     "move_up": "Mută în sus",
     "move_down": "Mută în jos",

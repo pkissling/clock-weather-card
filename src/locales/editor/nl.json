@@ -34,9 +34,8 @@
     "round_temperatures": "Temperaturen afronden",
     "hide_sunrise_sunset": "Zonsopkomst en zonsondergang verbergen",
     "attribute": "Attribuut",
-    "attribute_icon": "Attribuutpictogram",
+    "attributes": "Attributen",
     "attribute_unit": "Attribuuteenheid",
-    "attribute_color": "Attribuutkleur",
     "row_height": "Rijhoogte",
     "bar_thickness": "Balkdikte",
     "hide_current_temp_indicator": "Punt huidige temperatuur verbergen",
@@ -50,6 +49,7 @@
     "unit_attribute": "Eenheidsattribuut",
     "entity_id": "Entiteit",
     "icon": "Pictogram",
+    "color": "Kleur",
     "text": "Tekst"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Rij toevoegen",
     "add_segment": "Segment toevoegen",
+    "add_attribute": "Attribuut toevoegen",
     "reset": "Standaard herstellen",
     "move_up": "Omhoog",
     "move_down": "Omlaag",

@@ -34,9 +34,8 @@
     "round_temperatures": "Talgrynnu tymereddau",
     "hide_sunrise_sunset": "Cuddio codiad a machlud haul",
     "attribute": "Priodwedd",
-    "attribute_icon": "Eicon priodwedd",
+    "attributes": "Priodweddau",
     "attribute_unit": "Uned priodwedd",
-    "attribute_color": "Lliw priodwedd",
     "row_height": "Uchder rhes",
     "bar_thickness": "Trwch bar",
     "hide_current_temp_indicator": "Cuddio dot y tymheredd presennol",
@@ -50,6 +49,7 @@
     "unit_attribute": "Priodwedd uned",
     "entity_id": "Endid",
     "icon": "Eicon",
+    "color": "Lliw",
     "text": "Testun"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Ychwanegu rhes",
     "add_segment": "Ychwanegu segment",
+    "add_attribute": "Ychwanegu priodwedd",
     "reset": "Ailosod i'r rhagosodiad",
     "move_up": "Symud i fyny",
     "move_down": "Symud i lawr",

@@ -1,5 +1,11 @@
 import { css, html, type TemplateResult } from 'lit'
 
+export const move = <T>(list: T[], from: number, to: number): T[] => {
+  const next = [...list]
+  next.splice(to, 0, ...next.splice(from, 1))
+  return next
+}
+
 export const iconButton = (icon: string, label: string, action: () => void, disabled = false, active = false): TemplateResult => html`
   <button class="icon-button ${active ? 'active' : ''}" .disabled=${disabled} aria-label=${label} title=${label} @click=${action}>
     <ha-icon icon=${icon}></ha-icon>
@@ -67,6 +73,25 @@ export const controlStyles = css`
   .text-button.subtle {
     background: none;
     color: var(--secondary-text-color);
+  }
+  .row {
+    border: 1px solid var(--divider-color);
+    border-radius: 12px;
+    padding: 4px 8px 8px;
+  }
+  .row-head {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .row-title {
+    flex: 1;
+    color: var(--secondary-text-color);
+    font-size: 0.75em;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-left: 4px;
   }
   .text-button:hover {
     filter: brightness(1.1);

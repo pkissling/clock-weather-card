@@ -34,9 +34,8 @@
     "round_temperatures": "درجہ حرارت کو گول کریں",
     "hide_sunrise_sunset": "طلوع اور غروب آفتاب چھپائیں",
     "attribute": "وصف",
-    "attribute_icon": "وصف کا آئیکن",
+    "attributes": "اوصاف",
     "attribute_unit": "وصف کی اکائی",
-    "attribute_color": "وصف کا رنگ",
     "row_height": "قطار کی اونچائی",
     "bar_thickness": "پٹی کی موٹائی",
     "hide_current_temp_indicator": "موجودہ درجہ حرارت کا نقطہ چھپائیں",
@@ -50,6 +49,7 @@
     "unit_attribute": "اکائی کا وصف",
     "entity_id": "اینٹیٹی",
     "icon": "آئیکن",
+    "color": "رنگ",
     "text": "متن"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "قطار شامل کریں",
     "add_segment": "حصہ شامل کریں",
+    "add_attribute": "وصف شامل کریں",
     "reset": "طے شدہ پر ری سیٹ کریں",
     "move_up": "اوپر منتقل کریں",
     "move_down": "نیچے منتقل کریں",

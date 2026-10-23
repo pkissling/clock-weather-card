@@ -34,9 +34,8 @@
     "round_temperatures": "ปัดเศษอุณหภูมิ",
     "hide_sunrise_sunset": "ซ่อนเวลาพระอาทิตย์ขึ้นและตก",
     "attribute": "แอตทริบิวต์",
-    "attribute_icon": "ไอคอนแอตทริบิวต์",
+    "attributes": "แอตทริบิวต์",
     "attribute_unit": "หน่วยแอตทริบิวต์",
-    "attribute_color": "สีแอตทริบิวต์",
     "row_height": "ความสูงของแถว",
     "bar_thickness": "ความหนาของแถบ",
     "hide_current_temp_indicator": "ซ่อนจุดอุณหภูมิปัจจุบัน",
@@ -50,6 +49,7 @@
     "unit_attribute": "แอตทริบิวต์หน่วย",
     "entity_id": "เอนทิตี",
     "icon": "ไอคอน",
+    "color": "สี",
     "text": "ข้อความ"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "เพิ่มแถว",
     "add_segment": "เพิ่มส่วนย่อย",
+    "add_attribute": "เพิ่มแอตทริบิวต์",
     "reset": "รีเซ็ตเป็นค่าเริ่มต้น",
     "move_up": "เลื่อนขึ้น",
     "move_down": "เลื่อนลง",

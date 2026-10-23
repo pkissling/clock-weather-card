@@ -34,9 +34,8 @@
     "round_temperatures": "تقريب درجات الحرارة",
     "hide_sunrise_sunset": "إخفاء الشروق والغروب",
     "attribute": "السمة",
-    "attribute_icon": "أيقونة السمة",
+    "attributes": "السمات",
     "attribute_unit": "وحدة السمة",
-    "attribute_color": "لون السمة",
     "row_height": "ارتفاع الصف",
     "bar_thickness": "سماكة الشريط",
     "hide_current_temp_indicator": "إخفاء نقطة درجة الحرارة الحالية",
@@ -50,6 +49,7 @@
     "unit_attribute": "سمة الوحدة",
     "entity_id": "الكيان",
     "icon": "الأيقونة",
+    "color": "اللون",
     "text": "النص"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "إضافة صف",
     "add_segment": "إضافة مقطع",
+    "add_attribute": "إضافة سمة",
     "reset": "إعادة التعيين إلى الافتراضي",
     "move_up": "نقل لأعلى",
     "move_down": "نقل لأسفل",

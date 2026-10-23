@@ -34,9 +34,8 @@
     "round_temperatures": "Закръгляне на температурите",
     "hide_sunrise_sunset": "Скриване на изгрев и залез",
     "attribute": "Атрибут",
-    "attribute_icon": "Икона на атрибута",
+    "attributes": "Атрибути",
     "attribute_unit": "Мерна единица на атрибута",
-    "attribute_color": "Цвят на атрибута",
     "row_height": "Височина на реда",
     "bar_thickness": "Дебелина на лентата",
     "hide_current_temp_indicator": "Скриване на точката за текущата температура",
@@ -50,6 +49,7 @@
     "unit_attribute": "Атрибут за мерна единица",
     "entity_id": "Обект",
     "icon": "Икона",
+    "color": "Цвят",
     "text": "Текст"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Добавяне на ред",
     "add_segment": "Добавяне на сегмент",
+    "add_attribute": "Добавяне на атрибут",
     "reset": "Възстановяване по подразбиране",
     "move_up": "Преместване нагоре",
     "move_down": "Преместване надолу",

@@ -45,7 +45,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   protected abstract resolveEntityId(): string
   protected abstract renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult
   protected abstract renderSkeleton(): TemplateResult
-  protected abstract requiredAttribute(): string | null
+  protected abstract requiredAttributes(): string[]
 
   public render(): TemplateResult {
     const entityId = this.resolveEntityId()
@@ -54,9 +54,10 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
       return this._renderWarning(forecastNotSupported(entityId, forecastType))
     }
     if (!this._loaded) return this.renderSkeleton()
-    const attribute = this.requiredAttribute()
-    if (attribute !== null && this.forecasts.length > 0 && !this.forecasts.some(forecast => attribute in forecast)) {
-      return this._renderWarning(forecastAttributeNotFound(entityId, attribute))
+    const missing = this.forecasts.length > 0 ? this.requiredAttributes()
+      .find(attribute => !this.forecasts.some(forecast => attribute in forecast)) : undefined
+    if (missing !== undefined) {
+      return this._renderWarning(forecastAttributeNotFound(entityId, missing))
     }
     return this.renderForecast(entityId, forecastType)
   }

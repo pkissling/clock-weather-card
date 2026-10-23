@@ -34,9 +34,8 @@
     "round_temperatures": "Arrotonda temperature",
     "hide_sunrise_sunset": "Nascondi alba e tramonto",
     "attribute": "Attributo",
-    "attribute_icon": "Icona attributo",
+    "attributes": "Attributi",
     "attribute_unit": "Unità attributo",
-    "attribute_color": "Colore attributo",
     "row_height": "Altezza riga",
     "bar_thickness": "Spessore barra",
     "hide_current_temp_indicator": "Nascondi punto temperatura attuale",
@@ -50,6 +49,7 @@
     "unit_attribute": "Attributo unità",
     "entity_id": "Entità",
     "icon": "Icona",
+    "color": "Colore",
     "text": "Testo"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Aggiungi riga",
     "add_segment": "Aggiungi segmento",
+    "add_attribute": "Aggiungi attributo",
     "reset": "Ripristina predefinito",
     "move_up": "Sposta su",
     "move_down": "Sposta giù",

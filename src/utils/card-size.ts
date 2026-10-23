@@ -5,7 +5,8 @@ const PADDING_PX = 36
 const TITLE_PX = 24
 const HEADER_MIN_PX = 126
 const HEADER_ROW_PX = 17
-const FORECAST_STRIP_PX = 88
+const FORECAST_STRIP_PX = 74
+const FORECAST_STRIP_ATTRIBUTE_PX = 14
 
 const cssLengthToPx = (length: string | undefined): number | null => {
   const match = /^([\d.]+)(px|r?em)$/.exec(length ?? '')
@@ -18,7 +19,7 @@ export const estimateCardSize = ({ title, header, forecastStrip, forecastList }:
   const px = PADDING_PX
     + (title ? TITLE_PX : 0)
     + (header.hidden ? 0 : Math.max(HEADER_MIN_PX, rowsPx))
-    + (forecastStrip.hidden ? 0 : FORECAST_STRIP_PX)
+    + (forecastStrip.hidden ? 0 : FORECAST_STRIP_PX + forecastStrip.attributes.length * FORECAST_STRIP_ATTRIBUTE_PX)
     + (forecastList.hidden ? 0 : forecastList.count * (cssLengthToPx(forecastList.rowHeight) ?? 28))
   return Math.round(px / CARD_SIZE_UNIT_PX)
 }

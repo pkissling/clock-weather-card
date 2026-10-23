@@ -32,8 +32,8 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     return this.config.forecastList.entity
   }
 
-  protected requiredAttribute(): string | null {
-    return this.config.forecastList.attribute
+  protected requiredAttributes(): string[] {
+    return [this.config.forecastList.attribute]
   }
 
   protected renderSkeleton(): TemplateResult {

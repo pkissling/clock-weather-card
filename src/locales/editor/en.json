@@ -34,9 +34,8 @@
     "round_temperatures": "Round temperatures",
     "hide_sunrise_sunset": "Hide sunrise and sunset",
     "attribute": "Attribute",
-    "attribute_icon": "Attribute icon",
+    "attributes": "Attributes",
     "attribute_unit": "Attribute unit",
-    "attribute_color": "Attribute color",
     "row_height": "Row height",
     "bar_thickness": "Bar thickness",
     "hide_current_temp_indicator": "Hide current temperature dot",
@@ -50,6 +49,7 @@
     "unit_attribute": "Unit attribute",
     "entity_id": "Entity",
     "icon": "Icon",
+    "color": "Color",
     "text": "Text"
   },
   "helpers": {
@@ -115,6 +115,7 @@
   "actions": {
     "add_row": "Add row",
     "add_segment": "Add segment",
+    "add_attribute": "Add attribute",
     "reset": "Reset to default",
     "move_up": "Move up",
     "move_down": "Move down",

@@ -195,28 +195,53 @@ test.describe('GUI editor', () => {
       .toEqual({ entity: 'weather.mock_weather', weather_icon_type: 'fill' })
   })
 
+  test('adds a forecast strip attribute', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast strip')
+      .click()
+    await editor.getByRole('button', { name: 'Add attribute' })
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attributes: [{ attribute: 'precipitation_probability' }, { attribute: 'precipitation' }] } } })
+  })
+
+  test('deletes a forecast strip attribute', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { forecast_strip: { attributes: [{ attribute: wind_speed }, { attribute: precipitation_probability }] } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast strip')
+      .click()
+    await editor.locator('[data-attribute="0"]')
+      .getByRole('button', { name: 'Delete' })
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather' })
+  })
+
   test('picks the attribute color', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)
 
     await editor.getByText('Forecast strip')
       .click()
-    await expandPanel(editor, 'More options')
-    await editor.getByRole('textbox', { name: 'Attribute color' })
+    await editor.getByRole('textbox', { name: 'Color' })
       .fill('#4a90d9')
 
     expect(await saveEditor(page))
-      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attribute_color: '#4a90d9' } } })
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attributes: [{ attribute: 'precipitation_probability', color: '#4a90d9' }] } } })
   })
 
   test('clearing the attribute color restores the default', async ({ page, setupCard }) => {
-    await setupCard({ cardConfig: 'sections: { forecast_strip: { attribute_color: "#ff0000" } }' })
+    await setupCard({ cardConfig: 'sections: { forecast_strip: { attributes: [{ attribute: precipitation_probability, color: "#ff0000" }] } }' })
     const editor = await openEditor(page)
 
     await editor.getByText('Forecast strip')
       .click()
-    await expandPanel(editor, 'More options')
-    await editor.getByRole('textbox', { name: 'Attribute color' })
+    await editor.getByRole('textbox', { name: 'Color' })
       .fill('')
 
     expect(await saveEditor(page))
@@ -229,14 +254,13 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast strip')
       .click()
-    await expandPanel(editor, 'More options')
     await editor.locator('clock-weather-card-color-picker input[type="color"]')
       .fill('#4a90d9')
 
-    await expect(editor.getByRole('textbox', { name: 'Attribute color' }))
+    await expect(editor.getByRole('textbox', { name: 'Color' }))
       .toHaveValue('#4a90d9')
     expect(await saveEditor(page))
-      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attribute_color: '#4a90d9' } } })
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attributes: [{ attribute: 'precipitation_probability', color: '#4a90d9' }] } } })
   })
 
   test('preselects the defaults of Home Assistant', async ({ page, setupCard }) => {
