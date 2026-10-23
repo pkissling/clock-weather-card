@@ -50,7 +50,8 @@
     "unit_attribute": "單位屬性",
     "entity_id": "實體",
     "icon": "圖示",
-    "text": "文字"
+    "text": "文字",
+    "template": "範本"
   },
   "helpers": {
     "temperature_sensor": "選填。從此感測器而非天氣實體讀取目前溫度，例如氣象站或戶外感測器",
@@ -100,6 +101,7 @@
     "icon": "圖示",
     "weather_icon": "天氣圖示",
     "text": "文字",
+    "template": "範本",
     "spacer": "間隔"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "任意 MDI 圖示",
     "weather_icon": "目前天氣的圖示",
     "text": "靜態文字",
+    "template": "Jinja 範本",
     "spacer": "將相鄰元素推開"
   },
   "actions": {

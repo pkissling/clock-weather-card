@@ -50,7 +50,8 @@
     "unit_attribute": "Mértékegység attribútum",
     "entity_id": "Entitás",
     "icon": "Ikon",
-    "text": "Szöveg"
+    "text": "Szöveg",
+    "template": "Sablon"
   },
   "helpers": {
     "temperature_sensor": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
@@ -100,6 +101,7 @@
     "icon": "Ikon",
     "weather_icon": "Időjárás ikon",
     "text": "Szöveg",
+    "template": "Sablon",
     "spacer": "Térköz"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Bármely MDI ikon",
     "weather_icon": "Az aktuális időjárás ikonja",
     "text": "Statikus szöveg",
+    "template": "Jinja-sablon",
     "spacer": "Széttolja a szomszédos elemeket"
   },
   "actions": {

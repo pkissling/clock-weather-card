@@ -50,7 +50,8 @@
     "unit_attribute": "Birim özniteliği",
     "entity_id": "Varlık",
     "icon": "Simge",
-    "text": "Metin"
+    "text": "Metin",
+    "template": "Şablon"
   },
   "helpers": {
     "temperature_sensor": "İsteğe bağlı. Mevcut sıcaklığı hava durumu varlığı yerine bu sensörden okur, örn. bir hava istasyonu veya dış mekân sensörü",
@@ -100,6 +101,7 @@
     "icon": "Simge",
     "weather_icon": "Hava durumu simgesi",
     "text": "Metin",
+    "template": "Şablon",
     "spacer": "Boşluk"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Herhangi bir MDI simgesi",
     "weather_icon": "Geçerli hava durumunun simgesi",
     "text": "Sabit metin",
+    "template": "Jinja şablonu",
     "spacer": "Komşu öğeleri birbirinden uzaklaştırır"
   },
   "actions": {

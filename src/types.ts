@@ -60,6 +60,11 @@ export interface TextSegmentConfig {
   text: string
 }
 
+export interface TemplateSegmentConfig {
+  type: 'template'
+  template: string
+}
+
 export interface SpacerSegmentConfig {
   type: 'spacer'
 }
@@ -72,9 +77,10 @@ export type SegmentConfig =
   | IconSegmentConfig
   | WeatherIconSegmentConfig
   | TextSegmentConfig
+  | TemplateSegmentConfig
   | SpacerSegmentConfig
 
-export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
+export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'template', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
 
 export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
 
@@ -258,6 +264,8 @@ export interface WeatherForecastEvent {
   forecast?: WeatherForecast[]
   type: ForecastType
 }
+
+export type RenderTemplateEvent = { result: unknown } | { error: string }
 
 export interface SunEntity extends HassEntity {
   state: 'above_horizon' | 'below_horizon'

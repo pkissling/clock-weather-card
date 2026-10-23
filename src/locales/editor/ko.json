@@ -50,7 +50,8 @@
     "unit_attribute": "단위 속성",
     "entity_id": "구성요소",
     "icon": "아이콘",
-    "text": "텍스트"
+    "text": "텍스트",
+    "template": "템플릿"
   },
   "helpers": {
     "temperature_sensor": "선택 사항. 현재 온도를 날씨 엔터티 대신 이 센서에서 읽습니다(예: 기상 관측소 또는 실외 센서)",
@@ -100,6 +101,7 @@
     "icon": "아이콘",
     "weather_icon": "날씨 아이콘",
     "text": "텍스트",
+    "template": "템플릿",
     "spacer": "간격"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "임의의 MDI 아이콘",
     "weather_icon": "현재 날씨 아이콘",
     "text": "고정 텍스트",
+    "template": "Jinja 템플릿",
     "spacer": "이웃 요소를 양쪽으로 밀어냅니다"
   },
   "actions": {

@@ -50,7 +50,8 @@
     "unit_attribute": "Atribut jedinice",
     "entity_id": "Entitet",
     "icon": "Ikonica",
-    "text": "Tekst"
+    "text": "Tekst",
+    "template": "Šablon"
   },
   "helpers": {
     "temperature_sensor": "Opciono. Čita trenutnu temperaturu sa ovog senzora umesto sa vremenskog entiteta, npr. meteorološke stanice ili spoljnog senzora",
@@ -100,6 +101,7 @@
     "icon": "Ikonica",
     "weather_icon": "Ikonica vremena",
     "text": "Tekst",
+    "template": "Šablon",
     "spacer": "Razmak"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Bilo koja MDI ikonica",
     "weather_icon": "Ikonica trenutnog vremena",
     "text": "Statički tekst",
+    "template": "Jinja šablon",
     "spacer": "Razmiče susedne elemente"
   },
   "actions": {

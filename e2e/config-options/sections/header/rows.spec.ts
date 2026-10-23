@@ -96,7 +96,7 @@ test.describe('sections.header.rows', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "spacer"')
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "template", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
@@ -193,19 +193,47 @@ test.describe('sections.header.rows', () => {
       .toHaveText('Hello world')
   })
 
-  test('rejects a text segment without a string text', async ({ setupCard, cardErrorMessage }) => {
+  for (const { segment, option } of [
+    { segment: '{ icon: mdi:star }', option: 'type' },
+    { segment: '{ type: entity }', option: 'entity_id' },
+    { segment: '{ type: icon }', option: 'icon' },
+    { segment: '{ type: text }', option: 'text' },
+    { segment: '{ type: template }', option: 'template' },
+  ]) {
+    test(`rejects a segment without its required ${option}`, async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({ cardConfig: `sections: { header: { rows: [{ segments: [${segment}] }] } }` })
+
+      await cardErrorMessage()
+        .toContain(`Config option "sections.header.rows[0].segments[0].${option}" is required`)
+    })
+  }
+
+  test('rejects a non-string template', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({ cardConfig: 'sections: { header: { rows: [{ segments: [{ type: template, template: [a] }] }] } }' })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].segments[0].template" has invalid value "a", expected a string')
+  })
+
+  test('renders a template segment and re-renders it on state changes', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
+      entities: { 'sensor.door': { state: 'open' } },
       cardConfig: `
         sections:
           header:
             rows:
               - segments:
-                  - type: text
+                  - type: template
+                    template: "Door: {{ states('sensor.door') }}"
       `,
     })
 
-    await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[0].segments[0].text" has invalid value "undefined", expected a string')
+    const segment = clockWeatherCard.locator('clock-weather-card-template-segment')
+    await expect(segment)
+      .toHaveText('Door: open')
+    await haApi.setEntityState('sensor.door', 'closed')
+    await expect(segment)
+      .toHaveText('Door: closed')
   })
 
   test('rejects a non-boolean segment show_unit', async ({ setupCard, cardErrorMessage }) => {

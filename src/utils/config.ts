@@ -3,7 +3,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
-import { entityNotFound, invalidConfigValue, optionRequiresValue } from '@/utils/errors'
+import { entityNotFound, invalidConfigValue, optionRequiresValue, requiredConfigMissing } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone } from '@/utils/luxon'
 import { isTemperatureUnit } from '@/utils/temperature'
@@ -75,6 +75,10 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     if (value === undefined) return
     if (typeof value !== 'string' || value.trim() === '') throw invalidConfigValue(path, String(value), 'a non-empty string')
   }
+  const assertRequiredString = (path: string, value: unknown): void => {
+    if (value === undefined) throw requiredConfigMissing(path)
+    assertString(path, value)
+  }
   const assertString = (path: string, value: unknown): void => {
     if (value !== undefined && typeof value !== 'string') throw invalidConfigValue(path, String(value), 'a string')
   }
@@ -124,18 +128,22 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   header?.rows?.forEach((row, i) => {
     assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
     row.segments?.forEach((segment, j) => {
-      assertEnumValue(`sections.header.rows[${i}].segments[${j}].type`, segment.type, SEGMENT_TYPES)
+      const path = `sections.header.rows[${i}].segments[${j}]`
+      assertRequiredString(`${path}.type`, segment.type)
+      assertEnumValue(`${path}.type`, segment.type, SEGMENT_TYPES)
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
       if (segment.type === 'entity') {
+        assertRequiredString(`${path}.entity_id`, segment.entity_id)
         assertEntityExists(segment.entity_id)
         if (segment.attribute !== undefined && hassService.getEntityAttribute(hass, segment.entity_id, segment.attribute) === undefined) {
-          throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].attribute`, segment.attribute, `an attribute of "${segment.entity_id}"`)
+          throw invalidConfigValue(`${path}.attribute`, segment.attribute, `an attribute of "${segment.entity_id}"`)
         }
       }
-      if (segment.type === 'text' && typeof segment.text !== 'string') throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].text`, String(segment.text), 'a string')
-      if ('show_unit' in segment) assertBoolean(`sections.header.rows[${i}].segments[${j}].show_unit`, segment.show_unit)
+      if (segment.type === 'icon') assertRequiredString(`${path}.icon`, segment.icon)
+      if (segment.type === 'text') assertRequiredString(`${path}.text`, segment.text)
+      if (segment.type === 'template') assertRequiredString(`${path}.template`, segment.template)
+      if ('show_unit' in segment) assertBoolean(`${path}.show_unit`, segment.show_unit)
       if (segment.type === 'weather' || segment.type === 'entity') {
-        const path = `sections.header.rows[${i}].segments[${j}]`
         if ('unit' in segment && typeof segment.unit !== 'string') throw invalidConfigValue(`${path}.unit`, String(segment.unit), 'a string')
         if ('unit_attribute' in segment) {
           if (typeof segment.unit_attribute !== 'string') throw invalidConfigValue(`${path}.unit_attribute`, String(segment.unit_attribute), 'a string')

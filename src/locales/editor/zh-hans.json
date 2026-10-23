@@ -50,7 +50,8 @@
     "unit_attribute": "单位属性",
     "entity_id": "实体",
     "icon": "图标",
-    "text": "文本"
+    "text": "文本",
+    "template": "模板"
   },
   "helpers": {
     "temperature_sensor": "可选。从此传感器而非天气实体读取当前温度，例如气象站或室外传感器",
@@ -100,6 +101,7 @@
     "icon": "图标",
     "weather_icon": "天气图标",
     "text": "文本",
+    "template": "模板",
     "spacer": "间隔"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "任意 MDI 图标",
     "weather_icon": "当前天气的图标",
     "text": "静态文本",
+    "template": "Jinja 模板",
     "spacer": "将相邻元素推开"
   },
   "actions": {

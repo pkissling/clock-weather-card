@@ -50,7 +50,8 @@
     "unit_attribute": "Vieneto atributas",
     "entity_id": "Objektas",
     "icon": "Piktograma",
-    "text": "Tekstas"
+    "text": "Tekstas",
+    "template": "Šablonas"
   },
   "helpers": {
     "temperature_sensor": "Neprivaloma. Dabartinė temperatūra nuskaitoma iš šio jutiklio vietoj orų objekto, pvz., iš orų stoties ar lauko jutiklio",
@@ -100,6 +101,7 @@
     "icon": "Piktograma",
     "weather_icon": "Orų piktograma",
     "text": "Tekstas",
+    "template": "Šablonas",
     "spacer": "Tarpiklis"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Bet kuri MDI piktograma",
     "weather_icon": "Dabartinių orų piktograma",
     "text": "Statinis tekstas",
+    "template": "Jinja šablonas",
     "spacer": "Atstumia kaimyninius elementus"
   },
   "actions": {
