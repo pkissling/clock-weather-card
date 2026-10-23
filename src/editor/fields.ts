@@ -148,6 +148,7 @@ export const SEGMENT_FIELDS: { [T in SegmentConfig['type']]: EditorField[] } = {
   icon: [{ name: 'icon', selector: { icon: {} }, required: true }],
   weather_icon: [{ name: 'entity_id', selector: { entity: { domain: 'weather' } } }],
   text: [{ name: 'text', selector: text, required: true }],
+  template: [{ name: 'template', selector: { template: {} }, required: true }],
   spacer: [],
 }
 
@@ -159,6 +160,7 @@ export const SEGMENT_ICONS: { [T in SegmentConfig['type']]: string } = {
   icon: 'mdi:emoticon-outline',
   weather_icon: 'mdi:weather-sunny',
   text: 'mdi:format-text',
+  template: 'mdi:code-braces',
   spacer: 'mdi:arrow-expand-horizontal',
 }
 

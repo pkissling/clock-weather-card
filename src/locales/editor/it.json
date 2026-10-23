@@ -50,7 +50,8 @@
     "unit_attribute": "Attributo unità",
     "entity_id": "Entità",
     "icon": "Icona",
-    "text": "Testo"
+    "text": "Testo",
+    "template": "Template"
   },
   "helpers": {
     "temperature_sensor": "Facoltativo. Legge la temperatura attuale da questo sensore invece che dall'entità meteo, ad es. una stazione meteo o un sensore esterno",
@@ -100,6 +101,7 @@
     "icon": "Icona",
     "weather_icon": "Icona meteo",
     "text": "Testo",
+    "template": "Template",
     "spacer": "Spaziatore"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Qualsiasi icona MDI",
     "weather_icon": "Icona del meteo attuale",
     "text": "Testo statico",
+    "template": "Template Jinja",
     "spacer": "Allontana gli elementi vicini"
   },
   "actions": {

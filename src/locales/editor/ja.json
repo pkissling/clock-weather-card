@@ -50,7 +50,8 @@
     "unit_attribute": "単位の属性",
     "entity_id": "エンティティ",
     "icon": "アイコン",
-    "text": "テキスト"
+    "text": "テキスト",
+    "template": "テンプレート"
   },
   "helpers": {
     "temperature_sensor": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
@@ -100,6 +101,7 @@
     "icon": "アイコン",
     "weather_icon": "天気アイコン",
     "text": "テキスト",
+    "template": "テンプレート",
     "spacer": "スペーサー"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "任意の MDI アイコン",
     "weather_icon": "現在の天気のアイコン",
     "text": "固定テキスト",
+    "template": "Jinja テンプレート",
     "spacer": "隣の要素を離して配置します"
   },
   "actions": {

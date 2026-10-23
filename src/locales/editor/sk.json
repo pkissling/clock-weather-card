@@ -50,7 +50,8 @@
     "unit_attribute": "Atribút jednotky",
     "entity_id": "Entita",
     "icon": "Ikona",
-    "text": "Text"
+    "text": "Text",
+    "template": "Šablóna"
   },
   "helpers": {
     "temperature_sensor": "Voliteľné. Číta aktuálnu teplotu z tohto senzora namiesto entity počasia, napr. z meteostanice alebo vonkajšieho senzora",
@@ -100,6 +101,7 @@
     "icon": "Ikona",
     "weather_icon": "Ikona počasia",
     "text": "Text",
+    "template": "Šablóna",
     "spacer": "Medzera"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Ľubovoľná ikona MDI",
     "weather_icon": "Ikona aktuálneho počasia",
     "text": "Statický text",
+    "template": "Šablóna Jinja",
     "spacer": "Odsunie susedné prvky od seba"
   },
   "actions": {

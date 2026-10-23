@@ -50,7 +50,8 @@
     "unit_attribute": "Ühiku atribuut",
     "entity_id": "Olem",
     "icon": "Ikoon",
-    "text": "Tekst"
+    "text": "Tekst",
+    "template": "Mall"
   },
   "helpers": {
     "temperature_sensor": "Valikuline. Loeb praeguse temperatuuri ilmaüksuse asemel sellelt andurilt, nt ilmajaamast või välisandurilt",
@@ -100,6 +101,7 @@
     "icon": "Ikoon",
     "weather_icon": "Ilmaikoon",
     "text": "Tekst",
+    "template": "Mall",
     "spacer": "Vahe"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Mis tahes MDI ikoon",
     "weather_icon": "Praeguse ilma ikoon",
     "text": "Staatiline tekst",
+    "template": "Jinja mall",
     "spacer": "Lükkab naabrid lahku"
   },
   "actions": {

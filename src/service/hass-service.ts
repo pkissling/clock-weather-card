@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 import { DateTime, type Zone } from 'luxon'
 
 import logger from '@/service/logger'
-import type { ForecastType, SunEntity, TemperatureUnit, WeatherForecastEvent } from '@/types'
+import type { ForecastType, RenderTemplateEvent, SunEntity, TemperatureUnit, WeatherForecastEvent } from '@/types'
 import { WeatherEntityFeature } from '@/types'
 import { convertTemperature, isTemperatureUnit, toDisplayTemperature } from '@/utils/temperature'
 
@@ -167,6 +167,14 @@ class HassService {
       entity_id: entityId
     }
     return hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, { resubscribe: false })
+  }
+
+  public async subscribeTemplate(
+    hass: HomeAssistant,
+    template: string,
+    callback: (event: RenderTemplateEvent) => void,
+  ): Promise<() => Promise<void>> {
+    return hass.connection.subscribeMessage<RenderTemplateEvent>(callback, { type: 'render_template', template, report_errors: true })
   }
 
 }

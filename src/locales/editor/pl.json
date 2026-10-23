@@ -50,7 +50,8 @@
     "unit_attribute": "Atrybut jednostki",
     "entity_id": "Encja",
     "icon": "Ikona",
-    "text": "Tekst"
+    "text": "Tekst",
+    "template": "Szablon"
   },
   "helpers": {
     "temperature_sensor": "Opcjonalne. Odczytuje bieżącą temperaturę z tego czujnika zamiast z encji pogody, np. ze stacji pogodowej lub czujnika zewnętrznego",
@@ -100,6 +101,7 @@
     "icon": "Ikona",
     "weather_icon": "Ikona pogody",
     "text": "Tekst",
+    "template": "Szablon",
     "spacer": "Odstęp"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Dowolna ikona MDI",
     "weather_icon": "Ikona bieżącej pogody",
     "text": "Stały tekst",
+    "template": "Szablon Jinja",
     "spacer": "Rozsuwa sąsiednie elementy"
   },
   "actions": {
