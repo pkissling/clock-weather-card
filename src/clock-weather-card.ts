@@ -80,7 +80,7 @@ export class ClockWeatherCard extends LitElement {
         role=${clickable ? 'button' : nothing}
         tabindex=${clickable ? 0 : nothing}
         @click=${clickable ? this.handleTap : nothing}
-        @keydown=${clickable ? (e: KeyboardEvent) => { if (e.key === 'Enter') this.handleTap() } : nothing}
+        @keydown=${clickable ? (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.handleTap() } } : nothing}
       >
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
