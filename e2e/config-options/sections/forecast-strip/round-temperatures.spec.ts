@@ -29,6 +29,21 @@ test.describe('sections.forecast_strip.round_temperatures', () => {
       .toHaveText('20°C')
   })
 
+  test('renders temperatures that round to zero without a minus sign', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      date: FIXED_NOW,
+      weather: {
+        forecast_hourly: [
+          { datetime: '2025-09-14T18:00:00+00:00', condition: 'sunny', temperature: -0.4 },
+          { datetime: '2025-09-14T19:00:00+00:00', condition: 'sunny', temperature: -0.6 },
+        ],
+      },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .label'))
+      .toHaveText(['0°C', '-1°C'])
+  })
+
   test('renders fractional temperatures when round_temperatures: false', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: FIXED_NOW,
