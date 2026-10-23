@@ -50,7 +50,8 @@
     "unit_attribute": "Eenheidsattribuut",
     "entity_id": "Entiteit",
     "icon": "Pictogram",
-    "text": "Tekst"
+    "text": "Tekst",
+    "template": "Sjabloon"
   },
   "helpers": {
     "temperature_sensor": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
@@ -100,6 +101,7 @@
     "icon": "Pictogram",
     "weather_icon": "Weerpictogram",
     "text": "Tekst",
+    "template": "Sjabloon",
     "spacer": "Tussenruimte"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Een willekeurig MDI-pictogram",
     "weather_icon": "Pictogram van het huidige weer",
     "text": "Vaste tekst",
+    "template": "Jinja-sjabloon",
     "spacer": "Duwt buren uit elkaar"
   },
   "actions": {

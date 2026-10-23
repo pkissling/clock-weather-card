@@ -50,7 +50,8 @@
     "unit_attribute": "Atribut satuan",
     "entity_id": "Entitas",
     "icon": "Ikon",
-    "text": "Teks"
+    "text": "Teks",
+    "template": "Templat"
   },
   "helpers": {
     "temperature_sensor": "Opsional. Membaca suhu saat ini dari sensor ini alih-alih entitas cuaca, mis. stasiun cuaca atau sensor luar ruangan",
@@ -100,6 +101,7 @@
     "icon": "Ikon",
     "weather_icon": "Ikon cuaca",
     "text": "Teks",
+    "template": "Templat",
     "spacer": "Pemisah"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Ikon MDI apa pun",
     "weather_icon": "Ikon cuaca saat ini",
     "text": "Teks statis",
+    "template": "Templat Jinja",
     "spacer": "Mendorong elemen di sebelahnya menjauh"
   },
   "actions": {

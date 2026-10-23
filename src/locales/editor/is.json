@@ -50,7 +50,8 @@
     "unit_attribute": "Eigind einingar",
     "entity_id": "Eining",
     "icon": "Tákn",
-    "text": "Texti"
+    "text": "Texti",
+    "template": "Sniðmát"
   },
   "helpers": {
     "temperature_sensor": "Valfrjálst. Les núverandi hitastig úr þessum skynjara í stað veðureiningarinnar, t.d. veðurstöð eða útiskynjara",
@@ -100,6 +101,7 @@
     "icon": "Tákn",
     "weather_icon": "Veðurtákn",
     "text": "Texti",
+    "template": "Sniðmát",
     "spacer": "Bil"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Hvaða MDI tákn sem er",
     "weather_icon": "Tákn núverandi veðurs",
     "text": "Fastur texti",
+    "template": "Jinja-sniðmát",
     "spacer": "Ýtir nágrönnum í sundur"
   },
   "actions": {

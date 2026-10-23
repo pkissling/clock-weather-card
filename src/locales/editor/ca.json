@@ -50,7 +50,8 @@
     "unit_attribute": "Atribut d'unitat",
     "entity_id": "Entitat",
     "icon": "Icona",
-    "text": "Text"
+    "text": "Text",
+    "template": "Plantilla"
   },
   "helpers": {
     "temperature_sensor": "Opcional. Llegeix la temperatura actual d'aquest sensor en lloc de l'entitat meteorològica, p. ex. una estació meteorològica o un sensor exterior",
@@ -100,6 +101,7 @@
     "icon": "Icona",
     "weather_icon": "Icona del temps",
     "text": "Text",
+    "template": "Plantilla",
     "spacer": "Espaiador"
   },
   "segment_hints": {
@@ -110,6 +112,7 @@
     "icon": "Qualsevol icona MDI",
     "weather_icon": "Icona del temps actual",
     "text": "Text fix",
+    "template": "Plantilla Jinja",
     "spacer": "Separa els elements veïns"
   },
   "actions": {
