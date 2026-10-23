@@ -159,6 +159,17 @@ test.describe('sections.header.rows', () => {
       .toBeLessThan(0.5)
   })
 
+  test('separates consecutive rows by a gap', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+
+    const rows = clockWeatherCard.locator('clock-weather-card-header-details-row')
+    const [first, second] = await Promise.all([rows.nth(0)
+      .boundingBox(), rows.nth(1)
+      .boundingBox()])
+    expect(second!.y - first!.y - first!.height)
+      .toBeCloseTo(2, 0)
+  })
+
   test('rejects an unknown row alignment', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({ cardConfig: alignedRowConfig('middle') })
 
