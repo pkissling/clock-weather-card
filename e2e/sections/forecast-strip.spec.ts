@@ -52,6 +52,26 @@ test.describe('forecast_strip section', () => {
       .toHaveAttribute('src', /not-available/)
   })
 
+  test('describes each weather icon with its translated condition', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      date: new Date('2025-09-14T19:07:00+00:00'),
+      language: 'de',
+      sun: { state: 'below_horizon' },
+      weather: {
+        forecast_hourly: [
+          { datetime: '2025-09-14T19:00:00+00:00', condition: 'sunny', temperature: 15 },
+          { datetime: '2025-09-14T20:00:00+00:00', condition: 'rainy', temperature: 14 },
+        ],
+      },
+    })
+
+    const icons = clockWeatherCard.locator('clock-weather-card-forecast-strip-item clock-weather-card-icon img')
+    await expect(icons.nth(0))
+      .toHaveAttribute('alt', 'Klar')
+    await expect(icons.nth(1))
+      .toHaveAttribute('alt', 'Regen')
+  })
+
   test('omits the "Now" column when no forecast entry sits before "now"', async ({ setupCard, clockWeatherCard }) => {
     const future: WeatherForecast[] = [
       { datetime: '2025-09-14T20:00:00+00:00', condition: 'sunny', temperature: 18, precipitation_probability: 0 },
