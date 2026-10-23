@@ -30,7 +30,7 @@ window.customCards = window.customCards || []
 if (!window.customCards.some(card => card.type === 'clock-weather-card')) window.customCards.push({
   type: 'clock-weather-card',
   name: 'Clock Weather Card',
-  description: 'Shows the current date/time in combination with the current weather and an iOS insipired weather forecast.',
+  description: 'Shows the current date/time in combination with the current weather and an iOS inspired weather forecast.',
   preview: true,
   documentationURL: 'https://github.com/pkissling/clock-weather-card',
   getEntitySuggestion: (_hass, entityId) => entityId.startsWith('weather.')
