@@ -10,8 +10,10 @@ const NUMBER_FORMAT_LOCALES: Record<string, string[] | undefined> = {
 }
 
 export function formatNumber(value: number, { locale, numberFormat }: Pick<ResolvedConfig, 'locale' | 'numberFormat'>, precision: number | null = null): string {
-  if (numberFormat === 'none') return precision === null ? String(value) : value.toFixed(precision)
+  // A value that rounds to zero keeps its sign otherwise (-0.4 -> "-0"); 3 is Intl's default maximumFractionDigits.
+  const signed = Number(value.toFixed(precision ?? 3)) === 0 ? 0 : value
+  if (numberFormat === 'none') return precision === null ? String(value) : signed.toFixed(precision)
   const digits = precision === null ? {} : { minimumFractionDigits: precision, maximumFractionDigits: precision }
   return new Intl.NumberFormat(numberFormat in NUMBER_FORMAT_LOCALES ? NUMBER_FORMAT_LOCALES[numberFormat] : locale, digits)
-    .format(value)
+    .format(signed)
 }
