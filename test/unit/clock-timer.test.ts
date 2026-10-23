@@ -82,6 +82,25 @@ describe('ClockWeatherCard timer behavior', () => {
     return card
   }
 
+  describe('startClock', () => {
+    it('realigns to the next minute after a late tick, e.g. after the device slept', async () => {
+      const { startClock } = await import('@/utils/luxon')
+      vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
+      const onTick = vi.fn()
+      const clock = startClock(false, onTick)
+
+      vi.setSystemTime(new Date('2025-06-15T12:00:30.000Z'))
+      vi.advanceTimersByTime(60_000)
+      expect(onTick)
+        .toHaveBeenCalledTimes(2)
+
+      vi.advanceTimersByTime(30_000)
+      expect(onTick)
+        .toHaveBeenCalledTimes(3)
+      clock.stop()
+    })
+  })
+
   describe('_startClock with seconds', () => {
     it('sets up a second-level interval when time_pattern has ss', async () => {
       vi.setSystemTime(new Date('2025-06-15T12:00:00.000Z'))
