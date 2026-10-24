@@ -46,6 +46,24 @@ test.describe('tap_action', () => {
         .toHaveURL(new RegExp(`#tapped-${key}$`))
     })
   }
+
+  test('shows a focus outline on keyboard focus only', async ({ page, setupCard }) => {
+    const card = await setupCard({ cardConfig: 'tap_action: { action: navigate, navigation_path: \'#focus\' }' })
+    const haCard = card.locator('ha-card')
+
+    await haCard.click()
+    await expect(haCard)
+      .toHaveCSS('outline-style', 'none')
+
+    await page.keyboard.press('Shift+Tab')
+    await page.keyboard.press('Tab')
+    await expect(haCard)
+      .toBeFocused()
+    await expect(haCard)
+      .toHaveCSS('outline-style', 'solid')
+    await expect(haCard)
+      .toHaveCSS('outline-width', '2px')
+  })
 })
 
 test.describe('tap_action validation and none', () => {
