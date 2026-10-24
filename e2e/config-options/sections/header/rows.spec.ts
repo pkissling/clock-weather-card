@@ -443,7 +443,7 @@ test.describe('sections.header.rows', () => {
       })
 
       await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
-        .toHaveText('5x')
+        .toHaveText('5 x')
     })
 
     test('renders unknown attributes without unit when <attribute>_unit is missing', async ({ setupCard, clockWeatherCard }) => {
@@ -514,7 +514,7 @@ test.describe('sections.header.rows', () => {
       })
 
       await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
-        .toHaveText('50g/m³')
+        .toHaveText('50 g/m³')
     })
 
     test('converts values whose unit_attribute is a temperature unit', async ({ setupCard, clockWeatherCard }) => {
@@ -606,7 +606,7 @@ test.describe('sections.header.rows', () => {
       })
 
       await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
-        .toHaveText('42kWh')
+        .toHaveText('42 kWh')
     })
 
     test('prefers the configured unit over unit_of_measurement', async ({ setupCard, clockWeatherCard }) => {
@@ -678,7 +678,7 @@ test.describe('sections.header.rows', () => {
       })
       const segment = clockWeatherCard.locator('clock-weather-card-entity-segment')
       await expect(segment)
-        .toHaveText('1,234.6W')
+        .toHaveText('1,234.6 W')
 
       await haApi.setMockSensor('sensor.mock_sensor', 42, '°C')
       await haApi.setDisplayPrecision('sensor.mock_sensor', 2)
