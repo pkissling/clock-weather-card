@@ -63,6 +63,12 @@ class HassService {
     return hass.language
   }
 
+  public isRtl(hass: HomeAssistant, locale: string): boolean {
+    const translations = hass.translationMetadata?.translations ?? {}
+    const { baseName, language } = new Intl.Locale(locale)
+    return (translations[baseName] ?? translations[language])?.isRTL ?? false
+  }
+
   // Luxon's localized tokens (e.g. `t`) follow the locale's hour cycle, so HA's 12/24h profile setting is applied as a Unicode extension.
   public withHourCycle(hass: HomeAssistant, locale: string): string {
     const timeFormat: string | undefined = hass.locale?.time_format

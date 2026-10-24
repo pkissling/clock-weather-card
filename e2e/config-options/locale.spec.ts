@@ -220,6 +220,28 @@ test.describe('locale', () => {
       .toContainText('晴天')
   })
 
+  test('lays the card out right-to-left for an RTL locale in an LTR Home Assistant', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'en', cardConfig: 'locale: he' })
+
+    await expect(clockWeatherCard.locator('ha-card'))
+      .toHaveAttribute('lang', /^he\b/)
+    await expect.poll(() => clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+      .first()
+      .evaluate(el => el.matches(':dir(rtl)')))
+      .toBe(true)
+  })
+
+  test('lays the card out left-to-right for an LTR locale in an RTL Home Assistant', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'he', cardConfig: 'locale: en' })
+
+    await expect(clockWeatherCard.locator('ha-card'))
+      .toHaveAttribute('lang', /^en\b/)
+    await expect.poll(() => clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+      .first()
+      .evaluate(el => el.matches(':dir(ltr)')))
+      .toBe(true)
+  })
+
   for (const [language, sunny] of [['sr-Latn', 'Sunčano'], ['zh-Hans', '晴'], ['zh-Hant', '晴天']]) {
     test(`uses the ${language} translation for Home Assistant's ${language} language`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({ language })

@@ -74,10 +74,12 @@ export class ClockWeatherCard extends LitElement {
       `
     }
 
-    const { title, header, forecastStrip, forecastList } = this.resolved
+    const { title, header, forecastStrip, forecastList, locale } = this.resolved
     const clickable = this.tapAction.action !== 'none'
     return html`
       <ha-card
+        lang=${locale}
+        dir=${hassService.isRtl(this.hass, locale) ? 'rtl' : 'ltr'}
         class=${clickable ? 'clickable' : ''}
         role=${clickable ? 'button' : nothing}
         tabindex=${clickable ? 0 : nothing}
