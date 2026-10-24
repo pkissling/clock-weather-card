@@ -6,7 +6,7 @@ import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
 import { property, state } from 'lit/decorators.js'
 
-import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey } from '@/editor/fields'
+import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey, SENSOR_FIELDS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
 import type { ClockWeatherCardConfig, RowConfig } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
@@ -68,7 +68,7 @@ export class ClockWeatherCardEditor extends LitElement {
           <div slot="header" class="panel-header">
             <ha-icon icon=${GROUP_ICONS[group]}></ha-icon>${this.t(`groups.${group}`)}
           </div>
-          ${this._openGroups.has(group) ? this._renderFields(CARD_FIELDS.filter(f => f.group === group), [], this._config!, DEFAULTS) : nothing}
+          ${this._openGroups.has(group) ? this._renderGroup(group) : nothing}
         </ha-expansion-panel>
       `)}
     `
@@ -115,6 +115,11 @@ export class ClockWeatherCardEditor extends LitElement {
         ` : nothing}
       </div>
     `
+  }
+
+  private _renderGroup(group: CardGroup): TemplateResult[] {
+    if (group === 'sensors') return this._renderFields(SENSOR_FIELDS, ['additional_sensors'], (this._config!.additional_sensors ?? {}) as Data, {})
+    return this._renderFields(CARD_FIELDS.filter(f => f.group === group), [], this._config!, DEFAULTS)
   }
 
   private _toggleGroup(group: CardGroup, expanded: boolean): void {

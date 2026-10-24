@@ -23,7 +23,7 @@
     "time_zone": "Fuso horário",
     "locale": "Idioma",
     "temperature_unit": "Unidade de temperatura",
-    "temperature_sensor": "Sensor de temperatura",
+    "temperature": "Sensor de temperatura",
     "tap_action": "Ação ao tocar",
     "rows": "Linhas",
     "animated_icons": "Ícones animados",
@@ -54,7 +54,7 @@
     "template": "Modelo"
   },
   "helpers": {
-    "temperature_sensor": "Opcional. Lê a temperatura atual deste sensor em vez da entidade meteorológica, p. ex. uma estação meteorológica ou um sensor exterior",
+    "temperature": "Opcional. Lê a temperatura atual deste sensor em vez da entidade meteorológica, p. ex. uma estação meteorológica ou um sensor exterior",
     "sun_entity": "Decide entre ícones de dia e de noite",
     "time_zone": "Predefinição: o fuso horário do Home Assistant",
     "locale": "Predefinição: o idioma do Home Assistant",

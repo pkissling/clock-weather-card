@@ -23,7 +23,7 @@
     "time_zone": "Időzóna",
     "locale": "Nyelv",
     "temperature_unit": "Hőmérséklet mértékegysége",
-    "temperature_sensor": "Hőmérséklet-érzékelő",
+    "temperature": "Hőmérséklet-érzékelő",
     "tap_action": "Koppintási művelet",
     "rows": "Sorok",
     "animated_icons": "Animált ikonok",
@@ -54,7 +54,7 @@
     "template": "Sablon"
   },
   "helpers": {
-    "temperature_sensor": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
+    "temperature": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
     "sun_entity": "Ez dönt a nappali és éjszakai ikonok között",
     "time_zone": "Alapértelmezés szerint a Home Assistant időzónája",
     "locale": "Alapértelmezés szerint a Home Assistant nyelve",

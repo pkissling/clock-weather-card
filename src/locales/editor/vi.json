@@ -23,7 +23,7 @@
     "time_zone": "Múi giờ",
     "locale": "Ngôn ngữ",
     "temperature_unit": "Đơn vị nhiệt độ",
-    "temperature_sensor": "Cảm biến nhiệt độ",
+    "temperature": "Cảm biến nhiệt độ",
     "tap_action": "Hành động khi nhấn",
     "rows": "Hàng",
     "animated_icons": "Biểu tượng động",
@@ -54,7 +54,7 @@
     "template": "Mẫu"
   },
   "helpers": {
-    "temperature_sensor": "Tùy chọn. Đọc nhiệt độ hiện tại từ cảm biến này thay vì thực thể thời tiết, ví dụ trạm thời tiết hoặc cảm biến ngoài trời",
+    "temperature": "Tùy chọn. Đọc nhiệt độ hiện tại từ cảm biến này thay vì thực thể thời tiết, ví dụ trạm thời tiết hoặc cảm biến ngoài trời",
     "sun_entity": "Quyết định dùng biểu tượng ngày hay đêm",
     "time_zone": "Mặc định là múi giờ của Home Assistant",
     "locale": "Mặc định là ngôn ngữ của Home Assistant",

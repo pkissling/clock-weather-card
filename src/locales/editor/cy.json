@@ -23,7 +23,7 @@
     "time_zone": "Cylchfa amser",
     "locale": "Iaith",
     "temperature_unit": "Uned tymheredd",
-    "temperature_sensor": "Synhwyrydd tymheredd",
+    "temperature": "Synhwyrydd tymheredd",
     "tap_action": "Gweithred tapio",
     "rows": "Rhesi",
     "animated_icons": "Eiconau wedi'u hanimeiddio",
@@ -54,7 +54,7 @@
     "template": "Templed"
   },
   "helpers": {
-    "temperature_sensor": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
+    "temperature": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
     "sun_entity": "Yn penderfynu rhwng eiconau dydd a nos",
     "time_zone": "Cylchfa amser Home Assistant yn ddiofyn",
     "locale": "Iaith Home Assistant yn ddiofyn",

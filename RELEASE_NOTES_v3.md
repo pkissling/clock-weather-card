@@ -25,12 +25,12 @@ Thanks to everyone who tested the betas and reported issues - a lot of what foll
 - **Any forecast attribute** - show `wind_speed`, `humidity`, `uv_index` or any other numeric forecast attribute in the strip (`attribute`, `attribute_icon`, `attribute_unit`, `attribute_color`) or as bars in the list.
 - **Custom bar colors** - `forecast_list.gradient` maps values to colors for the temperature (or attribute) bars.
 - **Tunable forecast list** - `row_height`, `bar_thickness` and `hide_current_temp_indicator`.
-- **`temperature_sensor` everywhere** - the sensor now replaces the current temperature in the header, the forecast list's current temperature dot and the strip's "Now" entry.
+- **`additional_sensors.temperature` everywhere** - the temperature sensor (formerly `temperature_sensor`) now replaces the current temperature in the header, the forecast list's current temperature dot and the strip's "Now" entry.
 - **Meteocons v3** - all weather icons are now based on [Meteocons](https://github.com/basmilius/meteocons) v3, with redrawn icons for every weather state. Huge thanks to [Bas Milius](https://github.com/basmilius) for creating and maintaining these beautiful icons!
 - **Two new icon styles** - `flat` and `monochrome` join `line` and `fill`. `weather_icon_type` can be overridden per section.
 - **Animated icons per section** - `animated_icons` on each section (on for the header, off for the forecast sections by default).
 - **Header icon size** - `sections.header.weather_icon_size`; by default the icon matches the height of the header rows.
-- **`temperature_unit`** - show all temperatures in `celsius` or `fahrenheit`, converting the weather entity's values, `temperature_sensor` and `°C`/`°F` entity segments.
+- **`temperature_unit`** - show all temperatures in `celsius` or `fahrenheit`, converting the weather entity's values, `additional_sensors.temperature` and `°C`/`°F` entity segments.
 - **Number format and display precision from Home Assistant** - temperatures, attribute values and numeric entity states use the number format set in your Home Assistant profile, and sensors are rounded to the display precision set on the entity.
 - **Units everywhere** - known weather attributes get their unit automatically; override with `unit` or `unit_attribute` on `weather` and `entity` segments.
 - **`tap_action`** - any Home Assistant [action](https://www.home-assistant.io/dashboards/actions/) (`navigate`, `url`, `more-info`, `perform-action`, …). Defaults to `more-info`; `none` makes the card not clickable.
@@ -72,7 +72,7 @@ I recommend starting from scratch (see above). If you'd rather convert an existi
 | v2 option | v3 replacement |
 |-----------|----------------|
 | `entity`, `title`, `sun_entity`, `locale`, `time_zone`, `weather_icon_type` | Unchanged (top level). `weather_icon_type` also accepts `flat` and `monochrome`; `locale` uses `sr-latn`, `zh-hans`, `zh-hant` instead of `srlatn`, `zh-cn`, `zh-tw`. |
-| `temperature_sensor` | Unchanged (top level). Now also used by the forecast list's current temperature dot and the strip's "Now" entry. |
+| `temperature_sensor` | `additional_sensors.temperature`. Now also used by the forecast list's current temperature dot and the strip's "Now" entry. |
 | `animated_icon` | `sections.header.animated_icons` |
 | `forecast_rows` | `sections.forecast_list.count` |
 | `hourly_forecast: true` | `sections.forecast_list.forecast_type: hourly` |

@@ -23,7 +23,7 @@
     "time_zone": "Tijdzone",
     "locale": "Taal",
     "temperature_unit": "Temperatuureenheid",
-    "temperature_sensor": "Temperatuursensor",
+    "temperature": "Temperatuursensor",
     "tap_action": "Tikactie",
     "rows": "Rijen",
     "animated_icons": "Geanimeerde pictogrammen",
@@ -54,7 +54,7 @@
     "template": "Sjabloon"
   },
   "helpers": {
-    "temperature_sensor": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
+    "temperature": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
     "sun_entity": "Bepaalt de keuze tussen dag- en nachtpictogrammen",
     "time_zone": "Standaard de tijdzone van Home Assistant",
     "locale": "Standaard de taal van Home Assistant",
