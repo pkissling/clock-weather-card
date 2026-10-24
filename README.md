@@ -326,7 +326,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the header section. |
-| `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
+| `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated (static when the device asks for reduced motion). |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
 | `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon, capped at half the card width. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
 | `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, the temperatures of `weather` segments (`temperature`, `apparent_temperature`, `dew_point` and values with a `°C`/`°F` `unit_attribute`) are rounded to the nearest integer. The display precision of `additional_sensors.temperature` takes precedence when set. |
@@ -350,7 +350,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `weather_entity` | string | no | top-level `entity` | Weather entity whose forecast is displayed. Falls back to the card's main `entity` when not set. |
 | `forecast_type` | `hourly` \| `daily` | no | `hourly` | Forecast data shown in the strip. |
 | `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now"/"Today" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
-| `animated_icons` | boolean | no | `false` | Whether the strip's weather icons should be animated. Defaults to `false` to keep the strip lightweight. |
+| `animated_icons` | boolean | no | `false` | Whether the strip's weather icons should be animated (static when the device asks for reduced motion). Defaults to `false` to keep the strip lightweight. |
 | `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, temperatures in the strip are rounded to the nearest integer. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
 | `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
@@ -381,7 +381,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOUR
 | `bar_thickness` | string | no | `60%` | CSS length controlling the thickness of the temperature bar. A percentage is relative to `row_height` (so the bar scales with the row); absolute units (`px`, `rem`, `em`, `vh`, `vw`) set a fixed thickness. The current-temperature dot scales with it. Thicker bars reduce the visible gap between adjacent rows. |
 | `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row (daily) or the "Now" row (hourly) is not rendered. |
 | `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) format pattern for the hourly row labels. The default `t` is the localized short time, e.g. `15:00` or `3:00 PM` depending on the locale and the time format in your Home Assistant profile; `H` shows only the hour. |
-| `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated. Defaults to `false` to keep the section lightweight. |
+| `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated (static when the device asks for reduced motion). Defaults to `false` to keep the section lightweight. |
 | `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, the low and high temperatures are rounded to the nearest integer. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast list. Falls back to the card's main `weather_icon_type` when unset. |
 | `attribute` | string | no | `temperature` | Forecast attribute shown in the list: `temperature` or any numeric forecast attribute (see [Forecast attributes](#forecast-attributes)). For any attribute other than `temperature`, each row shows a single value right of its bar, which runs from `0` to the row's value; all bars share one axis spanning `0` and every visible value. The current-temperature dot is only shown for `temperature`. |

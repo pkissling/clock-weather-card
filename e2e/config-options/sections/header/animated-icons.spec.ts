@@ -51,6 +51,21 @@ test.describe('sections.header.animated_icons', () => {
       .not.toHaveAttribute('src', staticSrc!)
   })
 
+  test.describe('with prefers-reduced-motion: reduce', () => {
+    test.use({ freshPage: true })
+
+    test('renders the static SVG even with animated_icons: true', async ({ page, setupCard, clockWeatherCard }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' })
+      await setupCard({ cardConfig: 'sections: { header: { animated_icons: true } }' })
+      const src = await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+        .getAttribute('src')
+      const svg = await (await page.request.get(src!)).text()
+      expect(svg)
+        .toContain('<svg')
+      expect(svg).not.toMatch(/<animate(Transform|Motion)?\b/)
+    })
+  })
+
   test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `

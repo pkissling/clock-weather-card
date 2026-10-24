@@ -37,7 +37,8 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
     ) return
 
     const { weatherIconType, weatherState, isNight, animatedIcon } = this
-    const src = iconsService.getWeatherIcon(weatherIconType, animatedIcon, weatherState, isNight)
+    const animated = animatedIcon && !matchMedia('(prefers-reduced-motion: reduce)').matches
+    const src = iconsService.getWeatherIcon(weatherIconType, animated, weatherState, isNight)
     if (!src) {
       logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
       this._settled = true
