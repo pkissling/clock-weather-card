@@ -29,6 +29,15 @@ test.describe('tap_action', () => {
       .toContainText('Mock Weather')
   })
 
+  test('is focusable without merging the card content into one accessible name', async ({ setupCard }) => {
+    const card = await setupCard()
+
+    await expect(card.locator('ha-card'))
+      .toHaveAttribute('tabindex', '0')
+    await expect(card.locator('ha-card'))
+      .toHaveAccessibleName('')
+  })
+
   for (const key of ['Enter', 'Space']) {
     test(`runs the configured action on ${key}`, async ({ page, setupCard }) => {
       const card = await setupCard({
@@ -52,7 +61,7 @@ test.describe('tap_action validation and none', () => {
   test('is not clickable with action none', async ({ setupCard }) => {
     const card = await setupCard({ cardConfig: 'tap_action: { action: none }' })
 
-    await expect(card.locator('ha-card')).not.toHaveAttribute('role', 'button')
+    await expect(card.locator('ha-card')).not.toHaveAttribute('tabindex')
     await expect(card.locator('ha-card'))
       .toHaveCSS('cursor', 'auto')
   })
@@ -60,12 +69,12 @@ test.describe('tap_action validation and none', () => {
   test('stops being clickable when switched to action none at runtime (no reload)', async ({ setupCard }) => {
     const card = await setupCard({ cardConfig: 'tap_action: { action: more-info }' })
     await expect(card.locator('ha-card'))
-      .toHaveAttribute('role', 'button')
+      .toHaveAttribute('tabindex', '0')
 
     await setupCard({ cardConfig: 'tap_action: { action: none }' })
 
     await expect(card.locator('ha-card'))
-      .not.toHaveAttribute('role', 'button')
+      .not.toHaveAttribute('tabindex')
   })
 
   test('rejects an unknown action', async ({ setupCard, cardErrorMessage }) => {

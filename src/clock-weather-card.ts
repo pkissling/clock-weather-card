@@ -79,7 +79,6 @@ export class ClockWeatherCard extends LitElement {
     return html`
       <ha-card
         class=${clickable ? 'clickable' : ''}
-        role=${clickable ? 'button' : nothing}
         tabindex=${clickable ? 0 : nothing}
         @click=${clickable ? this.handleTap : nothing}
         @keydown=${clickable ? (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.handleTap() } } : nothing}
