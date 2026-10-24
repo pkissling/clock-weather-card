@@ -33,6 +33,7 @@
     "count": "Кількість записів",
     "round_temperatures": "Округлювати температуру",
     "hide_sunrise_sunset": "Приховати схід і захід сонця",
+    "hide_attribute": "Приховати атрибут",
     "attribute": "Атрибут",
     "attribute_icon": "Значок атрибута",
     "attribute_unit": "Одиниця атрибута",

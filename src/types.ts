@@ -120,6 +120,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       round_temperatures?: boolean
       weather_icon_type?: WeatherIconType
       hide_sunrise_sunset?: boolean
+      hide_attribute?: boolean
       time_pattern?: string
       attribute?: string
       attribute_icon?: string
@@ -177,6 +178,7 @@ export interface ResolvedForecastStripConfig {
   roundTemperatures: boolean
   weatherIconType: WeatherIconType
   hideSunriseSunset: boolean
+  hideAttribute: boolean
   timePattern: string
   attribute: string
   attributeRequired: boolean

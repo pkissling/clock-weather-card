@@ -33,6 +33,7 @@
     "count": "Брой записи",
     "round_temperatures": "Закръгляне на температурите",
     "hide_sunrise_sunset": "Скриване на изгрев и залез",
+    "hide_attribute": "Скриване на атрибута",
     "attribute": "Атрибут",
     "attribute_icon": "Икона на атрибута",
     "attribute_unit": "Мерна единица на атрибута",

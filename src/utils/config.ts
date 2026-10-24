@@ -40,7 +40,7 @@ export const DEFAULTS = {
   sun_entity: 'sun.sun',
   sections: {
     header: { hide: false, animated_icons: true },
-    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
     forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
@@ -168,6 +168,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertBoolean('sections.forecast_strip.animated_icons', strip?.animated_icons)
   assertBoolean('sections.forecast_strip.round_temperatures', strip?.round_temperatures)
   assertBoolean('sections.forecast_strip.hide_sunrise_sunset', strip?.hide_sunrise_sunset)
+  assertBoolean('sections.forecast_strip.hide_attribute', strip?.hide_attribute)
   assertBoolean('sections.forecast_list.hide', list?.hide)
   assertBoolean('sections.forecast_list.hide_current_temp_indicator', list?.hide_current_temp_indicator)
   assertBoolean('sections.forecast_list.animated_icons', list?.animated_icons)
@@ -237,9 +238,10 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       roundTemperatures: strip?.round_temperatures ?? D.forecast_strip.round_temperatures,
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
       hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
+      hideAttribute: strip?.hide_attribute ?? D.forecast_strip.hide_attribute,
       timePattern: strip?.time_pattern ?? D.forecast_strip.time_pattern,
       attribute: strip?.attribute ?? D.forecast_strip.attribute,
-      attributeRequired: strip?.attribute !== undefined,
+      attributeRequired: strip?.attribute !== undefined && strip.hide_attribute !== true,
       attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
       attributeColor: strip?.attribute_color ?? defaultAttributeColor(strip, strip?.weather_icon_type ?? weatherIconType),
       attributeUnit: strip?.attribute_unit ?? null,

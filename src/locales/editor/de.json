@@ -33,6 +33,7 @@
     "count": "Anzahl Einträge",
     "round_temperatures": "Temperaturen runden",
     "hide_sunrise_sunset": "Sonnenauf- und -untergang ausblenden",
+    "hide_attribute": "Attribut ausblenden",
     "attribute": "Attribut",
     "attribute_icon": "Attributsymbol",
     "attribute_unit": "Attributeinheit",

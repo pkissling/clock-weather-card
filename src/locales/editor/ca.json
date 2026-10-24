@@ -33,6 +33,7 @@
     "count": "Nombre d'entrades",
     "round_temperatures": "Arrodoneix les temperatures",
     "hide_sunrise_sunset": "Amaga la sortida i la posta del sol",
+    "hide_attribute": "Amaga l'atribut",
     "attribute": "Atribut",
     "attribute_icon": "Icona de l'atribut",
     "attribute_unit": "Unitat de l'atribut",

@@ -84,7 +84,7 @@ const sectionCommon = (forecastType: SectionKey): EditorField[] => [
   { name: 'hide', control: 'section-toggle' },
   { name: 'forecast_type', selector: { select: { mode: 'box', options: SECTION_FORECAST_TYPES } } },
   { name: 'count', selector: { number: { min: 1, mode: 'box', step: 1 } } },
-  { name: 'attribute', selector: attributeSelector(forecastType === 'forecast_list' ? ['temperature'] : []) },
+  { name: 'attribute', selector: attributeSelector(forecastType === 'forecast_list' ? ['temperature'] : []), visible: d => d.hide_attribute !== true },
   { name: 'time_pattern', selector: patternSelector(FORECAST_TIME_PATTERNS), default: DEFAULT_TIME_PATTERN, advanced: true, visible: d => d.forecast_type === 'hourly' },
 ]
 
@@ -105,13 +105,15 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
   ],
   forecast_strip: [
     ...sectionCommon('forecast_strip'),
-    { name: 'attribute_icon', selector: { icon: {} }, default: ({ config }: FormContext) => config.sections?.forecast_strip?.attribute ? undefined : 'mdi:water', advanced: true },
-    { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true },
+    { name: 'hide_attribute', selector: bool },
+    { name: 'attribute_icon', selector: { icon: {} }, default: ({ config }: FormContext) => config.sections?.forecast_strip?.attribute ? undefined : 'mdi:water', advanced: true, visible: d => d.hide_attribute !== true },
+    { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true, visible: d => d.hide_attribute !== true },
     {
       name: 'attribute_color',
       control: 'color',
       default: ({ config }: FormContext) => defaultAttributeColor(config.sections?.forecast_strip, config.sections?.forecast_strip?.weather_icon_type ?? config.weather_icon_type ?? DEFAULTS.weather_icon_type) ?? undefined,
       advanced: true,
+      visible: d => d.hide_attribute !== true,
     },
     { name: 'hide_sunrise_sunset', selector: bool, advanced: true, visible: d => d.forecast_type === 'hourly' },
     ...sectionLook,
