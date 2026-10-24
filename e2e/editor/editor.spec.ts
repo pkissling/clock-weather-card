@@ -265,6 +265,20 @@ test.describe('GUI editor', () => {
       .toEqual({ entity: 'weather.mock_weather', sections: { forecast_list: { bar_thickness: '55%' } } })
   })
 
+  test('sets the temperature sensor under additional sensors', async ({ page, setupCard }) => {
+    await setupCard({ entities: { 'sensor.e2e_outdoor_temperature': { state: '18', attributes: { unit_of_measurement: '°C', device_class: 'temperature', friendly_name: 'Outdoor temperature' } } } })
+    const editor = await openEditor(page)
+
+    await expandPanel(editor, 'Additional sensors')
+    await editor.getByText('Select an entity')
+      .click()
+    await editor.getByText('Outdoor temperature', { exact: true })
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', additional_sensors: { temperature: 'sensor.e2e_outdoor_temperature' } })
+  })
+
   test('keeps options it did not touch', async ({ page, setupCard }) => {
     await setupCard({ cardConfig: 'sections: { forecast_list: { count: 7, gradient: { 0: "#000000", 30: "#ffffff" } } }' })
     const editor = await openEditor(page)

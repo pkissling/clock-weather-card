@@ -13,7 +13,8 @@ const DAILY: DailyWeatherForecast[] = [
 ]
 
 const cardConfig = (sections = ''): string => `
-  temperature_sensor: ${SENSOR}
+  additional_sensors:
+    temperature: ${SENSOR}
   sections:
     header:
       rows:
@@ -23,7 +24,7 @@ const cardConfig = (sections = ''): string => `
     ${sections}
 `
 
-test.describe('temperature_sensor', () => {
+test.describe('additional_sensors.temperature', () => {
   test('replaces the current temperature everywhere, converted and limited to one decimal', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       entities: { [SENSOR]: { state: '74.31', attributes: { unit_of_measurement: '°F' } } },
@@ -150,23 +151,23 @@ test.describe('temperature_sensor', () => {
   })
 
   test('rejects a sensor that does not exist', async ({ setupCard, cardErrorMessage }) => {
-    await setupCard({ cardConfig: 'temperature_sensor: sensor.does_not_exist' })
+    await setupCard({ cardConfig: 'additional_sensors: { temperature: sensor.does_not_exist }' })
 
     await cardErrorMessage()
       .toContain('Referenced entity "sensor.does_not_exist" does not exist')
   })
 
   test('rejects a sensor without a temperature unit', async ({ setupCard, cardErrorMessage }) => {
-    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}`, entities: { [SENSOR]: { state: '42', attributes: { unit_of_measurement: '%' } } } })
+    await setupCard({ cardConfig: `additional_sensors: { temperature: ${SENSOR} }`, entities: { [SENSOR]: { state: '42', attributes: { unit_of_measurement: '%' } } } })
 
     await cardErrorMessage()
-      .toContain(`Config option "temperature_sensor" has invalid value "${SENSOR}", expected a sensor with unit °C or °F, got "%"`)
+      .toContain(`Config option "additional_sensors.temperature" has invalid value "${SENSOR}", expected a sensor with unit °C or °F, got "%"`)
   })
 
   test('rejects a sensor with a non-numeric state', async ({ setupCard, cardErrorMessage }) => {
-    await setupCard({ cardConfig: `temperature_sensor: ${SENSOR}`, entities: { [SENSOR]: { state: 'warm', attributes: { unit_of_measurement: '°C' } } } })
+    await setupCard({ cardConfig: `additional_sensors: { temperature: ${SENSOR} }`, entities: { [SENSOR]: { state: 'warm', attributes: { unit_of_measurement: '°C' } } } })
 
     await cardErrorMessage()
-      .toContain(`Config option "temperature_sensor" has invalid value "${SENSOR}", expected a sensor with a numeric state, got "warm"`)
+      .toContain(`Config option "additional_sensors.temperature" has invalid value "${SENSOR}", expected a sensor with a numeric state, got "warm"`)
   })
 })

@@ -70,11 +70,14 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'title', selector: text, group: 'essentials' },
   { name: 'weather_icon_type', selector: iconTypeSelector, group: 'appearance' },
   { name: 'temperature_unit', selector: { select: { mode: 'box', options: Object.keys(TEMPERATURE_UNIT_SYMBOLS) } }, default: temperatureUnitOf, group: 'appearance' },
-  { name: 'temperature_sensor', selector: { entity: { domain: 'sensor', device_class: 'temperature' } }, group: 'sensors' },
   { name: 'tap_action', selector: { ui_action: { default_action: DEFAULT_TAP_ACTION.action } }, group: 'interaction' },
   { name: 'locale', selector: ({ hass }: FormContext) => ({ select: { custom_value: true, options: localeOptions(hass) } }), default: ({ hass }: FormContext) => hassService.getLocale(hass), group: 'region' },
   { name: 'time_zone', selector: { select: { custom_value: true, options: TIME_ZONES } }, default: ({ hass }: FormContext) => hassService.getTimeZone(hass), group: 'region' },
   { name: 'sun_entity', selector: { entity: { domain: 'sun' } }, group: 'region' },
+]
+
+export const SENSOR_FIELDS: EditorField[] = [
+  { name: 'temperature', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
 ]
 
 const sectionCommon = (forecastType: SectionKey): EditorField[] => [
@@ -167,6 +170,7 @@ export const SEGMENT_ICONS: { [T in SegmentConfig['type']]: string } = {
 // Every config path the editor can set, used to verify it covers the whole config surface.
 export const editorPaths = (): string[] => [
   ...CARD_FIELDS.map(f => f.name),
+  ...SENSOR_FIELDS.map(f => `additional_sensors.${f.name}`),
   ...Object.entries(SECTION_FIELDS)
     .flatMap(([section, fields]) => fields.map(f => `sections.${section}.${f.name}`)),
 ]

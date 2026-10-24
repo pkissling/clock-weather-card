@@ -23,7 +23,7 @@
     "time_zone": "Vremenska zona",
     "locale": "Jezik",
     "temperature_unit": "Jedinica temperature",
-    "temperature_sensor": "Senzor temperature",
+    "temperature": "Senzor temperature",
     "tap_action": "Radnja na dodir",
     "rows": "Redovi",
     "animated_icons": "Animirane ikonice",
@@ -54,7 +54,7 @@
     "template": "Šablon"
   },
   "helpers": {
-    "temperature_sensor": "Opciono. Čita trenutnu temperaturu sa ovog senzora umesto sa vremenskog entiteta, npr. meteorološke stanice ili spoljnog senzora",
+    "temperature": "Opciono. Čita trenutnu temperaturu sa ovog senzora umesto sa vremenskog entiteta, npr. meteorološke stanice ili spoljnog senzora",
     "sun_entity": "Određuje izbor dnevnih ili noćnih ikonica",
     "time_zone": "Podrazumevano vremenska zona Home Assistant-a",
     "locale": "Podrazumevano jezik Home Assistant-a",
