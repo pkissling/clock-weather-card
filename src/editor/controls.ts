@@ -1,7 +1,7 @@
 import { css, html, type TemplateResult } from 'lit'
 
-export const iconButton = (icon: string, label: string, action: () => void, disabled = false, active = false): TemplateResult => html`
-  <button class="icon-button ${active ? 'active' : ''}" .disabled=${disabled} aria-label=${label} title=${label} @click=${action}>
+export const iconButton = (icon: string, label: string, action: () => void, disabled = false): TemplateResult => html`
+  <button class="icon-button" .disabled=${disabled} aria-label=${label} title=${label} @click=${action}>
     <ha-icon icon=${icon}></ha-icon>
   </button>
 `
@@ -38,7 +38,7 @@ export const controlStyles = css`
     color: var(--secondary-text-color);
     --mdc-icon-size: 18px;
   }
-  .icon-button:hover:not(:disabled), .icon-button.active {
+  .icon-button:hover:not(:disabled) {
     background: var(--cwc-tint);
     color: var(--primary-color);
   }

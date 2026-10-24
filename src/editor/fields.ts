@@ -14,7 +14,7 @@ type Data = Record<string, unknown>
 export interface EditorField {
   name: string
   // Rendered by ha-form; a function builds context-dependent selectors.
-  selector?: object | ((ctx: FormContext, value: unknown) => object)
+  selector?: object | ((ctx: FormContext) => object)
   // Rendered by a dedicated control instead of ha-form.
   control?: 'section-toggle' | 'rows' | 'segments' | 'gradient' | 'color' | 'percent'
   // An empty string is a meaningful value, offered as an explicit choice.

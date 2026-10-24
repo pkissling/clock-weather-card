@@ -49,7 +49,7 @@ const optionLabel = (hass: HomeAssistant, value: string): string =>
   hasKey(`options.${value}`) ? editorT(hass, `options.${value}`) : attributeLabel(hass, value)
 
 function selectorFor(field: EditorField, ctx: FormContext, current: unknown): object {
-  const selector = typeof field.selector === 'function' ? field.selector(ctx, current) : field.selector ?? {}
+  const selector = typeof field.selector === 'function' ? field.selector(ctx) : field.selector ?? {}
   const select = (selector as { select?: { options: readonly (string | object)[] } }).select
   if (!select) return selector
   const options = select.options.map(o => typeof o === 'string' ? { value: o, label: optionLabel(ctx.hass, o) } : o)
