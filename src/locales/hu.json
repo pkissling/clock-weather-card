@@ -16,15 +16,6 @@
     "windy-variant": "Erős szél",
     "exceptional": "Kivételes"
   },
-  "day": {
-    "1": "H",
-    "2": "K",
-    "3": "Sze",
-    "4": "Cs",
-    "5": "P",
-    "6": "Szo",
-    "7": "V"
-  },
   "misc": {
     "now": "Most",
     "today": "Ma",

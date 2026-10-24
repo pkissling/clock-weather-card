@@ -16,15 +16,6 @@
     "windy-variant": "Prudký vietor",
     "exceptional": "Výnimočné počasie"
   },
-  "day": {
-    "1": "Pon",
-    "2": "Uto",
-    "3": "Str",
-    "4": "Štv",
-    "5": "Pia",
-    "6": "Sob",
-    "7": "Ned"
-  },
   "misc": {
     "now": "Teraz",
     "today": "Dnes",

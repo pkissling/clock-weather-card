@@ -16,15 +16,6 @@
     "windy-variant": "wietrznie",
     "exceptional": "warunki nadzwyczajne"
   },
-  "day": {
-    "1": "Pn",
-    "2": "Wt",
-    "3": "Śr",
-    "4": "Cz",
-    "5": "Pt",
-    "6": "So",
-    "7": "Nd"
-  },
   "misc": {
     "now": "Teraz",
     "today": "Dziś",

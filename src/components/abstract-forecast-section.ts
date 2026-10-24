@@ -129,7 +129,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
           forecast,
           at,
           isCurrent,
-          label: isCurrent ? todayLabel : translationsService.t(locale, `day.${at.weekday}`),
+          label: isCurrent ? todayLabel : at.toFormat('ccc'),
           // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
           isNight: isCurrent && hassService.isNight(this.hass, sunEntity),
         }
