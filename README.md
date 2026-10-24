@@ -448,7 +448,7 @@ Displays the current weather state (localized) or a specific weather entity attr
 
 #### `entity`
 
-Displays a Home Assistant entity's state and unit. A numeric state is rounded to the entity's display precision when one is set in Home Assistant.
+Displays a Home Assistant entity's state and unit. A numeric state is rounded to the entity's display precision when one is set in Home Assistant; other states and attribute values are translated like in Home Assistant (e.g. `Open` instead of `on`).
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|

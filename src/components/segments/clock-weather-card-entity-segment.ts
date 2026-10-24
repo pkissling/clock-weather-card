@@ -1,5 +1,6 @@
 import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
+import type { HassEntity } from 'home-assistant-js-websocket/dist/types.js'
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
@@ -12,6 +13,12 @@ import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
 import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
+
+// custom-card-helpers' HomeAssistant predates HA's entity formatters (2023.9).
+type HassFormatters = {
+  formatEntityState?: (stateObj: HassEntity) => string
+  formatEntityAttributeValue?: (stateObj: HassEntity, attribute: string) => string
+}
 
 @customElement('clock-weather-card-entity-segment')
 class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
@@ -38,12 +45,19 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
     if (this.showUnit && this.unit === undefined && unit === null) {
       logger.warn(`Unit attribute "${this.unitAttribute ?? 'unit_of_measurement'}" not found for entity "${this.entityId}"`)
     }
-    const text = this.isNumeric(value, unit, precision) ? formatNumber(Number(value), this.config, precision) : String(value)
+    const text = this.isNumeric(value, unit, precision) ? formatNumber(Number(value), this.config, precision) : this.formatText(value)
     return this.renderValue(text, unit)
   }
 
   private renderValue (text: string, unit: string | null): TemplateResult {
     return html`<span>${text}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+  }
+
+  private formatText (value: unknown): string {
+    const hass = this.hass as HomeAssistant & HassFormatters
+    const stateObj = this.hass.states[this.entityId]
+    const text = this.attribute ? hass.formatEntityAttributeValue?.(stateObj, this.attribute) : hass.formatEntityState?.(stateObj)
+    return text ?? String(value)
   }
 
   private isNumeric (value: unknown, unit: string | null, precision: number | null): boolean {

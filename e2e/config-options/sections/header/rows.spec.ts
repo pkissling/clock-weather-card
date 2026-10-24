@@ -701,7 +701,47 @@ test.describe('sections.header.rows', () => {
       })
 
       await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
-        .toHaveText('on')
+        .toHaveText('On')
+    })
+
+    for (const [state, attributes, expected] of [
+      ['on', { device_class: 'door' }, 'Open'],
+      ['unavailable', {}, 'Unavailable'],
+    ] as const) {
+      test(`renders the translated state "${expected}" for a non-numeric "${state}" state`, async ({ setupCard, clockWeatherCard }) => {
+        await setupCard({
+          entities: { 'binary_sensor.demo': { state, attributes } },
+          cardConfig: `
+            sections:
+              header:
+                rows:
+                  - segments:
+                      - type: entity
+                        entity_id: binary_sensor.demo
+          `,
+        })
+
+        await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+          .toHaveText(expected)
+      })
+    }
+
+    test('renders a non-numeric attribute value translated', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        entities: { 'climate.demo': { state: 'heat', attributes: { hvac_action: 'heating' } } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: climate.demo
+                      attribute: hvac_action
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+        .toHaveText('Heating')
     })
 
     test('rejects an attribute that is missing on the entity', async ({ setupCard, cardErrorMessage }) => {
