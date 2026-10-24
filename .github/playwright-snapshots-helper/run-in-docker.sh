@@ -6,11 +6,15 @@ PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 # Same hash as createContainerName in e2e/utils/ha-state.ts, so runner and HA container pair up by name.
 WORKTREE_ID="$(printf '%s' "$PROJECT_DIR" | shasum -a 256 | cut -c1-12)"
 RUNNER_NAME="clock-weather-card-e2e-$WORKTREE_ID-playwright"
+HA_NAME="clock-weather-card-e2e-$WORKTREE_ID-ha"
 
 if [ -n "$(docker ps -aq --filter "name=^${RUNNER_NAME}$")" ]; then
   echo "An e2e run is already active in this worktree (container $RUNNER_NAME). If it isn't, remove it with \`docker rm -f $RUNNER_NAME\`." >&2
   exit 1
 fi
+
+# Without a runner, an HA container is an orphan of a run that was SIGKILLed before globalTeardown.
+docker rm -f "$HA_NAME" >/dev/null 2>&1 || true
 
 echo "Building Playwright image..."
 # Per-worktree tag, so a rebuild replaces any image a killed run left behind.
