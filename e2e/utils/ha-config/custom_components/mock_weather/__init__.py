@@ -52,6 +52,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                 entity._forecast_released.set()
 
         entity.async_write_ha_state()
+        # A held forecast would block the service call until it is released.
+        if ("forecast_daily" in call.data or "forecast_hourly" in call.data) and entity._forecast_released.is_set():
+            await entity.async_update_listeners(None)
 
     hass.services.async_register(DOMAIN, "set_weather", handle_set_weather)
 

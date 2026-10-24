@@ -2,6 +2,7 @@ import type { Locator } from '@playwright/test'
 
 import type { DailyWeatherForecast } from '../../src/types'
 import { WeatherEntityFeature } from '../../src/types'
+import { openEditor } from '../utils/editor'
 import { expect, test } from '../utils/fixtures'
 import haApi from '../utils/ha-api'
 
@@ -298,6 +299,33 @@ test.describe('forecast_list section', () => {
       }
     }))
       .toEqual({ lowRightOfHigh: true, fillStart: 1, fillEnd: 10, dot: 5 })
+  })
+
+  test.describe('after a WebSocket reconnect', () => {
+    test.use({ freshPage: true })
+
+    // HA rebuilds dashboard cards on reconnect, but the editor preview survives and keeps the forecast subscription alive.
+    test('keeps receiving forecast updates in a card that is not rebuilt', async ({ page, setupCard }) => {
+      await setupCard({ weather: { forecast_daily: DAILY } })
+      await openEditor(page)
+      const high = page.locator('hui-dialog-edit-card clock-weather-card-forecast-list-item .temperature-high')
+        .nth(1)
+      await expect(high)
+        .toHaveText('12°C')
+
+      await page.evaluate(() => new Promise<void>((resolve) => {
+        const { connection } = (document.querySelector('home-assistant') as unknown as { hass: { connection: {
+          addEventListener: (event: string, cb: () => void) => void
+          reconnect: (force: boolean) => void
+        } } }).hass
+        connection.addEventListener('ready', () => resolve())
+        connection.reconnect(true)
+      }))
+      await haApi.setMockWeather({ forecast_daily: DAILY.map((day, i) => (i === 1 ? { ...day, temperature: 23 } : day)) })
+
+      await expect(high)
+        .toHaveText('23°C')
+    })
   })
 })
 

@@ -166,7 +166,7 @@ class HassService {
       forecast_type: forecastType,
       entity_id: entityId
     }
-    return hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message, { resubscribe: false })
+    return hass.connection.subscribeMessage<WeatherForecastEvent>(callback, message)
   }
 
   public async subscribeTemplate(
