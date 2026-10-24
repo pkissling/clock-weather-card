@@ -99,7 +99,6 @@
     "weather": "Pogoda",
     "entity": "Encja",
     "icon": "Ikona",
-    "weather_icon": "Ikona pogody",
     "text": "Tekst",
     "template": "Szablon",
     "spacer": "Odstęp"
@@ -110,7 +109,6 @@
     "weather": "Stan pogody lub dowolny atrybut",
     "entity": "Stan dowolnej encji",
     "icon": "Dowolna ikona MDI",
-    "weather_icon": "Ikona bieżącej pogody",
     "text": "Stały tekst",
     "template": "Szablon Jinja",
     "spacer": "Rozsuwa sąsiednie elementy"

@@ -99,7 +99,6 @@
     "weather": "Hava durumu",
     "entity": "Varlık",
     "icon": "Simge",
-    "weather_icon": "Hava durumu simgesi",
     "text": "Metin",
     "template": "Şablon",
     "spacer": "Boşluk"
@@ -110,7 +109,6 @@
     "weather": "Durum veya herhangi bir öznitelik",
     "entity": "Herhangi bir varlığın durumu",
     "icon": "Herhangi bir MDI simgesi",
-    "weather_icon": "Geçerli hava durumunun simgesi",
     "text": "Sabit metin",
     "template": "Jinja şablonu",
     "spacer": "Komşu öğeleri birbirinden uzaklaştırır"

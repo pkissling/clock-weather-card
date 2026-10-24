@@ -133,7 +133,6 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       const path = `sections.header.rows[${i}].segments[${j}]`
       assertRequiredString(`${path}.type`, segment.type)
       assertEnumValue(`${path}.type`, segment.type, SEGMENT_TYPES)
-      if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
       if (segment.type === 'entity') {
         assertRequiredString(`${path}.entity_id`, segment.entity_id)
         assertEntityExists(segment.entity_id)

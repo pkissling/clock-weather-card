@@ -99,7 +99,6 @@
     "weather": "Wetter",
     "entity": "Entität",
     "icon": "Symbol",
-    "weather_icon": "Wettersymbol",
     "text": "Text",
     "template": "Template",
     "spacer": "Abstand"
@@ -110,7 +109,6 @@
     "weather": "Wetterlage oder ein beliebiges Attribut",
     "entity": "Zustand einer beliebigen Entität",
     "icon": "Ein beliebiges MDI-Symbol",
-    "weather_icon": "Symbol des aktuellen Wetters",
     "text": "Statischer Text",
     "template": "Jinja-Template",
     "spacer": "Schiebt Nachbarn auseinander"

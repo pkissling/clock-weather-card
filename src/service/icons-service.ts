@@ -1,8 +1,6 @@
 import logger from '@/service/logger'
 import type { WeatherIconType } from '@/types'
 
-const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
-
 // Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
 const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,extreme-rain,not-available,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
   query: '?url&no-inline',
@@ -17,17 +15,6 @@ class IconsService {
     const url = (animated && lookup('svg')) || lookup('svg-static')
     // Dev mode yields a root-relative path that must resolve against the dev server, not the Home Assistant page.
     return url && import.meta.env.DEV ? new URL(url, import.meta.url).href : url
-  }
-
-  public getWeatherMdiIcon(weatherState: string, isNight: boolean): string {
-    const s = weatherState.toLowerCase()
-    if (s === 'sunny' || s === 'clear' || s === 'clear-night') return isNight ? 'mdi:weather-night' : 'mdi:weather-sunny'
-    if (s === 'partlycloudy') return isNight ? 'mdi:weather-night-partly-cloudy' : 'mdi:weather-partly-cloudy'
-    if (s === 'windy-exceptional') return 'mdi:weather-windy'
-    if (s === 'exceptional') return 'mdi:alert-circle-outline'
-    if (MDI_WEATHER_STATES.has(s)) return `mdi:weather-${s}`
-    logger.warn(`No MDI icon for weather state "${weatherState}", using fallback icon`)
-    return 'mdi:weather-cloudy-alert'
   }
 
   // TODO: Review mapping between HA weather states and meteocons icon names - there may be more suitable icons available.

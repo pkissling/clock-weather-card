@@ -99,7 +99,6 @@
     "weather": "מזג אוויר",
     "entity": "ישות",
     "icon": "סמל",
-    "weather_icon": "סמל מזג אוויר",
     "text": "טקסט",
     "template": "תבנית",
     "spacer": "מרווח"
@@ -110,7 +109,6 @@
     "weather": "מצב או כל מאפיין",
     "entity": "מצב של כל ישות",
     "icon": "כל סמל MDI",
-    "weather_icon": "סמל מזג האוויר הנוכחי",
     "text": "טקסט קבוע",
     "template": "תבנית Jinja",
     "spacer": "מרחיק רכיבים שכנים"

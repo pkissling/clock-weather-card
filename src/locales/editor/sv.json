@@ -99,7 +99,6 @@
     "weather": "Väder",
     "entity": "Entitet",
     "icon": "Ikon",
-    "weather_icon": "Väderikon",
     "text": "Text",
     "template": "Mall",
     "spacer": "Mellanrum"
@@ -110,7 +109,6 @@
     "weather": "Väderläge eller valfritt attribut",
     "entity": "Tillstånd för valfri entitet",
     "icon": "Valfri MDI-ikon",
-    "weather_icon": "Ikon för aktuellt väder",
     "text": "Statisk text",
     "template": "Jinja-mall",
     "spacer": "Trycker isär grannar"

@@ -99,7 +99,6 @@
     "weather": "Ilm",
     "entity": "Olem",
     "icon": "Ikoon",
-    "weather_icon": "Ilmaikoon",
     "text": "Tekst",
     "template": "Mall",
     "spacer": "Vahe"
@@ -110,7 +109,6 @@
     "weather": "Ilmaolud või mis tahes atribuut",
     "entity": "Mis tahes olemi olek",
     "icon": "Mis tahes MDI ikoon",
-    "weather_icon": "Praeguse ilma ikoon",
     "text": "Staatiline tekst",
     "template": "Jinja mall",
     "spacer": "Lükkab naabrid lahku"

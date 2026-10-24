@@ -99,7 +99,6 @@
     "weather": "Temps",
     "entity": "Entitat",
     "icon": "Icona",
-    "weather_icon": "Icona del temps",
     "text": "Text",
     "template": "Plantilla",
     "spacer": "Espaiador"
@@ -110,7 +109,6 @@
     "weather": "Estat o qualsevol atribut",
     "entity": "Estat de qualsevol entitat",
     "icon": "Qualsevol icona MDI",
-    "weather_icon": "Icona del temps actual",
     "text": "Text fix",
     "template": "Plantilla Jinja",
     "spacer": "Separa els elements veïns"

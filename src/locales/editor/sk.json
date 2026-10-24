@@ -99,7 +99,6 @@
     "weather": "Počasie",
     "entity": "Entita",
     "icon": "Ikona",
-    "weather_icon": "Ikona počasia",
     "text": "Text",
     "template": "Šablóna",
     "spacer": "Medzera"
@@ -110,7 +109,6 @@
     "weather": "Stav alebo ľubovoľný atribút",
     "entity": "Stav ľubovoľnej entity",
     "icon": "Ľubovoľná ikona MDI",
-    "weather_icon": "Ikona aktuálneho počasia",
     "text": "Statický text",
     "template": "Šablóna Jinja",
     "spacer": "Odsunie susedné prvky od seba"

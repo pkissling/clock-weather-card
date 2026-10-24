@@ -25,8 +25,6 @@ test.describe('sections.header.rows', () => {
       .toHaveCount(1)
     await expect(firstRow)
       .toContainText('21')
-    await expect(firstRow.locator('clock-weather-card-weather-icon-segment'))
-      .toHaveCount(0)
     await expect(firstRow)
       .toContainText('Sunny')
 
@@ -96,7 +94,7 @@ test.describe('sections.header.rows', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "template", "spacer"')
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "text", "template", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })
@@ -759,64 +757,4 @@ test.describe('sections.header.rows', () => {
     })
   })
 
-  test.describe('weather_icon segment', () => {
-    const weatherIcon = 'clock-weather-card-weather-icon-segment ha-icon'
-    const configWith = (extra = ''): string => `
-      sections:
-        header:
-          rows:
-            - segments:
-                - type: weather_icon
-                  ${extra}
-    `
-    const config = configWith()
-
-    test('renders the MDI icon of the current weather state', async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({ cardConfig: config, weather: { state: 'fog' } })
-
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-fog')
-    })
-
-    test('follows the weather state at runtime (no reload)', async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({ cardConfig: config, weather: { state: 'rainy' } })
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-rainy')
-
-      await setupCard({ cardConfig: config, weather: { state: 'snowy' } })
-
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-snowy')
-    })
-
-    test('switches to the night variant when the sun sets', async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({ cardConfig: config, weather: { state: 'partlycloudy' }, sun: { state: 'above_horizon' } })
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-partly-cloudy')
-
-      await haApi.setEntityState('sun.sun', 'below_horizon', { elevation: -10 })
-
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-night-partly-cloudy')
-    })
-
-    test('uses the configured entity_id instead of the card entity', async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({
-        secondaryWeather: { state: 'hail' },
-        cardConfig: configWith('entity_id: weather.mock_weather_2'),
-      })
-
-      await expect(clockWeatherCard.locator(weatherIcon))
-        .toHaveAttribute('icon', 'mdi:weather-hail')
-    })
-
-    test('rejects an entity_id that does not exist', async ({ setupCard, cardErrorMessage }) => {
-      await setupCard({
-        cardConfig: configWith('entity_id: weather.does_not_exist'),
-      })
-
-      await cardErrorMessage()
-        .toContain('Referenced entity "weather.does_not_exist" does not exist')
-    })
-  })
 })

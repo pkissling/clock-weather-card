@@ -454,15 +454,6 @@ Displays an MDI icon.
 | `type` | string | **yes** | - | `icon` |
 | `icon` | string | **yes** | - | MDI icon name (e.g. `mdi:thermometer`, `mdi:calendar`) |
 
-#### `weather_icon`
-
-Displays an MDI icon matching the current state of a weather entity (e.g. `mdi:weather-rainy` when it rains). Uses night variants for `sunny` and `partlycloudy` while the sun entity is below the horizon.
-
-| Option | Type | Required | Default | Description |
-|--------|------|----------|---------|-------------|
-| `type` | string | **yes** | - | `weather_icon` |
-| `entity_id` | string | no | card `entity` | Weather entity whose state drives the icon |
-
 #### `text`
 
 Displays static text.

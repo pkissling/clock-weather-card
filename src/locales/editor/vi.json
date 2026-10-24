@@ -99,7 +99,6 @@
     "weather": "Thời tiết",
     "entity": "Thực thể",
     "icon": "Biểu tượng",
-    "weather_icon": "Biểu tượng thời tiết",
     "text": "Văn bản",
     "template": "Mẫu",
     "spacer": "Khoảng cách"
@@ -110,7 +109,6 @@
     "weather": "Tình trạng hoặc thuộc tính bất kỳ",
     "entity": "Trạng thái của thực thể bất kỳ",
     "icon": "Biểu tượng MDI bất kỳ",
-    "weather_icon": "Biểu tượng thời tiết hiện tại",
     "text": "Văn bản tĩnh",
     "template": "Mẫu Jinja",
     "spacer": "Đẩy các phần tử lân cận ra xa"

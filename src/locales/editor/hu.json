@@ -99,7 +99,6 @@
     "weather": "Időjárás",
     "entity": "Entitás",
     "icon": "Ikon",
-    "weather_icon": "Időjárás ikon",
     "text": "Szöveg",
     "template": "Sablon",
     "spacer": "Térköz"
@@ -110,7 +109,6 @@
     "weather": "Időjárási állapot vagy bármely attribútum",
     "entity": "Bármely entitás állapota",
     "icon": "Bármely MDI ikon",
-    "weather_icon": "Az aktuális időjárás ikonja",
     "text": "Statikus szöveg",
     "template": "Jinja-sablon",
     "spacer": "Széttolja a szomszédos elemeket"

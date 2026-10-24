@@ -99,7 +99,6 @@
     "weather": "Tiempo",
     "entity": "Entidad",
     "icon": "Icono",
-    "weather_icon": "Icono del tiempo",
     "text": "Texto",
     "template": "Plantilla",
     "spacer": "Espaciador"
@@ -110,7 +109,6 @@
     "weather": "Estado o cualquier atributo",
     "entity": "Estado de cualquier entidad",
     "icon": "Cualquier icono MDI",
-    "weather_icon": "Icono del tiempo actual",
     "text": "Texto fijo",
     "template": "Plantilla Jinja",
     "spacer": "Separa los elementos vecinos"

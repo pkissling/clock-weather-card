@@ -99,7 +99,6 @@
     "weather": "Veður",
     "entity": "Eining",
     "icon": "Tákn",
-    "weather_icon": "Veðurtákn",
     "text": "Texti",
     "template": "Sniðmát",
     "spacer": "Bil"
@@ -110,7 +109,6 @@
     "weather": "Ástand eða hvaða eigind sem er",
     "entity": "Staða hvaða einingar sem er",
     "icon": "Hvaða MDI tákn sem er",
-    "weather_icon": "Tákn núverandi veðurs",
     "text": "Fastur texti",
     "template": "Jinja-sniðmát",
     "spacer": "Ýtir nágrönnum í sundur"

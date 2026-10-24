@@ -99,7 +99,6 @@
     "weather": "Vejr",
     "entity": "Entitet",
     "icon": "Ikon",
-    "weather_icon": "Vejrikon",
     "text": "Tekst",
     "template": "Skabelon",
     "spacer": "Afstand"
@@ -110,7 +109,6 @@
     "weather": "Vejrforhold eller en vilkårlig attribut",
     "entity": "Tilstand for en vilkårlig entitet",
     "icon": "Et vilkårligt MDI-ikon",
-    "weather_icon": "Ikon for det aktuelle vejr",
     "text": "Statisk tekst",
     "template": "Jinja-skabelon",
     "spacer": "Skubber naboer fra hinanden"

@@ -99,7 +99,6 @@
     "weather": "Meteo",
     "entity": "Entità",
     "icon": "Icona",
-    "weather_icon": "Icona meteo",
     "text": "Testo",
     "template": "Template",
     "spacer": "Spaziatore"
@@ -110,7 +109,6 @@
     "weather": "Condizione o qualsiasi attributo",
     "entity": "Stato di qualsiasi entità",
     "icon": "Qualsiasi icona MDI",
-    "weather_icon": "Icona del meteo attuale",
     "text": "Testo statico",
     "template": "Template Jinja",
     "spacer": "Allontana gli elementi vicini"

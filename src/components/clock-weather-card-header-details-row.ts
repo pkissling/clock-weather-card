@@ -5,7 +5,6 @@ import '@/components/segments/clock-weather-card-spacer-segment'
 import '@/components/segments/clock-weather-card-template-segment'
 import '@/components/segments/clock-weather-card-text-segment'
 import '@/components/segments/clock-weather-card-time-segment'
-import '@/components/segments/clock-weather-card-weather-icon-segment'
 import '@/components/segments/clock-weather-card-weather-segment'
 
 import type { TemplateResult } from 'lit'
@@ -57,10 +56,6 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
       return html`<clock-weather-card-icon-segment
           .icon=${segment.icon}
         ></clock-weather-card-icon-segment>`
-    case 'weather_icon':
-      return html`<clock-weather-card-weather-icon-segment
-          .entityId=${segment.entity_id}
-        ></clock-weather-card-weather-icon-segment>`
     case 'text':
       return html`<clock-weather-card-text-segment
           .text=${segment.text}

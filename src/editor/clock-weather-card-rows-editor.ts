@@ -18,7 +18,6 @@ const NEW_SEGMENTS: { [T in SegmentConfig['type']]: SegmentConfig } = {
   weather: { type: 'weather' },
   entity: { type: 'entity', entity_id: '' },
   icon: { type: 'icon', icon: 'mdi:star-outline' },
-  weather_icon: { type: 'weather_icon' },
   text: { type: 'text', text: '' },
   template: { type: 'template', template: '' },
   spacer: { type: 'spacer' },
@@ -229,7 +228,7 @@ export class ClockWeatherCardRowsEditor extends LitElement {
       border-color: var(--primary-color);
       color: var(--primary-color);
     }
-    .chip.icon, .chip.weather_icon {
+    .chip.icon {
       padding: 0 7px;
     }
     .chip.spacer {

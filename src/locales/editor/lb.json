@@ -99,7 +99,6 @@
     "weather": "Wieder",
     "entity": "Entitéit",
     "icon": "Icon",
-    "weather_icon": "Wiedericon",
     "text": "Text",
     "template": "Template",
     "spacer": "Ofstandshalter"
@@ -110,7 +109,6 @@
     "weather": "Zoustand oder iergendeen Attribut",
     "entity": "Zoustand vun iergendenger Entitéit",
     "icon": "Iergendeen MDI-Icon",
-    "weather_icon": "Icon vum aktuelle Wieder",
     "text": "Statesch Text",
     "template": "Jinja-Template",
     "spacer": "Dréckt d'Noperen auserneen"

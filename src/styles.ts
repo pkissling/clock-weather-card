@@ -59,8 +59,8 @@ export default css`
     margin-inline-start: 8px;
   }
 
-  clock-weather-card-header-details-row > :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) + :not(clock-weather-card-spacer-segment),
-  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) + :is(clock-weather-card-icon-segment, clock-weather-card-weather-icon-segment) {
+  clock-weather-card-header-details-row > clock-weather-card-icon-segment + :not(clock-weather-card-spacer-segment),
+  clock-weather-card-header-details-row > :not(clock-weather-card-spacer-segment) + clock-weather-card-icon-segment {
     margin-inline-start: 4px;
   }
 

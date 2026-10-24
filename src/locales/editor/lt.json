@@ -99,7 +99,6 @@
     "weather": "Orai",
     "entity": "Objektas",
     "icon": "Piktograma",
-    "weather_icon": "Orų piktograma",
     "text": "Tekstas",
     "template": "Šablonas",
     "spacer": "Tarpiklis"
@@ -110,7 +109,6 @@
     "weather": "Būsena arba bet kuris atributas",
     "entity": "Bet kurio objekto būsena",
     "icon": "Bet kuri MDI piktograma",
-    "weather_icon": "Dabartinių orų piktograma",
     "text": "Statinis tekstas",
     "template": "Jinja šablonas",
     "spacer": "Atstumia kaimyninius elementus"

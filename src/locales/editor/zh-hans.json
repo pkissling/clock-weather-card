@@ -99,7 +99,6 @@
     "weather": "天气",
     "entity": "实体",
     "icon": "图标",
-    "weather_icon": "天气图标",
     "text": "文本",
     "template": "模板",
     "spacer": "间隔"
@@ -110,7 +109,6 @@
     "weather": "天气状况或任意属性",
     "entity": "任意实体的状态",
     "icon": "任意 MDI 图标",
-    "weather_icon": "当前天气的图标",
     "text": "静态文本",
     "template": "Jinja 模板",
     "spacer": "将相邻元素推开"

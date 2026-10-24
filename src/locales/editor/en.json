@@ -99,7 +99,6 @@
     "weather": "Weather",
     "entity": "Entity",
     "icon": "Icon",
-    "weather_icon": "Weather icon",
     "text": "Text",
     "template": "Template",
     "spacer": "Spacer"
@@ -110,7 +109,6 @@
     "weather": "Condition or any attribute",
     "entity": "State of any entity",
     "icon": "Any MDI icon",
-    "weather_icon": "Icon of the current weather",
     "text": "Static text",
     "template": "Jinja template",
     "spacer": "Pushes neighbors apart"

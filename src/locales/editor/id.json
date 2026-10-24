@@ -99,7 +99,6 @@
     "weather": "Cuaca",
     "entity": "Entitas",
     "icon": "Ikon",
-    "weather_icon": "Ikon cuaca",
     "text": "Teks",
     "template": "Templat",
     "spacer": "Pemisah"
@@ -110,7 +109,6 @@
     "weather": "Kondisi atau atribut apa pun",
     "entity": "Status entitas apa pun",
     "icon": "Ikon MDI apa pun",
-    "weather_icon": "Ikon cuaca saat ini",
     "text": "Teks statis",
     "template": "Templat Jinja",
     "spacer": "Mendorong elemen di sebelahnya menjauh"

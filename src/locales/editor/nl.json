@@ -99,7 +99,6 @@
     "weather": "Weer",
     "entity": "Entiteit",
     "icon": "Pictogram",
-    "weather_icon": "Weerpictogram",
     "text": "Tekst",
     "template": "Sjabloon",
     "spacer": "Tussenruimte"
@@ -110,7 +109,6 @@
     "weather": "Weertoestand of een willekeurig attribuut",
     "entity": "Status van een willekeurige entiteit",
     "icon": "Een willekeurig MDI-pictogram",
-    "weather_icon": "Pictogram van het huidige weer",
     "text": "Vaste tekst",
     "template": "Jinja-sjabloon",
     "spacer": "Duwt buren uit elkaar"

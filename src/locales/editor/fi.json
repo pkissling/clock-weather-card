@@ -99,7 +99,6 @@
     "weather": "Sää",
     "entity": "Kohde",
     "icon": "Kuvake",
-    "weather_icon": "Sääkuvake",
     "text": "Teksti",
     "template": "Malli",
     "spacer": "Välistys"
@@ -110,7 +109,6 @@
     "weather": "Sääolosuhde tai mikä tahansa attribuutti",
     "entity": "Minkä tahansa kohteen tila",
     "icon": "Mikä tahansa MDI-kuvake",
-    "weather_icon": "Nykyisen sään kuvake",
     "text": "Kiinteä teksti",
     "template": "Jinja-malli",
     "spacer": "Työntää viereiset osat erilleen"

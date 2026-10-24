@@ -99,7 +99,6 @@
     "weather": "날씨",
     "entity": "구성요소",
     "icon": "아이콘",
-    "weather_icon": "날씨 아이콘",
     "text": "텍스트",
     "template": "템플릿",
     "spacer": "간격"
@@ -110,7 +109,6 @@
     "weather": "날씨 상태 또는 임의의 속성",
     "entity": "임의의 구성요소 상태",
     "icon": "임의의 MDI 아이콘",
-    "weather_icon": "현재 날씨 아이콘",
     "text": "고정 텍스트",
     "template": "Jinja 템플릿",
     "spacer": "이웃 요소를 양쪽으로 밀어냅니다"

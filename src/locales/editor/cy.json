@@ -99,7 +99,6 @@
     "weather": "Tywydd",
     "entity": "Endid",
     "icon": "Eicon",
-    "weather_icon": "Eicon tywydd",
     "text": "Testun",
     "template": "Templed",
     "spacer": "Bwlch"
@@ -110,7 +109,6 @@
     "weather": "Cyflwr neu unrhyw briodwedd",
     "entity": "Cyflwr unrhyw endid",
     "icon": "Unrhyw eicon MDI",
-    "weather_icon": "Eicon y tywydd presennol",
     "text": "Testun sefydlog",
     "template": "Templed Jinja",
     "spacer": "Yn gwthio cymdogion ar wahân"

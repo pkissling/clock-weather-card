@@ -77,7 +77,8 @@ test.describe('header section', () => {
               - segments:
                   - type: spacer
                   - type: weather
-                  - type: weather_icon
+                  - type: icon
+                    icon: mdi:weather-sunny
       `,
     })
     const details = await clockWeatherCard.locator('clock-weather-card-header-details')
@@ -85,8 +86,10 @@ test.describe('header section', () => {
     const time = await clockWeatherCard.locator('clock-weather-card-time-segment')
       .boundingBox()
     const temperatureIcon = await clockWeatherCard.locator('clock-weather-card-header-details-row > clock-weather-card-icon-segment')
+      .first()
       .boundingBox()
-    const weatherIcon = await clockWeatherCard.locator('clock-weather-card-weather-icon-segment')
+    const weatherIcon = await clockWeatherCard.locator('clock-weather-card-header-details-row > clock-weather-card-icon-segment')
+      .last()
       .boundingBox()
 
     expect(details!.x)
@@ -114,7 +117,8 @@ test.describe('header section', () => {
                     attribute: humidity
                   - type: spacer
                   - type: weather
-                  - type: weather_icon
+                  - type: icon
+                    icon: mdi:weather-sunny
       `,
     })
     const segments = clockWeatherCard.locator('clock-weather-card-header-details-row > *')

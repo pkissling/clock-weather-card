@@ -99,7 +99,6 @@
     "weather": "Vreme",
     "entity": "Entitate",
     "icon": "Pictogramă",
-    "weather_icon": "Pictogramă meteo",
     "text": "Text",
     "template": "Șablon",
     "spacer": "Distanțier"
@@ -110,7 +109,6 @@
     "weather": "Starea vremii sau orice atribut",
     "entity": "Starea oricărei entități",
     "icon": "Orice pictogramă MDI",
-    "weather_icon": "Pictograma vremii curente",
     "text": "Text static",
     "template": "Șablon Jinja",
     "spacer": "Îndepărtează elementele vecine"

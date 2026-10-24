@@ -99,7 +99,6 @@
     "weather": "天気",
     "entity": "エンティティ",
     "icon": "アイコン",
-    "weather_icon": "天気アイコン",
     "text": "テキスト",
     "template": "テンプレート",
     "spacer": "スペーサー"
@@ -110,7 +109,6 @@
     "weather": "天気の状態または任意の属性",
     "entity": "任意のエンティティの状態",
     "icon": "任意の MDI アイコン",
-    "weather_icon": "現在の天気のアイコン",
     "text": "固定テキスト",
     "template": "Jinja テンプレート",
     "spacer": "隣の要素を離して配置します"

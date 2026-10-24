@@ -99,7 +99,6 @@
     "weather": "Vreme",
     "entity": "Entiteta",
     "icon": "Ikona",
-    "weather_icon": "Vremenska ikona",
     "text": "Besedilo",
     "template": "Predloga",
     "spacer": "Razmik"
@@ -110,7 +109,6 @@
     "weather": "Stanje ali poljuben atribut",
     "entity": "Stanje poljubne entitete",
     "icon": "Poljubna ikona MDI",
-    "weather_icon": "Ikona trenutnega vremena",
     "text": "Statično besedilo",
     "template": "Predloga Jinja",
     "spacer": "Razmakne sosednje elemente"
