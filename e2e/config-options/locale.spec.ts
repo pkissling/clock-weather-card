@@ -126,6 +126,41 @@ test.describe('locale', () => {
       .toContainText('Sunny')
   })
 
+  for (const { language, text } of [{ language: 'en', text: 'Unavailable' }, { language: 'de', text: 'Nicht verfügbar' }]) {
+    test(`renders Home Assistant's translation of an unavailable weather entity (${language})`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        language,
+        weather: { state: 'unavailable' },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: weather
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText(text)
+    })
+  }
+
+  test('renders Home Assistant\'s weather translation for a language without a card translation', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      language: 'lv',
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+      `,
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+      .toHaveText('Saulains')
+  })
+
   test('renders an error card when configured locale is malformed', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({
       language: 'es',

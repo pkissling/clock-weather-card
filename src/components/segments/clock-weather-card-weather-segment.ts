@@ -51,7 +51,8 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
     if (!state) return html``
     const isClear = state === 'sunny' || state === 'clear-night'
     const condition = isClear ? (hassService.isNight(this.hass, sunEntity) ? 'clear-night' : 'sunny') : state
-    const translated = translationsService.t(locale, `weather.${condition}`)
+    const haKey = condition === 'unavailable' || condition === 'unknown' ? `state.default.${condition}` : `component.weather.entity_component._.state.${condition}`
+    const translated = translationsService.t(locale, `weather.${condition}`, () => this.hass.localize(haKey))
     return html`<span>${translated}</span>`
   }
 }

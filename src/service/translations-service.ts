@@ -28,7 +28,7 @@ class TranslationsService {
       ?.has(key) ?? false
   }
 
-  public t(language: string, key: string): string {
+  public t(language: string, key: string, fallback?: () => string | undefined): string {
     const lang = this.normalizeLang(language)
 
     const langDict = this.translationsByLang.get(lang)
@@ -37,6 +37,8 @@ class TranslationsService {
     const baseLang = lang.split('-')[0]
     const baseLangDict = this.translationsByLang.get(baseLang)
     if (baseLang !== lang && baseLangDict?.has(key)) return baseLangDict.get(key)!
+    const fallbackValue = fallback?.()
+    if (fallbackValue) return fallbackValue
     if (!langDict && !baseLangDict) logger.warn(`No translations for language "${language}", falling back to English`)
 
     const enFallback = this.translationsByLang.get('en')
