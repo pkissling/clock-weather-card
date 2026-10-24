@@ -11,6 +11,7 @@ import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
+import { formatWithUnit } from '@/utils/forecast-attributes'
 import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
 
@@ -44,7 +45,9 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
         : hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute)
       const temperature = toDisplayTemperature(value, unit, temperatureUnit)
       if (temperature !== null) return html`<span>${formatTemperature(temperature)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
-      return html`<span>${typeof value === 'number' ? formatNumber(value, this.config) : value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+      const text = typeof value === 'number' ? formatNumber(value, this.config) : String(value)
+      if (!this.showUnit) return html`<span>${text}</span>`
+      return html`<span>${this.unit === undefined ? formatWithUnit(text, unit) : `${text}${this.unit}`}</span>`
     }
 
     const state = hassService.getEntityState(this.hass, entity)
