@@ -148,6 +148,7 @@ export class ClockWeatherCard extends LitElement {
 
   public willUpdate(changed: PropertyValues): void {
     if (!changed.has('config') && !changed.has('hass')) return
+    if (!changed.has('config') && this.resolved && !this._relevantHassChanged()) return
     const previous = this.resolved
     this._resolveConfig()
     if (this._relevantHassChanged()) this.providedHass = this.hass
@@ -174,12 +175,12 @@ export class ClockWeatherCard extends LitElement {
     }
   }
 
-  // HA replaces `hass` on every state change anywhere, so only propagate changes the card actually renders.
+  // HA replaces `hass` on every state change anywhere, so only propagate (and re-resolve) on changes the card actually reads.
   private _relevantHassChanged(): boolean {
     const prev = this.providedHass
     const next = this.hass
     if (!prev || !this.resolved) return true
-    if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language) return true
+    if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language || prev.locale !== next.locale) return true
 
     const { entity, sunEntity, temperatureSensor, forecastStrip, forecastList, header } = this.resolved
     const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))
