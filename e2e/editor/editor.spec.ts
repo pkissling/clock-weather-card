@@ -89,6 +89,23 @@ test.describe('GUI editor', () => {
       .toBe('2rem')
   })
 
+  test('drops header rows when a row option is changed and reverted', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    const fontSize = editor.locator('[data-row="0"]')
+      .getByRole('textbox', { name: 'Font size' })
+    await fontSize.fill('2rem')
+    await fontSize.fill('1em')
+    await editor.getByRole('textbox', { name: 'Title' })
+      .fill('Reverted')
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', title: 'Reverted' })
+  })
+
   test('picks a date format from previews', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

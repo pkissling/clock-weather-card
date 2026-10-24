@@ -4,7 +4,7 @@ import { property, state } from 'lit/decorators.js'
 
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
-import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/editor/form'
+import { attributeLabel, type Data, editorT, fireEvent, renderForm, setIn } from '@/editor/form'
 import type { ClockWeatherCardConfig, RowConfig, SegmentConfig } from '@/types'
 import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
@@ -89,7 +89,7 @@ export class ClockWeatherCardRowsEditor extends LitElement {
         </div>
         ${focus?.item === 'adding' ? this._renderTray(row, index) : nothing}
         <div class="row-settings">
-          ${renderForm({ hass: this.hass, config: this.config }, ROW_FIELDS, row as unknown as Data, {}, changes => this._updateRow(index, { ...row, ...changes } as RowConfig))}
+          ${renderForm({ hass: this.hass, config: this.config }, ROW_FIELDS, row as unknown as Data, {}, changes => this._updateRow(index, setIn(row as unknown as Data, [], changes) as unknown as RowConfig))}
         </div>
         ${typeof focus?.item === 'number' && row.segments[focus.item] ? this._renderSegmentPanel(row, index, focus.item) : nothing}
       </div>
@@ -161,7 +161,7 @@ export class ClockWeatherCardRowsEditor extends LitElement {
     SEGMENT_FIELDS[segment.type],
           segment as unknown as Data,
           {},
-          changes => setSegments(row.segments.map((s, i) => i === index ? { ...s, ...changes } as SegmentConfig : s)),
+          changes => setSegments(row.segments.map((s, i) => i === index ? setIn(s as unknown as Data, [], changes) as unknown as SegmentConfig : s)),
   )}
       </div>
     `
