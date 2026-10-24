@@ -1,0 +1,79 @@
+import type { DailyWeatherForecast } from '../../../../src/types'
+import { expect, test } from '../../../utils/fixtures'
+
+const DAILY: DailyWeatherForecast[] = [
+  { datetime: '2025-09-14T00:00:00+00:00', condition: 'sunny',  templow: 5, temperature: 14, precipitation_probability: 0 },
+  { datetime: '2025-09-15T00:00:00+00:00', condition: 'cloudy', templow: 4, temperature: 12, precipitation_probability: 0 },
+]
+
+const LIST_ICON = 'clock-weather-card-forecast-list-item clock-weather-card-icon img'
+
+test.describe('sections.forecast_list.row_height', () => {
+  test('applies the configured row height to the icon and the row', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            row_height: 48px
+      `,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+
+    const iconBox = await clockWeatherCard.locator(LIST_ICON)
+      .first()
+      .boundingBox()
+    expect(iconBox?.height)
+      .toBeGreaterThanOrEqual(47)
+    expect(iconBox?.height)
+      .toBeLessThanOrEqual(49)
+
+    // Rows are laid out on a shared grid; each row must be at least row_height tall.
+    const rowTops = await clockWeatherCard.locator(LIST_ICON)
+      .evaluateAll(els => els.map(el => el.getBoundingClientRect().top))
+    expect(rowTops[1] - rowTops[0])
+      .toBeGreaterThanOrEqual(48)
+  })
+
+  test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            row_height: "tall"
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_list.row_height" has invalid value "tall", expected a CSS length in px, rem, em, vh, vw or %')
+  })
+
+  test('updates the row height at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            row_height: 20px
+      `,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+    const smallIcon = await clockWeatherCard.locator(LIST_ICON)
+      .first()
+      .boundingBox()
+    expect(smallIcon?.height)
+      .toBeLessThanOrEqual(21)
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            row_height: 56px
+      `,
+      weather: { temperature: 9, forecast_daily: DAILY },
+    })
+    const largeIcon = await clockWeatherCard.locator(LIST_ICON)
+      .first()
+      .boundingBox()
+    expect(largeIcon?.height)
+      .toBeGreaterThanOrEqual(55)
+  })
+})

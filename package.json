@@ -1,6 +1,6 @@
 {
   "name": "clock-weather-card",
-  "version": "2.9.7",
+  "version": "3.0.0-beta.3",
   "description": "Lovelace clock-weather-card",
   "keywords": [
     "home-assistant",
@@ -12,38 +12,47 @@
   ],
   "module": "clock-weather-card.js",
   "repository": "git@github.com:pkissling/clock-weather-card.git",
-  "author": "Patrick Kissling <patrick.kissling@gmx.de>",
+  "author": "Patrick Kissling <clip_lye.0j@icloud.com>",
   "license": "MIT",
   "type": "module",
+  "packageManager": "yarn@4.18.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --max-warnings 0 --fix",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": ".github/playwright-snapshots-helper/run-in-docker.sh",
+    "test:e2e:host": "playwright install && playwright test",
+    "playwright-ui": "playwright test --ui",
+    "test:e2e:update-snapshots": ".github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots=changed"
+  },
   "dependencies": {
-    "custom-card-helpers": "^2.0.0",
-    "home-assistant-js-websocket": "^9.0.0",
-    "lit": "^2.8.0",
-    "luxon": "^3.4.3"
+    "@lit/context": "^1.1.6",
+    "@meteocons/svg": "3.0.0-next.10",
+    "@meteocons/svg-static": "3.0.0-next.10",
+    "custom-card-helpers": "2.0.0",
+    "lit": "^3.3.3",
+    "luxon": "^3.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-proposal-decorators": "^8.0.0",
-    "@rollup/plugin-babel": "^7.0.0",
-    "@rollup/plugin-image": "^3.0.0",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-terser": "^1.0.0",
-    "@types/luxon": "^3.3.2",
-    "eslint": "^10.0.0",
-    "rollup": "^4.0.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-gzip": "^4.0.0",
-    "rollup-plugin-serve": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.37.0",
-    "typescript": "*",
-    "typescript-eslint": "^8.0.0"
-  },
-  "scripts": {
-    "start": "rollup -c rollup.config.dev.js --watch",
-    "build": "yarn rollup",
-    "lint": "eslint --max-warnings 0",
-    "rollup": "rollup -c"
+    "@eslint/compat": "^2.1.1",
+    "@playwright/test": "^1.64.0",
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^26.6.4",
+    "@typescript-eslint/eslint-plugin": "^8.71.1",
+    "@typescript-eslint/parser": "^8.71.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-lit": "^2.3.1",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "eslint-plugin-wc": "^3.1.0",
+    "home-assistant-js-websocket": "^9.7.1",
+    "jsdom": "^30.1.2",
+    "terser": "^5.51.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vite-plugin-compression2": "^2.5.3",
+    "vitest": "^5.0.3",
+    "yaml": "^2.9.1"
   }
 }

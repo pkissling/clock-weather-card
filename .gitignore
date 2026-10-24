@@ -1,5 +1,9 @@
-/node_modules/
-/.rpt2_cache/
+# yarn
 package-lock.json
 /dist
 .yarn/install-state.gz
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/

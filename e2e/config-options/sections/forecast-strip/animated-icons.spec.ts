@@ -1,0 +1,80 @@
+import type { WeatherForecast } from '../../../../src/types'
+import { expect, test } from '../../../utils/fixtures'
+
+const FORECAST_HOURLY: WeatherForecast[] = [
+  { datetime: '2025-09-14T15:00:00+00:00', condition: 'rainy', temperature: 12, precipitation_probability: 50 },
+]
+
+const STRIP_ICON = 'clock-weather-card-forecast-strip-item clock-weather-card-icon img'
+
+test.describe('sections.forecast_strip.animated_icons', () => {
+  test('loads animated assets when sections.forecast_strip.animated_icons: true', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: false
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+    const staticSrc = await clockWeatherCard.locator(STRIP_ICON)
+      .first()
+      .getAttribute('src')
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: true
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+    const animatedSrc = await clockWeatherCard.locator(STRIP_ICON)
+      .first()
+      .getAttribute('src')
+
+    expect(animatedSrc)
+      .toBeTruthy()
+    expect(animatedSrc).not.toBe(staticSrc)
+  })
+
+  test('updates animated_icons at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: false
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+    const staticSrc = await clockWeatherCard.locator(STRIP_ICON)
+      .first()
+      .getAttribute('src')
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: true
+      `,
+      weather: { forecast_hourly: FORECAST_HOURLY },
+    })
+
+    await expect(clockWeatherCard.locator(STRIP_ICON)
+      .first())
+      .not.toHaveAttribute('src', staticSrc!)
+  })
+
+  test('rejects a non-boolean value', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_strip:
+            animated_icons: fals
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_strip.animated_icons" has invalid value "fals", expected true or false')
+  })
+})

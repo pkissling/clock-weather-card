@@ -1,0 +1,106 @@
+import type { DailyWeatherForecast } from '../../../../src/types'
+import { expect, test } from '../../../utils/fixtures'
+
+function makeDaily(count: number): DailyWeatherForecast[] {
+  const base = Date.UTC(2025, 8, 14, 0, 0, 0)
+  return Array.from({ length: count }, (_, i) => ({
+    datetime: new Date(base + i * 24 * 60 * 60 * 1000)
+      .toISOString(),
+    condition: 'sunny',
+    templow: 10 + i,
+    temperature: 20 + i,
+    precipitation_probability: 0,
+  }))
+}
+
+test.describe('sections.forecast_list.count', () => {
+  test('renders 5 rows by default', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: { forecast_daily: makeDaily(10) },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
+      .toHaveCount(5)
+  })
+
+  test('truncates to the configured value', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 3
+      `,
+      weather: { forecast_daily: makeDaily(10) },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
+      .toHaveCount(3)
+  })
+
+  test('renders all items when count exceeds the available forecast count', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 14
+      `,
+      weather: { forecast_daily: makeDaily(4) },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
+      .toHaveCount(4)
+  })
+
+  test('rejects zero', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 0
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_list.count" has invalid value "0", expected a positive integer')
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
+      .toHaveCount(0)
+  })
+
+  test('rejects non-integer values', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 3.5
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.forecast_list.count" has invalid value "3.5", expected a positive integer')
+  })
+
+  test('updates the rendered count at runtime when count changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 2
+      `,
+      weather: { forecast_daily: makeDaily(10) },
+    })
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
+      .toHaveCount(2)
+
+    await setupCard({
+      cardConfig: `
+        sections:
+          forecast_list:
+            count: 6
+      `,
+      weather: { forecast_daily: makeDaily(10) },
+    })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item'))
+      .toHaveCount(6)
+  })
+})

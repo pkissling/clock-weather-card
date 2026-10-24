@@ -1,0 +1,34 @@
+{
+  "weather": {
+    "clear-night": "Jasná noc",
+    "cloudy": "Zamračené",
+    "fog": "Hmla",
+    "hail": "Krupobitie",
+    "lightning": "Búrky",
+    "lightning-rainy": "Búrky s dažďom",
+    "partlycloudy": "Polooblačno",
+    "pouring": "Silný dážď",
+    "rainy": "Daždivo",
+    "snowy": "Sneženie",
+    "snowy-rainy": "Dážď so snehom",
+    "sunny": "Slnečno",
+    "windy": "Veterno",
+    "windy-variant": "Prudký vietor",
+    "exceptional": "Výnimočné počasie"
+  },
+  "day": {
+    "1": "Pon",
+    "2": "Uto",
+    "3": "Str",
+    "4": "Štv",
+    "5": "Pia",
+    "6": "Sob",
+    "7": "Ned"
+  },
+  "misc": {
+    "now": "Teraz",
+    "today": "Dnes",
+    "sunrise": "Východ slnka",
+    "sunset": "Západ slnka"
+  }
+}
