@@ -20,6 +20,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --max-warnings 0 --fix",
+    "lint:ci": "eslint . --max-warnings 0",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": ".github/playwright-snapshots-helper/run-in-docker.sh",
