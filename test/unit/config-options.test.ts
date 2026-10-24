@@ -12,8 +12,7 @@ const toSpecPath = (path: string[]): string => path.join('/')
 
 describe('every config leaf has an e2e config-options spec with a (no reload) test', () => {
   for (const path of leaves) {
-    const name = toSpecPath(path)
-    const spec = `config-options/${path.length === 1 ? `${name}/${name}` : name}.spec.ts`
+    const spec = `config-options/${toSpecPath(path)}.spec.ts`
     it(`${path.join('.')} → ${spec}`, () => {
       const file = resolve(E2E_DIR, spec)
       expect(existsSync(file), `Missing e2e/${spec}`)

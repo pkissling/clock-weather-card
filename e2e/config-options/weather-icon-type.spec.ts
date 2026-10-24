@@ -1,4 +1,4 @@
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../utils/fixtures'
 
 const ICON_TYPES = ['fill', 'flat', 'line', 'monochrome'] as const
 

@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../utils/fixtures'
 
 const suggest = (page: Page, entityId: string): Promise<unknown> => page.evaluate(id => window.customCards
   .find(c => c.type === 'clock-weather-card')!

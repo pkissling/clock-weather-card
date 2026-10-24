@@ -1,4 +1,4 @@
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../utils/fixtures'
 
 test.describe('entity', () => {
   test('reads the configured weather entity to render its state', async ({ setupCard, clockWeatherCard }) => {
