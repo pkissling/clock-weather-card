@@ -37,6 +37,28 @@ test.describe('GUI editor', () => {
       .toEqual({ entity: 'weather.mock_weather' })
   })
 
+  test('shows a hidden section from the keyboard', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { forecast_strip: { hide: true } }' })
+    const editor = await openEditor(page)
+
+    await editor.locator('[data-section=forecast_strip] ha-switch')
+      .press('Space')
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather' })
+  })
+
+  test('expands a section from the keyboard', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    const toggle = editor.getByRole('button', { name: 'Forecast list' })
+    await toggle.press('Enter')
+
+    await expect(toggle)
+      .toHaveAttribute('aria-expanded', 'true')
+  })
+
   test('changes section options', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

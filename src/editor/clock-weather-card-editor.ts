@@ -83,18 +83,19 @@ export class ClockWeatherCardEditor extends LitElement {
     const defaults = DEFAULTS.sections[key]
     return html`
       <div class="section ${hidden ? 'hidden' : ''} ${open ? 'open' : ''}" data-section=${key}>
-        <div
-          class="section-head"
-          role="button"
-          tabindex="0"
-          aria-expanded=${open}
-          @click=${() => this._toggleSection(key, hidden)}
-          @keydown=${(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this._toggleSection(key, hidden) } }}
-        >
-          <div class="section-icon"><ha-icon icon=${SECTION_ICONS[key]}></ha-icon></div>
-          <div class="section-titles">
-            <div class="section-name">${this.t(`sections.${key}`)}</div>
-            <div class="section-summary">${hidden ? this.t('hidden') : this._summary(key, section)}</div>
+        <div class="section-head" @click=${() => this._toggleSection(key, hidden)}>
+          <div
+            class="section-toggle"
+            role="button"
+            tabindex="0"
+            aria-expanded=${open}
+            @keydown=${(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this._toggleSection(key, hidden) } }}
+          >
+            <div class="section-icon"><ha-icon icon=${SECTION_ICONS[key]}></ha-icon></div>
+            <div class="section-titles">
+              <div class="section-name">${this.t(`sections.${key}`)}</div>
+              <div class="section-summary">${hidden ? this.t('hidden') : this._summary(key, section)}</div>
+            </div>
           </div>
           <ha-switch
             .checked=${!hidden}
@@ -247,10 +248,17 @@ export class ClockWeatherCardEditor extends LitElement {
       gap: 12px;
       padding: 12px 12px 12px 16px;
       cursor: pointer;
-      outline: none;
       transition: background-color 120ms ease;
     }
-    .section-head:hover, .section-head:focus-visible {
+    .section-toggle {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      outline: none;
+    }
+    .section-head:hover, .section-head:has(.section-toggle:focus-visible) {
       background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.06);
     }
     .section.hidden .section-head {
