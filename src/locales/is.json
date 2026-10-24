@@ -16,15 +16,6 @@
     "windy-variant": "Stórmur",
     "exceptional": "Óveður"
   },
-  "day": {
-    "1": "Mán",
-    "2": "Þri",
-    "3": "Mið",
-    "4": "Fim",
-    "5": "Fös",
-    "6": "Lau",
-    "7": "Sun"
-  },
   "misc": {
     "now": "Núna",
     "today": "Í dag",

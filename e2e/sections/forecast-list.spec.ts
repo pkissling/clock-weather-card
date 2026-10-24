@@ -88,6 +88,17 @@ test.describe('forecast_list section', () => {
       .toHaveText('Tue')
   })
 
+  test('localizes weekday names to the HA language', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: { forecast_daily: DAILY },
+      language: 'de',
+    })
+
+    // Chromium's and Firefox's ICU data disagree on the abbreviation's trailing period.
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item .label'))
+      .toHaveText(['Heute', /^Mo\.?$/, /^Di\.?$/, /^Mi\.?$/, /^Do\.?$/])
+  })
+
   test('renders the current-temperature dot only on today\'s row', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { temperature: 9, forecast_daily: DAILY },

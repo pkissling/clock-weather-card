@@ -16,15 +16,6 @@
     "windy-variant": "Jak vetar",
     "exceptional": "Izuzetno"
   },
-  "day": {
-    "1": "Pon",
-    "2": "Uto",
-    "3": "Sre",
-    "4": "Čet",
-    "5": "Pet",
-    "6": "Sub",
-    "7": "Ned"
-  },
   "misc": {
     "now": "Sada",
     "today": "Danas",
