@@ -148,6 +148,7 @@ export class ClockWeatherCard extends LitElement {
 
   public willUpdate(changed: PropertyValues): void {
     if (!changed.has('config') && !changed.has('hass')) return
+    if (!changed.has('config') && !this._relevantHassChanged()) return
     const previous = this.resolved
     this._resolveConfig()
     if (this._relevantHassChanged()) this.providedHass = this.hass
@@ -179,7 +180,7 @@ export class ClockWeatherCard extends LitElement {
     const prev = this.providedHass
     const next = this.hass
     if (!prev || !this.resolved) return true
-    if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language) return true
+    if (prev.connection !== next.connection || prev.config !== next.config || prev.locale !== next.locale || prev.language !== next.language) return true
 
     const { entity, sunEntity, temperatureSensor, forecastStrip, forecastList, header } = this.resolved
     const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))

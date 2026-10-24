@@ -2,6 +2,8 @@
 import { DateTime } from 'luxon'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type * as ConfigModule from '@/utils/config'
+
 // Mock all Lit and HA dependencies so the component can be imported in jsdom
 vi.mock('lit', () => {
   class FakeLitElement {
@@ -37,6 +39,10 @@ vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, warn: ():
 vi.mock('@/service/translations-service', () => ({ default: { t: (l: string, k: string): string => `${l}:${k}` } }))
 vi.mock('@/components/clock-weather-card-header', () => ({}))
 vi.mock('@/utils/development', () => ({ isDev: false }))
+vi.mock('@/utils/config', async (importOriginal) => {
+  const actual = await importOriginal<typeof ConfigModule>()
+  return { ...actual, resolveConfig: vi.fn(actual.resolveConfig) }
+})
 
 type CardInstance = Record<string, unknown>
 
@@ -215,6 +221,30 @@ describe('ClockWeatherCard timer behavior', () => {
       pushStates({ 'weather.home': { state: 'rainy' } })
       expect(card.providedHass)
         .toBe(card.hass)
+    })
+  })
+
+  describe('config resolution on hass push', () => {
+    it('skips resolving the config when no hass field it reads changed', async () => {
+      const { resolveConfig } = await import('@/utils/config')
+      const card = await createCard()
+      vi.mocked(resolveConfig)
+        .mockClear()
+
+      card.hass = { ...card.hass as object, states: { ...(card.hass as { states: object }).states, 'light.kitchen': { state: 'on' } } }
+      card.willUpdate(new Map([['hass', undefined]]))
+
+      expect(resolveConfig).not.toHaveBeenCalled()
+    })
+
+    it('re-resolves the config when the user locale changed', async () => {
+      const card = await createCard()
+
+      card.hass = { ...card.hass as object, locale: { language: 'en-GB', time_format: '12' } }
+      card.willUpdate(new Map([['hass', undefined]]))
+
+      expect((card.resolved as { locale: string }).locale)
+        .toContain('h12')
     })
   })
 
