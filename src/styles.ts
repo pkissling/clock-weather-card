@@ -33,6 +33,15 @@ export default css`
     filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.35));
   }
 
+  /* currentColor resolves to black inside an <img>, so the SVG masks the text color instead; object-position hides the img pixels. */
+  clock-weather-card-icon img.monochrome {
+    background: currentColor;
+    -webkit-mask: var(--cwc-icon-mask) center / contain no-repeat;
+    mask: var(--cwc-icon-mask) center / contain no-repeat;
+    object-position: -100vw 0;
+    filter: none;
+  }
+
   clock-weather-card-header > clock-weather-card-icon img {
     display: block;
     width: 100%;

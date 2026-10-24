@@ -90,6 +90,25 @@ test.describe('weather_icon_type', () => {
     }
   })
 
+  test('monochrome icons are painted in the text color through the SVG as a mask', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: 'weather_icon_type: monochrome' })
+    const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+    const src = await icon.getAttribute('src')
+
+    const style = await icon.evaluate(el => {
+      const { backgroundColor, color, maskImage } = getComputedStyle(el)
+      return { backgroundColor, color, maskImage }
+    })
+
+    expect(style.backgroundColor)
+      .toBe(style.color)
+    expect(style.maskImage)
+      .toContain(src!.split('/')
+        .pop())
+    await expect(icon)
+      .toHaveAccessibleName(/.+/)
+  })
+
   test('rejects values that are not one of the supported icon types', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: 'weather_icon_type: gradient',

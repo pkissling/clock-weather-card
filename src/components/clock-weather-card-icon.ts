@@ -25,7 +25,13 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   public render(): TemplateResult {
     const key = `weather.${this.weatherState === 'sunny' && this.isNight ? 'clear-night' : this.weatherState}`
     const alt = translationsService.has(key) ? translationsService.t(this.config.locale, key) : ''
-    return html`<img src="${this._src ?? nothing}" alt=${alt} @load=${this._onImageDone} @error=${this._onImageDone} />`
+    const monochrome = this.weatherIconType === 'monochrome' && this._src
+    return html`<img
+      src="${this._src ?? nothing}"
+      alt=${alt}
+      class=${monochrome ? 'monochrome' : nothing}
+      style=${monochrome ? `--cwc-icon-mask: url("${this._src}")` : nothing}
+      @load=${this._onImageDone} @error=${this._onImageDone} />`
   }
 
   public willUpdate(changed: PropertyValues): void {
