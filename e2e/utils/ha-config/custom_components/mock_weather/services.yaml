@@ -57,6 +57,12 @@ set_weather:
       example: "[{\"datetime\": \"2024-01-02T12:00:00+00:00\", \"condition\": \"sunny\", \"temperature\": 21}]"
       selector:
         object:
+    forecast_twice_daily:
+      name: Twice Daily Forecast
+      description: List of day/night forecast entries
+      example: "[{\"datetime\": \"2024-01-02T06:00:00+00:00\", \"condition\": \"sunny\", \"temperature\": 21, \"is_daytime\": true}]"
+      selector:
+        object:
     hold_forecast:
       name: Hold forecast
       description: Withhold forecast pushes to subscribers until set back to false.

@@ -334,7 +334,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 
 #### `forecast_strip`
 
-Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Attribute columns without a value, or with a precipitation amount or probability of 0, stay blank; the row keeps its height even when every column is blank. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
+Renders a horizontally scrolling strip of upcoming hours (`forecast_type: hourly`, default) or days (`forecast_type: daily`) below the header. Each column shows a label, weather icon, temperature and one additional forecast attribute (precipitation probability by default, see `attribute`). Attribute columns without a value, or with a precipitation amount or probability of 0, stay blank; the row keeps its height even when every column is blank. Enabled by default. Requires a weather entity that advertises the `FORECAST_HOURLY` or `FORECAST_DAILY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead. With `forecast_type: daily`, an entity that only provides day/night forecasts (`FORECAST_TWICE_DAILY`, e.g. NWS) works too: each day's entries are merged into one, with the day's condition and the night's temperature as the low.
 
 In hourly mode, the first column is labeled "Now" and is sourced from the most recent forecast entry whose timestamp is at or before the current time. Subsequent columns are the upcoming forecast hours.
 
@@ -369,7 +369,7 @@ In daily mode, each row spans the day's low and high. Today's row is labeled "To
 
 In hourly mode, the first row is labeled "Now" and the others show the time (see `time_pattern`). Each row's bar spans from the previous hour's temperature to this hour's; the "Now" row starts from the current temperature and shows the current-temperature dot.
 
-Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOURLY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead.
+Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOURLY` supported feature, matching `forecast_type` - if the selected entity does not, the section renders an inline warning instead. With `forecast_type: daily`, an entity that only provides day/night forecasts (`FORECAST_TWICE_DAILY`, e.g. NWS) works too: each day's entries are merged into one, with the day's condition and the night's temperature as the low.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|

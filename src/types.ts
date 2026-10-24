@@ -224,6 +224,7 @@ export interface WeatherForecast {
   condition?: string | null
   templow?: number | null
   precipitation_probability?: number | null
+  is_daytime?: boolean | null
 }
 
 export interface DailyWeatherForecast extends WeatherForecast {

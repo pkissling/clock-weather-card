@@ -40,6 +40,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             entity._forecast_daily = call.data["forecast_daily"]
         if "forecast_hourly" in call.data:
             entity._forecast_hourly = call.data["forecast_hourly"]
+        if "forecast_twice_daily" in call.data:
+            entity._forecast_twice_daily = call.data["forecast_twice_daily"]
         if "supported_features" in call.data:
             entity._attr_supported_features = WeatherEntityFeature(
                 int(call.data["supported_features"])

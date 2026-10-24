@@ -51,6 +51,7 @@ class MockWeatherEntity(WeatherEntity):
         self._mock_temperature_unit: str = UnitOfTemperature.CELSIUS
         self._forecast_daily: list[Forecast] = []
         self._forecast_hourly: list[Forecast] = []
+        self._forecast_twice_daily: list[Forecast] = []
         self._forecast_released = asyncio.Event()
         self._forecast_released.set()
 
@@ -98,3 +99,8 @@ class MockWeatherEntity(WeatherEntity):
         """Return the hourly forecast."""
         await self._forecast_released.wait()
         return self._forecast_hourly
+
+    async def async_forecast_twice_daily(self) -> list[Forecast]:
+        """Return the twice daily forecast."""
+        await self._forecast_released.wait()
+        return self._forecast_twice_daily

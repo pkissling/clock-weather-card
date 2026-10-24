@@ -29,6 +29,7 @@ type MockWeather = {
   extra_attributes?: Record<string, unknown>
   forecast_daily?: DailyWeatherForecast[]
   forecast_hourly?: WeatherForecast[]
+  forecast_twice_daily?: WeatherForecast[]
   supportedFeatures?: WeatherEntityFeature[]
 }
 
@@ -157,6 +158,7 @@ const mockWeatherData = (weather: MockWeather | undefined, date: Date): Record<s
   extra_attributes: weather?.extra_attributes ?? {},
   forecast_daily: weather?.forecast_daily ?? defaultForecastDaily(date),
   forecast_hourly: weather?.forecast_hourly ?? defaultForecastHourly(date),
+  forecast_twice_daily: weather?.forecast_twice_daily ?? [],
   supported_features: (weather?.supportedFeatures ?? DEFAULT_SUPPORTED_FEATURES)
     .reduce((acc, f) => acc | f, 0),
 })

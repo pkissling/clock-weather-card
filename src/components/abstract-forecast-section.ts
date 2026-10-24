@@ -15,7 +15,7 @@ import forecastSubscriptionService from '@/service/forecast-subscription-service
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
-import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
+import type { ForecastType, ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastAttributeNotFound, forecastNotSupported } from '@/utils/errors'
 import { minuteChanged } from '@/utils/luxon'
 import { convertTemperature } from '@/utils/temperature'
@@ -50,7 +50,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   public render(): TemplateResult {
     const entityId = this.resolveEntityId()
     const forecastType = this.resolveForecastType()
-    if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
+    if (!hassService.supportsForecast(this.hass, entityId, this._subscriptionType())) {
       return this._renderWarning(forecastNotSupported(entityId, forecastType))
     }
     if (!this._loaded) return this.renderSkeleton()
@@ -119,7 +119,8 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
 
     const todayIso = now.toISODate()!
     const todayLabel = translationsService.t(locale, 'misc.today')
-    const upcoming = timed.filter(({ at }) => at.toISODate()! >= todayIso)
+    const days = this._subscriptionType() === 'twice_daily' ? mergeDayAndNight(timed) : timed
+    const upcoming = days.filter(({ at }) => at.toISODate()! >= todayIso)
     warnIfNoRows(upcoming.length)
     return upcoming
       .slice(0, count)
@@ -153,7 +154,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     // An update already queued when the card swaps to its error view still runs after disconnect.
     if (!this.isConnected || !this.hass || !this.config) return
     const entityId = this.resolveEntityId()
-    const forecastType = this.resolveForecastType()
+    const forecastType = this._subscriptionType()
 
     if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
       logger.debug(`"${entityId}" does not support ${forecastType} forecasts, skipping subscription`)
@@ -183,12 +184,41 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.subscribedKey = key
   }
 
+  // Like HA's own forecast card, fall back to day/night entries for entities without daily forecasts (e.g. NWS).
+  private _subscriptionType(): ForecastType {
+    const entityId = this.resolveEntityId()
+    const forecastType = this.resolveForecastType()
+    return forecastType === 'daily' && !hassService.supportsForecast(this.hass, entityId, 'daily') && hassService.supportsForecast(this.hass, entityId, 'twice_daily')
+      ? 'twice_daily'
+      : forecastType
+  }
+
   private _unsubscribe(): void {
     this.unsubscribe?.()
     this.unsubscribe = null
     this.subscribedKey = null
     this.failedEntityState = null
   }
+}
+
+type TimedForecast = { forecast: WeatherForecast, at: DateTime }
+
+const mergeDayAndNight = (entries: TimedForecast[]): TimedForecast[] => {
+  const days = new Map<string, TimedForecast[]>()
+  entries.forEach(entry => days.set(entry.at.toISODate()!, [...days.get(entry.at.toISODate()!) ?? [], entry]))
+  return [...days.values()].map((halves) => {
+    const temperatures = halves.map(({ forecast }) => forecast.temperature)
+      .filter((t): t is number => typeof t === 'number')
+    const { forecast } = halves.find(({ forecast }) => forecast.is_daytime !== false) ?? halves[0]
+    return {
+      at: halves[0].at,
+      forecast: {
+        ...forecast,
+        temperature: temperatures.length > 0 ? Math.max(...temperatures) : null,
+        templow: temperatures.length > 1 ? Math.min(...temperatures) : null,
+      },
+    }
+  })
 }
 
 export default AbstractForecastSection
