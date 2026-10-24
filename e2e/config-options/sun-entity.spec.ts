@@ -1,6 +1,6 @@
-import { expect, test } from '../../utils/fixtures'
-import haApi from '../../utils/ha-api'
-import { hourlyForecast } from '../../utils/test-utils'
+import { expect, test } from '../utils/fixtures'
+import haApi from '../utils/ha-api'
+import { hourlyForecast } from '../utils/test-utils'
 
 test.describe('sun_entity', () => {
   test('icon switches between day and night based on the configured sun entity state', async ({ setupCard, clockWeatherCard }) => {

@@ -89,7 +89,7 @@ sections:
 
 Every line of code has to be maintained for as long as the card exists, so a feature that works is not automatically a feature that gets merged. Before you start, open a discussion in [Feature requests](https://github.com/pkissling/clock-weather-card/discussions/categories/feature-requests) and show that others would use the feature too, e.g. through upvotes and comments from other users. Pull requests for features without that evidence may be declined, however well they are implemented.
 
-Every new feature or bug fix needs an [E2E test](#e2e-tests) that proves it works as expected. Pull requests without one won't be merged. Use the `setupCard` fixture and pass only what the test depends on - it defaults to a fully populated card. For example, from [`e2e/config-options/title/title.spec.ts`](e2e/config-options/title/title.spec.ts):
+Every new feature or bug fix needs an [E2E test](#e2e-tests) that proves it works as expected. Pull requests without one won't be merged. Use the `setupCard` fixture and pass only what the test depends on - it defaults to a fully populated card. For example, from [`e2e/config-options/title.spec.ts`](e2e/config-options/title.spec.ts):
 
 ```ts
 import { expect, test } from '../../utils/fixtures'
@@ -101,7 +101,7 @@ test('renders the configured title in the card header', async ({ clockWeatherCar
 })
 ```
 
-Place the spec under `e2e/config-options/<option>/` for a config option or `e2e/sections/` for section behavior. If you add a config option, also document it in [Configuration](README.md#configuration).
+Place the spec at `e2e/config-options/<option>.spec.ts` for a config option (`<parent>/<option>.spec.ts` for nested ones) or `e2e/sections/` for section behavior. If you add a config option, also document it in [Configuration](README.md#configuration).
 
 ## Translations
 
