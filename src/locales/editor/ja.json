@@ -33,6 +33,7 @@
     "count": "件数",
     "round_temperatures": "温度を丸める",
     "hide_sunrise_sunset": "日の出と日の入りを非表示",
+    "hide_attribute": "属性を非表示",
     "attribute": "属性",
     "attribute_icon": "属性アイコン",
     "attribute_unit": "属性の単位",

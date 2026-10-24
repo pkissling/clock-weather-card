@@ -45,7 +45,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sunEntity, timeZone, locale, temperatureUnit, temperatureSensor } = this.config
-    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
+    const { count, animatedIcons, weatherIconType, roundTemperatures, hideSunriseSunset, timePattern, attribute, hideAttribute, attributeIcon, attributeColor, attributeUnit: unitOverride } = this.config.forecastStrip
     const now = this.currentDate
 
     const visible = this.visibleRows(count, timePattern)
@@ -55,11 +55,12 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     const attributeUnit = unitOverride ?? this.forecastAttributeUnit(attribute)
     const roundAttribute = (v: number | null): number | null => v !== null && attribute === 'precipitation_probability' ? Math.round(v / 10) * 10 : v
+    const hideZero = attribute === 'precipitation' || attribute === 'precipitation_probability'
     const attributeValues = visible.map(({ forecast }) => roundAttribute(forecastAttributeValue(forecast, attribute)))
-    const showAttribute = attributeValues.some(v => v !== null)
-    const attributeItem = (value: number | null): ForecastStripItem['attribute'] => showAttribute
-      ? { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(formatNumber(value, this.config), attributeUnit) }
-      : null
+      .map(v => hideZero && v === 0 ? null : v)
+    const attributeItem = (value: number | null): ForecastStripItem['attribute'] => hideAttribute
+      ? null
+      : { icon: attributeIcon, color: attributeColor, value: value === null ? null : formatWithUnit(formatNumber(value, this.config), attributeUnit) }
 
     const sensorTemperature = forecastType === 'hourly' ? hassService.getSensorTemperature(this.hass, temperatureSensor, temperatureUnit) : null
 

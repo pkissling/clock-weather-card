@@ -144,10 +144,11 @@ test.describe('forecast_strip section', () => {
       .toBe('ellipsis')
   })
 
-  test('rounds precipitation probabilities to the nearest 10', async ({ setupCard, clockWeatherCard }) => {
+  test('rounds precipitation probabilities to the nearest 10, leaving 0% blank', async ({ setupCard, clockWeatherCard }) => {
     const forecasts: WeatherForecast[] = [
       { datetime: '2025-09-14T13:00:00+00:00', condition: 'rainy', temperature: 20, precipitation_probability: 34 },
       { datetime: '2025-09-14T14:00:00+00:00', condition: 'cloudy', temperature: 19, precipitation_probability: 45 },
+      { datetime: '2025-09-14T15:00:00+00:00', condition: 'cloudy', temperature: 18, precipitation_probability: 3 },
     ]
     await setupCard({
       date: new Date('2025-09-14T13:30:00+00:00'),
@@ -156,7 +157,7 @@ test.describe('forecast_strip section', () => {
     })
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveText(['30%', '50%'])
+      .toHaveText(['30%', '50%', ''])
   })
 
   test('renders an inline warning when the resolved entity does not advertise FORECAST_HOURLY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {

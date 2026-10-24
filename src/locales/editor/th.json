@@ -33,6 +33,7 @@
     "count": "จำนวนรายการ",
     "round_temperatures": "ปัดเศษอุณหภูมิ",
     "hide_sunrise_sunset": "ซ่อนเวลาพระอาทิตย์ขึ้นและตก",
+    "hide_attribute": "ซ่อนแอตทริบิวต์",
     "attribute": "แอตทริบิวต์",
     "attribute_icon": "ไอคอนแอตทริบิวต์",
     "attribute_unit": "หน่วยแอตทริบิวต์",
