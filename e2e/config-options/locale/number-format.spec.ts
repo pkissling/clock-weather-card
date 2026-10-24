@@ -1,6 +1,7 @@
 import { expect, test } from '../../utils/fixtures'
 
 const CARD_CONFIG = `
+  round_temperatures: false
   sections:
     header:
       rows:
@@ -9,8 +10,6 @@ const CARD_CONFIG = `
               attribute: temperature
             - type: weather
               attribute: pressure
-    forecast_list:
-      round_temperatures: false
 `
 
 test.describe('number format', () => {
@@ -51,6 +50,7 @@ test.describe('number format', () => {
       language: 'en-GB',
       cardConfig: `
         locale: de
+        round_temperatures: false
         sections:
           header:
             rows:
@@ -78,6 +78,7 @@ test.describe('number format', () => {
       cardConfig: `
         additional_sensors:
           temperature: sensor.e2e_number_temperature
+        round_temperatures: false
         sections:
           header:
             rows:

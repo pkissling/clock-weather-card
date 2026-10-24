@@ -37,6 +37,7 @@ describe('resolveConfig', () => {
           animatedIcons: true,
           weatherIconType: 'line',
           weatherIconSize: null,
+          roundTemperatures: true,
           rows: [
             {
               segments: [
