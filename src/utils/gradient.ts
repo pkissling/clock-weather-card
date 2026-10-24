@@ -49,25 +49,22 @@ export function toHex(rgb: [number, number, number]): string {
 
 export function interpolateColor(stops: ColorStop[], temp: number): string {
   if (stops.length === 0) return '#888888'
-  if (temp <= stops[0].temp) return stops[0].color
+  // Negated so NaN also falls back to the first stop.
+  if (!(temp > stops[0].temp)) return stops[0].color
   if (temp >= stops[stops.length - 1].temp) return stops[stops.length - 1].color
 
-  for (let i = 0; i < stops.length - 1; i++) {
-    const a = stops[i]
-    const b = stops[i + 1]
-    if (temp >= a.temp && temp <= b.temp) {
-      // validateConfig only admits colors toRgb parses.
-      const rgbA = toRgb(a.color)!
-      const rgbB = toRgb(b.color)!
-      const t = (temp - a.temp) / (b.temp - a.temp)
-      return toHex([
-        rgbA[0] + (rgbB[0] - rgbA[0]) * t,
-        rgbA[1] + (rgbB[1] - rgbA[1]) * t,
-        rgbA[2] + (rgbB[2] - rgbA[2]) * t,
-      ])
-    }
-  }
-  return stops[0].color
+  const i = stops.findIndex(s => temp <= s.temp)
+  const a = stops[i - 1]
+  const b = stops[i]
+  // validateConfig only admits colors toRgb parses.
+  const rgbA = toRgb(a.color)!
+  const rgbB = toRgb(b.color)!
+  const t = (temp - a.temp) / (b.temp - a.temp)
+  return toHex([
+    rgbA[0] + (rgbB[0] - rgbA[0]) * t,
+    rgbA[1] + (rgbB[1] - rgbA[1]) * t,
+    rgbA[2] + (rgbB[2] - rgbA[2]) * t,
+  ])
 }
 
 export function gradientStopsForRange(stops: ColorStop[], lowC: number, highC: number): GradientStop[] {
