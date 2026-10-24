@@ -16,15 +16,6 @@
     "windy-variant": "Jako vjetrovito",
     "exceptional": "Izuzetno"
   },
-  "day": {
-    "0": "Ned",
-    "1": "Pon",
-    "2": "Ut",
-    "3": "Sri",
-    "4": "Čet",
-    "5": "Pet",
-    "6": "Sub"
-  },
   "misc": {
     "now": "Sada",
     "today": "Danas",

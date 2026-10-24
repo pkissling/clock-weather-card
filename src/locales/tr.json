@@ -16,15 +16,6 @@
     "windy-variant": "Güçlü Rüzgar",
     "exceptional": "Mükemmel"
   },
-  "day": {
-    "1": "Pzt",
-    "2": "Sal",
-    "3": "Çrş",
-    "4": "Prş",
-    "5": "Cum",
-    "6": "Cts",
-    "7": "Pzr"
-  },
   "misc": {
     "now": "Şimdi",
     "today": "Bugün",

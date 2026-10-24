@@ -16,15 +16,6 @@
     "windy-variant": "Vent fort",
     "exceptional": "Excepcional"
   },
-  "day": {
-    "1": "Dl.",
-    "2": "Dt.",
-    "3": "Dc.",
-    "4": "Dj.",
-    "5": "Dv.",
-    "6": "Ds.",
-    "7": "Dg."
-  },
   "misc": {
     "now": "Ara",
     "today": "Avui",

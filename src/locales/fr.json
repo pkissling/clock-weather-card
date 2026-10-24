@@ -16,15 +16,6 @@
     "windy-variant": "Vent fort",
     "exceptional": "Exceptionnelle"
   },
-  "day": {
-    "1": "Lun",
-    "2": "Mar",
-    "3": "Mer",
-    "4": "Jeu",
-    "5": "Ven",
-    "6": "Sam",
-    "7": "Dim"
-  },
   "misc": {
     "now": "Maint.",
     "today": "Auj.",

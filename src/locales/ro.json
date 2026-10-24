@@ -16,15 +16,6 @@
     "windy-variant": "Vânt puternic",
     "exceptional": "Furtună"
   },
-  "day": {
-    "1": "Lun",
-    "2": "Mar",
-    "3": "Mie",
-    "4": "Joi",
-    "5": "Vin",
-    "6": "Sâm",
-    "7": "Dum"
-  },
   "misc": {
     "now": "Acum",
     "today": "Azi",
