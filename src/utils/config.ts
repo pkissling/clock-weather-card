@@ -93,15 +93,19 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
 
   assertEntityExists(config.entity)
   assertEntityExists(config.sun_entity)
-  assertNonEmptyString('temperature_sensor', config.temperature_sensor)
-  assertEntityExists(config.temperature_sensor)
-  const sensor = config.temperature_sensor
+  const sensors = config.additional_sensors
+  if (sensors !== undefined && (typeof sensors !== 'object' || sensors === null || Array.isArray(sensors))) {
+    throw invalidConfigValue('additional_sensors', String(sensors), 'a map of sensor types to entity IDs')
+  }
+  assertNonEmptyString('additional_sensors.temperature', sensors?.temperature)
+  assertEntityExists(sensors?.temperature)
+  const sensor = sensors?.temperature
   const sensorState = sensor ? hassService.getEntityState(hass, sensor) : null
   // Sensors are briefly unavailable or unknown, e.g. while Home Assistant starts, which must not break the card.
   if (sensor && sensorState !== 'unavailable' && sensorState !== 'unknown') {
     const unit = hassService.getEntityUnitOfMeasurement(hass, sensor)
-    if (!isTemperatureUnit(unit)) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with unit °C or °F, got "${unit}"`)
-    if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('temperature_sensor', sensor, `a sensor with a numeric state, got "${sensorState}"`)
+    if (!isTemperatureUnit(unit)) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with unit °C or °F, got "${unit}"`)
+    if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with a numeric state, got "${sensorState}"`)
   }
   assertEntityExists(strip?.weather_entity)
   assertEntityExists(list?.weather_entity)
@@ -216,7 +220,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     locale: hassService.withHourCycle(hass, config.locale || hassService.getLocale(hass)),
     numberFormat: hassService.getNumberFormat(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
-    temperatureSensor: config.temperature_sensor ?? null,
+    temperatureSensor: config.additional_sensors?.temperature ?? null,
     header: {
       hidden: header?.hide ?? D.header.hide,
       rows: header?.rows ?? DEFAULT_ROWS,

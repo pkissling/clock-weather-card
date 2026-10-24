@@ -99,8 +99,10 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   time_zone?: string
   locale?: string
   temperature_unit?: TemperatureUnitOption
-  temperature_sensor?: string
   tap_action?: ActionConfig
+  additional_sensors?: {
+    temperature?: string
+  }
   sections?: {
     header?: {
       hide?: boolean

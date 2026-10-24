@@ -23,7 +23,7 @@
     "time_zone": "Tidszon",
     "locale": "Språk",
     "temperature_unit": "Temperaturenhet",
-    "temperature_sensor": "Temperatursensor",
+    "temperature": "Temperatursensor",
     "tap_action": "Tryckåtgärd",
     "rows": "Rader",
     "animated_icons": "Animerade ikoner",
@@ -54,7 +54,7 @@
     "template": "Mall"
   },
   "helpers": {
-    "temperature_sensor": "Valfritt. Läser aktuell temperatur från denna sensor i stället för väderentiteten, t.ex. en väderstation eller utomhussensor",
+    "temperature": "Valfritt. Läser aktuell temperatur från denna sensor i stället för väderentiteten, t.ex. en väderstation eller utomhussensor",
     "sun_entity": "Avgör om dag- eller nattikoner används",
     "time_zone": "Standard är Home Assistants tidszon",
     "locale": "Standard är Home Assistants språk",

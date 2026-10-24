@@ -76,7 +76,8 @@ test.describe('number format', () => {
         'sensor.e2e_number_code': { state: '12345' },
       },
       cardConfig: `
-        temperature_sensor: sensor.e2e_number_temperature
+        additional_sensors:
+          temperature: sensor.e2e_number_temperature
         sections:
           header:
             rows:

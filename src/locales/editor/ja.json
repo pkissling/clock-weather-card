@@ -23,7 +23,7 @@
     "time_zone": "タイムゾーン",
     "locale": "言語",
     "temperature_unit": "温度単位",
-    "temperature_sensor": "温度センサー",
+    "temperature": "温度センサー",
     "tap_action": "タップアクション",
     "rows": "行",
     "animated_icons": "アニメーションアイコン",
@@ -54,7 +54,7 @@
     "template": "テンプレート"
   },
   "helpers": {
-    "temperature_sensor": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
+    "temperature": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
     "sun_entity": "昼と夜のアイコンを切り替えます",
     "time_zone": "デフォルトは Home Assistant のタイムゾーン",
     "locale": "デフォルトは Home Assistant の言語",

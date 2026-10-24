@@ -23,7 +23,7 @@
     "time_zone": "Časové pásmo",
     "locale": "Jazyk",
     "temperature_unit": "Jednotka teploty",
-    "temperature_sensor": "Teplotný senzor",
+    "temperature": "Teplotný senzor",
     "tap_action": "Akcia po ťuknutí",
     "rows": "Riadky",
     "animated_icons": "Animované ikony",
@@ -54,7 +54,7 @@
     "template": "Šablóna"
   },
   "helpers": {
-    "temperature_sensor": "Voliteľné. Číta aktuálnu teplotu z tohto senzora namiesto entity počasia, napr. z meteostanice alebo vonkajšieho senzora",
+    "temperature": "Voliteľné. Číta aktuálnu teplotu z tohto senzora namiesto entity počasia, napr. z meteostanice alebo vonkajšieho senzora",
     "sun_entity": "Rozhoduje medzi dennými a nočnými ikonami",
     "time_zone": "Predvolene časové pásmo Home Assistant",
     "locale": "Predvolene jazyk Home Assistant",

@@ -23,7 +23,7 @@
     "time_zone": "Zona horaria",
     "locale": "Idioma",
     "temperature_unit": "Unidad de temperatura",
-    "temperature_sensor": "Sensor de temperatura",
+    "temperature": "Sensor de temperatura",
     "tap_action": "Acción al tocar",
     "rows": "Filas",
     "animated_icons": "Iconos animados",
@@ -54,7 +54,7 @@
     "template": "Plantilla"
   },
   "helpers": {
-    "temperature_sensor": "Opcional. Lee la temperatura actual de este sensor en lugar de la entidad meteorológica, p. ej. una estación meteorológica o un sensor exterior",
+    "temperature": "Opcional. Lee la temperatura actual de este sensor en lugar de la entidad meteorológica, p. ej. una estación meteorológica o un sensor exterior",
     "sun_entity": "Decide entre iconos de día y de noche",
     "time_zone": "Por defecto, la zona horaria de Home Assistant",
     "locale": "Por defecto, el idioma de Home Assistant",
