@@ -1,5 +1,4 @@
 import '@/components/clock-weather-card-forecast-list-item'
-import '@/components/clock-weather-card-divider'
 
 import type { TemplateResult } from 'lit'
 import { html } from 'lit'

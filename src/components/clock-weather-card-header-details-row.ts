@@ -1,11 +1,5 @@
-import '@/components/segments/clock-weather-card-date-segment'
 import '@/components/segments/clock-weather-card-entity-segment'
-import '@/components/segments/clock-weather-card-icon-segment'
-import '@/components/segments/clock-weather-card-spacer-segment'
 import '@/components/segments/clock-weather-card-template-segment'
-import '@/components/segments/clock-weather-card-text-segment'
-import '@/components/segments/clock-weather-card-time-segment'
-import '@/components/segments/clock-weather-card-weather-icon-segment'
 import '@/components/segments/clock-weather-card-weather-segment'
 
 import type { TemplateResult } from 'lit'
@@ -14,8 +8,10 @@ import { property } from 'lit/decorators.js'
 import type { DateTime } from 'luxon'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
+import { renderIconSegment } from '@/components/segments/clock-weather-card-weather-icon-segment'
 import type { RowConfig, SegmentConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
+import { DEFAULT_DATE_PATTERN, DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
 @customElement('clock-weather-card-header-details-row')
 class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent {
@@ -29,15 +25,9 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
   private renderSegment (segment: SegmentConfig): TemplateResult {
     switch (segment.type) {
     case 'time':
-      return html`<clock-weather-card-time-segment
-          .currentDate=${this.currentDate}
-          .timePattern=${segment.time_pattern}
-        ></clock-weather-card-time-segment>`
+      return html`<clock-weather-card-time-segment><span>${this.currentDate.toFormat(segment.time_pattern || DEFAULT_TIME_PATTERN)}</span></clock-weather-card-time-segment>`
     case 'date':
-      return html`<clock-weather-card-date-segment
-          .currentDate=${this.currentDate}
-          .datePattern=${segment.date_pattern}
-        ></clock-weather-card-date-segment>`
+      return html`<clock-weather-card-date-segment><span>${this.currentDate.toFormat(segment.date_pattern || DEFAULT_DATE_PATTERN)}</span></clock-weather-card-date-segment>`
     case 'weather':
       return html`<clock-weather-card-weather-segment
           .attribute=${segment.attribute}
@@ -54,17 +44,13 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
           .unitAttribute=${segment.unit_attribute}
         ></clock-weather-card-entity-segment>`
     case 'icon':
-      return html`<clock-weather-card-icon-segment
-          .icon=${segment.icon}
-        ></clock-weather-card-icon-segment>`
+      return renderIconSegment(segment.icon)
     case 'weather_icon':
       return html`<clock-weather-card-weather-icon-segment
           .entityId=${segment.entity_id}
         ></clock-weather-card-weather-icon-segment>`
     case 'text':
-      return html`<clock-weather-card-text-segment
-          .text=${segment.text}
-        ></clock-weather-card-text-segment>`
+      return html`<clock-weather-card-text-segment><span>${segment.text}</span></clock-weather-card-text-segment>`
     case 'template':
       return html`<clock-weather-card-template-segment
           .template=${segment.template}

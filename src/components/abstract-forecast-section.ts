@@ -1,4 +1,3 @@
-import '@/components/clock-weather-card-divider'
 import '@/components/clock-weather-card-error'
 
 import { consume } from '@lit/context'

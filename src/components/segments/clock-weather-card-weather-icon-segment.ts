@@ -1,5 +1,3 @@
-import '@/components/segments/clock-weather-card-icon-segment'
-
 import { consume } from '@lit/context'
 import type { HomeAssistant } from 'custom-card-helpers'
 import type { TemplateResult } from 'lit'
@@ -13,6 +11,9 @@ import iconsService from '@/service/icons-service'
 import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
 
+export const renderIconSegment = (icon: string): TemplateResult =>
+  html`<clock-weather-card-icon-segment><ha-icon icon=${icon} style="--mdc-icon-size: 1em"></ha-icon></clock-weather-card-icon-segment>`
+
 @customElement('clock-weather-card-weather-icon-segment')
 class ClockWeatherCardWeatherIconSegment extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
@@ -24,7 +25,7 @@ class ClockWeatherCardWeatherIconSegment extends AbstractClockWeatherCardCompone
     if (!weatherState) return html``
     const isNight = hassService.isNight(this.hass, this.config.sunEntity)
     const icon = iconsService.getWeatherMdiIcon(weatherState, isNight)
-    return html`<clock-weather-card-icon-segment .icon=${icon}></clock-weather-card-icon-segment>`
+    return renderIconSegment(icon)
   }
 }
 
