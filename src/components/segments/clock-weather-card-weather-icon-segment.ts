@@ -22,7 +22,7 @@ class ClockWeatherCardWeatherIconSegment extends AbstractClockWeatherCardCompone
   public render (): TemplateResult {
     const weatherState = hassService.getEntityState(this.hass, this.entityId ?? this.config.entity)
     if (!weatherState) return html``
-    const isNight = hassService.isNight(this.hass, this.config.sunEntity)
+    const isNight = hassService.isNight(this.hass, this.config.sun_entity)
     const icon = iconsService.getWeatherMdiIcon(weatherState, isNight)
     return html`<clock-weather-card-icon-segment .icon=${icon}></clock-weather-card-icon-segment>`
   }

@@ -24,9 +24,9 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @property() public unitAttribute?: string
 
   public render (): TemplateResult {
-    const { entity, locale, temperatureUnit, temperatureSensor, sunEntity, header } = this.config
+    const { entity, locale, temperatureUnit, temperatureSensor, sun_entity, header } = this.config
     const formatTemperature = (t: number, precision: number | null = null): string =>
-      formatNumber(header.roundTemperatures && precision === null ? Math.round(t) : t, this.config, precision)
+      formatNumber(header.round_temperatures && precision === null ? Math.round(t) : t, this.config, precision)
     if (this.attribute) {
       if (!this.unitAttribute && hassService.isWeatherTemperatureAttribute(this.attribute)) {
         const temperature = this.attribute === 'temperature'
@@ -50,7 +50,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
     const state = hassService.getEntityState(this.hass, entity)
     if (!state) return html``
     const isClear = state === 'sunny' || state === 'clear-night'
-    const condition = isClear ? (hassService.isNight(this.hass, sunEntity) ? 'clear-night' : 'sunny') : state
+    const condition = isClear ? (hassService.isNight(this.hass, sun_entity) ? 'clear-night' : 'sunny') : state
     const translated = translationsService.t(locale, `weather.${condition}`)
     return html`<span>${translated}</span>`
   }
