@@ -49,6 +49,18 @@ export default async function globalSetup(): Promise<void> {
     { stdio: 'inherit' },
   )
 
+  const cleanUp = (): void => {
+    try { execSync(`docker rm -f ${containerName}`, { stdio: 'ignore' }) } catch { /* ignore */ }
+    try { rmSync(tmpDir, { recursive: true, force: true }) } catch { /* ignore */ }
+  }
+  // Playwright only runs globalTeardown on SIGINT, so a SIGTERM/SIGHUP would leak the container.
+  for (const signal of ['SIGTERM', 'SIGHUP'] as const) {
+    process.once(signal, () => {
+      cleanUp()
+      process.kill(process.pid, signal)
+    })
+  }
+
   try {
     const haUrl = `http://127.0.0.1:${getMappedPort(containerName)}`
 
@@ -60,10 +72,8 @@ export default async function globalSetup(): Promise<void> {
 
     writeHaState({ haUrl, haToken: token, tmpDir, containerName })
   } catch (err) {
-    // globalTeardown doesn't run when globalSetup throws - clean up here so a
-    // failed setup doesn't leak a running container.
-    try { execSync(`docker rm -f ${containerName}`, { stdio: 'ignore' }) } catch { /* ignore */ }
-    try { rmSync(tmpDir, { recursive: true, force: true }) } catch { /* ignore */ }
+    // globalTeardown doesn't run when globalSetup throws.
+    cleanUp()
     throw err
   }
 
