@@ -1,5 +1,6 @@
 import { expandPanel, openEditor, saveEditor } from '../utils/editor'
 import { expect, test } from '../utils/fixtures'
+import { TEST_DASHBOARD } from '../utils/ha-setup'
 
 test.describe('GUI editor', () => {
   test.use({ freshPage: true })
@@ -289,4 +290,21 @@ test.describe('GUI editor', () => {
     expect(await saveEditor(page))
       .toEqual({ entity: 'weather.mock_weather', title: 'Kept', sections: { forecast_list: { count: 7, gradient: { 0: '#000000', 30: '#ffffff' } } } })
   })
+  for (const { name, rows, error } of [
+    { name: 'a header row without segments', rows: '[{ alignment: center }]', error: 'Config option "sections.header.rows[0].segments" has invalid value "undefined", expected a list of segments' },
+    { name: 'an unknown segment type', rows: '[{ segments: [{ type: clock }] }]', error: 'Config option "sections.header.rows[0].segments[0].type" has invalid value "clock", expected a known segment type' },
+  ]) {
+    test(`falls back to the YAML editor for ${name}`, async ({ page, setupCard }) => {
+      await setupCard({ cardConfig: `sections: { header: { rows: ${rows} } }` })
+      await page.goto(`/${TEST_DASHBOARD}/0?edit=1`)
+      await page.locator('hui-card-options')
+        .getByText('Edit', { exact: true })
+        .click()
+
+      await expect(page.locator('hui-card-element-editor ha-code-editor'))
+        .toBeVisible()
+      await expect(page.locator('hui-card-element-editor'))
+        .toContainText(error)
+    })
+  }
 })

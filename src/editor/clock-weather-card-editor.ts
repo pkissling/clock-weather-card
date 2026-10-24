@@ -8,9 +8,10 @@ import { property, state } from 'lit/decorators.js'
 
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey, SENSOR_FIELDS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
-import type { ClockWeatherCardConfig, RowConfig } from '@/types'
+import { type ClockWeatherCardConfig, type RowConfig, SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
+import { invalidConfigValue } from '@/utils/errors'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
 
 const SECTION_ICONS: Record<SectionKey, string> = {
@@ -33,7 +34,16 @@ export class ClockWeatherCardEditor extends LitElement {
   @state() private _openSection?: SectionKey
   @state() private _openGroups = new Set<CardGroup>()
 
+  // Home Assistant falls back to the YAML editor for configs whose shape the GUI cannot render, signalled by a throw.
   public setConfig(config: ClockWeatherCardConfig): void {
+    const rows: unknown = config.sections?.header?.rows
+    if (rows !== undefined && !Array.isArray(rows)) throw invalidConfigValue('sections.header.rows', String(rows), 'a list of rows')
+    config.sections?.header?.rows?.forEach((row, i) => {
+      if (!Array.isArray(row?.segments)) throw invalidConfigValue(`sections.header.rows[${i}].segments`, String(row?.segments), 'a list of segments')
+      row.segments.forEach((segment, j) => {
+        if (!(SEGMENT_TYPES as readonly unknown[]).includes(segment?.type)) throw invalidConfigValue(`sections.header.rows[${i}].segments[${j}].type`, String(segment?.type), 'a known segment type')
+      })
+    })
     this._config = config
   }
 
