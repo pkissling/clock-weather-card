@@ -2,7 +2,7 @@ import '@/components/clock-weather-card-forecast-strip-item'
 import '@/components/clock-weather-card-divider'
 
 import type { TemplateResult } from 'lit'
-import { html } from 'lit'
+import { html, nothing } from 'lit'
 import type { DateTime } from 'luxon'
 
 import AbstractForecastSection from '@/components/abstract-forecast-section'
@@ -37,6 +37,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
             <span class="skeleton skeleton--time"></span>
             <span class="skeleton skeleton--icon"></span>
             <span class="skeleton skeleton--label"></span>
+            ${this.config.forecastStrip.hideAttribute ? nothing : html`<span class="skeleton skeleton--attribute"></span>`}
           </div>
         `)}
       </div>
