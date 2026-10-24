@@ -150,6 +150,17 @@ test.describe('additional_sensors.temperature', () => {
       .toEqual([])
   })
 
+  test('recovers from the error card when the missing sensor appears (no reload)', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({ cardConfig: cardConfig() })
+    await cardErrorMessage()
+      .toContain(`Referenced entity "${SENSOR}" does not exist`)
+
+    await haApi.setEntityState(SENSOR, '18.2', { unit_of_measurement: '°C' })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+      .toHaveText('18°C')
+  })
+
   test('rejects a sensor that does not exist', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({ cardConfig: 'additional_sensors: { temperature: sensor.does_not_exist }' })
 

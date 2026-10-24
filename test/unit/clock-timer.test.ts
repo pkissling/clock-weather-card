@@ -2,6 +2,8 @@
 import { DateTime } from 'luxon'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type * as ConfigModule from '@/utils/config'
+
 // Mock all Lit and HA dependencies so the component can be imported in jsdom
 vi.mock('lit', () => {
   class FakeLitElement {
@@ -37,6 +39,10 @@ vi.mock('@/service/logger', () => ({ default: { debug: (): void => {}, warn: ():
 vi.mock('@/service/translations-service', () => ({ default: { t: (l: string, k: string): string => `${l}:${k}` } }))
 vi.mock('@/components/clock-weather-card-header', () => ({}))
 vi.mock('@/utils/development', () => ({ isDev: false }))
+vi.mock('@/utils/config', async (importOriginal) => {
+  const actual = await importOriginal<typeof ConfigModule>()
+  return { ...actual, resolveConfig: vi.fn(actual.resolveConfig) }
+})
 
 type CardInstance = Record<string, unknown>
 
@@ -215,6 +221,46 @@ describe('ClockWeatherCard timer behavior', () => {
       pushStates({ 'weather.home': { state: 'rainy' } })
       expect(card.providedHass)
         .toBe(card.hass)
+    })
+  })
+
+  describe('config resolution on hass updates', () => {
+    it('skips re-resolving on irrelevant hass changes and re-resolves on a locale change', async () => {
+      const { resolveConfig } = await import('@/utils/config')
+      const card = await createCard()
+      const resolved = card.resolved as { numberFormat: string }
+      const pushHass = (patch: Record<string, unknown>): void => {
+        card.hass = { ...card.hass as object, ...patch }
+        card.willUpdate(new Map([['hass', undefined]]))
+      }
+      vi.mocked(resolveConfig)
+        .mockClear()
+
+      pushHass({ states: { ...(card.hass as { states: object }).states, 'light.kitchen': { state: 'on' } } })
+      expect(resolveConfig)
+        .not.toHaveBeenCalled()
+      expect(card.resolved)
+        .toBe(resolved)
+
+      pushHass({ locale: { language: 'en-GB', time_format: '24', number_format: 'comma_decimal' } })
+      expect(resolveConfig)
+        .toHaveBeenCalledOnce()
+      expect((card.resolved as { numberFormat: string }).numberFormat)
+        .toBe('comma_decimal')
+    })
+
+    it('keeps re-resolving while the config is invalid so the card recovers once the entity appears', async () => {
+      const card = await createCard({ sun_entity: 'sun.missing' })
+      expect(card.resolved)
+        .toBeUndefined()
+
+      card.hass = { ...card.hass as object, states: { ...(card.hass as { states: object }).states, 'sun.missing': { state: 'above_horizon' } } }
+      card.willUpdate(new Map([['hass', undefined]]))
+
+      expect(card.resolved)
+        .toBeDefined()
+      expect(card.error)
+        .toBeUndefined()
     })
   })
 
