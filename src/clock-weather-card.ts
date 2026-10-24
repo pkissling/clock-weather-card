@@ -52,7 +52,9 @@ export class ClockWeatherCard extends LitElement {
   @provide({ context: hassContext }) private providedHass?: HomeAssistant
   @provide({ context: errorMessageContext }) @property({ type: Boolean }) public preview = false
   @state() private config?: ClockWeatherCardConfig
-  @provide({ context: configContext }) @state() private resolved?: ResolvedConfig
+  @state() private resolved?: ResolvedConfig
+  // Never cleared on error: consumers still mounted would re-render with an undefined config and throw.
+  @provide({ context: configContext }) private providedConfig?: ResolvedConfig
   @state() private error?: string
   @state() private currentDate: DateTime = DateTime.now()
   private _clock: ClockHandle | null = null
@@ -163,6 +165,7 @@ export class ClockWeatherCard extends LitElement {
         logger.debug('Resolved config', next)
         this.resolved = next
       }
+      this.providedConfig = this.resolved
       this.error = undefined
     } catch (e) {
       this.resolved = undefined
