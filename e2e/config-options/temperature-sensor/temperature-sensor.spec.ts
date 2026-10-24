@@ -132,6 +132,23 @@ test.describe('temperature_sensor', () => {
       .toHaveText('23.50°C')
   })
 
+  test('swaps to the error card without page errors when the sensor disappears (no reload)', async ({ page, setupCard, clockWeatherCard, cardErrorMessage }) => {
+    await setupCard({ cardConfig: cardConfig(), entities: { [SENSOR]: { state: '18.2', attributes: { unit_of_measurement: '°C' } } } })
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+      .toHaveText('18.2°C')
+    const errors: Error[] = []
+    const onError = (e: Error): void => { errors.push(e) }
+    page.on('pageerror', onError)
+
+    await haApi.removeEntityState(SENSOR)
+
+    await cardErrorMessage()
+      .toContain(`Referenced entity "${SENSOR}" does not exist`)
+    page.off('pageerror', onError)
+    expect(errors)
+      .toEqual([])
+  })
+
   test('rejects a sensor that does not exist', async ({ setupCard, cardErrorMessage }) => {
     await setupCard({ cardConfig: 'temperature_sensor: sensor.does_not_exist' })
 
