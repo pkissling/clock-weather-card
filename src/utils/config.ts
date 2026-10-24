@@ -100,10 +100,11 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   }
   assertNonEmptyString('additional_sensors.temperature', sensors?.temperature)
   assertEntityExists(sensors?.temperature)
+  // Entities are briefly unavailable or unknown and lack their attributes, e.g. while Home Assistant starts, which must not break the card.
+  const isAvailable = (entityId: string): boolean => !['unavailable', 'unknown'].includes(hassService.getEntityState(hass, entityId) ?? '')
   const sensor = sensors?.temperature
-  const sensorState = sensor ? hassService.getEntityState(hass, sensor) : null
-  // Sensors are briefly unavailable or unknown, e.g. while Home Assistant starts, which must not break the card.
-  if (sensor && sensorState !== 'unavailable' && sensorState !== 'unknown') {
+  if (sensor && isAvailable(sensor)) {
+    const sensorState = hassService.getEntityState(hass, sensor)
     const unit = hassService.getEntityUnitOfMeasurement(hass, sensor)
     if (!isTemperatureUnit(unit)) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with unit °C or °F, got "${unit}"`)
     if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with a numeric state, got "${sensorState}"`)
@@ -142,7 +143,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       if (segment.type === 'entity') {
         assertRequiredString(`${path}.entity_id`, segment.entity_id)
         assertEntityExists(segment.entity_id)
-        if (segment.attribute !== undefined && hassService.getEntityAttribute(hass, segment.entity_id, segment.attribute) === undefined) {
+        if (segment.attribute !== undefined && isAvailable(segment.entity_id) && hassService.getEntityAttribute(hass, segment.entity_id, segment.attribute) === undefined) {
           throw invalidConfigValue(`${path}.attribute`, segment.attribute, `an attribute of "${segment.entity_id}"`)
         }
       }
@@ -155,7 +156,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
         if ('unit_attribute' in segment) {
           if (typeof segment.unit_attribute !== 'string') throw invalidConfigValue(`${path}.unit_attribute`, String(segment.unit_attribute), 'a string')
           const entityId = segment.type === 'entity' ? segment.entity_id : config.entity
-          if (hassService.getEntityAttribute(hass, entityId, segment.unit_attribute) === undefined) {
+          if (isAvailable(entityId) && hassService.getEntityAttribute(hass, entityId, segment.unit_attribute) === undefined) {
             throw invalidConfigValue(`${path}.unit_attribute`, segment.unit_attribute, `an attribute of "${entityId}"`)
           }
         }

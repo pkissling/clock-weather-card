@@ -321,6 +321,25 @@ test.describe('sections.header.rows', () => {
       await cardErrorMessage()
         .toContain(`Config option "sections.header.rows[0].segments[0].unit_attribute" has invalid value "missing", expected an attribute of "${entityId}"`)
     })
+
+    test(`accepts a ${type} segment unit_attribute that is missing while the entity is unavailable`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        weather: { state: 'unavailable' },
+        entities: { 'sensor.demo': { state: 'unavailable' } },
+        cardConfig: `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: ${type}
+                    ${extra}
+                    unit_attribute: missing
+      `,
+      })
+
+      await expect(clockWeatherCard.locator(`clock-weather-card-${type}-segment`))
+        .toBeAttached()
+    })
   }
 
   test('updates rows at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
@@ -720,6 +739,24 @@ test.describe('sections.header.rows', () => {
 
       await cardErrorMessage()
         .toContain('Config option "sections.header.rows[0].segments[0].attribute" has invalid value "missing", expected an attribute of "sensor.demo"')
+    })
+
+    test('accepts an attribute that is missing while the entity is unavailable', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        entities: { 'sensor.demo': { state: 'unavailable' } },
+        cardConfig: `
+          sections:
+            header:
+              rows:
+                - segments:
+                    - type: entity
+                      entity_id: sensor.demo
+                      attribute: battery
+        `,
+      })
+
+      await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
+        .toHaveText('')
     })
 
     test('rejects an entity_id that does not exist', async ({ setupCard, cardErrorMessage }) => {
