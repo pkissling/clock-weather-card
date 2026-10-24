@@ -148,63 +148,25 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   }
 }
 
+type SectionsConfig = Required<NonNullable<ClockWeatherCardConfig['sections']>>
+type Resolved<T, Nullable extends keyof T = never> = { [K in keyof T]-?: Exclude<T[K], undefined> | (K extends Nullable ? null : never) }
+
+export type ResolvedHeaderConfig = Resolved<SectionsConfig['header'], 'weather_icon_size'>
+export type ResolvedForecastStripConfig = Resolved<SectionsConfig['forecast_strip'], 'attribute_icon' | 'attribute_color' | 'attribute_unit'> & { attributeRequired: boolean }
+export type ResolvedForecastListConfig = Resolved<SectionsConfig['forecast_list'], 'attribute_unit'>
+
 export interface ResolvedConfig {
   entity: string
   title: string | null
-  sunEntity: string
-  weatherIconType: WeatherIconType
+  sun_entity: string
   timeZone: string
   locale: string
   numberFormat: string
   temperatureUnit: TemperatureUnit
   temperatureSensor: string | null
   header: ResolvedHeaderConfig
-  forecastStrip: ResolvedForecastStripConfig
-  forecastList: ResolvedForecastListConfig
-}
-
-export interface ResolvedHeaderConfig {
-  hidden: boolean
-  rows: RowConfig[]
-  animatedIcons: boolean
-  weatherIconType: WeatherIconType
-  weatherIconSize: string | null
-  roundTemperatures: boolean
-}
-
-export interface ResolvedForecastStripConfig {
-  hidden: boolean
-  entity: string
-  forecastType: SectionForecastType
-  count: number
-  animatedIcons: boolean
-  roundTemperatures: boolean
-  weatherIconType: WeatherIconType
-  hideSunriseSunset: boolean
-  hideAttribute: boolean
-  timePattern: string
-  attribute: string
-  attributeRequired: boolean
-  attributeIcon: string | null
-  attributeColor: string | null
-  attributeUnit: string | null
-}
-
-export interface ResolvedForecastListConfig {
-  hidden: boolean
-  entity: string
-  forecastType: SectionForecastType
-  count: number
-  animatedIcons: boolean
-  roundTemperatures: boolean
-  timePattern: string
-  weatherIconType: WeatherIconType
-  rowHeight: string
-  barThickness: string
-  hideCurrentTempIndicator: boolean
-  attribute: string
-  attributeUnit: string | null
-  gradient: Record<number | string, string>
+  forecast_strip: ResolvedForecastStripConfig
+  forecast_list: ResolvedForecastListConfig
 }
 
 export const enum WeatherEntityFeature {

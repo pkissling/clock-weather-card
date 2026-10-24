@@ -25,19 +25,18 @@ describe('resolveConfig', () => {
       .toEqual({
         entity: 'weather.home',
         title: null,
-        sunEntity: 'sun.sun',
-        weatherIconType: 'line',
+        sun_entity: 'sun.sun',
         timeZone: 'Europe/Berlin',
         locale: 'de',
         numberFormat: 'language',
         temperatureUnit: '°C',
         temperatureSensor: null,
         header: {
-          hidden: false,
-          animatedIcons: true,
-          weatherIconType: 'line',
-          weatherIconSize: null,
-          roundTemperatures: true,
+          hide: false,
+          animated_icons: true,
+          weather_icon_type: 'line',
+          weather_icon_size: null,
+          round_temperatures: true,
           rows: [
             {
               segments: [
@@ -58,37 +57,37 @@ describe('resolveConfig', () => {
             },
           ],
         },
-        forecastStrip: {
-          hidden: false,
-          entity: 'weather.home',
-          forecastType: 'hourly',
+        forecast_strip: {
+          hide: false,
+          weather_entity: 'weather.home',
+          forecast_type: 'hourly',
           count: 24,
-          animatedIcons: false,
-          roundTemperatures: true,
-          weatherIconType: 'line',
-          hideSunriseSunset: false,
-          hideAttribute: false,
-          timePattern: 't',
+          animated_icons: false,
+          round_temperatures: true,
+          weather_icon_type: 'line',
+          hide_sunrise_sunset: false,
+          hide_attribute: false,
+          time_pattern: 't',
           attribute: 'precipitation_probability',
           attributeRequired: false,
-          attributeIcon: 'mdi:water',
-          attributeColor: '#3988EF',
-          attributeUnit: null,
+          attribute_icon: 'mdi:water',
+          attribute_color: '#3988EF',
+          attribute_unit: null,
         },
-        forecastList: {
-          hidden: false,
-          entity: 'weather.home',
-          forecastType: 'daily',
+        forecast_list: {
+          hide: false,
+          weather_entity: 'weather.home',
+          forecast_type: 'daily',
           count: 5,
-          rowHeight: '28px',
-          barThickness: '60%',
-          hideCurrentTempIndicator: false,
-          animatedIcons: false,
-          roundTemperatures: true,
-          timePattern: 't',
-          weatherIconType: 'line',
+          row_height: '28px',
+          bar_thickness: '60%',
+          hide_current_temp_indicator: false,
+          animated_icons: false,
+          round_temperatures: true,
+          time_pattern: 't',
+          weather_icon_type: 'line',
           attribute: 'temperature',
-          attributeUnit: null,
+          attribute_unit: null,
           gradient: DEFAULT_GRADIENT,
         },
       })
@@ -134,11 +133,11 @@ describe('resolveConfig', () => {
   it('lets sections inherit the card weather_icon_type', () => {
     const resolved = resolveConfig(config({ weather_icon_type: 'fill' }), hass)
 
-    expect(resolved.header.weatherIconType)
+    expect(resolved.header.weather_icon_type)
       .toBe('fill')
-    expect(resolved.forecastStrip.weatherIconType)
+    expect(resolved.forecast_strip.weather_icon_type)
       .toBe('fill')
-    expect(resolved.forecastList.weatherIconType)
+    expect(resolved.forecast_list.weather_icon_type)
       .toBe('fill')
   })
 
@@ -152,25 +151,32 @@ describe('resolveConfig', () => {
       },
     }), hass)
 
-    expect(resolved.header.weatherIconType)
+    expect(resolved.header.weather_icon_type)
       .toBe('flat')
-    expect(resolved.forecastStrip)
-      .toMatchObject({ entity: 'weather.strip', weatherIconType: 'flat', count: 6 })
-    expect(resolved.forecastList)
-      .toMatchObject({ entity: 'weather.list', weatherIconType: 'monochrome', count: 3 })
+    expect(resolved.forecast_strip)
+      .toMatchObject({ weather_entity: 'weather.strip', weather_icon_type: 'flat', count: 6 })
+    expect(resolved.forecast_list)
+      .toMatchObject({ weather_entity: 'weather.list', weather_icon_type: 'monochrome', count: 3 })
+  })
+
+  it('keeps defaults for section options set to undefined', () => {
+    const resolved = resolveConfig(config({ sections: { forecast_list: { count: undefined, gradient: undefined } } }), hass)
+
+    expect(resolved.forecast_list)
+      .toMatchObject({ count: 5, gradient: DEFAULT_GRADIENT })
   })
 
   it('drops the default strip icon once a custom attribute is configured', () => {
-    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed' } } }), hass).forecastStrip.attributeIcon)
+    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed' } } }), hass).forecast_strip.attribute_icon)
       .toBeNull()
-    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed', attribute_icon: 'mdi:weather-windy' } } }), hass).forecastStrip.attributeIcon)
+    expect(resolveConfig(config({ sections: { forecast_strip: { attribute: 'wind_speed', attribute_icon: 'mdi:weather-windy' } } }), hass).forecast_strip.attribute_icon)
       .toBe('mdi:weather-windy')
   })
 
   it('prefers a configured gradient over the attribute default', () => {
     const resolved = resolveConfig(config({ sections: { forecast_list: { attribute: 'humidity', gradient: { 0: '#000000' } } } }), hass)
 
-    expect(resolved.forecastList.gradient)
+    expect(resolved.forecast_list.gradient)
       .toEqual({ 0: '#000000' })
   })
 })

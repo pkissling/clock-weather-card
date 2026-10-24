@@ -74,7 +74,7 @@ export class ClockWeatherCard extends LitElement {
       `
     }
 
-    const { title, header, forecastStrip, forecastList } = this.resolved
+    const { title, header, forecast_strip, forecast_list } = this.resolved
     const clickable = this.tapAction.action !== 'none'
     return html`
       <ha-card
@@ -86,13 +86,13 @@ export class ClockWeatherCard extends LitElement {
       >
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
-          ${header.hidden ? '' : html`
+          ${header.hide ? '' : html`
             <clock-weather-card-header .currentDate=${this.currentDate}></clock-weather-card-header>
           `}
-          ${forecastStrip.hidden ? '' : html`
+          ${forecast_strip.hide ? '' : html`
             <clock-weather-card-forecast-strip .currentDate=${this.currentDate}></clock-weather-card-forecast-strip>
           `}
-          ${forecastList.hidden ? '' : html`
+          ${forecast_list.hide ? '' : html`
             <clock-weather-card-forecast-list .currentDate=${this.currentDate}></clock-weather-card-forecast-list>
           `}
         </div>
@@ -181,9 +181,9 @@ export class ClockWeatherCard extends LitElement {
     if (!prev || !this.resolved) return true
     if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language) return true
 
-    const { entity, sunEntity, temperatureSensor, forecastStrip, forecastList, header } = this.resolved
+    const { entity, sun_entity, temperatureSensor, forecast_strip, forecast_list, header } = this.resolved
     const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))
-    const watched = [entity, sunEntity, temperatureSensor, forecastStrip.entity, forecastList.entity, ...segmentEntities]
+    const watched = [entity, sun_entity, temperatureSensor, forecast_strip.weather_entity, forecast_list.weather_entity, ...segmentEntities]
       .filter(id => id != null)
 
     const stateChanged = (id: string): boolean => prev.states[id] !== next.states[id]

@@ -210,62 +210,40 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   }
 }
 
+const definedKeys = <T extends object>(obj: T | undefined): Partial<T> =>
+  Object.fromEntries(Object.entries(obj ?? {})
+    .filter(([, v]) => v != null)) as Partial<T>
+
 export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): ResolvedConfig {
   validateConfig(config, hass)
-  const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
+  const header = definedKeys(config.sections?.header)
+  const strip = definedKeys(config.sections?.forecast_strip)
+  const list = definedKeys(config.sections?.forecast_list)
   const D = DEFAULTS.sections
-  const weatherIconType = config.weather_icon_type || DEFAULTS.weather_icon_type
-  const roundTemperatures = config.round_temperatures ?? DEFAULTS.round_temperatures
+  const inherited = {
+    weather_icon_type: config.weather_icon_type || DEFAULTS.weather_icon_type,
+    round_temperatures: config.round_temperatures ?? DEFAULTS.round_temperatures,
+  }
   return {
     entity: config.entity,
     title: config.title ?? null,
-    sunEntity: config.sun_entity ?? DEFAULTS.sun_entity,
-    weatherIconType,
+    sun_entity: config.sun_entity ?? DEFAULTS.sun_entity,
     timeZone: config.time_zone || hassService.getTimeZone(hass),
     locale: hassService.withHourCycle(hass, config.locale || hassService.getLocale(hass)),
     numberFormat: hassService.getNumberFormat(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     temperatureSensor: config.additional_sensors?.temperature ?? null,
-    header: {
-      hidden: header?.hide ?? D.header.hide,
-      rows: header?.rows ?? DEFAULT_ROWS,
-      animatedIcons: header?.animated_icons ?? D.header.animated_icons,
-      weatherIconType: header?.weather_icon_type ?? weatherIconType,
-      weatherIconSize: header?.weather_icon_size ?? null,
-      roundTemperatures: header?.round_temperatures ?? roundTemperatures,
+    header: { ...D.header, ...inherited, rows: DEFAULT_ROWS, weather_icon_size: null, ...header },
+    forecast_strip: {
+      ...D.forecast_strip,
+      ...inherited,
+      weather_entity: config.entity,
+      attribute_icon: strip.attribute ? null : 'mdi:water',
+      attribute_color: defaultAttributeColor(strip, strip.weather_icon_type ?? inherited.weather_icon_type),
+      attribute_unit: null,
+      ...strip,
+      attributeRequired: strip.attribute !== undefined && strip.hide_attribute !== true,
     },
-    forecastStrip: {
-      hidden: strip?.hide ?? D.forecast_strip.hide,
-      entity: strip?.weather_entity ?? config.entity,
-      forecastType: strip?.forecast_type ?? D.forecast_strip.forecast_type,
-      count: strip?.count ?? D.forecast_strip.count,
-      animatedIcons: strip?.animated_icons ?? D.forecast_strip.animated_icons,
-      roundTemperatures: strip?.round_temperatures ?? roundTemperatures,
-      weatherIconType: strip?.weather_icon_type ?? weatherIconType,
-      hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
-      hideAttribute: strip?.hide_attribute ?? D.forecast_strip.hide_attribute,
-      timePattern: strip?.time_pattern ?? D.forecast_strip.time_pattern,
-      attribute: strip?.attribute ?? D.forecast_strip.attribute,
-      attributeRequired: strip?.attribute !== undefined && strip.hide_attribute !== true,
-      attributeIcon: strip?.attribute_icon ?? (strip?.attribute ? null : 'mdi:water'),
-      attributeColor: strip?.attribute_color ?? defaultAttributeColor(strip, strip?.weather_icon_type ?? weatherIconType),
-      attributeUnit: strip?.attribute_unit ?? null,
-    },
-    forecastList: {
-      hidden: list?.hide ?? D.forecast_list.hide,
-      entity: list?.weather_entity ?? config.entity,
-      forecastType: list?.forecast_type ?? D.forecast_list.forecast_type,
-      count: list?.count ?? D.forecast_list.count,
-      rowHeight: list?.row_height ?? D.forecast_list.row_height,
-      barThickness: list?.bar_thickness ?? D.forecast_list.bar_thickness,
-      hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? D.forecast_list.hide_current_temp_indicator,
-      animatedIcons: list?.animated_icons ?? D.forecast_list.animated_icons,
-      roundTemperatures: list?.round_temperatures ?? roundTemperatures,
-      timePattern: list?.time_pattern ?? D.forecast_list.time_pattern,
-      weatherIconType: list?.weather_icon_type ?? weatherIconType,
-      attribute: list?.attribute ?? D.forecast_list.attribute,
-      attributeUnit: list?.attribute_unit ?? null,
-      gradient: list?.gradient ?? DEFAULT_GRADIENT,
-    },
+    forecast_list: { ...D.forecast_list, ...inherited, weather_entity: config.entity, attribute_unit: null, gradient: DEFAULT_GRADIENT, ...list },
   }
 }
