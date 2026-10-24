@@ -1,4 +1,4 @@
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../utils/fixtures'
 
 test.describe('title', () => {
   test('renders the configured title in the card header', async ({ clockWeatherCard, setupCard }) => {

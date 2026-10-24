@@ -1,5 +1,5 @@
-import type { DailyWeatherForecast, WeatherForecast } from '../../../src/types'
-import { expect, test } from '../../utils/fixtures'
+import type { DailyWeatherForecast, WeatherForecast } from '../../src/types'
+import { expect, test } from '../utils/fixtures'
 
 const NOW = new Date('2025-09-14T18:00:00+00:00')
 const HOURLY: WeatherForecast[] = [

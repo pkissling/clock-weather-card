@@ -1,4 +1,4 @@
-import { expect, test } from '../../utils/fixtures'
+import { expect, test } from '../utils/fixtures'
 
 test.describe('time_zone', () => {
 

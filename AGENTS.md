@@ -37,7 +37,7 @@ yarn playwright-ui                                # interactive Playwright UI (h
 - `yarn test:e2e` runs Playwright inside the pinned Linux image (`.github/playwright-snapshots-helper/Dockerfile`), the same environment as CI, so screenshot tests pass on macOS and Linux alike. Host runs (`test:e2e:host`, `playwright-ui`) set no `E2E_IN_DOCKER`, so `toHaveScreenshot` assertions are skipped there.
 - Config: `playwright.config.ts`
 - Layout:
-  - `e2e/config-options/<option>/` - behavior of a single top-level config option
+  - `e2e/config-options/<option>.spec.ts` - behavior of a single config option (nested options as `<parent>/<option>.spec.ts`)
   - `e2e/sections/` - behavior of a card section (hourly/daily forecast, ...)
   - `e2e/screenshots/` - visual regression snapshots. Keep these minimal; prefer DOM assertions. Screenshot tests are slow and are the main driver of suite runtime.
 - Use `setupCard(page, opts)` from `e2e/utils/test-utils.ts` to set the card config and the state of the weather, sun and any further entities (`entities`) in one step; entities of the previous setup that a call doesn't list are removed. Import `haApi` from `e2e/utils/ha-api.ts` only to change state after setup. Every option has a default (entity, 24 hourly + daily forecast entries, sun state, fixed date, language, time zone), so pass only what the test actually depends on - `setupCard({})` already yields a fully populated card. Extra `date`/`timeZone`/`cardConfig` options are noise that obscures what a test is about. State is backed by the `mock_weather` custom integration in `e2e/utils/ha-config/custom_components/mock_weather/` - extend it if a test needs a new mockable attribute.
