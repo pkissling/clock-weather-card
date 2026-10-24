@@ -16,15 +16,6 @@
     "windy-variant": "Prudký vítr",
     "exceptional": "Nevšední"
   },
-  "day": {
-    "1": "Po",
-    "2": "Út",
-    "3": "St",
-    "4": "Čt",
-    "5": "Pá",
-    "6": "So",
-    "7": "Ne"
-  },
   "misc": {
     "now": "Nyní",
     "today": "Dnes",

@@ -16,15 +16,6 @@
     "windy-variant": "Gwyntoedd Cryfion",
     "exceptional": "Eithriadol"
   },
-  "day": {
-    "1": "Llun",
-    "2": "Maw",
-    "3": "Mer",
-    "4": "Iau",
-    "5": "Gwe",
-    "6": "Sad",
-    "7": "Sul"
-  },
   "misc": {
     "now": "Nawr",
     "today": "Heddiw",
