@@ -13,12 +13,12 @@ const cssLengthToPx = (length: string | undefined): number | null => {
 }
 
 // shortcut: estimates from config instead of measuring, since HA asks before the card has rendered.
-export const estimateCardSize = ({ title, header, forecastStrip, forecastList }: ResolvedConfig): number => {
+export const estimateCardSize = ({ title, header, forecast_strip, forecast_list }: ResolvedConfig): number => {
   const rowsPx = header.rows.reduce((sum, row) => sum + (cssLengthToPx(row.font_size) ?? HEADER_ROW_PX), 0)
   const px = PADDING_PX
     + (title ? TITLE_PX : 0)
-    + (header.hidden ? 0 : Math.max(HEADER_MIN_PX, rowsPx))
-    + (forecastStrip.hidden ? 0 : FORECAST_STRIP_PX)
-    + (forecastList.hidden ? 0 : forecastList.count * (cssLengthToPx(forecastList.rowHeight) ?? 28))
+    + (header.hide ? 0 : Math.max(HEADER_MIN_PX, rowsPx))
+    + (forecast_strip.hide ? 0 : FORECAST_STRIP_PX)
+    + (forecast_list.hide ? 0 : forecast_list.count * (cssLengthToPx(forecast_list.row_height) ?? 28))
   return Math.round(px / CARD_SIZE_UNIT_PX)
 }

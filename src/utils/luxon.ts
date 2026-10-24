@@ -11,7 +11,7 @@ const SECOND_0 = DateTime.local(2000, 1, 1, 12, 0, 0)
 const SECOND_30 = DateTime.local(2000, 1, 1, 12, 0, 30)
 
 export function configNeedsSeconds(header: ResolvedHeaderConfig): boolean {
-  return !header.hidden && header.rows
+  return !header.hide && header.rows
     .some(row => row.segments.some(seg => seg.type === 'time' && patternNeedsSeconds(seg.time_pattern)))
 }
 

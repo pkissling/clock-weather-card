@@ -80,7 +80,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   /** Hourly: the entry at or before now ("Now") plus upcoming hours. Daily: today ("Today") onwards. Temperatures are in the configured unit. */
   protected visibleRows(count: number, timePattern: string): ForecastRow[] {
     const now = this.currentDate
-    const { locale, timeZone, sunEntity, temperatureUnit } = this.config
+    const { locale, timeZone, sun_entity, temperatureUnit } = this.config
     const sourceUnit = hassService.getEntityAttributeString(this.hass, this.resolveEntityId(), 'temperature_unit')
     const convert = (t: number): number => convertTemperature(t, sourceUnit, temperatureUnit)
     const timed = this.forecasts.map(forecast => ({
@@ -112,7 +112,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
             isCurrent,
             label: isCurrent ? nowLabel : at.toFormat(timePattern),
             // The "Now" entry may have started before sunrise/sunset, so it follows the live sun state like the header.
-            isNight: hassService.isNight(this.hass, sunEntity, isCurrent ? undefined : at),
+            isNight: hassService.isNight(this.hass, sun_entity, isCurrent ? undefined : at),
           }
         })
     }
@@ -131,7 +131,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
           isCurrent,
           label: isCurrent ? todayLabel : at.toFormat('ccc'),
           // A daily entry's `datetime` is only a day marker, so day/night can't be derived from it.
-          isNight: isCurrent && hassService.isNight(this.hass, sunEntity),
+          isNight: isCurrent && hassService.isNight(this.hass, sun_entity),
         }
       })
   }

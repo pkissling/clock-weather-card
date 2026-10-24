@@ -31,17 +31,17 @@ class ClockWeatherCardHeader extends AbstractClockWeatherCardComponent {
 
   public render (): TemplateResult {
     const weatherState = hassService.getEntityState(this.hass, this.config.entity)
-    const isNight = hassService.isNight(this.hass, this.config.sunEntity)
+    const isNight = hassService.isNight(this.hass, this.config.sun_entity)
 
-    const { weatherIconSize } = this.config.header
+    const { weather_icon_size, animated_icons, weather_icon_type } = this.config.header
 
     return html`
       <clock-weather-card-icon
-        style=${weatherIconSize ? `--cwc-header-icon-size: ${weatherIconSize}` : nothing}
+        style=${weather_icon_size ? `--cwc-header-icon-size: ${weather_icon_size}` : nothing}
         .weatherState=${weatherState}
         .isNight=${isNight}
-        .animatedIcon=${this.config.header.animatedIcons}
-        .weatherIconType=${this.config.header.weatherIconType}
+        .animatedIcon=${animated_icons}
+        .weatherIconType=${weather_icon_type}
       ></clock-weather-card-icon>
       <clock-weather-card-header-details ${ref(this.observeDetails)} .currentDate=${this.currentDate}></clock-weather-card-header-details>
     `
