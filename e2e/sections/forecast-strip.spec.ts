@@ -288,4 +288,28 @@ test.describe('forecast_strip section', () => {
     expect(overflow)
       .toEqual({ overflows: true, textOverflow: 'ellipsis' })
   })
+
+  test.describe('secondary text', () => {
+    test.use({ freshPage: true })
+
+    test('uses the theme secondary text color at full opacity', async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        cardConfig: `
+          sections:
+            forecast_strip:
+              forecast_type: daily
+        `,
+      })
+      await clockWeatherCard.evaluate(el => (el as HTMLElement).style.setProperty('--secondary-text-color', 'rgb(1, 2, 3)'))
+
+      const item = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+        .first()
+      for (const text of [item.locator('.time'), item.locator('.temperature-low')]) {
+        await expect(text)
+          .toHaveCSS('color', 'rgb(1, 2, 3)')
+        await expect(text)
+          .toHaveCSS('opacity', '1')
+      }
+    })
+  })
 })

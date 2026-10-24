@@ -134,7 +134,7 @@ export default css`
 
   clock-weather-card-forecast-strip-item .time {
     font-size: 0.8rem;
-    opacity: 0.7;
+    color: var(--secondary-text-color);
     line-height: 1;
     max-width: 5em;
     overflow-x: clip;
@@ -164,14 +164,13 @@ export default css`
 
   clock-weather-card-forecast-strip-item .temperature-low {
     font-size: 0.8rem;
-    opacity: 0.6;
+    color: var(--secondary-text-color);
     line-height: 1;
     margin-top: 2px;
   }
 
   clock-weather-card-forecast-strip-item .attribute {
     font-size: 0.72rem;
-    opacity: 0.65;
     color: var(--info-color, #4a90d9);
     line-height: 1;
     min-height: 0.72rem;
