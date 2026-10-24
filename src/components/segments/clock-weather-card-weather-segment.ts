@@ -24,7 +24,9 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @property() public unitAttribute?: string
 
   public render (): TemplateResult {
-    const { entity, locale, temperatureUnit, temperatureSensor, sunEntity } = this.config
+    const { entity, locale, temperatureUnit, temperatureSensor, sunEntity, header } = this.config
+    const formatTemperature = (t: number, precision: number | null = null): string =>
+      formatNumber(header.roundTemperatures && precision === null ? Math.round(t) : t, this.config, precision)
     if (this.attribute) {
       if (!this.unitAttribute && hassService.isWeatherTemperatureAttribute(this.attribute)) {
         const temperature = this.attribute === 'temperature'
@@ -32,7 +34,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
           : hassService.getWeatherTemperature(this.hass, entity, this.attribute, temperatureUnit)
         if (temperature === null) return html``
         const precision = this.attribute === 'temperature' && temperatureSensor ? hassService.getDisplayPrecision(this.hass, temperatureSensor) : null
-        return html`<span>${formatNumber(temperature, this.config, precision)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
+        return html`<span>${formatTemperature(temperature, precision)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
       }
       const value = hassService.getEntityAttribute(this.hass, entity, this.attribute)
       if (value === undefined) logger.warn(`Attribute "${this.attribute}" not found on weather entity "${entity}"`)
@@ -41,7 +43,7 @@ class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
         ? hassService.getEntityAttributeString(this.hass, entity, this.unitAttribute)
         : hassService.getWeatherAttributeUnit(this.hass, entity, this.attribute)
       const temperature = toDisplayTemperature(value, unit, temperatureUnit)
-      if (temperature !== null) return html`<span>${formatNumber(temperature, this.config)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
+      if (temperature !== null) return html`<span>${formatTemperature(temperature)}${this.showUnit ? this.unit ?? temperatureUnit : ''}</span>`
       return html`<span>${typeof value === 'number' ? formatNumber(value, this.config) : value}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
     }
 
