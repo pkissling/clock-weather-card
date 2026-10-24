@@ -10,6 +10,7 @@ import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ResolvedConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
+import { formatWithUnit } from '@/utils/forecast-attributes'
 import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
 
@@ -43,7 +44,8 @@ class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
   }
 
   private renderValue (text: string, unit: string | null): TemplateResult {
-    return html`<span>${text}${this.showUnit ? this.unit ?? unit ?? '' : ''}</span>`
+    if (!this.showUnit) return html`<span>${text}</span>`
+    return html`<span>${this.unit === undefined ? formatWithUnit(text, unit) : `${text}${this.unit}`}</span>`
   }
 
   private isNumeric (value: unknown, unit: string | null, precision: number | null): boolean {

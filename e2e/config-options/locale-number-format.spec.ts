@@ -14,13 +14,13 @@ const CARD_CONFIG = `
 
 test.describe('number format', () => {
   for (const [language, numberFormat, temperature, low, pressure] of <[string, string, string, string, string | RegExp][]>[
-    ['de', 'language', '21,5°C', '10,5°C', '1.013,2hPa'],
-    ['en-GB', 'language', '21.5°C', '10.5°C', '1,013.2hPa'],
-    ['de', 'comma_decimal', '21.5°C', '10.5°C', '1,013.2hPa'],
-    ['en-GB', 'decimal_comma', '21,5°C', '10,5°C', '1.013,2hPa'],
-    ['en-GB', 'space_comma', '21,5°C', '10,5°C', '1 013,2hPa'],
-    ['en-GB', 'quote_decimal', '21.5°C', '10.5°C', /^1['’]013\.2hPa$/],
-    ['de', 'none', '21.5°C', '10.5°C', '1013.2hPa'],
+    ['de', 'language', '21,5°C', '10,5°C', '1.013,2 hPa'],
+    ['en-GB', 'language', '21.5°C', '10.5°C', '1,013.2 hPa'],
+    ['de', 'comma_decimal', '21.5°C', '10.5°C', '1,013.2 hPa'],
+    ['en-GB', 'decimal_comma', '21,5°C', '10,5°C', '1.013,2 hPa'],
+    ['en-GB', 'space_comma', '21,5°C', '10,5°C', '1 013,2 hPa'],
+    ['en-GB', 'quote_decimal', '21.5°C', '10.5°C', /^1['’]013\.2 hPa$/],
+    ['de', 'none', '21.5°C', '10.5°C', '1013.2 hPa'],
   ]) {
     test(`follows the HA "${numberFormat}" number format with language ${language}`, async ({ setupCard, clockWeatherCard }) => {
       await setupCard({
@@ -98,6 +98,6 @@ test.describe('number format', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
       .toHaveText('21,5°C')
     await expect(clockWeatherCard.locator('clock-weather-card-entity-segment'))
-      .toHaveText(['1.013,2hPa', '1.234,5', '12345'])
+      .toHaveText(['1.013,2 hPa', '1.234,5', '12345'])
   })
 })
