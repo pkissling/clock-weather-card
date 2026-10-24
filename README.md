@@ -299,6 +299,7 @@ sections:
 | `time_zone` | string | no | Home Assistant profile time zone | IANA time zone name (e.g. `Europe/Berlin`) used for all times and dates on the card (clock, date, forecast times, sunrise/sunset). When unset, follows the time zone setting in the user's Home Assistant profile: the browser's time zone if set to local, otherwise the time zone configured in Home Assistant. |
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. Numbers follow the number format of your Home Assistant profile; its "Auto" setting uses this locale. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
+| `round_temperatures` | boolean | no | `true` | When `true`, temperatures are rounded to the nearest integer in every section. Set to `false` to show fractional values (if the weather provider has fractionals). Each section can override it with its own `round_temperatures`. |
 | `tap_action` | object | no | `more-info` | [Action](https://www.home-assistant.io/dashboards/actions/) to run when the card is tapped, e.g. `navigate`, `url`, `more-info` (of `entity`) or `perform-action`. Set `action: none` to make the card not clickable. |
 | `additional_sensors` | object | no | - | Sensors that replace values of the weather entity. See [Additional Sensors Options](#additional-sensors-options). |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |
@@ -307,7 +308,7 @@ sections:
 
 | Name | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `temperature` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown with the sensor's display precision (at most one decimal if none is set) and rounded per section by `round_temperatures`. While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
+| `temperature` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown in the header with the sensor's display precision when one is set in Home Assistant (regardless of `round_temperatures`), and otherwise rounded per section by `round_temperatures` (at most one decimal when not rounded). While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
 
 ```yaml
 additional_sensors:
@@ -328,6 +329,7 @@ Renders the current-weather icon next to the configurable rows of segments (cloc
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
 | `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon, capped at half the card width. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
+| `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, the temperatures of `weather` segments (`temperature`, `apparent_temperature`, `dew_point` and values with a `°C`/`°F` `unit_attribute`) are rounded to the nearest integer. The display precision of `additional_sensors.temperature` takes precedence when set. |
 | `rows` | list | no | See [Default Header Rows](#default-header-rows) | List of rows to display. See [Row Options](#row-options). |
 
 #### `forecast_strip`
@@ -349,7 +351,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `forecast_type` | `hourly` \| `daily` | no | `hourly` | Forecast data shown in the strip. |
 | `count` | number | no | `24` | Maximum number of columns to render, including the leading "Now"/"Today" entry and any sunrise/sunset columns. Fewer are shown if the provider returns less. |
 | `animated_icons` | boolean | no | `false` | Whether the strip's weather icons should be animated. Defaults to `false` to keep the strip lightweight. |
-| `round_temperatures` | boolean | no | `true` | When `true`, temperatures in the strip are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
+| `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, temperatures in the strip are rounded to the nearest integer. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
 | `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
 | `hide_attribute` | boolean | no | `false` | Hide the attribute row, including the space it reserves. `attribute`, `attribute_icon`, `attribute_unit` and `attribute_color` are ignored while it is `true`. |
@@ -380,7 +382,7 @@ Requires a weather entity that advertises the `FORECAST_DAILY` or `FORECAST_HOUR
 | `hide_current_temp_indicator` | boolean | no | `false` | When `true`, the dot showing the current temperature on today's row (daily) or the "Now" row (hourly) is not rendered. |
 | `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) format pattern for the hourly row labels. The default `t` is the localized short time, e.g. `15:00` or `3:00 PM` depending on the locale and the time format in your Home Assistant profile; `H` shows only the hour. |
 | `animated_icons` | boolean | no | `false` | Whether the list's weather icons should be animated. Defaults to `false` to keep the section lightweight. |
-| `round_temperatures` | boolean | no | `true` | When `true`, the low and high temperatures are rounded to the nearest integer. Set to `false` to show fractional values (if the weather provider has fractionals). |
+| `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, the low and high temperatures are rounded to the nearest integer. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast list. Falls back to the card's main `weather_icon_type` when unset. |
 | `attribute` | string | no | `temperature` | Forecast attribute shown in the list: `temperature` or any numeric forecast attribute (see [Forecast attributes](#forecast-attributes)). For any attribute other than `temperature`, each row shows a single value right of its bar, which runs from `0` to the row's value; all bars share one axis spanning `0` and every visible value. The current-temperature dot is only shown for `temperature`. |
 | `attribute_unit` | string | no | resolved unit (`temperature_unit` for `temperature`, see [Forecast attributes](#forecast-attributes)) | Unit shown after each value, overriding the resolved one. Values are not converted. Set to `""` to show no unit. |

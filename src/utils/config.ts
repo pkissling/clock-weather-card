@@ -38,10 +38,11 @@ export const DEFAULT_TAP_ACTION = { action: 'more-info' } as const
 export const DEFAULTS = {
   weather_icon_type: 'line',
   sun_entity: 'sun.sun',
+  round_temperatures: true,
   sections: {
     header: { hide: false, animated_icons: true },
-    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, round_temperatures: true, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
-    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, round_temperatures: true, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
+    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
 
@@ -162,8 +163,10 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     })
   })
 
+  assertBoolean('round_temperatures', config.round_temperatures)
   assertBoolean('sections.header.hide', header?.hide)
   assertBoolean('sections.header.animated_icons', header?.animated_icons)
+  assertBoolean('sections.header.round_temperatures', header?.round_temperatures)
   assertBoolean('sections.forecast_strip.hide', strip?.hide)
   assertBoolean('sections.forecast_strip.animated_icons', strip?.animated_icons)
   assertBoolean('sections.forecast_strip.round_temperatures', strip?.round_temperatures)
@@ -212,6 +215,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
   const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
   const D = DEFAULTS.sections
   const weatherIconType = config.weather_icon_type || DEFAULTS.weather_icon_type
+  const roundTemperatures = config.round_temperatures ?? DEFAULTS.round_temperatures
   return {
     entity: config.entity,
     title: config.title ?? null,
@@ -228,6 +232,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       animatedIcons: header?.animated_icons ?? D.header.animated_icons,
       weatherIconType: header?.weather_icon_type ?? weatherIconType,
       weatherIconSize: header?.weather_icon_size ?? null,
+      roundTemperatures: header?.round_temperatures ?? roundTemperatures,
     },
     forecastStrip: {
       hidden: strip?.hide ?? D.forecast_strip.hide,
@@ -235,7 +240,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       forecastType: strip?.forecast_type ?? D.forecast_strip.forecast_type,
       count: strip?.count ?? D.forecast_strip.count,
       animatedIcons: strip?.animated_icons ?? D.forecast_strip.animated_icons,
-      roundTemperatures: strip?.round_temperatures ?? D.forecast_strip.round_temperatures,
+      roundTemperatures: strip?.round_temperatures ?? roundTemperatures,
       weatherIconType: strip?.weather_icon_type ?? weatherIconType,
       hideSunriseSunset: strip?.hide_sunrise_sunset ?? D.forecast_strip.hide_sunrise_sunset,
       hideAttribute: strip?.hide_attribute ?? D.forecast_strip.hide_attribute,
@@ -255,7 +260,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       barThickness: list?.bar_thickness ?? D.forecast_list.bar_thickness,
       hideCurrentTempIndicator: list?.hide_current_temp_indicator ?? D.forecast_list.hide_current_temp_indicator,
       animatedIcons: list?.animated_icons ?? D.forecast_list.animated_icons,
-      roundTemperatures: list?.round_temperatures ?? D.forecast_list.round_temperatures,
+      roundTemperatures: list?.round_temperatures ?? roundTemperatures,
       timePattern: list?.time_pattern ?? D.forecast_list.time_pattern,
       weatherIconType: list?.weather_icon_type ?? weatherIconType,
       attribute: list?.attribute ?? D.forecast_list.attribute,

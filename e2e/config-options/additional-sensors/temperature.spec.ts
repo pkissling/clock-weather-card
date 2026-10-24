@@ -12,7 +12,8 @@ const DAILY: DailyWeatherForecast[] = [
   { datetime: '2025-09-14T00:00:00+00:00', condition: 'sunny', templow: 15, temperature: 20, precipitation_probability: 0 },
 ]
 
-const cardConfig = (sections = ''): string => `
+const cardConfig = (sections = '', round = true): string => `
+  round_temperatures: ${round}
   additional_sensors:
     temperature: ${SENSOR}
   sections:
@@ -25,7 +26,7 @@ const cardConfig = (sections = ''): string => `
 `
 
 test.describe('additional_sensors.temperature', () => {
-  test('replaces the current temperature everywhere, converted and limited to one decimal', async ({ setupCard, clockWeatherCard }) => {
+  test('replaces the current temperature everywhere, converted', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       entities: { [SENSOR]: { state: '74.31', attributes: { unit_of_measurement: '°F' } } },
       date: NOW,
@@ -37,7 +38,7 @@ test.describe('additional_sensors.temperature', () => {
     })
 
     await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
-      .toHaveText('23.5°C')
+      .toHaveText('24°C')
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .label')
       .first())
       .toHaveText('24°C')
@@ -49,20 +50,19 @@ test.describe('additional_sensors.temperature', () => {
       .toHaveText('24°C')
   })
 
-  test('keeps the sensor decimal when round_temperatures is false', async ({ setupCard, clockWeatherCard }) => {
+  test('limits the sensor to one decimal when round_temperatures is false', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       entities: { [SENSOR]: { state: '23.46', attributes: { unit_of_measurement: '°C' } } },
       date: NOW,
       cardConfig: cardConfig(`
-    forecast_strip:
-      round_temperatures: false
     forecast_list:
       forecast_type: hourly
-      round_temperatures: false
-      `),
+      `, false),
       weather: { forecast_hourly: HOURLY },
     })
 
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+      .toHaveText('23.5°C')
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .label')
       .first())
       .toHaveText('23.5°C')
@@ -111,10 +111,10 @@ test.describe('additional_sensors.temperature', () => {
     await haApi.setEntityState(SENSOR, '18.2', { unit_of_measurement: '°C' })
 
     await expect(segment)
-      .toHaveText('18.2°C')
+      .toHaveText('18°C')
   })
 
-  test('follows the sensor\'s display precision', async ({ setupCard, clockWeatherCard }) => {
+  test('follows the sensor\'s display precision over round_temperatures', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: cardConfig()
         .replace(SENSOR, 'sensor.mock_sensor'),
@@ -136,7 +136,7 @@ test.describe('additional_sensors.temperature', () => {
   test('swaps to the error card without page errors when the sensor disappears (no reload)', async ({ page, setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({ cardConfig: cardConfig(), entities: { [SENSOR]: { state: '18.2', attributes: { unit_of_measurement: '°C' } } } })
     await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
-      .toHaveText('18.2°C')
+      .toHaveText('18°C')
     const errors: Error[] = []
     const onError = (e: Error): void => { errors.push(e) }
     page.on('pageerror', onError)

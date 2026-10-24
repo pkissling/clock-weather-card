@@ -43,6 +43,7 @@ const iconTypeSelector = ({ hass }: FormContext): object => ({
 })
 
 const inheritedIconType = { selector: iconTypeSelector, default: ({ config }: FormContext) => config.weather_icon_type ?? DEFAULTS.weather_icon_type }
+const inheritedRounding = { selector: bool, default: ({ config }: FormContext) => config.round_temperatures ?? DEFAULTS.round_temperatures }
 
 const TIME_PATTERNS = ['t', 'tt', 'T', 'TT', 'HH:mm', 'HH:mm:ss', 'H:mm', 'h:mm a', 'h:mm:ss a']
 const FORECAST_TIME_PATTERNS = ['t', 'T', 'HH:mm', 'H:mm', 'h:mm a', 'H', 'h a']
@@ -70,6 +71,7 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'title', selector: text, group: 'essentials' },
   { name: 'weather_icon_type', selector: iconTypeSelector, group: 'appearance' },
   { name: 'temperature_unit', selector: { select: { mode: 'box', options: Object.keys(TEMPERATURE_UNIT_SYMBOLS) } }, default: temperatureUnitOf, group: 'appearance' },
+  { name: 'round_temperatures', selector: bool, group: 'appearance' },
   { name: 'tap_action', selector: { ui_action: { default_action: DEFAULT_TAP_ACTION.action } }, group: 'interaction' },
   { name: 'locale', selector: ({ hass }: FormContext) => ({ select: { custom_value: true, options: localeOptions(hass) } }), default: ({ hass }: FormContext) => hassService.getLocale(hass), group: 'region' },
   { name: 'time_zone', selector: { select: { custom_value: true, options: TIME_ZONES } }, default: ({ hass }: FormContext) => hassService.getTimeZone(hass), group: 'region' },
@@ -90,7 +92,7 @@ const sectionCommon = (forecastType: SectionKey): EditorField[] => [
 
 const sectionLook: EditorField[] = [
   { name: 'weather_entity', selector: { entity: { domain: 'weather' } }, default: ({ config }: FormContext) => config.entity, advanced: true },
-  { name: 'round_temperatures', selector: bool, advanced: true },
+  { name: 'round_temperatures', ...inheritedRounding, advanced: true },
   { name: 'animated_icons', selector: bool, advanced: true },
   { name: 'weather_icon_type', ...inheritedIconType, advanced: true },
 ]
@@ -101,6 +103,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
     { name: 'rows', control: 'rows' },
     { name: 'animated_icons', selector: bool },
     { name: 'weather_icon_size', selector: text, advanced: true },
+    { name: 'round_temperatures', ...inheritedRounding, advanced: true },
     { name: 'weather_icon_type', ...inheritedIconType, advanced: true },
   ],
   forecast_strip: [
