@@ -9,8 +9,8 @@ test.describe('entity', () => {
       weather: { state: 'rainy' },
     })
 
-    await expect(clockWeatherCard)
-      .toContainText('Rainy')
+    await expect(clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img'))
+      .toHaveAttribute('src', /rain/)
   })
 
   test('renders an error card when the configured entity does not exist', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
@@ -56,8 +56,8 @@ test.describe('entity', () => {
         entity: weather.mock_weather
       `,
     })
-    await expect(clockWeatherCard)
-      .toContainText('Sunny')
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
+      .toBeVisible()
 
     await setupCard({
       cardConfig: `
@@ -84,7 +84,7 @@ test.describe('entity', () => {
       `,
     })
 
-    await expect(clockWeatherCard)
-      .toContainText('Sunny')
+    await expect(clockWeatherCard.locator('clock-weather-card-header'))
+      .toBeVisible()
   })
 })

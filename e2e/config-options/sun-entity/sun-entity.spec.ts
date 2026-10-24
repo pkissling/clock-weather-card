@@ -42,19 +42,25 @@ test.describe('sun_entity', () => {
 
   for (const state of ['sunny', 'clear-night']) {
     test(`a clear "${state}" sky follows the sun entity in the header text and icon`, async ({ setupCard, clockWeatherCard }) => {
-      const header = clockWeatherCard.locator('clock-weather-card-header')
-      const icon = header.locator('clock-weather-card-icon img')
+      const cardConfig = `
+        sections:
+          header:
+            rows:
+              - segments:
+                  - type: weather
+      `
+      const text = clockWeatherCard.locator('clock-weather-card-weather-segment')
+      const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
 
-      await setupCard({ sun: { state: 'above_horizon' }, weather: { state } })
-      await expect(header)
-        .toContainText('Sunny')
+      await setupCard({ cardConfig, sun: { state: 'above_horizon' }, weather: { state } })
+      await expect(text)
+        .toHaveText('Sunny')
       await expect(icon)
         .toHaveAttribute('src', /clear-day/)
 
-      await setupCard({ sun: { state: 'below_horizon' }, weather: { state } })
-      await expect(header)
-        .toContainText('Clear')
-      await expect(header).not.toContainText('Sunny')
+      await setupCard({ cardConfig, sun: { state: 'below_horizon' }, weather: { state } })
+      await expect(text)
+        .toHaveText('Clear')
       await expect(icon)
         .toHaveAttribute('src', /clear-night/)
     })

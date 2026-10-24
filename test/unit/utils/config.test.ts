@@ -43,7 +43,8 @@ describe('resolveConfig', () => {
                 { type: 'icon', icon: 'mdi:thermometer' },
                 { type: 'weather', attribute: 'temperature' },
                 { type: 'spacer' },
-                { type: 'weather' },
+                { type: 'icon', icon: 'mdi:water-percent' },
+                { type: 'weather', attribute: 'humidity' },
               ],
             },
             {

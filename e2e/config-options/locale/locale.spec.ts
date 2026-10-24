@@ -213,19 +213,27 @@ test.describe('locale', () => {
       .toHaveText('10:20 am')
   })
 
-  test('keeps the translations when the Home Assistant profile sets a time format', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({ language: 'zh-Hant', timeFormat: '24' })
+  const weatherStateConfig = `
+    sections:
+      header:
+        rows:
+          - segments:
+              - type: weather
+  `
 
-    await expect(clockWeatherCard)
-      .toContainText('晴天')
+  test('keeps the translations when the Home Assistant profile sets a time format', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ language: 'zh-Hant', timeFormat: '24', cardConfig: weatherStateConfig })
+
+    await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+      .toHaveText('晴天')
   })
 
   for (const [language, sunny] of [['sr-Latn', 'Sunčano'], ['zh-Hans', '晴'], ['zh-Hant', '晴天']]) {
     test(`uses the ${language} translation for Home Assistant's ${language} language`, async ({ setupCard, clockWeatherCard }) => {
-      await setupCard({ language })
+      await setupCard({ language, cardConfig: weatherStateConfig })
 
-      await expect(clockWeatherCard)
-        .toContainText(sunny)
+      await expect(clockWeatherCard.locator('clock-weather-card-weather-segment'))
+        .toHaveText(sunny)
     })
   }
 })

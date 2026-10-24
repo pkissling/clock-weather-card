@@ -510,7 +510,10 @@ rows:
       - type: weather
         attribute: temperature
       - type: spacer
+      - type: icon
+        icon: mdi:water-percent
       - type: weather
+        attribute: humidity
   - font_size: 4rem
     alignment: center
     segments:

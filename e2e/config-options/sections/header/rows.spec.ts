@@ -9,26 +9,28 @@ test.describe('sections.header.rows', () => {
   test('renders the default 3 rows when rows is omitted', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       date: new Date('2026-04-27T15:30:00Z'),
-      weather: { temperature: 21 },
+      weather: { temperature: 21, humidity: 64 },
     })
 
     // 3 rows.
     await expect(clockWeatherCard.locator('clock-weather-card-header-details-row'))
       .toHaveCount(3)
 
-    // Row 1: thermometer icon, temperature, spacer, weather state.
+    // Row 1: thermometer icon, temperature, spacer, humidity icon, humidity.
     const firstRow = clockWeatherCard.locator('clock-weather-card-header-details-row')
       .first()
     await expect(firstRow.locator('> *'))
-      .toHaveCount(4)
-    await expect(firstRow.locator('clock-weather-card-icon-segment ha-icon[icon="mdi:thermometer"]'))
+      .toHaveCount(5)
+    await expect(firstRow.locator('clock-weather-card-icon-segment ha-icon')
+      .first())
+      .toHaveAttribute('icon', 'mdi:thermometer')
+    await expect(firstRow.locator('clock-weather-card-icon-segment ha-icon')
+      .last())
+      .toHaveAttribute('icon', 'mdi:water-percent')
+    await expect(firstRow.locator('clock-weather-card-weather-segment'))
+      .toHaveText(['21°C', '64%'])
+    await expect(firstRow.locator('clock-weather-card-spacer-segment'))
       .toHaveCount(1)
-    await expect(firstRow)
-      .toContainText('21')
-    await expect(firstRow.locator('clock-weather-card-weather-icon-segment'))
-      .toHaveCount(0)
-    await expect(firstRow)
-      .toContainText('Sunny')
 
     // Row 2: centered time. UTC 15:30 → Europe/Berlin (HA default tz, CEST) 17:30.
     await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
@@ -43,9 +45,6 @@ test.describe('sections.header.rows', () => {
       .toHaveCount(1)
     await expect(clockWeatherCard.locator('clock-weather-card-date-segment'))
       .toHaveText('27 April 2026')
-
-    await expect(clockWeatherCard.locator('clock-weather-card-spacer-segment'))
-      .toHaveCount(1)
 
   })
 
