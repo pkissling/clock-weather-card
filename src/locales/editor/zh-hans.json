@@ -33,6 +33,7 @@
     "count": "条目数",
     "round_temperatures": "温度取整",
     "hide_sunrise_sunset": "隐藏日出和日落",
+    "hide_attribute": "隐藏属性",
     "attribute": "属性",
     "attribute_icon": "属性图标",
     "attribute_unit": "属性单位",

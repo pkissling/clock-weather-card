@@ -37,11 +37,11 @@ test.describe('sections.forecast_strip.attribute', () => {
       .toHaveCount(0)
   })
 
-  test('shows zero values', async ({ setupCard, clockWeatherCard }) => {
+  test('leaves zero precipitation blank', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({ date: FIXED_NOW, cardConfig: stripConfig('precipitation'), weather: { forecast_hourly: FORECAST_HOURLY } })
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveText(['0 mm', '0.44 mm', '1.2 mm'])
+      .toHaveText(['', '0.44 mm', '1.2 mm'])
   })
 
   test('accepts any attribute name and shows its values', async ({ setupCard, clockWeatherCard }) => {
@@ -73,9 +73,23 @@ test.describe('sections.forecast_strip.attribute', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
       .toHaveCount(3)
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item .attribute'))
-      .toHaveCount(0)
+      .toHaveText(['', '', ''])
     await cardErrorMessage(clockWeatherCard.locator('clock-weather-card-forecast-strip'))
       .toBeNull()
+  })
+
+  test('reserves the attribute row when no column has a value', async ({ setupCard, clockWeatherCard }) => {
+    const item = clockWeatherCard.locator('clock-weather-card-forecast-strip-item')
+      .nth(1)
+    await setupCard({ date: FIXED_NOW, weather: { forecast_hourly: FORECAST_HOURLY } })
+    const withValue = (await item.boundingBox())!.height
+
+    await setupCard({ date: FIXED_NOW, weather: { forecast_hourly: FORECAST_HOURLY.map(f => ({ ...f, precipitation_probability: 0 })) } })
+
+    await expect(item.locator('.attribute'))
+      .toHaveText('')
+    expect((await item.boundingBox())!.height)
+      .toBe(withValue)
   })
 
   test('switches the attribute at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {

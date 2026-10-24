@@ -66,6 +66,7 @@ describe('resolveConfig', () => {
           roundTemperatures: true,
           weatherIconType: 'line',
           hideSunriseSunset: false,
+          hideAttribute: false,
           timePattern: 't',
           attribute: 'precipitation_probability',
           attributeRequired: false,

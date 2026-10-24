@@ -33,6 +33,7 @@
     "count": "Número de entradas",
     "round_temperatures": "Redondear temperaturas",
     "hide_sunrise_sunset": "Ocultar amanecer y atardecer",
+    "hide_attribute": "Ocultar atributo",
     "attribute": "Atributo",
     "attribute_icon": "Icono del atributo",
     "attribute_unit": "Unidad del atributo",
