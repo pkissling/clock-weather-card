@@ -150,7 +150,8 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   }
 
   private _syncSubscription(): void {
-    if (!this.hass || !this.config) return
+    // An update already queued when the card swaps to its error view still runs after disconnect.
+    if (!this.isConnected || !this.hass || !this.config) return
     const entityId = this.resolveEntityId()
     const forecastType = this.resolveForecastType()
 
