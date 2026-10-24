@@ -326,7 +326,13 @@ export default css`
 
   clock-weather-card-forecast-strip .skeleton--label {
     width: 1.8rem;
-    height: 0.95rem;
+    height: 0.9rem;
+  }
+
+  clock-weather-card-forecast-strip .skeleton--attribute {
+    width: 1.6rem;
+    height: 0.72rem;
+    margin-top: 2px;
   }
 
   clock-weather-card-forecast-list .skeleton--label {
