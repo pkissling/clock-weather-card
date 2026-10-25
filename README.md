@@ -1,8 +1,8 @@
 # Clock Weather Card
 
 [![HACS](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![Total downloads](https://img.shields.io/github/downloads/pkissling/clock-weather-card/total)](https://github.com/pkissling/clock-weather-card/releases)
-[![Downloads of latest version (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/total?sort=semver)](https://github.com/pkissling/clock-weather-card/releases/latest)
+[![Total downloads](https://img.shields.io/github/downloads/pkissling/clock-weather-card/clock-weather-card.js?displayAssetName=false)](https://github.com/pkissling/clock-weather-card/releases)
+[![Downloads of latest version (latest by SemVer)](https://img.shields.io/github/downloads/pkissling/clock-weather-card/latest/clock-weather-card.js?sort=semver&displayAssetName=false)](https://github.com/pkissling/clock-weather-card/releases/latest)
 [![Current version](https://img.shields.io/github/v/release/pkissling/clock-weather-card)](https://github.com/pkissling/clock-weather-card/releases/latest)
 
 An iOS-inspired clock and weather card for [Home Assistant](https://www.home-assistant.io/) dashboards, available through the [Home Assistant Community Store](https://hacs.xyz).
