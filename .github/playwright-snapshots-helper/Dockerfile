@@ -1,7 +1,4 @@
-# Use official Playwright image with browsers preinstalled.
-# Pin the digest - the v1.64.0-jammy tag is mutable; without pinning, snapshots
-# drift the moment Microsoft republishes the image (different fonts → ~37 px
-# anti-aliasing diff).
+# Digest-pinned: the tag is mutable, and a republished image renders fonts differently and breaks snapshots.
 FROM mcr.microsoft.com/playwright:v1.64.1-jammy@sha256:6075bd984554db82aee96bcdde53197f091dfe8c4b89322c61da77b86308b810
 
 # The host's docker binary can't be mounted in from macOS (Mach-O), so ship a Linux CLI.
