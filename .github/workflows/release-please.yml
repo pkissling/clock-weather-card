@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   release-please:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: googleapis/release-please-action@v5
         id: release

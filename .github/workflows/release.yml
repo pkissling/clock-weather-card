@@ -9,7 +9,7 @@ on:
 jobs:
   release:
     name: Prepare release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -34,6 +34,6 @@ jobs:
         run: gh release upload "${{ github.ref_name }}" dist/*.js dist/*.svg --clobber
 
       - name: Verify HACS compliance
-        uses: hacs/action@main
+        uses: hacs/action@1ebf01c408f29afcb6406bd431bc98fd8cbb15aa # main
         with:
           category: plugin
