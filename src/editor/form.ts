@@ -14,9 +14,9 @@ export interface FormContext {
   config: ClockWeatherCardConfig
 }
 
-// ha-form can't represent "unset" or an empty string as a choice, so these stand in for them.
 translationsService.register('editor', import.meta.glob('../locales/editor/*.json', { eager: true, import: 'default' }))
 
+// ha-form can't represent "unset" or an empty string as a choice, so this stands in for it.
 export const NO_UNIT = '__no_unit__'
 
 export const editorT = (hass: HomeAssistant, key: string): string => translationsService.t(hassService.getLocale(hass), `editor.${key}`)
