@@ -122,7 +122,7 @@ export default css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4px 7px;
+    padding: 8px 7px;
   }
 
   clock-weather-card-forecast-strip-item:first-of-type,
