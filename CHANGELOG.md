@@ -1,5 +1,65 @@
 # Changelog
 
+## [3.0.0](https://github.com/pkissling/clock-weather-card/compare/v2.9.6...v3.0.0) (2026-10-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* most v2 options moved under sections.header, sections.forecast_strip or sections.forecast_list, or are replaced by header segments; time_format and use_browser_time are removed.
+
+### Features
+
+* add a `temperature_sensor` option for the current temperature ([#741](https://github.com/pkissling/clock-weather-card/issues/741)) ([efd8a9a](https://github.com/pkissling/clock-weather-card/commit/efd8a9a89e5f4196c31dba71821d19bb100aa991))
+* add a global round_temperatures option, overridable per section ([#802](https://github.com/pkissling/clock-weather-card/issues/802)) ([8b8c5ee](https://github.com/pkissling/clock-weather-card/commit/8b8c5ee678efec0566db8aa59831b1e231aae4e9))
+* always show the attribute row when any column has a value ([#773](https://github.com/pkissling/clock-weather-card/issues/773)) ([582df53](https://github.com/pkissling/clock-weather-card/commit/582df539ffcb05bf9d14222f4883c5a06db3ef7b))
+* **editor:** always show row alignment and font size ([#767](https://github.com/pkissling/clock-weather-card/issues/767)) ([abe7adb](https://github.com/pkissling/clock-weather-card/commit/abe7adb94d4798d9e5177f5aaf8403713a67f6e3))
+* **editor:** pick colors with the native color picker ([#772](https://github.com/pkissling/clock-weather-card/issues/772)) ([cb7ffe5](https://github.com/pkissling/clock-weather-card/commit/cb7ffe5c2fb6bfddc6d75547a3e4dba59bb7288e))
+* follow the user's profile time zone setting ([#751](https://github.com/pkissling/clock-weather-card/issues/751)) ([d5461b1](https://github.com/pkissling/clock-weather-card/commit/d5461b12bf4e2ee7ea7faee4450858245ed1f5f2))
+* **forecast:** hide zero precipitation in the strip and add hide_attribute ([#799](https://github.com/pkissling/clock-weather-card/issues/799)) ([2be9b30](https://github.com/pkissling/clock-weather-card/commit/2be9b3052d6c65ab45556dfa727412c9c2578010))
+* **forecast:** spread forecast strip columns across the full width ([#777](https://github.com/pkissling/clock-weather-card/issues/777)) ([0836abe](https://github.com/pkissling/clock-weather-card/commit/0836abe83c13f45acaa248a4011cb1669a1861cd))
+* **forecast:** tint the bar track with the theme's secondary text color ([#768](https://github.com/pkissling/clock-weather-card/issues/768)) ([e26631b](https://github.com/pkissling/clock-weather-card/commit/e26631b971ed2c3ee69ae49583fd4fd447e01d60))
+* format numbers per the Home Assistant number format setting ([#752](https://github.com/pkissling/clock-weather-card/issues/752)) ([572f0f8](https://github.com/pkissling/clock-weather-card/commit/572f0f830771ccfa3bfe3e58b670ec4235e163de))
+* **header:** add a gap between header rows ([#780](https://github.com/pkissling/clock-weather-card/issues/780)) ([f865038](https://github.com/pkissling/clock-weather-card/commit/f8650385676ea10434088362297ba8fb875976c7))
+* **header:** add a template segment ([#781](https://github.com/pkissling/clock-weather-card/issues/781)) ([8cf541b](https://github.com/pkissling/clock-weather-card/commit/8cf541b0768b2a9df402a5b2c76f4b2f80544b57))
+* move temperature_sensor to additional_sensors.temperature ([#797](https://github.com/pkissling/clock-weather-card/issues/797)) ([eb23f40](https://github.com/pkissling/clock-weather-card/commit/eb23f40162685c79ff70ec220afef8700c3d1936))
+* report the card size to masonry and sections views ([#769](https://github.com/pkissling/clock-weather-card/issues/769)) ([3b513c3](https://github.com/pkissling/clock-weather-card/commit/3b513c31c2548f822c16a79afc0a3a7ac8abbe12))
+* respect the display precision of sensors ([#758](https://github.com/pkissling/clock-weather-card/issues/758)) ([f22348b](https://github.com/pkissling/clock-weather-card/commit/f22348b1b3ae9348f9e1fecde384beb682537b47))
+* rewrite clock-weather-card ([42094b8](https://github.com/pkissling/clock-weather-card/commit/42094b890622662dd1e5ddb44677800811f2e9e3))
+
+
+### Bug Fixes
+
+* **a11y:** activate the clickable card with Space as well as Enter ([#789](https://github.com/pkissling/clock-weather-card/issues/789)) ([a3fcc85](https://github.com/pkissling/clock-weather-card/commit/a3fcc852248ab251f8a927ab14f8db08d79b9268))
+* **a11y:** describe weather icons with their translated condition ([#790](https://github.com/pkissling/clock-weather-card/issues/790)) ([c8456e2](https://github.com/pkissling/clock-weather-card/commit/c8456e21f902f60c5d5b66f4964bc175624f9e11))
+* **clock:** realign the clock tick after the device sleeps ([#793](https://github.com/pkissling/clock-weather-card/issues/793)) ([9340adc](https://github.com/pkissling/clock-weather-card/commit/9340adc9663b11ea7d6345f32f2fc27a1fb34198))
+* **config:** reject header rows without segments instead of crashing ([#786](https://github.com/pkissling/clock-weather-card/issues/786)) ([b4297f6](https://github.com/pkissling/clock-weather-card/commit/b4297f6a607ee890e932a127aedce621ce67d919))
+* **config:** skip attribute checks while a segment's entity is unavailable ([608affd](https://github.com/pkissling/clock-weather-card/commit/608affd57772c058937f21730b4c893d4ee26ad7))
+* correct the typo in the card picker description ([#791](https://github.com/pkissling/clock-weather-card/issues/791)) ([14c1814](https://github.com/pkissling/clock-weather-card/commit/14c18143671e785147f815b61900eef3d1f6d1d7))
+* **docs:** revert Noctis preview theme to 3.3.5 and ignore the mistagged 3.32 tag ([58d4045](https://github.com/pkissling/clock-weather-card/commit/58d40459b19a26aa71a4e0cb7cecabea09dff4ee))
+* **e2e:** remove the HA container when a run is terminated ([#798](https://github.com/pkissling/clock-weather-card/issues/798)) ([96b947f](https://github.com/pkissling/clock-weather-card/commit/96b947fd7a9e2ed4853d8bec3190ffb8a013db6a))
+* follow the 12/24-hour time format of the Home Assistant profile ([#747](https://github.com/pkissling/clock-weather-card/issues/747)) ([4f9d5d9](https://github.com/pkissling/clock-weather-card/commit/4f9d5d9822fc089a3526db4203735d0da7ba260a))
+* **forecast:** detect night correctly when sunset falls after midnight ([#792](https://github.com/pkissling/clock-weather-card/issues/792)) ([4cb9e8d](https://github.com/pkissling/clock-weather-card/commit/4cb9e8d03c8e668756ffe5145c9ffb86931d7f68))
+* **forecast:** follow the live sun state for the hourly "Now" icon ([#765](https://github.com/pkissling/clock-weather-card/issues/765)) ([a8d6446](https://github.com/pkissling/clock-weather-card/commit/a8d6446146bf0fa18a7b4459fcf464a8c73c992d))
+* **forecast:** render forecast entries with missing temperature or condition ([#785](https://github.com/pkissling/clock-weather-card/issues/785)) ([f01da36](https://github.com/pkissling/clock-weather-card/commit/f01da36e87fea552470eca2f98c95a60f310db48))
+* **forecast:** resubscribe to forecasts after a WebSocket reconnect ([efcbdf2](https://github.com/pkissling/clock-weather-card/commit/efcbdf2d48676a16620ded1d36b225d5e3bb128f))
+* **forecast:** size the strip skeleton like the loaded strip ([#801](https://github.com/pkissling/clock-weather-card/issues/801)) ([e140000](https://github.com/pkissling/clock-weather-card/commit/e140000a8a278289481c1e96779fd9445c3831b5))
+* **header:** ignore unit when `show_unit` is false instead of erroring ([#740](https://github.com/pkissling/clock-weather-card/issues/740)) ([6f0ec4c](https://github.com/pkissling/clock-weather-card/commit/6f0ec4c5d916e62282c5de369dfe803e997bcc58))
+* **header:** separate letter units from the value with a space ([2d2a65d](https://github.com/pkissling/clock-weather-card/commit/2d2a65dc38e223f0c9d5fda5717e0dc14451b71b))
+* **header:** stop header segments from clipping descenders ([#776](https://github.com/pkissling/clock-weather-card/issues/776)) ([8ff3b58](https://github.com/pkissling/clock-weather-card/commit/8ff3b5881cad6520273c651477e1c72678e0268d))
+* keep the last valid config for child components when the config turns invalid ([#796](https://github.com/pkissling/clock-weather-card/issues/796)) ([bbfab82](https://github.com/pkissling/clock-weather-card/commit/bbfab82ba83c4d551e11f0fcc4c70ea12e18f155))
+* re-render when the temperature sensor changes ([#744](https://github.com/pkissling/clock-weather-card/issues/744)) ([05f7af1](https://github.com/pkissling/clock-weather-card/commit/05f7af17da48e3a96e4e7f7b873832a79464802a))
+* recover after temporary weather entity absence ([#732](https://github.com/pkissling/clock-weather-card/issues/732)) ([488a7a1](https://github.com/pkissling/clock-weather-card/commit/488a7a1fe9cf5349f00ad356a29b82265c6e029e))
+* render an empty card instead of hard-coded text while the card loads ([8a2496a](https://github.com/pkissling/clock-weather-card/commit/8a2496aa96776b499e12f078f1aa90758a007043))
+* show clear sky as 'Sunny' by day and 'Clear' at night ([#734](https://github.com/pkissling/clock-weather-card/issues/734)) ([349051b](https://github.com/pkissling/clock-weather-card/commit/349051b2ab20d45af245db74b13e240136f54429))
+* show values that round to zero without a minus sign ([#788](https://github.com/pkissling/clock-weather-card/issues/788)) ([c1f8d1e](https://github.com/pkissling/clock-weather-card/commit/c1f8d1ee2b310b2419fbc27aeceb672a6d99fc1a))
+* tolerate the card bundle being loaded twice ([#733](https://github.com/pkissling/clock-weather-card/issues/733)) ([ed32d5c](https://github.com/pkissling/clock-weather-card/commit/ed32d5c8fc88e2368f013e83abf44da7a991ddf4))
+
+
+### Performance Improvements
+
+* skip config resolution on hass updates the card does not read ([fcabbe8](https://github.com/pkissling/clock-weather-card/commit/fcabbe83a87ab4630199811325a7311ac31af1fa))
+* skip forecast re-renders on unrelated hass updates ([#742](https://github.com/pkissling/clock-weather-card/issues/742)) ([c4ce9c0](https://github.com/pkissling/clock-weather-card/commit/c4ce9c06df811633dbba67d9782985008c9cd2e5))
+
 ## [2.9.6](https://github.com/pkissling/clock-weather-card/compare/v2.9.5...v2.9.6) (2026-10-03)
 
 
