@@ -37,6 +37,8 @@ export default css`
     display: block;
     width: 100%;
     margin: -10% 0;
+    /* Meteocons sit low in their canvas; raindrops would otherwise touch the divider below. */
+    translate: 0 -4%;
   }
 
   clock-weather-card-header-details {
