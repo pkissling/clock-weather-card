@@ -230,6 +230,29 @@ test.describe('forecast_list section', () => {
       .toHaveCount(1)
   })
 
+  test('merges the day/night pairs of a twice-daily forecast when the entity does not advertise FORECAST_DAILY', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: {
+        temperature: 15,
+        supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY, WeatherEntityFeature.FORECAST_TWICE_DAILY],
+        forecast_twice_daily: [
+          { datetime: '2025-09-14T06:00:00-04:00', is_daytime: true, condition: 'sunny', temperature: 20 },
+          { datetime: '2025-09-14T18:00:00-04:00', is_daytime: false, condition: 'clear-night', temperature: 10 },
+          { datetime: '2025-09-15T06:00:00-04:00', is_daytime: true, condition: 'rainy', temperature: 18 },
+          { datetime: '2025-09-15T18:00:00-04:00', is_daytime: false, condition: 'cloudy', temperature: 8 },
+        ],
+      },
+    })
+
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+    await expect(items.locator('.label'))
+      .toHaveText(['Today', 'Mon'])
+    await expect(items.locator('.temperature-low'))
+      .toHaveText(['10°C', '8°C'])
+    await expect(items.locator('.temperature-high'))
+      .toHaveText(['20°C', '18°C'])
+  })
+
   test('skips forecast entries dated before today', async ({ setupCard, clockWeatherCard }) => {
     const withPast: DailyWeatherForecast[] = [
       { datetime: '2025-09-13T00:00:00+00:00', condition: 'cloudy', templow: 0, temperature: 5, precipitation_probability: 0 },

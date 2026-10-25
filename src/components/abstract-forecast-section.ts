@@ -15,10 +15,11 @@ import forecastSubscriptionService from '@/service/forecast-subscription-service
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
-import type { ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
+import type { ForecastType, ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastAttributeNotFound, forecastNotSupported } from '@/utils/errors'
 import { minuteChanged } from '@/utils/luxon'
 import { convertTemperature } from '@/utils/temperature'
+import { mergeTwiceDaily } from '@/utils/twice-daily'
 
 export interface ForecastRow {
   forecast: WeatherForecast
@@ -50,7 +51,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
   public render(): TemplateResult {
     const entityId = this.resolveEntityId()
     const forecastType = this.resolveForecastType()
-    if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
+    if (!this._sourceForecastType(entityId, forecastType)) {
       return this._renderWarning(forecastNotSupported(entityId, forecastType))
     }
     if (!this._loaded) return this.renderSkeleton()
@@ -154,8 +155,9 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     if (!this.isConnected || !this.hass || !this.config) return
     const entityId = this.resolveEntityId()
     const forecastType = this.resolveForecastType()
+    const sourceType = this._sourceForecastType(entityId, forecastType)
 
-    if (!hassService.supportsForecast(this.hass, entityId, forecastType)) {
+    if (!sourceType) {
       logger.debug(`"${entityId}" does not support ${forecastType} forecasts, skipping subscription`)
       if (this.unsubscribe) {
         this._unsubscribe()
@@ -165,14 +167,15 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
       return
     }
 
-    const key = `${entityId}|${forecastType}`
+    const key = `${entityId}|${sourceType}`
     // A failed subscription is retried once the entity's state changes, e.g. when its integration finished loading.
     if (this.unsubscribe && this.subscribedKey === key && (!this.failedEntityState || this.failedEntityState === this.hass.states[entityId])) return
 
     this._unsubscribe()
     this.forecasts = []
     this._loaded = false
-    this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, forecastType, forecasts => {
+    this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, sourceType, received => {
+      const forecasts = received && sourceType === 'twice_daily' ? mergeTwiceDaily(received) : received
       if (forecasts) logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
       else this.failedEntityState = this.hass.states[entityId]
       forecasts?.filter(f => typeof f.temperature !== 'number' || typeof f.condition !== 'string')
@@ -181,6 +184,12 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
       this._loaded = true
     })
     this.subscribedKey = key
+  }
+
+  // Some providers offer no daily forecast, but a twice-daily one that merges into it.
+  private _sourceForecastType(entityId: string, forecastType: SectionForecastType): ForecastType | null {
+    if (hassService.supportsForecast(this.hass, entityId, forecastType)) return forecastType
+    return forecastType === 'daily' && hassService.supportsForecast(this.hass, entityId, 'twice_daily') ? 'twice_daily' : null
   }
 
   private _unsubscribe(): void {
