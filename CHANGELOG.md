@@ -1,12 +1,5 @@
 # Changelog
 
-## [2.9.7](https://github.com/pkissling/clock-weather-card/compare/v2.9.6...v2.9.7) (2026-10-11)
-
-
-### Bug Fixes
-
-* recover after temporary weather entity absence ([#732](https://github.com/pkissling/clock-weather-card/issues/732)) ([488a7a1](https://github.com/pkissling/clock-weather-card/commit/488a7a1fe9cf5349f00ad356a29b82265c6e029e))
-
 ## [2.9.6](https://github.com/pkissling/clock-weather-card/compare/v2.9.5...v2.9.6) (2026-10-03)
 
 
