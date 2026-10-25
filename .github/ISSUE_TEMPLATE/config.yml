@@ -6,6 +6,3 @@ contact_links:
   - name: ❓ Question or help with configuration
     url: https://github.com/pkissling/clock-weather-card/discussions/new?category=help-configuration
     about: Ask how to set something up, or get help with your config.
-  - name: 🧪 v3 beta feedback
-    url: https://github.com/pkissling/clock-weather-card/discussions/new?category=v3-beta-feedback
-    about: Report bugs, migration questions and feedback on the v3 beta.
