@@ -49,34 +49,25 @@ export async function captureAnimation(
   }
 }
 
-// An <img> SVG's SMIL timeline can't be controlled, so each icon is swapped for an inline copy that can be seeked.
+// An <img> SVG's SMIL timeline can't be seeked, but the image freezes at time 0 (image.animation_mode), so each frame shifts every begin by -t.
 async function scrubIcons(page: Page, t: number): Promise<number[]> {
   return page.locator('clock-weather-card-icon > img')
-    .evaluateAll(async (imgs: HTMLImageElement[], t) => {
+    .evaluateAll(async (imgs: (HTMLImageElement & { svg?: string })[], t) => {
       const durations: number[] = []
       for (const img of imgs) {
-        let svg = img.nextElementSibling as SVGSVGElement | null
-        if (svg?.dataset.src !== img.src) {
-          svg?.remove()
-          img.style.display = ''
-          await img.decode()
-          const text = await (await fetch(img.src)).text()
-          svg = document.importNode(new DOMParser()
-            .parseFromString(text, 'image/svg+xml').documentElement, true) as unknown as SVGSVGElement
-          const { width, height } = img.getBoundingClientRect()
-          Object.assign(svg.dataset, { src: img.src, start: String(t) })
-          svg.setAttribute('width', String(width))
-          svg.setAttribute('height', String(height))
-          svg.style.display = getComputedStyle(img).display
-          img.style.display = 'none'
-          img.after(svg)
-          svg.pauseAnimations()
-          for (const el of svg.querySelectorAll('[dur]')) {
-            const [, value, unit] = /^([\d.]+)(ms|s)?$/.exec(el.getAttribute('dur')!) ?? []
-            if (value) durations.push(Math.round(Number(value) * (unit === 'ms' ? 1 : 1000)))
+        if (img.getAttribute('src') !== img.dataset.frame) {
+          img.svg = await (await fetch(img.src)).text()
+          img.dataset.start = String(t)
+          const unsupported = img.svg.match(/<(animate\w*|set)\b(?![^>]*\bbegin="-?[\d.]+s")[^>]*>/)
+          if (unsupported) throw new Error(`Unsupported SMIL timing in ${img.src}: ${unsupported[0]}`)
+          for (const [, value, unit] of img.svg.matchAll(/\bdur="([\d.]+)(ms|s)?"/g)) {
+            durations.push(Math.round(Number(value) * (unit === 'ms' ? 1 : 1000)))
           }
         }
-        svg.setCurrentTime((t - Number(svg.dataset.start)) / 1000)
+        const elapsed = (t - Number(img.dataset.start)) / 1000
+        const frame = img.svg!.replace(/\bbegin="(-?[\d.]+)s"/g, (_, begin: string) => `begin="${(Number(begin) - elapsed).toFixed(3)}s"`)
+        img.src = img.dataset.frame = `data:image/svg+xml,${encodeURIComponent(frame)}`
+        await img.decode()
       }
       return durations
     }, t)
