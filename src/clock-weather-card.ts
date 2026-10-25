@@ -60,10 +60,7 @@ export class ClockWeatherCard extends LitElement {
   private _clock: ClockHandle | null = null
 
   protected render(): TemplateResult {
-    if (!this.hass || !this.config) {
-      // TODO
-      return html`<ha-card><h1>Loading...</h1></ha-card>`
-    }
+    if (!this.hass || !this.config) return html`<ha-card></ha-card>`
 
     if (!this.resolved) {
       return html`
