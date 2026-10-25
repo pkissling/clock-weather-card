@@ -46,8 +46,10 @@ jobs:
         echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
     # Pushes with GITHUB_TOKEN don't trigger workflows, so re-run the tests on the new commit explicitly.
-    - name: Re-run Playwright tests
+    - name: Re-run CI
       if: github.event_name == 'workflow_run' && steps.commit.outputs.head != github.event.workflow_run.head_sha
       env:
         GH_TOKEN: ${{ github.token }}
-      run: gh workflow run playwright.yml -R ${{ github.repository }} --ref ${{ github.event.workflow_run.head_branch }}
+      run: |
+        gh workflow run playwright.yml -R ${{ github.repository }} --ref ${{ github.event.workflow_run.head_branch }}
+        gh workflow run static-checks.yml -R ${{ github.repository }} --ref ${{ github.event.workflow_run.head_branch }}

@@ -5,7 +5,7 @@ name: Release please
 on:
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
@@ -25,3 +25,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run release.yml -R ${{ github.repository }} --ref ${{ steps.release.outputs.tag_name }}
+      # The release PR is pushed with GITHUB_TOKEN, which doesn't trigger workflows, so run the required checks explicitly.
+      - name: Run CI on the release PR
+        if: ${{ steps.release.outputs.pr }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ steps.release.outputs.pr }}
+        run: |
+          BRANCH=$(jq -r .headBranchName <<<"$PR")
+          gh workflow run static-checks.yml -R ${{ github.repository }} --ref "$BRANCH"
+          gh workflow run playwright.yml -R ${{ github.repository }} --ref "$BRANCH"
