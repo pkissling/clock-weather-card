@@ -17,7 +17,7 @@ jobs:
       (github.event.workflow_run.conclusion == 'failure' &&
        github.event.workflow_run.event == 'push' &&
        github.event.workflow_run.head_branch != 'main')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
 
     steps:
     - uses: actions/checkout@v7
