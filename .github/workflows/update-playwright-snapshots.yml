@@ -23,11 +23,13 @@ jobs:
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:stable
 
+    # Commit the regenerated snapshots even if an unrelated test fails; that test keeps CI red anyway.
     - name: Update snapshots
+      continue-on-error: true
       run: .github/playwright-snapshots-helper/run-in-docker.sh --update-snapshots
 
     - name: Pull latest changes
-      run: git pull --rebase
+      run: git pull --rebase --autostash
 
     - name: Commit updated snapshots and docs previews
       id: commit
