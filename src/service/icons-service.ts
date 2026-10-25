@@ -30,7 +30,6 @@ class IconsService {
     return 'mdi:weather-cloudy-alert'
   }
 
-  // TODO: Review mapping between HA weather states and meteocons icon names - there may be more suitable icons available.
   private mapWeatherStateToIconFileName(state: string, isNight: boolean): string {
     const s = state.toLowerCase()
     const dn = isNight ? 'night' : 'day'
