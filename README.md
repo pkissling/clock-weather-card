@@ -110,7 +110,7 @@ sections:
 **Header and daily strip** - the strip shows the coming days instead of hours, with `flat` icons.
 
 <!-- preview: example-daily-strip
-theme: { repo: aFFekopp/noctis, version: 3.32, name: noctis }
+theme: { repo: aFFekopp/noctis, version: 3.3.5, name: noctis }
 dark: true
 weather: { state: partlycloudy, temperature: 19 }
 -->
@@ -129,7 +129,7 @@ sections:
 
 ![The header above a daily forecast strip](docs/previews/example-daily-strip.png)
 
-*[Noctis](https://github.com/aFFekopp/noctis/tree/3.32)*
+*[Noctis](https://github.com/aFFekopp/noctis/tree/3.3.5)*
 
 </td></tr>
 <tr><td>
