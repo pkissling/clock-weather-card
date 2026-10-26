@@ -19,6 +19,7 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property() public weatherIconType!: WeatherIconType
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @state() private _src?: string
+  private _requestedSrc?: string
   // Reflected so e2e tests can wait until the current icon has actually loaded.
   @property({ type: Boolean, reflect: true, attribute: 'data-settled' }) private _settled = false
 
@@ -33,15 +34,31 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
       !changed.has('weatherState') &&
       !changed.has('isNight') &&
       !changed.has('animatedIcon') &&
-      !changed.has('weatherIconType')
+      !changed.has('weatherIconType') &&
+      !changed.has('config')
     ) return
 
     const { weatherIconType, weatherState, isNight, animatedIcon } = this
     const src = iconsService.getWeatherIcon(weatherIconType, animatedIcon, weatherState, isNight)
+    const speed = this.config.animation_speed
     if (!src) {
       logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
       this._settled = true
-    } else if (src !== this._src) {
+    } else if (animatedIcon && speed !== 1) {
+      const requested = `${speed}|${src}`
+      if (requested === this._requestedSrc) return
+      this._requestedSrc = requested
+      this._settled = false
+      void iconsService.getSpeedAdjustedIcon(src, speed)
+        .then((adjusted) => {
+          // A newer icon may have been requested while this one was loading.
+          if (this._requestedSrc !== requested) return
+          if (adjusted === this._src) this._settled = true
+          else this._src = adjusted
+        })
+    } else {
+      this._requestedSrc = undefined
+      if (src === this._src) return
       this._src = src
       this._settled = false
     }
