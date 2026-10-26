@@ -2,7 +2,8 @@
   "sections": {
     "header": "ส่วนหัว",
     "forecast_strip": "แถบพยากรณ์",
-    "forecast_list": "รายการพยากรณ์"
+    "forecast_list": "รายการพยากรณ์",
+    "sensors": "เซ็นเซอร์"
   },
   "groups": {
     "appearance": "รูปลักษณ์",
@@ -52,7 +53,12 @@
     "entity_id": "เอนทิตี",
     "icon": "ไอคอน",
     "text": "ข้อความ",
-    "template": "เทมเพลต"
+    "template": "เทมเพลต",
+    "entities": "เซ็นเซอร์",
+    "position": "ตำแหน่ง",
+    "show_name": "แสดงชื่อ",
+    "sensor_entity": "เอนทิตี",
+    "name": "ชื่อ"
   },
   "helpers": {
     "temperature": "ไม่บังคับ อ่านอุณหภูมิปัจจุบันจากเซ็นเซอร์นี้แทนเอนทิตีสภาพอากาศ เช่น สถานีตรวจอากาศหรือเซ็นเซอร์ภายนอก",
@@ -79,7 +85,11 @@
     "fill": "แบบทึบ",
     "flat": "แบบแบน",
     "line": "แบบเส้น",
-    "monochrome": "แบบสีเดียว"
+    "monochrome": "แบบสีเดียว",
+    "spread": "กระจาย",
+    "below_header": "ใต้ส่วนหัว",
+    "below_strip": "ใต้แถบพยากรณ์",
+    "bottom": "ด้านล่าง"
   },
   "attributes": {
     "temperature": "อุณหภูมิ",
@@ -125,9 +135,12 @@
     "move_left": "เลื่อนไปทางซ้าย",
     "move_right": "เลื่อนไปทางขวา",
     "delete": "ลบ",
-    "add_stop": "เพิ่มจุดสี"
+    "add_stop": "เพิ่มจุดสี",
+    "add_sensor": "เพิ่มเซ็นเซอร์"
   },
   "row": "แถว",
   "empty_row": "แถวว่าง",
-  "default_color": "ค่าเริ่มต้นของธีม"
+  "default_color": "ค่าเริ่มต้นของธีม",
+  "sensor": "เซ็นเซอร์",
+  "no_sensors": "ไม่มีเซ็นเซอร์"
 }

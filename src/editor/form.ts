@@ -91,7 +91,7 @@ export function renderForm(ctx: FormContext, fields: EditorField[], value: Data,
       .hass=${ctx.hass}
       .data=${data}
       .schema=${schema}
-      .computeLabel=${(s: { name: string }) => editorT(ctx.hass, `fields.${s.name}`)}
+      .computeLabel=${(s: { name: string }) => editorT(ctx.hass, visible.find(f => f.name === s.name)?.label ?? `fields.${s.name}`)}
       .computeHelper=${(s: { name: string }) => hasKey(`helpers.${s.name}`) ? editorT(ctx.hass, `helpers.${s.name}`) : undefined}
       @value-changed=${(e: CustomEvent<{ value: Data }>) => {
     e.stopPropagation()

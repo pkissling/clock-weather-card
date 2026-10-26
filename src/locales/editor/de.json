@@ -2,7 +2,8 @@
   "sections": {
     "header": "Kopfbereich",
     "forecast_strip": "Vorhersageleiste",
-    "forecast_list": "Vorhersageliste"
+    "forecast_list": "Vorhersageliste",
+    "sensors": "Sensoren"
   },
   "groups": {
     "appearance": "Darstellung",
@@ -52,7 +53,12 @@
     "entity_id": "Entität",
     "icon": "Symbol",
     "text": "Text",
-    "template": "Template"
+    "template": "Template",
+    "entities": "Sensoren",
+    "position": "Position",
+    "show_name": "Namen anzeigen",
+    "sensor_entity": "Entität",
+    "name": "Name"
   },
   "helpers": {
     "temperature": "Optional. Liest die aktuelle Temperatur aus diesem Sensor statt aus der Wetter-Entität, z. B. einer Wetterstation oder einem Außensensor",
@@ -79,7 +85,11 @@
     "fill": "Gefüllt",
     "flat": "Flach",
     "line": "Linie",
-    "monochrome": "Monochrom"
+    "monochrome": "Monochrom",
+    "spread": "Verteilt",
+    "below_header": "Unter dem Kopfbereich",
+    "below_strip": "Unter der Vorhersageleiste",
+    "bottom": "Unten"
   },
   "attributes": {
     "temperature": "Temperatur",
@@ -125,9 +135,12 @@
     "move_left": "Nach links",
     "move_right": "Nach rechts",
     "delete": "Löschen",
-    "add_stop": "Farbstopp hinzufügen"
+    "add_stop": "Farbstopp hinzufügen",
+    "add_sensor": "Sensor hinzufügen"
   },
   "row": "Zeile",
   "empty_row": "Leere Zeile",
-  "default_color": "Theme-Standard"
+  "default_color": "Theme-Standard",
+  "sensor": "Sensor",
+  "no_sensors": "Keine Sensoren"
 }

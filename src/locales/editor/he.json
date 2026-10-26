@@ -2,7 +2,8 @@
   "sections": {
     "header": "כותרת",
     "forecast_strip": "פס תחזית",
-    "forecast_list": "רשימת תחזית"
+    "forecast_list": "רשימת תחזית",
+    "sensors": "חיישנים"
   },
   "groups": {
     "appearance": "מראה",
@@ -52,7 +53,12 @@
     "entity_id": "ישות",
     "icon": "סמל",
     "text": "טקסט",
-    "template": "תבנית"
+    "template": "תבנית",
+    "entities": "חיישנים",
+    "position": "מיקום",
+    "show_name": "הצגת שמות",
+    "sensor_entity": "ישות",
+    "name": "שם"
   },
   "helpers": {
     "temperature": "אופציונלי. קורא את הטמפרטורה הנוכחית מחיישן זה במקום מישות מזג האוויר, למשל תחנת מזג אוויר או חיישן חיצוני",
@@ -79,7 +85,11 @@
     "fill": "מלא",
     "flat": "שטוח",
     "line": "קווי",
-    "monochrome": "מונוכרום"
+    "monochrome": "מונוכרום",
+    "spread": "מפוזר",
+    "below_header": "מתחת לכותרת",
+    "below_strip": "מתחת לפס התחזית",
+    "bottom": "למטה"
   },
   "attributes": {
     "temperature": "טמפרטורה",
@@ -125,9 +135,12 @@
     "move_left": "הזז שמאלה",
     "move_right": "הזז ימינה",
     "delete": "מחק",
-    "add_stop": "הוסף נקודת צבע"
+    "add_stop": "הוסף נקודת צבע",
+    "add_sensor": "הוספת חיישן"
   },
   "row": "שורה",
   "empty_row": "שורה ריקה",
-  "default_color": "ברירת המחדל של ערכת הנושא"
+  "default_color": "ברירת המחדל של ערכת הנושא",
+  "sensor": "חיישן",
+  "no_sensors": "אין חיישנים"
 }

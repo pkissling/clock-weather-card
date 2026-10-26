@@ -2,7 +2,8 @@
   "sections": {
     "header": "Başlık",
     "forecast_strip": "Tahmin şeridi",
-    "forecast_list": "Tahmin listesi"
+    "forecast_list": "Tahmin listesi",
+    "sensors": "Sensörler"
   },
   "groups": {
     "appearance": "Görünüm",
@@ -52,7 +53,12 @@
     "entity_id": "Varlık",
     "icon": "Simge",
     "text": "Metin",
-    "template": "Şablon"
+    "template": "Şablon",
+    "entities": "Sensörler",
+    "position": "Konum",
+    "show_name": "Adları göster",
+    "sensor_entity": "Varlık",
+    "name": "Ad"
   },
   "helpers": {
     "temperature": "İsteğe bağlı. Mevcut sıcaklığı hava durumu varlığı yerine bu sensörden okur, örn. bir hava istasyonu veya dış mekân sensörü",
@@ -79,7 +85,11 @@
     "fill": "Dolgulu",
     "flat": "Düz",
     "line": "Çizgi",
-    "monochrome": "Tek renkli"
+    "monochrome": "Tek renkli",
+    "spread": "Yayılmış",
+    "below_header": "Başlığın altında",
+    "below_strip": "Tahmin şeridinin altında",
+    "bottom": "En altta"
   },
   "attributes": {
     "temperature": "Sıcaklık",
@@ -125,9 +135,12 @@
     "move_left": "Sola taşı",
     "move_right": "Sağa taşı",
     "delete": "Sil",
-    "add_stop": "Renk durağı ekle"
+    "add_stop": "Renk durağı ekle",
+    "add_sensor": "Sensör ekle"
   },
   "row": "Satır",
   "empty_row": "Boş satır",
-  "default_color": "Tema varsayılanı"
+  "default_color": "Tema varsayılanı",
+  "sensor": "Sensör",
+  "no_sensors": "Sensör yok"
 }

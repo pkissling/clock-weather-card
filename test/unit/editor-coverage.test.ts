@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { editorPaths, ROW_FIELDS, SEGMENT_FIELDS } from '@/editor/fields'
+import { editorPaths, ROW_FIELDS, SEGMENT_FIELDS, SENSOR_ENTITY_FIELDS } from '@/editor/fields'
 
 import { collectConfigPaths, interfaceMembers, segmentMembers } from './config-paths'
 
@@ -18,6 +18,12 @@ describe('the GUI editor covers every YAML option', () => {
   it('row options', () => {
     expect(names(ROW_FIELDS))
       .toEqual(interfaceMembers('RowConfig')
+        .sort())
+  })
+
+  it('sensor entity options', () => {
+    expect(names(SENSOR_ENTITY_FIELDS))
+      .toEqual(interfaceMembers('SensorEntityConfig')
         .sort())
   })
 

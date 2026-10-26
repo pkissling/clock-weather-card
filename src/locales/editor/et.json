@@ -2,7 +2,8 @@
   "sections": {
     "header": "Päis",
     "forecast_strip": "Prognoosiriba",
-    "forecast_list": "Prognoosiloend"
+    "forecast_list": "Prognoosiloend",
+    "sensors": "Andurid"
   },
   "groups": {
     "appearance": "Välimus",
@@ -52,7 +53,12 @@
     "entity_id": "Olem",
     "icon": "Ikoon",
     "text": "Tekst",
-    "template": "Mall"
+    "template": "Mall",
+    "entities": "Andurid",
+    "position": "Asukoht",
+    "show_name": "Näita nimesid",
+    "sensor_entity": "Olem",
+    "name": "Nimi"
   },
   "helpers": {
     "temperature": "Valikuline. Loeb praeguse temperatuuri ilmaüksuse asemel sellelt andurilt, nt ilmajaamast või välisandurilt",
@@ -79,7 +85,11 @@
     "fill": "Täidetud",
     "flat": "Lame",
     "line": "Joon",
-    "monochrome": "Ühevärviline"
+    "monochrome": "Ühevärviline",
+    "spread": "Jaotatud",
+    "below_header": "Päise all",
+    "below_strip": "Prognoosiriba all",
+    "bottom": "All"
   },
   "attributes": {
     "temperature": "Temperatuur",
@@ -125,9 +135,12 @@
     "move_left": "Liiguta vasakule",
     "move_right": "Liiguta paremale",
     "delete": "Kustuta",
-    "add_stop": "Lisa värvipunkt"
+    "add_stop": "Lisa värvipunkt",
+    "add_sensor": "Lisa andur"
   },
   "row": "Rida",
   "empty_row": "Tühi rida",
-  "default_color": "Teema vaikimisi"
+  "default_color": "Teema vaikimisi",
+  "sensor": "Andur",
+  "no_sensors": "Andureid pole"
 }

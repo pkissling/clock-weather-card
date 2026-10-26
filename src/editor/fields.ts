@@ -3,11 +3,11 @@ import { DateTime } from 'luxon'
 import { editorT, type FormContext, localeOptions, NO_UNIT, TIME_ZONES, weatherIconUrl } from '@/editor/form'
 import hassService from '@/service/hass-service'
 import type { SegmentConfig } from '@/types'
-import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
+import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SENSORS_ALIGNMENTS, SENSORS_POSITIONS, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { DEFAULT_TAP_ACTION, defaultAttributeColor, DEFAULTS } from '@/utils/config'
 import { DEFAULT_DATE_PATTERN, DEFAULT_TIME_PATTERN } from '@/utils/luxon'
 
-export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list'
+export type SectionKey = 'header' | 'forecast_strip' | 'forecast_list' | 'sensors'
 export type CardGroup = 'essentials' | 'appearance' | 'sensors' | 'interaction' | 'region'
 type Data = Record<string, unknown>
 
@@ -16,12 +16,14 @@ export interface EditorField {
   // Rendered by ha-form; a function builds context-dependent selectors.
   selector?: object | ((ctx: FormContext) => object)
   // Rendered by a dedicated control instead of ha-form.
-  control?: 'section-toggle' | 'rows' | 'segments' | 'gradient' | 'color' | 'percent'
+  control?: 'section-toggle' | 'rows' | 'sensor-entities' | 'segments' | 'gradient' | 'color' | 'percent'
   // An empty string is a meaningful value, offered as an explicit choice.
   allowEmpty?: boolean
   // Shown preselected while unset; picking it removes the option again. A function resolves defaults that depend on Home Assistant.
   default?: unknown | ((ctx: FormContext) => unknown)
   required?: boolean
+  // Translation key of the label when it differs from `fields.<name>`.
+  label?: string
   advanced?: boolean
   group?: CardGroup
   context?: Record<string, string>
@@ -130,7 +132,22 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
     { name: 'hide_current_temp_indicator', selector: bool, advanced: true, visible: d => d.attribute === 'temperature' },
     ...sectionLook,
   ],
+  sensors: [
+    { name: 'hide', control: 'section-toggle' },
+    { name: 'entities', control: 'sensor-entities' },
+    { name: 'position', selector: { select: { mode: 'box', options: SENSORS_POSITIONS } } },
+    { name: 'alignment', selector: { select: { mode: 'box', options: SENSORS_ALIGNMENTS } } },
+    { name: 'show_name', selector: bool },
+  ],
 }
+
+export const SENSOR_ENTITY_FIELDS: EditorField[] = [
+  { name: 'entity', label: 'fields.sensor_entity', selector: { entity: {} }, required: true },
+  { name: 'name', selector: text },
+  { name: 'icon', selector: { icon: {} } },
+  { name: 'attribute', selector: { attribute: {} }, context: { filter_entity: 'entity' } },
+  { name: 'unit', selector: text },
+]
 
 export const ROW_FIELDS: EditorField[] = [
   { name: 'segments', control: 'segments' },

@@ -2,7 +2,8 @@
   "sections": {
     "header": "Antraštė",
     "forecast_strip": "Prognozės juosta",
-    "forecast_list": "Prognozės sąrašas"
+    "forecast_list": "Prognozės sąrašas",
+    "sensors": "Jutikliai"
   },
   "groups": {
     "appearance": "Išvaizda",
@@ -52,7 +53,12 @@
     "entity_id": "Objektas",
     "icon": "Piktograma",
     "text": "Tekstas",
-    "template": "Šablonas"
+    "template": "Šablonas",
+    "entities": "Jutikliai",
+    "position": "Padėtis",
+    "show_name": "Rodyti pavadinimus",
+    "sensor_entity": "Objektas",
+    "name": "Pavadinimas"
   },
   "helpers": {
     "temperature": "Neprivaloma. Dabartinė temperatūra nuskaitoma iš šio jutiklio vietoj orų objekto, pvz., iš orų stoties ar lauko jutiklio",
@@ -79,7 +85,11 @@
     "fill": "Užpildytas",
     "flat": "Plokščias",
     "line": "Linija",
-    "monochrome": "Vienspalvis"
+    "monochrome": "Vienspalvis",
+    "spread": "Paskirstyta",
+    "below_header": "Po antrašte",
+    "below_strip": "Po prognozės juosta",
+    "bottom": "Apačioje"
   },
   "attributes": {
     "temperature": "Temperatūra",
@@ -125,9 +135,12 @@
     "move_left": "Perkelti kairėn",
     "move_right": "Perkelti dešinėn",
     "delete": "Ištrinti",
-    "add_stop": "Pridėti spalvos tašką"
+    "add_stop": "Pridėti spalvos tašką",
+    "add_sensor": "Pridėti jutiklį"
   },
   "row": "Eilutė",
   "empty_row": "Tuščia eilutė",
-  "default_color": "Temos numatytoji"
+  "default_color": "Temos numatytoji",
+  "sensor": "Jutiklis",
+  "no_sensors": "Jutiklių nėra"
 }

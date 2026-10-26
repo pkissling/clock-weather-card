@@ -2,7 +2,8 @@
   "sections": {
     "header": "Nagłówek",
     "forecast_strip": "Pasek prognozy",
-    "forecast_list": "Lista prognozy"
+    "forecast_list": "Lista prognozy",
+    "sensors": "Czujniki"
   },
   "groups": {
     "appearance": "Wygląd",
@@ -52,7 +53,12 @@
     "entity_id": "Encja",
     "icon": "Ikona",
     "text": "Tekst",
-    "template": "Szablon"
+    "template": "Szablon",
+    "entities": "Czujniki",
+    "position": "Położenie",
+    "show_name": "Pokaż nazwy",
+    "sensor_entity": "Encja",
+    "name": "Nazwa"
   },
   "helpers": {
     "temperature": "Opcjonalne. Odczytuje bieżącą temperaturę z tego czujnika zamiast z encji pogody, np. ze stacji pogodowej lub czujnika zewnętrznego",
@@ -79,7 +85,11 @@
     "fill": "Wypełnione",
     "flat": "Płaskie",
     "line": "Liniowe",
-    "monochrome": "Monochromatyczne"
+    "monochrome": "Monochromatyczne",
+    "spread": "Rozłożone",
+    "below_header": "Pod nagłówkiem",
+    "below_strip": "Pod paskiem prognozy",
+    "bottom": "Na dole"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Przenieś w lewo",
     "move_right": "Przenieś w prawo",
     "delete": "Usuń",
-    "add_stop": "Dodaj punkt koloru"
+    "add_stop": "Dodaj punkt koloru",
+    "add_sensor": "Dodaj czujnik"
   },
   "row": "Wiersz",
   "empty_row": "Pusty wiersz",
-  "default_color": "Domyślny motywu"
+  "default_color": "Domyślny motywu",
+  "sensor": "Czujnik",
+  "no_sensors": "Brak czujników"
 }

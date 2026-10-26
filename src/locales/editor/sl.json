@@ -2,7 +2,8 @@
   "sections": {
     "header": "Glava",
     "forecast_strip": "Pas napovedi",
-    "forecast_list": "Seznam napovedi"
+    "forecast_list": "Seznam napovedi",
+    "sensors": "Senzorji"
   },
   "groups": {
     "appearance": "Videz",
@@ -52,7 +53,12 @@
     "entity_id": "Entiteta",
     "icon": "Ikona",
     "text": "Besedilo",
-    "template": "Predloga"
+    "template": "Predloga",
+    "entities": "Senzorji",
+    "position": "Položaj",
+    "show_name": "Prikaži imena",
+    "sensor_entity": "Entiteta",
+    "name": "Ime"
   },
   "helpers": {
     "temperature": "Neobvezno. Trenutno temperaturo bere s tega senzorja namesto iz vremenske entitete, npr. z vremenske postaje ali zunanjega senzorja",
@@ -79,7 +85,11 @@
     "fill": "Polnilo",
     "flat": "Ploske",
     "line": "Obrisne",
-    "monochrome": "Enobarvne"
+    "monochrome": "Enobarvne",
+    "spread": "Razporejeno",
+    "below_header": "Pod glavo",
+    "below_strip": "Pod trakom napovedi",
+    "bottom": "Spodaj"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Premakni levo",
     "move_right": "Premakni desno",
     "delete": "Izbriši",
-    "add_stop": "Dodaj barvno točko"
+    "add_stop": "Dodaj barvno točko",
+    "add_sensor": "Dodaj senzor"
   },
   "row": "Vrstica",
   "empty_row": "Prazna vrstica",
-  "default_color": "Privzeto iz teme"
+  "default_color": "Privzeto iz teme",
+  "sensor": "Senzor",
+  "no_sensors": "Ni senzorjev"
 }

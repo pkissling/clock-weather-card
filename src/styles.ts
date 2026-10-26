@@ -107,6 +107,73 @@ export default css`
     display: block;
   }
 
+  clock-weather-card-sensors {
+    display: block;
+  }
+
+  clock-weather-card-sensors .sensors {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 16px;
+    row-gap: 4px;
+    padding: 6px 0;
+  }
+
+  clock-weather-card-sensors .sensors--spread {
+    justify-content: space-between;
+  }
+
+  clock-weather-card-sensors .sensors--left {
+    justify-content: left;
+  }
+
+  clock-weather-card-sensors .sensors--center {
+    justify-content: center;
+  }
+
+  clock-weather-card-sensors .sensors--right {
+    justify-content: right;
+  }
+
+  clock-weather-card-sensors .sensor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 40px;
+    padding: 4px 7px;
+    cursor: pointer;
+    outline: none;
+    --mdc-icon-size: 32px;
+  }
+
+  clock-weather-card-sensors .sensor ha-state-icon {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    color: var(--state-icon-color, var(--secondary-text-color));
+  }
+
+  clock-weather-card-sensors .sensor-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  clock-weather-card-sensors .sensor-name {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   clock-weather-card-forecast-strip .strip {
     display: flex;
     justify-content: space-between;

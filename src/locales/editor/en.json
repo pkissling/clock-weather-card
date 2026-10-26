@@ -2,7 +2,8 @@
   "sections": {
     "header": "Header",
     "forecast_strip": "Forecast strip",
-    "forecast_list": "Forecast list"
+    "forecast_list": "Forecast list",
+    "sensors": "Sensors"
   },
   "groups": {
     "appearance": "Appearance",
@@ -52,7 +53,12 @@
     "entity_id": "Entity",
     "icon": "Icon",
     "text": "Text",
-    "template": "Template"
+    "template": "Template",
+    "entities": "Sensors",
+    "position": "Position",
+    "show_name": "Show names",
+    "sensor_entity": "Entity",
+    "name": "Name"
   },
   "helpers": {
     "temperature": "Optional. Reads the current temperature from this sensor instead of the weather entity, e.g. a weather station or outdoor sensor",
@@ -79,7 +85,11 @@
     "fill": "Fill",
     "flat": "Flat",
     "line": "Line",
-    "monochrome": "Monochrome"
+    "monochrome": "Monochrome",
+    "spread": "Spread",
+    "below_header": "Below header",
+    "below_strip": "Below forecast strip",
+    "bottom": "Bottom"
   },
   "attributes": {
     "temperature": "Temperature",
@@ -125,9 +135,12 @@
     "move_left": "Move left",
     "move_right": "Move right",
     "delete": "Delete",
-    "add_stop": "Add color stop"
+    "add_stop": "Add color stop",
+    "add_sensor": "Add sensor"
   },
   "row": "Row",
   "empty_row": "Empty row",
-  "default_color": "Theme default"
+  "default_color": "Theme default",
+  "sensor": "Sensor",
+  "no_sensors": "No sensors"
 }

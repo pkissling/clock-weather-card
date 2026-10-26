@@ -2,7 +2,8 @@
   "sections": {
     "header": "ヘッダー",
     "forecast_strip": "予報ストリップ",
-    "forecast_list": "予報リスト"
+    "forecast_list": "予報リスト",
+    "sensors": "センサー"
   },
   "groups": {
     "appearance": "外観",
@@ -52,7 +53,12 @@
     "entity_id": "エンティティ",
     "icon": "アイコン",
     "text": "テキスト",
-    "template": "テンプレート"
+    "template": "テンプレート",
+    "entities": "センサー",
+    "position": "位置",
+    "show_name": "名前を表示",
+    "sensor_entity": "エンティティ",
+    "name": "名前"
   },
   "helpers": {
     "temperature": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
@@ -79,7 +85,11 @@
     "fill": "塗りつぶし",
     "flat": "フラット",
     "line": "線",
-    "monochrome": "モノクロ"
+    "monochrome": "モノクロ",
+    "spread": "均等配置",
+    "below_header": "ヘッダーの下",
+    "below_strip": "予報ストリップの下",
+    "bottom": "下部"
   },
   "attributes": {
     "temperature": "温度",
@@ -125,9 +135,12 @@
     "move_left": "左へ移動",
     "move_right": "右へ移動",
     "delete": "削除",
-    "add_stop": "カラーストップを追加"
+    "add_stop": "カラーストップを追加",
+    "add_sensor": "センサーを追加"
   },
   "row": "行",
   "empty_row": "空の行",
-  "default_color": "テーマの既定"
+  "default_color": "テーマの既定",
+  "sensor": "センサー",
+  "no_sensors": "センサーなし"
 }

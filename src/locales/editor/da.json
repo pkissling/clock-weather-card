@@ -2,7 +2,8 @@
   "sections": {
     "header": "Sidehoved",
     "forecast_strip": "Prognosebjælke",
-    "forecast_list": "Prognoseliste"
+    "forecast_list": "Prognoseliste",
+    "sensors": "Sensorer"
   },
   "groups": {
     "appearance": "Udseende",
@@ -52,7 +53,12 @@
     "entity_id": "Entitet",
     "icon": "Ikon",
     "text": "Tekst",
-    "template": "Skabelon"
+    "template": "Skabelon",
+    "entities": "Sensorer",
+    "position": "Placering",
+    "show_name": "Vis navne",
+    "sensor_entity": "Entitet",
+    "name": "Navn"
   },
   "helpers": {
     "temperature": "Valgfri. Læser den aktuelle temperatur fra denne sensor i stedet for vejrentiteten, f.eks. en vejrstation eller udendørssensor",
@@ -79,7 +85,11 @@
     "fill": "Udfyldt",
     "flat": "Flad",
     "line": "Streg",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "spread": "Fordelt",
+    "below_header": "Under overskriften",
+    "below_strip": "Under prognosebåndet",
+    "bottom": "Nederst"
   },
   "attributes": {
     "temperature": "Temperatur",
@@ -125,9 +135,12 @@
     "move_left": "Flyt til venstre",
     "move_right": "Flyt til højre",
     "delete": "Slet",
-    "add_stop": "Tilføj farvestop"
+    "add_stop": "Tilføj farvestop",
+    "add_sensor": "Tilføj sensor"
   },
   "row": "Række",
   "empty_row": "Tom række",
-  "default_color": "Temastandard"
+  "default_color": "Temastandard",
+  "sensor": "Sensor",
+  "no_sensors": "Ingen sensorer"
 }

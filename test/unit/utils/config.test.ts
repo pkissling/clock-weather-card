@@ -8,7 +8,7 @@ import { DEFAULT_GRADIENT } from '@/utils/gradient'
 const hass = {
   language: 'de',
   config: { time_zone: 'Europe/Berlin' },
-  states: Object.fromEntries(['weather.home', 'weather.strip', 'weather.list', 'sun.sun'].map(id => [id, { state: 'ok' }])),
+  states: Object.fromEntries(['weather.home', 'weather.strip', 'weather.list', 'sun.sun', 'sensor.uv'].map(id => [id, { state: 'ok', attributes: {} }])),
 } as unknown as HomeAssistant
 
 const config = (overrides: Partial<ClockWeatherCardConfig> = {}): ClockWeatherCardConfig => ({
@@ -89,6 +89,13 @@ describe('resolveConfig', () => {
           attribute: 'temperature',
           attribute_unit: null,
           gradient: DEFAULT_GRADIENT,
+        },
+        sensors: {
+          hide: false,
+          position: 'below_header',
+          alignment: 'spread',
+          show_name: false,
+          entities: [],
         },
       })
   })
@@ -178,5 +185,24 @@ describe('resolveConfig', () => {
 
     expect(resolved.forecast_list.gradient)
       .toEqual({ 0: '#000000' })
+  })
+
+  it('resolves the sensors section', () => {
+    const resolved = resolveConfig(config({ sections: { sensors: { position: 'bottom', entities: [{ entity: 'sensor.uv', name: 'UV' }] } } }), hass)
+
+    expect(resolved.sensors)
+      .toEqual({ hide: false, position: 'bottom', alignment: 'spread', show_name: false, entities: [{ entity: 'sensor.uv', name: 'UV' }] })
+  })
+
+  it.each([
+    [{ position: 'top' }, 'sections.sensors.position'],
+    [{ alignment: 'justify' }, 'sections.sensors.alignment'],
+    [{ entities: 'sensor.uv' }, 'sections.sensors.entities'],
+    [{ entities: [{ name: 'UV' }] }, 'sections.sensors.entities[0].entity'],
+    [{ entities: [{ entity: 'sensor.missing' }] }, 'sensor.missing'],
+    [{ entities: [{ entity: 'sensor.uv', attribute: 'nope' }] }, 'sections.sensors.entities[0].attribute'],
+  ])('rejects invalid sensors config %j', (sensors, message) => {
+    expect(() => resolveConfig(config({ sections: { sensors } } as unknown as Partial<ClockWeatherCardConfig>), hass))
+      .toThrow(message)
   })
 })

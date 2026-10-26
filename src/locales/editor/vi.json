@@ -2,7 +2,8 @@
   "sections": {
     "header": "Tiêu đề",
     "forecast_strip": "Dải dự báo",
-    "forecast_list": "Danh sách dự báo"
+    "forecast_list": "Danh sách dự báo",
+    "sensors": "Cảm biến"
   },
   "groups": {
     "appearance": "Giao diện",
@@ -52,7 +53,12 @@
     "entity_id": "Thực thể",
     "icon": "Biểu tượng",
     "text": "Văn bản",
-    "template": "Mẫu"
+    "template": "Mẫu",
+    "entities": "Cảm biến",
+    "position": "Vị trí",
+    "show_name": "Hiện tên",
+    "sensor_entity": "Thực thể",
+    "name": "Tên"
   },
   "helpers": {
     "temperature": "Tùy chọn. Đọc nhiệt độ hiện tại từ cảm biến này thay vì thực thể thời tiết, ví dụ trạm thời tiết hoặc cảm biến ngoài trời",
@@ -79,7 +85,11 @@
     "fill": "Tô đầy",
     "flat": "Phẳng",
     "line": "Đường nét",
-    "monochrome": "Đơn sắc"
+    "monochrome": "Đơn sắc",
+    "spread": "Dàn đều",
+    "below_header": "Dưới phần đầu",
+    "below_strip": "Dưới dải dự báo",
+    "bottom": "Dưới cùng"
   },
   "attributes": {
     "temperature": "Nhiệt độ",
@@ -125,9 +135,12 @@
     "move_left": "Di chuyển sang trái",
     "move_right": "Di chuyển sang phải",
     "delete": "Xóa",
-    "add_stop": "Thêm điểm màu"
+    "add_stop": "Thêm điểm màu",
+    "add_sensor": "Thêm cảm biến"
   },
   "row": "Hàng",
   "empty_row": "Hàng trống",
-  "default_color": "Mặc định của chủ đề"
+  "default_color": "Mặc định của chủ đề",
+  "sensor": "Cảm biến",
+  "no_sensors": "Không có cảm biến"
 }

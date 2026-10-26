@@ -2,7 +2,8 @@
   "sections": {
     "header": "Koptekst",
     "forecast_strip": "Verwachtingsstrook",
-    "forecast_list": "Verwachtingslijst"
+    "forecast_list": "Verwachtingslijst",
+    "sensors": "Sensoren"
   },
   "groups": {
     "appearance": "Uiterlijk",
@@ -52,7 +53,12 @@
     "entity_id": "Entiteit",
     "icon": "Pictogram",
     "text": "Tekst",
-    "template": "Sjabloon"
+    "template": "Sjabloon",
+    "entities": "Sensoren",
+    "position": "Positie",
+    "show_name": "Namen tonen",
+    "sensor_entity": "Entiteit",
+    "name": "Naam"
   },
   "helpers": {
     "temperature": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
@@ -79,7 +85,11 @@
     "fill": "Gevuld",
     "flat": "Plat",
     "line": "Lijn",
-    "monochrome": "Monochroom"
+    "monochrome": "Monochroom",
+    "spread": "Verspreid",
+    "below_header": "Onder de koptekst",
+    "below_strip": "Onder de voorspellingsstrook",
+    "bottom": "Onderaan"
   },
   "attributes": {
     "temperature": "Temperatuur",
@@ -125,9 +135,12 @@
     "move_left": "Naar links",
     "move_right": "Naar rechts",
     "delete": "Verwijderen",
-    "add_stop": "Kleurpunt toevoegen"
+    "add_stop": "Kleurpunt toevoegen",
+    "add_sensor": "Sensor toevoegen"
   },
   "row": "Rij",
   "empty_row": "Lege rij",
-  "default_color": "Themastandaard"
+  "default_color": "Themastandaard",
+  "sensor": "Sensor",
+  "no_sensors": "Geen sensoren"
 }

@@ -2,7 +2,8 @@
   "sections": {
     "header": "Fejléc",
     "forecast_strip": "Előrejelzés sáv",
-    "forecast_list": "Előrejelzés lista"
+    "forecast_list": "Előrejelzés lista",
+    "sensors": "Érzékelők"
   },
   "groups": {
     "appearance": "Megjelenés",
@@ -52,7 +53,12 @@
     "entity_id": "Entitás",
     "icon": "Ikon",
     "text": "Szöveg",
-    "template": "Sablon"
+    "template": "Sablon",
+    "entities": "Érzékelők",
+    "position": "Pozíció",
+    "show_name": "Nevek megjelenítése",
+    "sensor_entity": "Entitás",
+    "name": "Név"
   },
   "helpers": {
     "temperature": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
@@ -79,7 +85,11 @@
     "fill": "Kitöltött",
     "flat": "Lapos",
     "line": "Vonalas",
-    "monochrome": "Egyszínű"
+    "monochrome": "Egyszínű",
+    "spread": "Elosztva",
+    "below_header": "A fejléc alatt",
+    "below_strip": "Az előrejelzési sáv alatt",
+    "bottom": "Alul"
   },
   "attributes": {
     "temperature": "Hőmérséklet",
@@ -125,9 +135,12 @@
     "move_left": "Mozgatás balra",
     "move_right": "Mozgatás jobbra",
     "delete": "Törlés",
-    "add_stop": "Színpont hozzáadása"
+    "add_stop": "Színpont hozzáadása",
+    "add_sensor": "Érzékelő hozzáadása"
   },
   "row": "Sor",
   "empty_row": "Üres sor",
-  "default_color": "Téma alapértelmezése"
+  "default_color": "Téma alapértelmezése",
+  "sensor": "Érzékelő",
+  "no_sensors": "Nincsenek érzékelők"
 }

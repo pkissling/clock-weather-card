@@ -2,7 +2,8 @@
   "sections": {
     "header": "Intestazione",
     "forecast_strip": "Striscia previsioni",
-    "forecast_list": "Elenco previsioni"
+    "forecast_list": "Elenco previsioni",
+    "sensors": "Sensori"
   },
   "groups": {
     "appearance": "Aspetto",
@@ -52,7 +53,12 @@
     "entity_id": "Entità",
     "icon": "Icona",
     "text": "Testo",
-    "template": "Template"
+    "template": "Template",
+    "entities": "Sensori",
+    "position": "Posizione",
+    "show_name": "Mostra nomi",
+    "sensor_entity": "Entità",
+    "name": "Nome"
   },
   "helpers": {
     "temperature": "Facoltativo. Legge la temperatura attuale da questo sensore invece che dall'entità meteo, ad es. una stazione meteo o un sensore esterno",
@@ -79,7 +85,11 @@
     "fill": "Pieno",
     "flat": "Piatto",
     "line": "Linea",
-    "monochrome": "Monocromatico"
+    "monochrome": "Monocromatico",
+    "spread": "Distribuito",
+    "below_header": "Sotto l’intestazione",
+    "below_strip": "Sotto la striscia delle previsioni",
+    "bottom": "In basso"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Sposta a sinistra",
     "move_right": "Sposta a destra",
     "delete": "Elimina",
-    "add_stop": "Aggiungi punto colore"
+    "add_stop": "Aggiungi punto colore",
+    "add_sensor": "Aggiungi sensore"
   },
   "row": "Riga",
   "empty_row": "Riga vuota",
-  "default_color": "Predefinito del tema"
+  "default_color": "Predefinito del tema",
+  "sensor": "Sensore",
+  "no_sensors": "Nessun sensore"
 }

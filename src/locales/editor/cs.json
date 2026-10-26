@@ -2,7 +2,8 @@
   "sections": {
     "header": "Záhlaví",
     "forecast_strip": "Pruh předpovědi",
-    "forecast_list": "Seznam předpovědi"
+    "forecast_list": "Seznam předpovědi",
+    "sensors": "Senzory"
   },
   "groups": {
     "appearance": "Vzhled",
@@ -52,7 +53,12 @@
     "entity_id": "Entita",
     "icon": "Ikona",
     "text": "Text",
-    "template": "Šablona"
+    "template": "Šablona",
+    "entities": "Senzory",
+    "position": "Pozice",
+    "show_name": "Zobrazit názvy",
+    "sensor_entity": "Entita",
+    "name": "Název"
   },
   "helpers": {
     "temperature": "Volitelné. Čte aktuální teplotu z tohoto senzoru místo z entity počasí, např. z meteostanice nebo venkovního senzoru",
@@ -79,7 +85,11 @@
     "fill": "Vyplněné",
     "flat": "Ploché",
     "line": "Obrysové",
-    "monochrome": "Jednobarevné"
+    "monochrome": "Jednobarevné",
+    "spread": "Rozložené",
+    "below_header": "Pod záhlavím",
+    "below_strip": "Pod pruhem předpovědi",
+    "bottom": "Dole"
   },
   "attributes": {
     "temperature": "Teplota",
@@ -125,9 +135,12 @@
     "move_left": "Posunout doleva",
     "move_right": "Posunout doprava",
     "delete": "Smazat",
-    "add_stop": "Přidat barevný bod"
+    "add_stop": "Přidat barevný bod",
+    "add_sensor": "Přidat senzor"
   },
   "row": "Řádek",
   "empty_row": "Prázdný řádek",
-  "default_color": "Výchozí motivu"
+  "default_color": "Výchozí motivu",
+  "sensor": "Senzor",
+  "no_sensors": "Žádné senzory"
 }

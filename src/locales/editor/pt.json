@@ -2,7 +2,8 @@
   "sections": {
     "header": "Cabeçalho",
     "forecast_strip": "Faixa de previsão",
-    "forecast_list": "Lista de previsão"
+    "forecast_list": "Lista de previsão",
+    "sensors": "Sensores"
   },
   "groups": {
     "appearance": "Aspeto",
@@ -52,7 +53,12 @@
     "entity_id": "Entidade",
     "icon": "Ícone",
     "text": "Texto",
-    "template": "Modelo"
+    "template": "Modelo",
+    "entities": "Sensores",
+    "position": "Posição",
+    "show_name": "Mostrar nomes",
+    "sensor_entity": "Entidade",
+    "name": "Nome"
   },
   "helpers": {
     "temperature": "Opcional. Lê a temperatura atual deste sensor em vez da entidade meteorológica, p. ex. uma estação meteorológica ou um sensor exterior",
@@ -79,7 +85,11 @@
     "fill": "Preenchido",
     "flat": "Plano",
     "line": "Linha",
-    "monochrome": "Monocromático"
+    "monochrome": "Monocromático",
+    "spread": "Distribuído",
+    "below_header": "Abaixo do cabeçalho",
+    "below_strip": "Abaixo da faixa de previsão",
+    "bottom": "No fundo"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Mover para a esquerda",
     "move_right": "Mover para a direita",
     "delete": "Eliminar",
-    "add_stop": "Adicionar ponto de cor"
+    "add_stop": "Adicionar ponto de cor",
+    "add_sensor": "Adicionar sensor"
   },
   "row": "Linha",
   "empty_row": "Linha vazia",
-  "default_color": "Predefinição do tema"
+  "default_color": "Predefinição do tema",
+  "sensor": "Sensor",
+  "no_sensors": "Sem sensores"
 }

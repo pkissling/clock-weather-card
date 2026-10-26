@@ -2,7 +2,8 @@
   "sections": {
     "header": "Kopfzeil",
     "forecast_strip": "Previsiounsstreif",
-    "forecast_list": "Previsiounslëscht"
+    "forecast_list": "Previsiounslëscht",
+    "sensors": "Sensoren"
   },
   "groups": {
     "appearance": "Ausgesinn",
@@ -52,7 +53,12 @@
     "entity_id": "Entitéit",
     "icon": "Icon",
     "text": "Text",
-    "template": "Template"
+    "template": "Template",
+    "entities": "Sensoren",
+    "position": "Positioun",
+    "show_name": "Nimm uweisen",
+    "sensor_entity": "Entitéit",
+    "name": "Numm"
   },
   "helpers": {
     "temperature": "Optional. Liest déi aktuell Temperatur vun dësem Sensor amplaz vun der Wieder-Entitéit, z. B. enger Wiederstatioun oder engem Baussesensor",
@@ -79,7 +85,11 @@
     "fill": "Gefëllt",
     "flat": "Flaach",
     "line": "Linn",
-    "monochrome": "Monochrom"
+    "monochrome": "Monochrom",
+    "spread": "Verdeelt",
+    "below_header": "Ënnert dem Kappbereich",
+    "below_strip": "Ënnert der Previsiounsleescht",
+    "bottom": "Ënnen"
   },
   "attributes": {
     "temperature": "Temperatur",
@@ -125,9 +135,12 @@
     "move_left": "No lénks réckelen",
     "move_right": "No riets réckelen",
     "delete": "Läschen",
-    "add_stop": "Faarfpunkt derbäisetzen"
+    "add_stop": "Faarfpunkt derbäisetzen",
+    "add_sensor": "Sensor derbäisetzen"
   },
   "row": "Zeil",
   "empty_row": "Eidel Zeil",
-  "default_color": "Standard vum Theme"
+  "default_color": "Standard vum Theme",
+  "sensor": "Sensor",
+  "no_sensors": "Keng Sensoren"
 }

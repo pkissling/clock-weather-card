@@ -2,7 +2,8 @@
   "sections": {
     "header": "Header",
     "forecast_strip": "Strip prakiraan",
-    "forecast_list": "Daftar prakiraan"
+    "forecast_list": "Daftar prakiraan",
+    "sensors": "Sensor"
   },
   "groups": {
     "appearance": "Tampilan",
@@ -52,7 +53,12 @@
     "entity_id": "Entitas",
     "icon": "Ikon",
     "text": "Teks",
-    "template": "Templat"
+    "template": "Templat",
+    "entities": "Sensor",
+    "position": "Posisi",
+    "show_name": "Tampilkan nama",
+    "sensor_entity": "Entitas",
+    "name": "Nama"
   },
   "helpers": {
     "temperature": "Opsional. Membaca suhu saat ini dari sensor ini alih-alih entitas cuaca, mis. stasiun cuaca atau sensor luar ruangan",
@@ -79,7 +85,11 @@
     "fill": "Isi",
     "flat": "Datar",
     "line": "Garis",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "spread": "Tersebar",
+    "below_header": "Di bawah header",
+    "below_strip": "Di bawah strip prakiraan",
+    "bottom": "Di bawah"
   },
   "attributes": {
     "temperature": "Suhu",
@@ -125,9 +135,12 @@
     "move_left": "Pindah ke kiri",
     "move_right": "Pindah ke kanan",
     "delete": "Hapus",
-    "add_stop": "Tambah titik warna"
+    "add_stop": "Tambah titik warna",
+    "add_sensor": "Tambah sensor"
   },
   "row": "Baris",
   "empty_row": "Baris kosong",
-  "default_color": "Bawaan tema"
+  "default_color": "Bawaan tema",
+  "sensor": "Sensor",
+  "no_sensors": "Tidak ada sensor"
 }

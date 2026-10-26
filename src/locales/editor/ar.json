@@ -2,7 +2,8 @@
   "sections": {
     "header": "الترويسة",
     "forecast_strip": "شريط التوقعات",
-    "forecast_list": "قائمة التوقعات"
+    "forecast_list": "قائمة التوقعات",
+    "sensors": "المستشعرات"
   },
   "groups": {
     "appearance": "المظهر",
@@ -52,7 +53,12 @@
     "entity_id": "الكيان",
     "icon": "الأيقونة",
     "text": "النص",
-    "template": "قالب"
+    "template": "قالب",
+    "entities": "المستشعرات",
+    "position": "الموضع",
+    "show_name": "إظهار الأسماء",
+    "sensor_entity": "الكيان",
+    "name": "الاسم"
   },
   "helpers": {
     "temperature": "اختياري. يقرأ درجة الحرارة الحالية من هذا المستشعر بدلاً من كيان الطقس، مثل محطة طقس أو مستشعر خارجي",
@@ -79,7 +85,11 @@
     "fill": "مملوء",
     "flat": "مسطح",
     "line": "خطي",
-    "monochrome": "أحادي اللون"
+    "monochrome": "أحادي اللون",
+    "spread": "موزّع",
+    "below_header": "أسفل الترويسة",
+    "below_strip": "أسفل شريط التوقعات",
+    "bottom": "في الأسفل"
   },
   "attributes": {
     "temperature": "درجة الحرارة",
@@ -125,9 +135,12 @@
     "move_left": "نقل لليسار",
     "move_right": "نقل لليمين",
     "delete": "حذف",
-    "add_stop": "إضافة نقطة لون"
+    "add_stop": "إضافة نقطة لون",
+    "add_sensor": "إضافة مستشعر"
   },
   "row": "صف",
   "empty_row": "صف فارغ",
-  "default_color": "افتراضي السمة"
+  "default_color": "افتراضي السمة",
+  "sensor": "مستشعر",
+  "no_sensors": "لا توجد مستشعرات"
 }

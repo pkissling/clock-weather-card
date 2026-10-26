@@ -2,7 +2,7 @@ import type { HomeAssistant } from 'custom-card-helpers'
 
 import hassService from '@/service/hass-service'
 import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
-import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
+import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, SENSORS_ALIGNMENTS, SENSORS_POSITIONS, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue, requiredConfigMissing } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
 import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone } from '@/utils/luxon'
@@ -43,6 +43,7 @@ export const DEFAULTS = {
     header: { hide: false, animated_icons: true },
     forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
     forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
+    sensors: { hide: false, position: 'below_header', alignment: 'spread', show_name: false },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
 
@@ -90,7 +91,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     }
   }
 
-  const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
+  const { header, forecast_strip: strip, forecast_list: list, sensors: sensorsSection } = config.sections ?? {}
 
   assertEntityExists(config.entity)
   assertEntityExists(config.sun_entity)
@@ -164,6 +165,26 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     })
   })
 
+  assertEnumValue('sections.sensors.position', sensorsSection?.position, SENSORS_POSITIONS)
+  assertEnumValue('sections.sensors.alignment', sensorsSection?.alignment, SENSORS_ALIGNMENTS)
+  const sensorEntities = sensorsSection?.entities
+  if (sensorEntities !== undefined && !Array.isArray(sensorEntities)) {
+    throw invalidConfigValue('sections.sensors.entities', String(sensorEntities), 'a list of entities')
+  }
+  sensorEntities?.forEach((item, i) => {
+    const path = `sections.sensors.entities[${i}]`
+    if (typeof item !== 'object' || item === null) throw invalidConfigValue(path, String(item), 'an object with an "entity"')
+    assertRequiredString(`${path}.entity`, item.entity)
+    assertEntityExists(item.entity)
+    assertString(`${path}.name`, item.name)
+    assertNonEmptyString(`${path}.icon`, item.icon)
+    assertString(`${path}.unit`, item.unit)
+    assertNonEmptyString(`${path}.attribute`, item.attribute)
+    if (item.attribute !== undefined && isAvailable(item.entity) && hassService.getEntityAttribute(hass, item.entity, item.attribute) === undefined) {
+      throw invalidConfigValue(`${path}.attribute`, item.attribute, `an attribute of "${item.entity}"`)
+    }
+  })
+
   assertBoolean('round_temperatures', config.round_temperatures)
   assertBoolean('sections.header.hide', header?.hide)
   assertBoolean('sections.header.animated_icons', header?.animated_icons)
@@ -177,6 +198,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertBoolean('sections.forecast_list.hide_current_temp_indicator', list?.hide_current_temp_indicator)
   assertBoolean('sections.forecast_list.animated_icons', list?.animated_icons)
   assertBoolean('sections.forecast_list.round_temperatures', list?.round_temperatures)
+  assertBoolean('sections.sensors.hide', sensorsSection?.hide)
+  assertBoolean('sections.sensors.show_name', sensorsSection?.show_name)
 
   assertPositiveInteger('sections.forecast_strip.count', strip?.count)
   assertPositiveInteger('sections.forecast_list.count', list?.count)
@@ -220,6 +243,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
   const header = definedKeys(config.sections?.header)
   const strip = definedKeys(config.sections?.forecast_strip)
   const list = definedKeys(config.sections?.forecast_list)
+  const sensors = definedKeys(config.sections?.sensors)
   const D = DEFAULTS.sections
   const inherited = {
     weather_icon_type: config.weather_icon_type || DEFAULTS.weather_icon_type,
@@ -246,5 +270,6 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       attributeRequired: strip.attribute !== undefined && strip.hide_attribute !== true,
     },
     forecast_list: { ...D.forecast_list, ...inherited, weather_entity: config.entity, attribute_unit: null, gradient: DEFAULT_GRADIENT, ...list },
+    sensors: { ...D.sensors, entities: [], ...sensors },
   }
 }

@@ -2,7 +2,8 @@
   "sections": {
     "header": "Pennyn",
     "forecast_strip": "Stribed rhagolygon",
-    "forecast_list": "Rhestr rhagolygon"
+    "forecast_list": "Rhestr rhagolygon",
+    "sensors": "Synwyryddion"
   },
   "groups": {
     "appearance": "Golwg",
@@ -52,7 +53,12 @@
     "entity_id": "Endid",
     "icon": "Eicon",
     "text": "Testun",
-    "template": "Templed"
+    "template": "Templed",
+    "entities": "Synwyryddion",
+    "position": "Safle",
+    "show_name": "Dangos enwau",
+    "sensor_entity": "Endid",
+    "name": "Enw"
   },
   "helpers": {
     "temperature": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
@@ -79,7 +85,11 @@
     "fill": "Llenwi",
     "flat": "Gwastad",
     "line": "Llinell",
-    "monochrome": "Unlliw"
+    "monochrome": "Unlliw",
+    "spread": "Wedi'u gwasgaru",
+    "below_header": "O dan y pennawd",
+    "below_strip": "O dan y stribed rhagolwg",
+    "bottom": "Ar y gwaelod"
   },
   "attributes": {
     "temperature": "Tymheredd",
@@ -125,9 +135,12 @@
     "move_left": "Symud i'r chwith",
     "move_right": "Symud i'r dde",
     "delete": "Dileu",
-    "add_stop": "Ychwanegu pwynt lliw"
+    "add_stop": "Ychwanegu pwynt lliw",
+    "add_sensor": "Ychwanegu synhwyrydd"
   },
   "row": "Rhes",
   "empty_row": "Rhes wag",
-  "default_color": "Rhagosodiad y thema"
+  "default_color": "Rhagosodiad y thema",
+  "sensor": "Synhwyrydd",
+  "no_sensors": "Dim synwyryddion"
 }

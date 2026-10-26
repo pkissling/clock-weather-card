@@ -2,7 +2,8 @@
   "sections": {
     "header": "ہیڈر",
     "forecast_strip": "پیشگوئی کی پٹی",
-    "forecast_list": "پیشگوئی کی فہرست"
+    "forecast_list": "پیشگوئی کی فہرست",
+    "sensors": "سینسرز"
   },
   "groups": {
     "appearance": "ظاہری شکل",
@@ -52,7 +53,12 @@
     "entity_id": "اینٹیٹی",
     "icon": "آئیکن",
     "text": "متن",
-    "template": "ٹیمپلیٹ"
+    "template": "ٹیمپلیٹ",
+    "entities": "سینسرز",
+    "position": "مقام",
+    "show_name": "نام دکھائیں",
+    "sensor_entity": "اینٹیٹی",
+    "name": "نام"
   },
   "helpers": {
     "temperature": "اختیاری۔ موجودہ درجہ حرارت موسم کی اینٹیٹی کے بجائے اس سینسر سے پڑھتا ہے، مثلاً موسمی اسٹیشن یا بیرونی سینسر",
@@ -79,7 +85,11 @@
     "fill": "بھرا ہوا",
     "flat": "سادہ",
     "line": "لکیری",
-    "monochrome": "یک رنگی"
+    "monochrome": "یک رنگی",
+    "spread": "پھیلا ہوا",
+    "below_header": "ہیڈر کے نیچے",
+    "below_strip": "پیش گوئی کی پٹی کے نیچے",
+    "bottom": "نیچے"
   },
   "attributes": {
     "temperature": "درجہ حرارت",
@@ -125,9 +135,12 @@
     "move_left": "بائیں منتقل کریں",
     "move_right": "دائیں منتقل کریں",
     "delete": "حذف کریں",
-    "add_stop": "رنگ کا نقطہ شامل کریں"
+    "add_stop": "رنگ کا نقطہ شامل کریں",
+    "add_sensor": "سینسر شامل کریں"
   },
   "row": "قطار",
   "empty_row": "خالی قطار",
-  "default_color": "تھیم کا طے شدہ"
+  "default_color": "تھیم کا طے شدہ",
+  "sensor": "سینسر",
+  "no_sensors": "کوئی سینسر نہیں"
 }

@@ -2,7 +2,8 @@
   "sections": {
     "header": "Haus",
     "forecast_strip": "Spáræma",
-    "forecast_list": "Spálisti"
+    "forecast_list": "Spálisti",
+    "sensors": "Skynjarar"
   },
   "groups": {
     "appearance": "Útlit",
@@ -52,7 +53,12 @@
     "entity_id": "Eining",
     "icon": "Tákn",
     "text": "Texti",
-    "template": "Sniðmát"
+    "template": "Sniðmát",
+    "entities": "Skynjarar",
+    "position": "Staðsetning",
+    "show_name": "Sýna heiti",
+    "sensor_entity": "Eining",
+    "name": "Heiti"
   },
   "helpers": {
     "temperature": "Valfrjálst. Les núverandi hitastig úr þessum skynjara í stað veðureiningarinnar, t.d. veðurstöð eða útiskynjara",
@@ -79,7 +85,11 @@
     "fill": "Fyllt",
     "flat": "Flatt",
     "line": "Lína",
-    "monochrome": "Einlitt"
+    "monochrome": "Einlitt",
+    "spread": "Dreift",
+    "below_header": "Undir haus",
+    "below_strip": "Undir spárönd",
+    "bottom": "Neðst"
   },
   "attributes": {
     "temperature": "Hitastig",
@@ -125,9 +135,12 @@
     "move_left": "Færa til vinstri",
     "move_right": "Færa til hægri",
     "delete": "Eyða",
-    "add_stop": "Bæta við litapunkti"
+    "add_stop": "Bæta við litapunkti",
+    "add_sensor": "Bæta við skynjara"
   },
   "row": "Röð",
   "empty_row": "Tóm röð",
-  "default_color": "Sjálfgefið þema"
+  "default_color": "Sjálfgefið þema",
+  "sensor": "Skynjari",
+  "no_sensors": "Engir skynjarar"
 }

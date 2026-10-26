@@ -2,7 +2,8 @@
   "sections": {
     "header": "Otsikko",
     "forecast_strip": "Ennustepalkki",
-    "forecast_list": "Ennusteluettelo"
+    "forecast_list": "Ennusteluettelo",
+    "sensors": "Anturit"
   },
   "groups": {
     "appearance": "Ulkoasu",
@@ -52,7 +53,12 @@
     "entity_id": "Kohde",
     "icon": "Kuvake",
     "text": "Teksti",
-    "template": "Malli"
+    "template": "Malli",
+    "entities": "Anturit",
+    "position": "Sijainti",
+    "show_name": "Näytä nimet",
+    "sensor_entity": "Kohde",
+    "name": "Nimi"
   },
   "helpers": {
     "temperature": "Valinnainen. Lukee nykyisen lämpötilan tästä anturista sääentiteetin sijaan, esim. sääasemalta tai ulkoanturista",
@@ -79,7 +85,11 @@
     "fill": "Täytetty",
     "flat": "Litteä",
     "line": "Viiva",
-    "monochrome": "Yksivärinen"
+    "monochrome": "Yksivärinen",
+    "spread": "Jaettu tasaisesti",
+    "below_header": "Otsikon alla",
+    "below_strip": "Ennustenauhan alla",
+    "bottom": "Alhaalla"
   },
   "attributes": {
     "temperature": "Lämpötila",
@@ -125,9 +135,12 @@
     "move_left": "Siirrä vasemmalle",
     "move_right": "Siirrä oikealle",
     "delete": "Poista",
-    "add_stop": "Lisää värikohta"
+    "add_stop": "Lisää värikohta",
+    "add_sensor": "Lisää anturi"
   },
   "row": "Rivi",
   "empty_row": "Tyhjä rivi",
-  "default_color": "Teeman oletus"
+  "default_color": "Teeman oletus",
+  "sensor": "Anturi",
+  "no_sensors": "Ei antureita"
 }

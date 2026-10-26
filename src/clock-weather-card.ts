@@ -2,6 +2,7 @@ import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-header'
 import '@/components/clock-weather-card-forecast-strip'
 import '@/components/clock-weather-card-forecast-list'
+import '@/components/clock-weather-card-sensors'
 
 import { provide } from '@lit/context'
 import { type ActionConfig, deepEqual, type HomeAssistant } from 'custom-card-helpers'
@@ -71,7 +72,10 @@ export class ClockWeatherCard extends LitElement {
       `
     }
 
-    const { title, header, forecast_strip, forecast_list } = this.resolved
+    const { title, header, forecast_strip, forecast_list, sensors } = this.resolved
+    const sensorsAt = (position: string): TemplateResult | string => !sensors.hide && sensors.entities.length && sensors.position === position
+      ? html`<clock-weather-card-sensors></clock-weather-card-sensors>`
+      : ''
     const clickable = this.tapAction.action !== 'none'
     return html`
       <ha-card
@@ -86,12 +90,15 @@ export class ClockWeatherCard extends LitElement {
           ${header.hide ? '' : html`
             <clock-weather-card-header .currentDate=${this.currentDate}></clock-weather-card-header>
           `}
+          ${sensorsAt('below_header')}
           ${forecast_strip.hide ? '' : html`
             <clock-weather-card-forecast-strip .currentDate=${this.currentDate}></clock-weather-card-forecast-strip>
           `}
+          ${sensorsAt('below_strip')}
           ${forecast_list.hide ? '' : html`
             <clock-weather-card-forecast-list .currentDate=${this.currentDate}></clock-weather-card-forecast-list>
           `}
+          ${sensorsAt('bottom')}
         </div>
       </ha-card>
       `
@@ -179,9 +186,10 @@ export class ClockWeatherCard extends LitElement {
     if (!prev || !this.resolved) return true
     if (prev.connection !== next.connection || prev.config !== next.config || prev.language !== next.language || prev.locale !== next.locale) return true
 
-    const { entity, sun_entity, temperatureSensor, forecast_strip, forecast_list, header } = this.resolved
+    const { entity, sun_entity, temperatureSensor, forecast_strip, forecast_list, header, sensors } = this.resolved
     const segmentEntities = header.rows.flatMap(row => row.segments.map(seg => 'entity_id' in seg ? seg.entity_id : undefined))
-    const watched = [entity, sun_entity, temperatureSensor, forecast_strip.weather_entity, forecast_list.weather_entity, ...segmentEntities]
+    const sensorEntities = sensors.hide ? [] : sensors.entities.map(item => item.entity)
+    const watched = [entity, sun_entity, temperatureSensor, forecast_strip.weather_entity, forecast_list.weather_entity, ...segmentEntities, ...sensorEntities]
       .filter(id => id != null)
 
     const stateChanged = (id: string): boolean => prev.states[id] !== next.states[id]

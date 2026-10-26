@@ -1,4 +1,5 @@
 import '@/editor/clock-weather-card-rows-editor'
+import '@/editor/clock-weather-card-sensors-editor'
 import '@/editor/clock-weather-card-gradient-editor'
 import '@/editor/clock-weather-card-color-picker'
 
@@ -8,7 +9,7 @@ import { property, state } from 'lit/decorators.js'
 
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey, SENSOR_FIELDS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
-import type { ClockWeatherCardConfig, RowConfig } from '@/types'
+import type { ClockWeatherCardConfig, RowConfig, SensorEntityConfig } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 import { DEFAULT_GRADIENT } from '@/utils/gradient'
@@ -17,6 +18,7 @@ const SECTION_ICONS: Record<SectionKey, string> = {
   header: 'mdi:clock-time-four-outline',
   forecast_strip: 'mdi:view-column-outline',
   forecast_list: 'mdi:chart-gantt',
+  sensors: 'mdi:gauge',
 }
 
 const GROUP_ICONS: Record<Exclude<CardGroup, 'essentials'>, string> = {
@@ -141,6 +143,12 @@ export class ClockWeatherCardEditor extends LitElement {
       return types.map(t => this.t(`segments.${t}`))
         .join(' · ')
     }
+    if (key === 'sensors') {
+      const entities = (section.entities as SensorEntityConfig[] | undefined) ?? []
+      if (!entities.length) return this.t('no_sensors')
+      return entities.map(e => e.name ?? this.hass!.states[e.entity]?.attributes.friendly_name ?? e.entity)
+        .join(' · ')
+    }
     const defaults = DEFAULTS.sections[key]
     const type = (section.forecast_type as string | undefined) ?? defaults.forecast_type
     const count = (section.count as number | undefined) ?? defaults.count
@@ -198,6 +206,16 @@ export class ClockWeatherCardEditor extends LitElement {
           .rows=${(value.rows as RowConfig[] | undefined) ?? DEFAULT_ROWS}
           @rows-changed=${(e: CustomEvent<RowConfig[]>) => this._update(path, { rows: deepEqual(e.detail, DEFAULT_ROWS) ? undefined : e.detail })}
         ></clock-weather-card-rows-editor>
+      `
+    }
+    if (field.control === 'sensor-entities') {
+      return html`
+        <clock-weather-card-sensors-editor
+          .hass=${this.hass}
+          .config=${this._config}
+          .entities=${(value.entities as SensorEntityConfig[] | undefined) ?? []}
+          @entities-changed=${(e: CustomEvent<SensorEntityConfig[]>) => this._update(path, { entities: e.detail.length ? e.detail : undefined })}
+        ></clock-weather-card-sensors-editor>
       `
     }
     if (field.control === 'color') {

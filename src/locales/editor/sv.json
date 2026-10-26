@@ -2,7 +2,8 @@
   "sections": {
     "header": "Sidhuvud",
     "forecast_strip": "Prognosremsa",
-    "forecast_list": "Prognoslista"
+    "forecast_list": "Prognoslista",
+    "sensors": "Sensorer"
   },
   "groups": {
     "appearance": "Utseende",
@@ -52,7 +53,12 @@
     "entity_id": "Entitet",
     "icon": "Ikon",
     "text": "Text",
-    "template": "Mall"
+    "template": "Mall",
+    "entities": "Sensorer",
+    "position": "Placering",
+    "show_name": "Visa namn",
+    "sensor_entity": "Entitet",
+    "name": "Namn"
   },
   "helpers": {
     "temperature": "Valfritt. Läser aktuell temperatur från denna sensor i stället för väderentiteten, t.ex. en väderstation eller utomhussensor",
@@ -79,7 +85,11 @@
     "fill": "Fylld",
     "flat": "Platt",
     "line": "Linje",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "spread": "Fördelade",
+    "below_header": "Under rubriken",
+    "below_strip": "Under prognosremsan",
+    "bottom": "Längst ned"
   },
   "attributes": {
     "temperature": "Temperatur",
@@ -125,9 +135,12 @@
     "move_left": "Flytta vänster",
     "move_right": "Flytta höger",
     "delete": "Ta bort",
-    "add_stop": "Lägg till färgstopp"
+    "add_stop": "Lägg till färgstopp",
+    "add_sensor": "Lägg till sensor"
   },
   "row": "Rad",
   "empty_row": "Tom rad",
-  "default_color": "Temats standard"
+  "default_color": "Temats standard",
+  "sensor": "Sensor",
+  "no_sensors": "Inga sensorer"
 }

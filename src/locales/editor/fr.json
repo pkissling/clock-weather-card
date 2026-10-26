@@ -2,7 +2,8 @@
   "sections": {
     "header": "En-tête",
     "forecast_strip": "Bandeau de prévisions",
-    "forecast_list": "Liste des prévisions"
+    "forecast_list": "Liste des prévisions",
+    "sensors": "Capteurs"
   },
   "groups": {
     "appearance": "Apparence",
@@ -52,7 +53,12 @@
     "entity_id": "Entité",
     "icon": "Icône",
     "text": "Texte",
-    "template": "Modèle"
+    "template": "Modèle",
+    "entities": "Capteurs",
+    "position": "Position",
+    "show_name": "Afficher les noms",
+    "sensor_entity": "Entité",
+    "name": "Nom"
   },
   "helpers": {
     "temperature": "Facultatif. Lit la température actuelle depuis ce capteur au lieu de l'entité météo, p. ex. une station météo ou un capteur extérieur",
@@ -79,7 +85,11 @@
     "fill": "Rempli",
     "flat": "Plat",
     "line": "Contour",
-    "monochrome": "Monochrome"
+    "monochrome": "Monochrome",
+    "spread": "Réparti",
+    "below_header": "Sous l’en-tête",
+    "below_strip": "Sous la bande de prévisions",
+    "bottom": "En bas"
   },
   "attributes": {
     "temperature": "Température",
@@ -125,9 +135,12 @@
     "move_left": "Déplacer à gauche",
     "move_right": "Déplacer à droite",
     "delete": "Supprimer",
-    "add_stop": "Ajouter un arrêt de couleur"
+    "add_stop": "Ajouter un arrêt de couleur",
+    "add_sensor": "Ajouter un capteur"
   },
   "row": "Ligne",
   "empty_row": "Ligne vide",
-  "default_color": "Couleur du thème"
+  "default_color": "Couleur du thème",
+  "sensor": "Capteur",
+  "no_sensors": "Aucun capteur"
 }

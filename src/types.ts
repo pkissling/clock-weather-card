@@ -84,6 +84,20 @@ export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weat
 
 export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
 
+export const SENSORS_POSITIONS = ['below_header', 'below_strip', 'bottom'] as const
+export type SensorsPosition = typeof SENSORS_POSITIONS[number]
+
+export const SENSORS_ALIGNMENTS = ['spread', 'left', 'center', 'right'] as const
+export type SensorsAlignment = typeof SENSORS_ALIGNMENTS[number]
+
+export interface SensorEntityConfig {
+  entity: string
+  name?: string
+  icon?: string
+  attribute?: string
+  unit?: string
+}
+
 export interface RowConfig {
   segments: SegmentConfig[]
   font_size?: string
@@ -145,6 +159,13 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       attribute_unit?: string
       gradient?: Record<number, string>
     }
+    sensors?: {
+      hide?: boolean
+      position?: SensorsPosition
+      alignment?: SensorsAlignment
+      show_name?: boolean
+      entities?: SensorEntityConfig[]
+    }
   }
 }
 
@@ -154,6 +175,7 @@ type Resolved<T, Nullable extends keyof T = never> = { [K in keyof T]-?: Exclude
 export type ResolvedHeaderConfig = Resolved<SectionsConfig['header'], 'weather_icon_size'>
 export type ResolvedForecastStripConfig = Resolved<SectionsConfig['forecast_strip'], 'attribute_icon' | 'attribute_color' | 'attribute_unit'> & { attributeRequired: boolean }
 export type ResolvedForecastListConfig = Resolved<SectionsConfig['forecast_list'], 'attribute_unit'>
+export type ResolvedSensorsConfig = Resolved<SectionsConfig['sensors']>
 
 export interface ResolvedConfig {
   entity: string
@@ -167,6 +189,7 @@ export interface ResolvedConfig {
   header: ResolvedHeaderConfig
   forecast_strip: ResolvedForecastStripConfig
   forecast_list: ResolvedForecastListConfig
+  sensors: ResolvedSensorsConfig
 }
 
 export const enum WeatherEntityFeature {

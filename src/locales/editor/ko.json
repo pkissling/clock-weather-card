@@ -2,7 +2,8 @@
   "sections": {
     "header": "헤더",
     "forecast_strip": "예보 스트립",
-    "forecast_list": "예보 목록"
+    "forecast_list": "예보 목록",
+    "sensors": "센서"
   },
   "groups": {
     "appearance": "모양",
@@ -52,7 +53,12 @@
     "entity_id": "구성요소",
     "icon": "아이콘",
     "text": "텍스트",
-    "template": "템플릿"
+    "template": "템플릿",
+    "entities": "센서",
+    "position": "위치",
+    "show_name": "이름 표시",
+    "sensor_entity": "구성요소",
+    "name": "이름"
   },
   "helpers": {
     "temperature": "선택 사항. 현재 온도를 날씨 엔터티 대신 이 센서에서 읽습니다(예: 기상 관측소 또는 실외 센서)",
@@ -79,7 +85,11 @@
     "fill": "채우기",
     "flat": "플랫",
     "line": "선",
-    "monochrome": "단색"
+    "monochrome": "단색",
+    "spread": "균등 배치",
+    "below_header": "헤더 아래",
+    "below_strip": "예보 스트립 아래",
+    "bottom": "하단"
   },
   "attributes": {
     "temperature": "온도",
@@ -125,9 +135,12 @@
     "move_left": "왼쪽으로 이동",
     "move_right": "오른쪽으로 이동",
     "delete": "삭제",
-    "add_stop": "색상 지점 추가"
+    "add_stop": "색상 지점 추가",
+    "add_sensor": "센서 추가"
   },
   "row": "행",
   "empty_row": "빈 행",
-  "default_color": "테마 기본값"
+  "default_color": "테마 기본값",
+  "sensor": "센서",
+  "no_sensors": "센서 없음"
 }

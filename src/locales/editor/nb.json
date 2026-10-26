@@ -2,7 +2,8 @@
   "sections": {
     "header": "Topptekst",
     "forecast_strip": "Prognosestripe",
-    "forecast_list": "Prognoseliste"
+    "forecast_list": "Prognoseliste",
+    "sensors": "Sensorer"
   },
   "groups": {
     "appearance": "Utseende",
@@ -52,7 +53,12 @@
     "entity_id": "Entitet",
     "icon": "Ikon",
     "text": "Tekst",
-    "template": "Mal"
+    "template": "Mal",
+    "entities": "Sensorer",
+    "position": "Plassering",
+    "show_name": "Vis navn",
+    "sensor_entity": "Entitet",
+    "name": "Navn"
   },
   "helpers": {
     "temperature": "Valgfritt. Leser gjeldende temperatur fra denne sensoren i stedet for værentiteten, f.eks. en værstasjon eller utendørssensor",
@@ -79,7 +85,11 @@
     "fill": "Fylt",
     "flat": "Flat",
     "line": "Linje",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "spread": "Fordelt",
+    "below_header": "Under overskriften",
+    "below_strip": "Under prognosestripen",
+    "bottom": "Nederst"
   },
   "attributes": {
     "temperature": "Temperatur",
@@ -125,9 +135,12 @@
     "move_left": "Flytt til venstre",
     "move_right": "Flytt til høyre",
     "delete": "Slett",
-    "add_stop": "Legg til fargepunkt"
+    "add_stop": "Legg til fargepunkt",
+    "add_sensor": "Legg til sensor"
   },
   "row": "Rad",
   "empty_row": "Tom rad",
-  "default_color": "Temastandard"
+  "default_color": "Temastandard",
+  "sensor": "Sensor",
+  "no_sensors": "Ingen sensorer"
 }

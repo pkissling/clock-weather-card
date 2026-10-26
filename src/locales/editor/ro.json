@@ -2,7 +2,8 @@
   "sections": {
     "header": "Antet",
     "forecast_strip": "Bandă prognoză",
-    "forecast_list": "Listă prognoză"
+    "forecast_list": "Listă prognoză",
+    "sensors": "Senzori"
   },
   "groups": {
     "appearance": "Aspect",
@@ -52,7 +53,12 @@
     "entity_id": "Entitate",
     "icon": "Pictogramă",
     "text": "Text",
-    "template": "Șablon"
+    "template": "Șablon",
+    "entities": "Senzori",
+    "position": "Poziție",
+    "show_name": "Afișează numele",
+    "sensor_entity": "Entitate",
+    "name": "Nume"
   },
   "helpers": {
     "temperature": "Opțional. Citește temperatura curentă de la acest senzor în locul entității meteo, de ex. o stație meteo sau un senzor exterior",
@@ -79,7 +85,11 @@
     "fill": "Umplut",
     "flat": "Plat",
     "line": "Linie",
-    "monochrome": "Monocrom"
+    "monochrome": "Monocrom",
+    "spread": "Distribuit",
+    "below_header": "Sub antet",
+    "below_strip": "Sub banda de prognoză",
+    "bottom": "Jos"
   },
   "attributes": {
     "temperature": "Temperatură",
@@ -125,9 +135,12 @@
     "move_left": "Mută la stânga",
     "move_right": "Mută la dreapta",
     "delete": "Șterge",
-    "add_stop": "Adaugă punct de culoare"
+    "add_stop": "Adaugă punct de culoare",
+    "add_sensor": "Adaugă senzor"
   },
   "row": "Rând",
   "empty_row": "Rând gol",
-  "default_color": "Implicit temă"
+  "default_color": "Implicit temă",
+  "sensor": "Senzor",
+  "no_sensors": "Niciun senzor"
 }

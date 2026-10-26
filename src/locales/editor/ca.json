@@ -2,7 +2,8 @@
   "sections": {
     "header": "Capçalera",
     "forecast_strip": "Franja de previsió",
-    "forecast_list": "Llista de previsió"
+    "forecast_list": "Llista de previsió",
+    "sensors": "Sensors"
   },
   "groups": {
     "appearance": "Aparença",
@@ -52,7 +53,12 @@
     "entity_id": "Entitat",
     "icon": "Icona",
     "text": "Text",
-    "template": "Plantilla"
+    "template": "Plantilla",
+    "entities": "Sensors",
+    "position": "Posició",
+    "show_name": "Mostra els noms",
+    "sensor_entity": "Entitat",
+    "name": "Nom"
   },
   "helpers": {
     "temperature": "Opcional. Llegeix la temperatura actual d'aquest sensor en lloc de l'entitat meteorològica, p. ex. una estació meteorològica o un sensor exterior",
@@ -79,7 +85,11 @@
     "fill": "Ple",
     "flat": "Pla",
     "line": "Línia",
-    "monochrome": "Monocrom"
+    "monochrome": "Monocrom",
+    "spread": "Repartit",
+    "below_header": "Sota la capçalera",
+    "below_strip": "Sota la franja de previsió",
+    "bottom": "A baix"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Mou a l'esquerra",
     "move_right": "Mou a la dreta",
     "delete": "Elimina",
-    "add_stop": "Afegeix una parada de color"
+    "add_stop": "Afegeix una parada de color",
+    "add_sensor": "Afegeix un sensor"
   },
   "row": "Fila",
   "empty_row": "Fila buida",
-  "default_color": "Predeterminat del tema"
+  "default_color": "Predeterminat del tema",
+  "sensor": "Sensor",
+  "no_sensors": "Cap sensor"
 }

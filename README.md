@@ -18,6 +18,7 @@ An iOS-inspired clock and weather card for [Home Assistant](https://www.home-ass
 - **Beautiful, animated weather icons** - [Meteocons](https://github.com/basmilius/meteocons) in four styles: `line`, `fill`, `flat` and `monochrome`. Shout-out to the creator [Bas](https://github.com/basmilius)!
 - **Any forecast attribute** - show wind speed, humidity, UV index or any other numeric attribute in the strip or as bars.
 - **Sunrise and sunset** - marked in the hourly strip.
+- **Your own sensors** - a row of weather station readings (UV index, wind, rain, ...) below the header, below the strip or at the bottom.
 - **Fully customizable** - set your own color gradient for the forecast bars, pick icon styles and sizes per section, tune row heights, bar thickness, font sizes and alignment, choose date and time formats, and show or hide every section.
 - **Localized** - Dozens of languages, locale-aware date, time and number formats, any time zone, and Celsius or Fahrenheit.
 - **Visual editor** - set the card up in the dashboard UI, no YAML required.
@@ -286,6 +287,41 @@ sections:
 *[Catppuccin Latte](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 </td></tr>
+<tr><td>
+
+**Weather station** - the `sensors` section adds a row with readings of your own sensors, e.g. UV index, wind, rain and air quality.
+
+<!-- preview: example-weather-station
+theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
+dark: true
+weather: { state: partlycloudy, temperature: 15 }
+entities:
+  sensor.station_uv_index: { state: '3', attributes: { friendly_name: UV index, icon: 'mdi:sun-wireless', state_class: measurement } }
+  sensor.station_wind_speed: { state: '17', attributes: { friendly_name: Wind, unit_of_measurement: km/h, device_class: wind_speed, icon: 'mdi:weather-windy' } }
+  sensor.station_rain_today: { state: '1.2', attributes: { friendly_name: Rain, unit_of_measurement: mm, device_class: precipitation, icon: 'mdi:weather-pouring' } }
+  sensor.station_aqi: { state: '42', attributes: { friendly_name: Air quality, device_class: aqi, icon: 'mdi:air-filter', state_class: measurement } }
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  sensors:
+    entities:
+      - entity: sensor.station_uv_index
+      - entity: sensor.station_wind_speed
+      - entity: sensor.station_rain_today
+      - entity: sensor.station_aqi
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![A row of weather station sensors below the header](docs/previews/example-weather-station.png)
+
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
+
+</td></tr>
 </table>
 
 ### Card Options
@@ -317,7 +353,7 @@ additional_sensors:
 
 ### Sections Options
 
-Sections render top to bottom in the order `header`, `forecast_strip`, `forecast_list`.
+Sections render top to bottom in the order `header`, `forecast_strip`, `forecast_list`. The `sensors` section is placed by its `position` option.
 
 #### `header`
 
@@ -399,6 +435,32 @@ gradient:
   30:  "#FF964F"  # orange
   40:  "#FFC09F"  # red-ish
 ```
+
+#### `sensors`
+
+Renders a row of entities, e.g. the readings of your own weather station, each as its icon and value. Unlike `additional_sensors`, these don't replace any value of the weather entity. Values are formatted like the [`entity` segment](#entity): rounded to the entity's display precision, with its unit, and `°C`/`°F` values converted to `temperature_unit`. Tapping a sensor opens its more-info dialog. The section only renders when `entities` is not empty.
+
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  sensors:
+    position: below_header
+    entities:
+      - entity: sensor.station_uv_index
+        icon: mdi:weather-sunny-alert
+      - entity: sensor.station_wind_speed
+      - entity: sensor.station_rain_today
+        name: Rain
+```
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `hide` | boolean | no | `false` | Hide the section. |
+| `position` | `below_header` \| `below_strip` \| `bottom` | no | `below_header` | Where the row is placed: below the header, below the forecast strip (above the list) or at the bottom of the card. |
+| `alignment` | `spread` \| `left` \| `center` \| `right` | no | `spread` | How the sensors are distributed across the row. `spread` spaces them evenly over the full width. Sensors wrap onto a new line when they don't fit. |
+| `show_name` | boolean | no | `false` | Show each sensor's name below its value. |
+| `entities` | list | no | `[]` | Sensors to show, in order. Each item: `entity` (**required**, entity ID), `name` (defaults to the friendly name), `icon` (defaults to the entity's icon), `attribute` (show this attribute instead of the state; must exist on the entity) and `unit` (hard-coded unit appended verbatim, include a leading space if wanted). |
 
 #### Forecast attributes
 

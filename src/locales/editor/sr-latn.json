@@ -2,7 +2,8 @@
   "sections": {
     "header": "Zaglavlje",
     "forecast_strip": "Traka prognoze",
-    "forecast_list": "Lista prognoze"
+    "forecast_list": "Lista prognoze",
+    "sensors": "Senzori"
   },
   "groups": {
     "appearance": "Izgled",
@@ -52,7 +53,12 @@
     "entity_id": "Entitet",
     "icon": "Ikonica",
     "text": "Tekst",
-    "template": "Šablon"
+    "template": "Šablon",
+    "entities": "Senzori",
+    "position": "Položaj",
+    "show_name": "Prikaži nazive",
+    "sensor_entity": "Entitet",
+    "name": "Naziv"
   },
   "helpers": {
     "temperature": "Opciono. Čita trenutnu temperaturu sa ovog senzora umesto sa vremenskog entiteta, npr. meteorološke stanice ili spoljnog senzora",
@@ -79,7 +85,11 @@
     "fill": "Popunjene",
     "flat": "Ravne",
     "line": "Linijske",
-    "monochrome": "Monohromatske"
+    "monochrome": "Monohromatske",
+    "spread": "Raspoređeno",
+    "below_header": "Ispod zaglavlja",
+    "below_strip": "Ispod trake prognoze",
+    "bottom": "Na dnu"
   },
   "attributes": {
     "temperature": "Temperatura",
@@ -125,9 +135,12 @@
     "move_left": "Pomeri levo",
     "move_right": "Pomeri desno",
     "delete": "Obriši",
-    "add_stop": "Dodaj tačku boje"
+    "add_stop": "Dodaj tačku boje",
+    "add_sensor": "Dodaj senzor"
   },
   "row": "Red",
   "empty_row": "Prazan red",
-  "default_color": "Podrazumevano iz teme"
+  "default_color": "Podrazumevano iz teme",
+  "sensor": "Senzor",
+  "no_sensors": "Nema senzora"
 }
