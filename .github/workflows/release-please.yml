@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
   actions: write
 
@@ -25,6 +26,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run release.yml -R ${{ github.repository }} --ref ${{ steps.release.outputs.tag_name }}
+      # Needs "Auto-close issues with merged linked pull requests" off in the repo settings, so `Closes #123` waits for the release.
+      - name: Close issues shipped in this release
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          PREV=$(gh release list --exclude-drafts --json tagName -q '.[1].tagName')
+          gh api --paginate "repos/$GH_REPO/compare/$PREV...$TAG" -q '.commits[].sha' \
+            | xargs -I{} gh api "repos/$GH_REPO/commits/{}/pulls" -q '.[].number' | sort -u \
+            | xargs -I{} gh pr view {} --json closingIssuesReferences -q '.closingIssuesReferences[].number' | sort -u \
+            | xargs -I{} gh issue close {} --comment "Released in [$TAG](https://github.com/$GH_REPO/releases/tag/$TAG)."
       # The release PR is pushed with GITHUB_TOKEN, which doesn't trigger workflows, so run the required checks explicitly.
       - name: Run CI on the release PR
         if: ${{ steps.release.outputs.pr }}
