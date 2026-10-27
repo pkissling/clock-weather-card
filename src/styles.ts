@@ -113,6 +113,8 @@ export default css`
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
+    /* Without it, the strip's min-content width is all its items, widening 1fr grid columns. */
+    contain: inline-size;
   }
 
   clock-weather-card-forecast-strip-item,
