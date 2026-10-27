@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.1](https://github.com/pkissling/clock-weather-card/compare/v3.0.0...v3.0.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* **forecast:** fall back to twice-daily forecasts for daily sections ([21a3ba3](https://github.com/pkissling/clock-weather-card/commit/21a3ba3e68ff0468af6160d8724335895ac8afe0)), closes [#842](https://github.com/pkissling/clock-weather-card/issues/842)
+* **header:** move the weather icon up so raindrops clear the divider ([78f7162](https://github.com/pkissling/clock-weather-card/commit/78f7162f47fc5f412989f8b84b8950169f006bcf))
+
 ## [3.0.0](https://github.com/pkissling/clock-weather-card/compare/v2.9.6...v3.0.0) (2026-10-25)
 
 
