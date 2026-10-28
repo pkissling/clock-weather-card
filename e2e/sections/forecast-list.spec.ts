@@ -230,28 +230,32 @@ test.describe('forecast_list section', () => {
       .toHaveCount(1)
   })
 
-  test('merges the day/night pairs of a twice-daily forecast when the entity does not advertise FORECAST_DAILY', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({
-      weather: {
-        temperature: 15,
-        supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY, WeatherEntityFeature.FORECAST_TWICE_DAILY],
-        forecast_twice_daily: [
-          { datetime: '2025-09-14T06:00:00-04:00', is_daytime: true, condition: 'sunny', temperature: 20 },
-          { datetime: '2025-09-14T18:00:00-04:00', is_daytime: false, condition: 'clear-night', temperature: 10 },
-          { datetime: '2025-09-15T06:00:00-04:00', is_daytime: true, condition: 'rainy', temperature: 18 },
-          { datetime: '2025-09-15T18:00:00-04:00', is_daytime: false, condition: 'cloudy', temperature: 8 },
-        ],
-      },
-    })
+  // Los Angeles lies west of the provider's -04:00 offset, where the provider's midnight is still the previous day.
+  for (const timeZone of ['Europe/Berlin', 'America/Los_Angeles']) {
+    test(`merges the day/night pairs of a twice-daily forecast when the entity does not advertise FORECAST_DAILY (${timeZone})`, async ({ setupCard, clockWeatherCard }) => {
+      await setupCard({
+        timeZone,
+        weather: {
+          temperature: 15,
+          supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY, WeatherEntityFeature.FORECAST_TWICE_DAILY],
+          forecast_twice_daily: [
+            { datetime: '2025-09-14T06:00:00-04:00', is_daytime: true, condition: 'sunny', temperature: 20 },
+            { datetime: '2025-09-14T18:00:00-04:00', is_daytime: false, condition: 'clear-night', temperature: 10 },
+            { datetime: '2025-09-15T06:00:00-04:00', is_daytime: true, condition: 'rainy', temperature: 18 },
+            { datetime: '2025-09-15T18:00:00-04:00', is_daytime: false, condition: 'cloudy', temperature: 8 },
+          ],
+        },
+      })
 
-    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
-    await expect(items.locator('.label'))
-      .toHaveText(['Today', 'Mon'])
-    await expect(items.locator('.temperature-low'))
-      .toHaveText(['10°C', '8°C'])
-    await expect(items.locator('.temperature-high'))
-      .toHaveText(['20°C', '18°C'])
-  })
+      const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+      await expect(items.locator('.label'))
+        .toHaveText(['Today', 'Mon'])
+      await expect(items.locator('.temperature-low'))
+        .toHaveText(['10°C', '8°C'])
+      await expect(items.locator('.temperature-high'))
+        .toHaveText(['20°C', '18°C'])
+    })
+  }
 
   test('aggregates an hourly forecast into days of the configured time zone when the entity only advertises FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({

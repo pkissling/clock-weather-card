@@ -18,7 +18,6 @@ const aggregateDaily = (forecasts: AggregatableForecast[], dayOf: (datetime: str
   const days = new Map<string, AggregatableForecast[]>()
   for (const forecast of forecasts) {
     const date = dayOf(forecast.datetime)
-      .startOf('day')
       .toISO()!
     days.set(date, [...days.get(date) ?? [], forecast])
   }
@@ -49,8 +48,11 @@ const aggregateDaily = (forecasts: AggregatableForecast[], dayOf: (datetime: str
 /** Merges each day/night pair of a twice-daily forecast into one daily entry. */
 export const mergeTwiceDaily = (forecasts: AggregatableForecast[]): WeatherForecast[] =>
   // The provider's own offset decides the date, so a night period stays with the day it starts on.
-  aggregateDaily(forecasts, datetime => DateTime.fromISO(datetime, { setZone: true }))
+  // Noon keeps that date when shown in any zone within 12h of the provider's, unlike midnight.
+  aggregateDaily(forecasts, datetime => DateTime.fromISO(datetime, { setZone: true })
+    .set({ hour: 12, minute: 0, second: 0, millisecond: 0 }))
 
 /** Merges the hours of each day in `timeZone` into one daily entry. */
 export const mergeHourly = (forecasts: AggregatableForecast[], timeZone: string): WeatherForecast[] =>
-  aggregateDaily(forecasts, datetime => DateTime.fromISO(datetime, { zone: timeZone }))
+  aggregateDaily(forecasts, datetime => DateTime.fromISO(datetime, { zone: timeZone })
+    .startOf('day'))
