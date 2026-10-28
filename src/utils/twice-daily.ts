@@ -9,8 +9,9 @@ export const mergeTwiceDaily = (forecasts: TwiceDailyForecast[]): WeatherForecas
   const days = new Map<string, { day?: TwiceDailyForecast, night?: TwiceDailyForecast }>()
   for (const forecast of forecasts) {
     // The provider's own offset decides the date, so a night period stays with the day it starts on.
+    // Noon keeps that date when shown in any zone within 12h of the provider's, unlike midnight.
     const date = DateTime.fromISO(forecast.datetime, { setZone: true })
-      .startOf('day')
+      .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
       .toISO()!
     const pair = days.get(date) ?? {}
     pair[forecast.is_daytime === false ? 'night' : 'day'] ??= forecast
