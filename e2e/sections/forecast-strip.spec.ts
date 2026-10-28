@@ -288,4 +288,20 @@ test.describe('forecast_strip section', () => {
     expect(overflow)
       .toEqual({ overflows: true, textOverflow: 'ellipsis' })
   })
+
+  test('does not widen the card to fit every entry, so it can shrink inside a 1fr grid column', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+    await expect(clockWeatherCard.locator('clock-weather-card-forecast-strip-item'))
+      .not.toHaveCount(0)
+
+    const minContentWidth = await clockWeatherCard.locator('ha-card')
+      .evaluate((el: HTMLElement) => {
+        el.style.width = 'min-content'
+        const width = el.getBoundingClientRect().width
+        el.style.width = ''
+        return width
+      })
+    expect(minContentWidth)
+      .toBeLessThan(400)
+  })
 })
