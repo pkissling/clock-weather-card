@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/pkissling/clock-weather-card/compare/v3.0.1...v3.0.2) (2026-10-28)
+
+
+### Bug Fixes
+
+* **forecast:** name the entity when a forecast subscription fails ([8cee1bf](https://github.com/pkissling/clock-weather-card/commit/8cee1bf3e2d8719d7ecd6e2ac062a93e66d78553))
+
 ## [3.0.1](https://github.com/pkissling/clock-weather-card/compare/v3.0.0...v3.0.1) (2026-10-27)
 
 
