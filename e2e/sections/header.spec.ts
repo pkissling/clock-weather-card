@@ -21,6 +21,16 @@ test.describe('header section', () => {
       .toHaveAttribute('src', /not-available/)
   })
 
+  test('describes a clear-night state in daytime as sunny, matching its icon', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ weather: { state: 'clear-night' } })
+
+    const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon img')
+    await expect(icon)
+      .toHaveAttribute('src', /clear-day/)
+    await expect(icon)
+      .toHaveAttribute('alt', 'Sunny')
+  })
+
   test('gives the details the space the weather icon does not use', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({})
     await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 400px' })

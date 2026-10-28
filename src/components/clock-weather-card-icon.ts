@@ -23,7 +23,9 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property({ type: Boolean, reflect: true, attribute: 'data-settled' }) private _settled = false
 
   public render(): TemplateResult {
-    const key = `weather.${this.weatherState === 'sunny' && this.isNight ? 'clear-night' : this.weatherState}`
+    // Like the icon, a clear sky follows the sun rather than the reported state.
+    const isClear = this.weatherState === 'sunny' || this.weatherState === 'clear-night'
+    const key = `weather.${isClear ? (this.isNight ? 'clear-night' : 'sunny') : this.weatherState}`
     const alt = translationsService.has(key) ? translationsService.t(this.config.locale, key) : ''
     return html`<img src="${this._src ?? nothing}" alt=${alt} @load=${this._onImageDone} @error=${this._onImageDone} />`
   }
