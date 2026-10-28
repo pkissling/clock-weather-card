@@ -57,7 +57,7 @@ class ForecastSubscriptionService {
         return unsubscribe
       })
       .catch((e: unknown) => {
-        logger.error(`Error subscribing to ${forecastType} forecast`, e)
+        logger.error(`Error subscribing to ${forecastType} forecast of "${entityId}"`, e)
         if (entries.get(key) === entry) entries.delete(key)
         entry.listeners.forEach(l => l(null))
         return null
