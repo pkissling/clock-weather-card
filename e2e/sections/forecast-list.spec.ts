@@ -211,11 +211,11 @@ test.describe('forecast_list section', () => {
       .toHaveCount(2)
   })
 
-  test('renders an inline warning when the resolved entity does not advertise FORECAST_DAILY', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
+  test('renders an inline warning when the resolved entity advertises no daily, twice-daily or hourly forecast', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: {
         forecast_daily: DAILY,
-        supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY],
+        supportedFeatures: [],
       },
     })
 
@@ -251,6 +251,29 @@ test.describe('forecast_list section', () => {
       .toHaveText(['10°C', '8°C'])
     await expect(items.locator('.temperature-high'))
       .toHaveText(['20°C', '18°C'])
+  })
+
+  test('aggregates an hourly forecast into days of the configured time zone when the entity only advertises FORECAST_HOURLY', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      weather: {
+        supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY],
+        forecast_hourly: [
+          { datetime: '2025-09-14T09:00:00+00:00', condition: 'sunny', temperature: 14 },
+          { datetime: '2025-09-14T13:00:00+00:00', condition: 'sunny', temperature: 22 },
+          // 00:30 on Monday in Europe/Berlin, the default time zone.
+          { datetime: '2025-09-14T22:30:00+00:00', condition: 'cloudy', temperature: 11 },
+          { datetime: '2025-09-15T12:00:00+00:00', condition: 'rainy', temperature: 17 },
+        ],
+      },
+    })
+
+    const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
+    await expect(items.locator('.label'))
+      .toHaveText(['Today', 'Mon'])
+    await expect(items.locator('.temperature-low'))
+      .toHaveText(['14°C', '11°C'])
+    await expect(items.locator('.temperature-high'))
+      .toHaveText(['22°C', '17°C'])
   })
 
   test('skips forecast entries dated before today', async ({ setupCard, clockWeatherCard }) => {
