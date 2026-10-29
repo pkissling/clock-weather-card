@@ -1,4 +1,3 @@
-import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 import { dailyForecast } from '../../../utils/test-utils'
 
@@ -81,14 +80,14 @@ test.describe('sections.forecast_strip.forecast_type', () => {
       .toHaveText(['Today', 'Mon', 'Tue'])
   })
 
-  test('renders an inline warning when the entity does not advertise FORECAST_DAILY', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
+  test('renders an inline warning when the entity advertises no daily, twice-daily or hourly forecast', async ({ setupCard, clockWeatherCard, cardErrorMessage }) => {
     await setupCard({
       cardConfig: `
         sections:
           forecast_strip:
             forecast_type: daily
       `,
-      weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
+      weather: { supportedFeatures: [] },
     })
 
     await cardErrorMessage(clockWeatherCard.locator('clock-weather-card-forecast-strip'))

@@ -1,4 +1,3 @@
-import { WeatherEntityFeature } from '../../../../src/types'
 import { expect, test } from '../../../utils/fixtures'
 
 test.describe('sections.forecast_list.hide', () => {
@@ -28,7 +27,7 @@ test.describe('sections.forecast_list.hide', () => {
 
   test('removes the warning section at runtime when hide flips to true (unsupported entity, no reload)', async ({ cardErrorMessage, setupCard, clockWeatherCard }) => {
     await setupCard({
-      weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
+      weather: { supportedFeatures: [] },
     })
     const section = clockWeatherCard.locator('clock-weather-card-forecast-list')
     await expect(section)
@@ -42,7 +41,7 @@ test.describe('sections.forecast_list.hide', () => {
           forecast_list:
             hide: true
       `,
-      weather: { supportedFeatures: [WeatherEntityFeature.FORECAST_HOURLY] },
+      weather: { supportedFeatures: [] },
     })
 
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-list'))

@@ -17,9 +17,9 @@ import logger from '@/service/logger'
 import translationsService from '@/service/translations-service'
 import type { ForecastType, ResolvedConfig, SectionForecastType, WeatherForecast } from '@/types'
 import { forecastAttributeNotFound, forecastNotSupported } from '@/utils/errors'
+import { mergeHourly, mergeTwiceDaily } from '@/utils/forecast-aggregation'
 import { minuteChanged } from '@/utils/luxon'
 import { convertTemperature } from '@/utils/temperature'
-import { mergeTwiceDaily } from '@/utils/twice-daily'
 
 export interface ForecastRow {
   forecast: WeatherForecast
@@ -167,7 +167,9 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
       return
     }
 
-    const key = `${entityId}|${sourceType}`
+    const { timeZone } = this.config
+    // Hourly entries are grouped into days in the configured time zone, so a zone change must re-aggregate them.
+    const key = `${entityId}|${sourceType}|${timeZone}`
     // A failed subscription is retried once the entity's state changes, e.g. when its integration finished loading.
     if (this.unsubscribe && this.subscribedKey === key && (!this.failedEntityState || this.failedEntityState === this.hass.states[entityId])) return
 
@@ -175,7 +177,7 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.forecasts = []
     this._loaded = false
     this.unsubscribe = forecastSubscriptionService.subscribe(this.hass, entityId, sourceType, received => {
-      const forecasts = received && sourceType === 'twice_daily' ? mergeTwiceDaily(received) : received
+      const forecasts = received && this._toSectionForecasts(received, sourceType, forecastType, timeZone)
       if (forecasts) logger.debug(`Received ${forecasts.length} ${forecastType} forecast entries`, entityId)
       else this.failedEntityState = this.hass.states[entityId]
       forecasts?.filter(f => typeof f.temperature !== 'number' || typeof f.condition !== 'string')
@@ -186,10 +188,17 @@ abstract class AbstractForecastSection extends AbstractClockWeatherCardComponent
     this.subscribedKey = key
   }
 
-  // Some providers offer no daily forecast, but a twice-daily one that merges into it.
+  // Some providers offer no daily forecast, but a twice-daily or hourly one that merges into it.
   private _sourceForecastType(entityId: string, forecastType: SectionForecastType): ForecastType | null {
     if (hassService.supportsForecast(this.hass, entityId, forecastType)) return forecastType
-    return forecastType === 'daily' && hassService.supportsForecast(this.hass, entityId, 'twice_daily') ? 'twice_daily' : null
+    if (forecastType !== 'daily') return null
+    return (['twice_daily', 'hourly'] as const).find(type => hassService.supportsForecast(this.hass, entityId, type)) ?? null
+  }
+
+  private _toSectionForecasts(received: WeatherForecast[], sourceType: ForecastType, forecastType: SectionForecastType, timeZone: string): WeatherForecast[] {
+    if (sourceType === forecastType) return received
+    if (sourceType === 'twice_daily') return mergeTwiceDaily(received)
+    return mergeHourly(received, timeZone)
   }
 
   private _unsubscribe(): void {
