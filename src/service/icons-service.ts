@@ -10,13 +10,37 @@ const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fi
   eager: true
 }) as Record<string, string>
 
+// Meteocons animate with SMIL timings, which CSS cannot reach inside an <img>, so a different speed is baked into a copy of the SVG.
+export function scaleAnimationTimings(svg: string, speed: number): string {
+  return svg.replace(/\b(dur|begin)="(-?\d*\.?\d+)s"/g, (_, attr: string, seconds: string) => `${attr}="${Number((Number(seconds) / speed).toFixed(3))}s"`)
+}
+
 class IconsService {
+  private readonly speedAdjustedIcons = new Map<string, Promise<string>>()
+
   public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string | undefined {
     const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)
     const lookup = (pkg: string): string | undefined => iconUrls[`/node_modules/@meteocons/${pkg}/${type}/${iconFileName}.svg`]
     const url = (animated && lookup('svg')) || lookup('svg-static')
     // Dev mode yields a root-relative path that must resolve against the dev server, not the Home Assistant page.
     return url && import.meta.env.DEV ? new URL(url, import.meta.url).href : url
+  }
+
+  public getSpeedAdjustedIcon(url: string, speed: number): Promise<string> {
+    const key = `${speed}|${url}`
+    let icon = this.speedAdjustedIcons.get(key)
+    if (!icon) {
+      icon = fetch(url)
+        .then(res => res.ok ? res.text() : Promise.reject(new Error(`HTTP ${res.status}`)))
+        .then(svg => URL.createObjectURL(new Blob([scaleAnimationTimings(svg, speed)], { type: 'image/svg+xml' })))
+        .catch((e: unknown) => {
+          logger.warn(`Could not change the animation speed of ${url}, showing it at normal speed`, e)
+          this.speedAdjustedIcons.delete(key)
+          return url
+        })
+      this.speedAdjustedIcons.set(key, icon)
+    }
+    return icon
   }
 
   public getWeatherMdiIcon(weatherState: string, isNight: boolean): string {

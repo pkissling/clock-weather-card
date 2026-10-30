@@ -39,6 +39,7 @@ export const DEFAULTS = {
   weather_icon_type: 'line',
   sun_entity: 'sun.sun',
   round_temperatures: true,
+  animation_speed: 1,
   sections: {
     header: { hide: false, animated_icons: true },
     forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
@@ -66,6 +67,10 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   const assertPositiveInteger = (path: string, value: number | undefined): void => {
     if (value === undefined) return
     if (!Number.isInteger(value) || value <= 0) throw invalidConfigValue(path, String(value), 'a positive integer')
+  }
+  const assertPositiveNumber = (path: string, value: unknown): void => {
+    if (value === undefined) return
+    if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) throw invalidConfigValue(path, String(value), 'a positive number')
   }
   // YAML configs can violate the declared types at runtime, so re-check with typeof.
   const assertBoolean = (path: string, value: unknown): void => {
@@ -178,6 +183,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertBoolean('sections.forecast_list.animated_icons', list?.animated_icons)
   assertBoolean('sections.forecast_list.round_temperatures', list?.round_temperatures)
 
+  assertPositiveNumber('animation_speed', config.animation_speed)
   assertPositiveInteger('sections.forecast_strip.count', strip?.count)
   assertPositiveInteger('sections.forecast_list.count', list?.count)
 
@@ -234,6 +240,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     numberFormat: hassService.getNumberFormat(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     temperatureSensor: config.additional_sensors?.temperature ?? null,
+    animation_speed: config.animation_speed ?? DEFAULTS.animation_speed,
     header: { ...D.header, ...inherited, rows: DEFAULT_ROWS, weather_icon_size: null, ...header },
     forecast_strip: {
       ...D.forecast_strip,

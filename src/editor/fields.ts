@@ -72,6 +72,7 @@ export const CARD_FIELDS: EditorField[] = [
   { name: 'weather_icon_type', selector: iconTypeSelector, group: 'appearance' },
   { name: 'temperature_unit', selector: { select: { mode: 'box', options: Object.keys(TEMPERATURE_UNIT_SYMBOLS) } }, default: temperatureUnitOf, group: 'appearance' },
   { name: 'round_temperatures', selector: bool, group: 'appearance' },
+  { name: 'animation_speed', selector: { number: { min: 0.1, max: 2, step: 0.05, mode: 'slider' } }, default: DEFAULTS.animation_speed, group: 'appearance' },
   { name: 'tap_action', selector: { ui_action: { default_action: DEFAULT_TAP_ACTION.action } }, group: 'interaction' },
   { name: 'locale', selector: ({ hass }: FormContext) => ({ select: { custom_value: true, options: localeOptions(hass) } }), default: ({ hass }: FormContext) => hassService.getLocale(hass), group: 'region' },
   { name: 'time_zone', selector: { select: { custom_value: true, options: TIME_ZONES } }, default: ({ hass }: FormContext) => hassService.getTimeZone(hass), group: 'region' },
