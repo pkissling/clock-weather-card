@@ -39,4 +39,4 @@ jobs:
       with:
         name: playwright-report-${{ matrix.ha_version }}
         path: playwright-report/
-        retention-days: 7
+        retention-days: 2
