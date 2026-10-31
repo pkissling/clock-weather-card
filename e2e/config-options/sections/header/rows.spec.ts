@@ -191,6 +191,19 @@ test.describe('sections.header.rows', () => {
       .toContain('Config option "sections.header.rows[0].segments" is required')
   })
 
+  for (const { name, rows, message } of [
+    { name: 'rows that are not a list', rows: '{ segments: [{ type: time }] }', message: 'Config option "sections.header.rows" has invalid value "[object Object]", expected a list of rows' },
+    { name: 'a row that is not an object', rows: '[time]', message: 'Config option "sections.header.rows[0]" has invalid value "time", expected a row with segments' },
+    { name: 'a segment that is not an object', rows: '[{ segments: [null] }]', message: 'Config option "sections.header.rows[0].segments[0]" has invalid value "null", expected a segment with a type' },
+  ]) {
+    test(`rejects ${name}`, async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({ cardConfig: `sections: { header: { rows: ${rows} } }` })
+
+      await cardErrorMessage()
+        .toContain(message)
+    })
+  }
+
   test('renders a text segment with its static text', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `

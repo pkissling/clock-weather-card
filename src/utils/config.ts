@@ -131,12 +131,16 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertNonEmptyString('sections.forecast_list.attribute', list?.attribute)
   assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
+  const isObject = (value: unknown): boolean => typeof value === 'object' && value !== null && !Array.isArray(value)
+  if (header?.rows != null && !Array.isArray(header.rows)) throw invalidConfigValue('sections.header.rows', String(header.rows), 'a list of rows')
   header?.rows?.forEach((row, i) => {
+    if (!isObject(row)) throw invalidConfigValue(`sections.header.rows[${i}]`, String(row), 'a row with segments')
     assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
     if (row.segments == null) throw requiredConfigMissing(`sections.header.rows[${i}].segments`)
     if (!Array.isArray(row.segments)) throw invalidConfigValue(`sections.header.rows[${i}].segments`, String(row.segments), 'a list of segments')
     row.segments.forEach((segment, j) => {
       const path = `sections.header.rows[${i}].segments[${j}]`
+      if (!isObject(segment)) throw invalidConfigValue(path, String(segment), 'a segment with a type')
       assertRequiredString(`${path}.type`, segment.type)
       assertEnumValue(`${path}.type`, segment.type, SEGMENT_TYPES)
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
