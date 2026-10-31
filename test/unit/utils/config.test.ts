@@ -73,6 +73,7 @@ describe('resolveConfig', () => {
           attribute_icon: 'mdi:water',
           attribute_color: '#3988EF',
           attribute_unit: null,
+          font_size: null,
         },
         forecast_list: {
           hide: false,
@@ -88,6 +89,7 @@ describe('resolveConfig', () => {
           weather_icon_type: 'line',
           attribute: 'temperature',
           attribute_unit: null,
+          font_size: null,
           gradient: DEFAULT_GRADIENT,
         },
       })

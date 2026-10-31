@@ -91,8 +91,10 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
   }
 
   private _rowsStyle(): string {
-    const { row_height, bar_thickness } = this.config.forecast_list
-    return `--cwc-list-row-height: ${row_height}; --cwc-list-bar-thickness: ${toBarThicknessCss(bar_thickness)}`
+    const { row_height, bar_thickness, font_size } = this.config.forecast_list
+    // Icons grow with a configured font size (2em of the text) but never shrink below row_height.
+    const fontStyle = font_size ? `; --cwc-list-font-size: ${font_size}; --cwc-list-icon-size: max(${row_height}, 2em)` : ''
+    return `--cwc-list-row-height: ${row_height}; --cwc-list-bar-thickness: ${toBarThicknessCss(bar_thickness)}${fontStyle}`
   }
 
   private _temperatureBars(entityId: string, forecastType: SectionForecastType): ListBar[] {

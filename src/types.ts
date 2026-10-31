@@ -129,6 +129,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       attribute_icon?: string
       attribute_color?: string
       attribute_unit?: string
+      font_size?: string
     }
     forecast_list?: {
       hide?: boolean
@@ -137,6 +138,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       count?: number
       row_height?: string
       bar_thickness?: string
+      font_size?: string
       hide_current_temp_indicator?: boolean
       animated_icons?: boolean
       round_temperatures?: boolean
@@ -153,8 +155,8 @@ type SectionsConfig = Required<NonNullable<ClockWeatherCardConfig['sections']>>
 type Resolved<T, Nullable extends keyof T = never> = { [K in keyof T]-?: Exclude<T[K], undefined> | (K extends Nullable ? null : never) }
 
 export type ResolvedHeaderConfig = Resolved<SectionsConfig['header'], 'weather_icon_size'>
-export type ResolvedForecastStripConfig = Resolved<SectionsConfig['forecast_strip'], 'attribute_icon' | 'attribute_color' | 'attribute_unit'> & { attributeRequired: boolean }
-export type ResolvedForecastListConfig = Resolved<SectionsConfig['forecast_list'], 'attribute_unit'>
+export type ResolvedForecastStripConfig = Resolved<SectionsConfig['forecast_strip'], 'attribute_icon' | 'attribute_color' | 'attribute_unit' | 'font_size'> & { attributeRequired: boolean }
+export type ResolvedForecastListConfig = Resolved<SectionsConfig['forecast_list'], 'attribute_unit' | 'font_size'>
 
 export interface ResolvedConfig {
   entity: string
