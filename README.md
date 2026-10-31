@@ -65,7 +65,7 @@ The animation at the top of this page shows this configuration.
 
 ### Examples
 
-From a single temperature to an air quality forecast: each example highlights a few options, shown in a different community theme. See the tables after them for every option.
+From a single temperature to a wall tablet, an air quality chart or a world clock: each example highlights a few options, shown in a different community theme. See the tables after them for every option.
 
 <table>
 <tr><th>Configuration</th><th>Card</th></tr>
@@ -107,9 +107,9 @@ sections:
 </td></tr>
 <tr><td>
 
-**Header and daily strip** - the strip shows the coming days instead of hours, with `flat` icons.
+**Wall tablet** - large header rows, and `font_size` scales the forecast strip and list for reading across the room; the strip labels show only the hour and drop the precipitation row.
 
-<!-- preview: example-daily-strip
+<!-- preview: example-wall-tablet
 theme: { repo: coltondick/nordic-theme-main, version: v2.3.9, name: nordic }
 dark: true
 weather: { state: partlycloudy, temperature: 19 }
@@ -119,30 +119,51 @@ type: custom:clock-weather-card
 entity: weather.home
 weather_icon_type: flat
 sections:
+  header:
+    rows:
+      - font_size: 1.3rem
+        segments:
+          - type: weather
+            attribute: temperature
+          - type: spacer
+          - type: weather
+      - font_size: 5.5rem
+        alignment: center
+        segments:
+          - type: time
+      - font_size: 1.3rem
+        alignment: center
+        segments:
+          - type: date
   forecast_strip:
-    forecast_type: daily
+    count: 6
+    time_pattern: H
+    hide_attribute: true
+    font_size: 1.3rem
   forecast_list:
-    hide: true
+    count: 3
+    font_size: 1.3rem
 ```
 
 </td><td>
 
-![The header above a daily forecast strip](docs/previews/example-daily-strip.png)
+![The default header above a forecast strip and list in large type](docs/previews/example-wall-tablet.png)
 
 *[Nordic](https://github.com/coltondick/nordic-theme-main/tree/v2.3.9)*
 
 </td></tr>
 <tr><td>
 
-**Custom header with daily list** - your own rows of segments above the coming days, without the strip.
+**Hour by hour** - a custom header above an hourly forecast list with taller rows, slim bars and temperatures to the decimal (`round_temperatures: false`).
 
-<!-- preview: example-header-list
+<!-- preview: example-hourly-list
 theme: { repo: Madelena/Metrology-for-Hass, version: v.1.9.1, name: Metro Blue }
-weather: { state: cloudy, temperature: 18, humidity: 72 }
+weather: { state: cloudy, temperature: 18.4, humidity: 72 }
 -->
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
+round_temperatures: false
 sections:
   header:
     rows:
@@ -165,12 +186,16 @@ sections:
   forecast_strip:
     hide: true
   forecast_list:
-    count: 7
+    forecast_type: hourly
+    count: 6
+    time_pattern: HH:mm
+    row_height: 36px
+    bar_thickness: 6px
 ```
 
 </td><td>
 
-![A custom header with time, date, humidity and temperature above a seven-day forecast list](docs/previews/example-header-list.png)
+![A custom header with time, date, humidity and a decimal temperature above an hourly forecast list](docs/previews/example-hourly-list.png)
 
 *[Metro Blue](https://github.com/Madelena/Metrology-for-Hass/tree/v.1.9.1)*
 
@@ -263,17 +288,21 @@ sections:
 </td></tr>
 <tr><td>
 
-**Your own sensors** - `text` and `entity` segments show anything from Home Assistant, here a template sensor with the next event of a calendar.
+**Your smart home at a glance** - the balcony sensor replaces the provider's temperature (`additional_sensors`), an `icon` follows the state of the front door, a `template` describes it and an `entity` shows the next calendar event.
 
-<!-- preview: example-next-appointment
+<!-- preview: example-smart-home
 theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Latte }
 weather: { state: sunny, temperature: 23 }
 entities:
+  sensor.balcony_temperature: { state: '17.3', attributes: { unit_of_measurement: '°C' } }
+  binary_sensor.front_door: { state: 'on', attributes: { device_class: door } }
   sensor.next_appointment: { state: '18:00 Dinner' }
 -->
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
+additional_sensors:
+  temperature: sensor.balcony_temperature
 sections:
   header:
     rows:
@@ -284,9 +313,17 @@ sections:
       - alignment: center
         segments:
           - type: icon
+            icon: mdi:thermometer
+          - type: weather
+            attribute: temperature
+          - type: icon
+            entity_id: binary_sensor.front_door
+          - type: template
+            template: "Door {{ 'open' if is_state('binary_sensor.front_door', 'on') else 'closed' }}"
+      - alignment: center
+        segments:
+          - type: icon
             icon: mdi:calendar-clock
-          - type: text
-            text: "Next appointment:"
           - type: entity
             entity_id: sensor.next_appointment
   forecast_strip:
@@ -297,9 +334,39 @@ sections:
 
 </td><td>
 
-![A header with the time and the next calendar appointment](docs/previews/example-next-appointment.png)
+![A header with the time, the balcony temperature, an open door and the next calendar appointment](docs/previews/example-smart-home.png)
 
 *[Catppuccin Latte](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
+
+</td></tr>
+<tr><td>
+
+**World clock** - a `title`, another `time_zone` and `locale` turn the card into the weather back home or at your next destination.
+
+<!-- preview: example-world-clock
+theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
+dark: true
+weather: { state: rainy, temperature: 26 }
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.tokyo
+title: Tokyo
+locale: ja
+time_zone: Asia/Tokyo
+sections:
+  forecast_strip:
+    forecast_type: daily
+    count: 5
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![The card titled Tokyo with time, date and forecast in Japanese](docs/previews/example-world-clock.png)
+
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 </td></tr>
 </table>
