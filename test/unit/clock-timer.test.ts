@@ -67,6 +67,7 @@ describe('ClockWeatherCard timer behavior', () => {
     const card = Object.create(CardClass.prototype)
     card.currentDate = DateTime.now()
     card._clock = null
+    card.isConnected = true
 
     card.hass = {
       config: { time_zone: hassTimeZone, unit_system: { temperature: '°C' } },
@@ -172,6 +173,18 @@ describe('ClockWeatherCard timer behavior', () => {
       expect(card._clock).not.toBeNull()
 
       card.disconnectedCallback()
+
+      expect(card._clock)
+        .toBeNull()
+    })
+
+    it('does not restart the clock on an update that runs after disconnect', async () => {
+      const card = await createCard()
+      card.isConnected = false
+      card.disconnectedCallback()
+
+      card.hass = { ...card.hass as object, states: { 'weather.home': { state: 'rainy' } } }
+      card.willUpdate(new Map([['hass', undefined]]))
 
       expect(card._clock)
         .toBeNull()

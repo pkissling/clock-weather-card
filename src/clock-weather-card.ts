@@ -190,9 +190,9 @@ export class ClockWeatherCard extends LitElement {
     return watched.some(id => stateChanged(id) || precisionChanged(id))
   }
 
-  // Idempotent - safe to call from any lifecycle hook.
+  // Idempotent - safe to call from any lifecycle hook. An update queued before disconnect still runs afterwards, so it must not start a clock.
   private _tryStart(): void {
-    if (!this.resolved) return
+    if (!this.resolved || !this.isConnected) return
     if (this._clock === null) {
       const { header, locale, timeZone } = this.resolved
       const needsSeconds = configNeedsSeconds(header)
