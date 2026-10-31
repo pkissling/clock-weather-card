@@ -49,6 +49,15 @@ test.describe('sections.header.weather_icon_size', () => {
       .toBeLessThan(1)
   })
 
+  test('reserves only the width the icons paint, not the full icon canvas', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: 'sections: { header: { weather_icon_size: 147px } }' })
+
+    // Header icons paint 96 x 98 of their 128 x 128 canvas.
+    await expect.poll(async () => Math.abs((await clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon')
+      .boundingBox())!.width - 144))
+      .toBeLessThan(1)
+  })
+
   test('updates the size at runtime when the config changes (no reload)', async ({ setupCard, clockWeatherCard }) => {
     const icon = clockWeatherCard.locator('clock-weather-card-header clock-weather-card-icon')
     await setupCard({ cardConfig: 'sections: { header: { weather_icon_size: 150px } }' })
