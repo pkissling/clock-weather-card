@@ -24,8 +24,8 @@ export default css`
   clock-weather-card-header > clock-weather-card-icon {
     display: block;
     justify-self: center;
-    /* The glyph fills the middle 80% of the box; the img's -10% margins crop the rest. */
-    width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) / 0.8);
+    /* The box fits the painted area of all header icons: x 16-112, y 16-114 of the 128-unit canvas (wind-alert overflows to 116.5). */
+    width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) * 96 / 98);
   }
 
   /* Meteocons clouds are near-white and vanish on light backgrounds without an outline. */
@@ -35,10 +35,9 @@ export default css`
 
   clock-weather-card-header > clock-weather-card-icon img {
     display: block;
-    width: 100%;
-    margin: -10% 0;
-    /* Meteocons sit low in their canvas; raindrops would otherwise touch the divider below. */
-    translate: 0 -4%;
+    /* Margins are relative to the 96-unit box width: crop 16 units left, top and right, 14 at the bottom. */
+    width: calc(100% * 128 / 96);
+    margin: calc(-100% * 16 / 96) calc(-100% * 16 / 96) calc(-100% * 14 / 96);
   }
 
   clock-weather-card-header-details {
