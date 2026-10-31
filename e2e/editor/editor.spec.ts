@@ -71,6 +71,24 @@ test.describe('GUI editor', () => {
       .toEqual({ alignment: 'center', segments: [{ type: 'icon', icon: 'mdi:calendar' }, { type: 'date' }, { type: 'text', text: 'Hello' }] })
   })
 
+  test('shows a header row without segments as an empty row', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { header: { rows: [{ font_size: 2em }] } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-row="0"]')
+      .getByRole('button', { name: 'Add segment' })
+      .click()
+    await editor.locator('[data-add=text]')
+      .click()
+    await editor.getByRole('textbox', { name: 'Text' })
+      .fill('Hello')
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { header: { rows: [{ font_size: '2em', segments: [{ type: 'text', text: 'Hello' }] }] } } })
+  })
+
   test('sets the font size of a header row', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

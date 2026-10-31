@@ -26,6 +26,10 @@ const GROUP_ICONS: Record<Exclude<CardGroup, 'essentials'>, string> = {
   region: 'mdi:earth',
 }
 
+// A row typed in YAML may lack its segments; the editor shows it as an empty row instead of crashing.
+const rowsOf = (section: Data): RowConfig[] =>
+  ((section.rows as RowConfig[] | undefined) ?? DEFAULT_ROWS).map(row => row.segments ? row : { ...row, segments: [] })
+
 @customElement('clock-weather-card-editor')
 export class ClockWeatherCardEditor extends LitElement {
   @property({ attribute: false }) public hass?: HomeAssistant
@@ -136,8 +140,8 @@ export class ClockWeatherCardEditor extends LitElement {
 
   private _summary(key: SectionKey, section: Data): string {
     if (key === 'header') {
-      const rows = (section.rows as RowConfig[] | undefined) ?? DEFAULT_ROWS
-      const types = [...new Set(rows.flatMap(r => r.segments.map(s => s.type)))].filter(t => t !== 'spacer' && t !== 'icon')
+      const types = [...new Set(rowsOf(section)
+        .flatMap(r => r.segments.map(s => s.type)))].filter(t => t !== 'spacer' && t !== 'icon')
       return types.map(t => this.t(`segments.${t}`))
         .join(' · ')
     }
@@ -195,7 +199,7 @@ export class ClockWeatherCardEditor extends LitElement {
         <clock-weather-card-rows-editor
           .hass=${this.hass}
           .config=${this._config}
-          .rows=${(value.rows as RowConfig[] | undefined) ?? DEFAULT_ROWS}
+          .rows=${rowsOf(value)}
           @rows-changed=${(e: CustomEvent<RowConfig[]>) => this._update(path, { rows: deepEqual(e.detail, DEFAULT_ROWS) ? undefined : e.detail })}
         ></clock-weather-card-rows-editor>
       `
