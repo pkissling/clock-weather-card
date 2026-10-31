@@ -50,6 +50,7 @@
     "unit": "Mértékegység",
     "unit_attribute": "Mértékegység attribútum",
     "entity_id": "Entitás",
+    "icon_source": "Ikon forrása",
     "icon": "Ikon",
     "text": "Szöveg",
     "template": "Sablon"

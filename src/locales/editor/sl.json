@@ -50,6 +50,7 @@
     "unit": "Enota",
     "unit_attribute": "Atribut enote",
     "entity_id": "Entiteta",
+    "icon_source": "Vir ikone",
     "icon": "Ikona",
     "text": "Besedilo",
     "template": "Predloga"

@@ -50,6 +50,7 @@
     "unit": "Satuan",
     "unit_attribute": "Atribut satuan",
     "entity_id": "Entitas",
+    "icon_source": "Sumber ikon",
     "icon": "Ikon",
     "text": "Teks",
     "template": "Templat"

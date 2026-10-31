@@ -50,6 +50,7 @@
     "unit": "Unité",
     "unit_attribute": "Attribut d'unité",
     "entity_id": "Entité",
+    "icon_source": "Source de l'icône",
     "icon": "Icône",
     "text": "Texte",
     "template": "Modèle"

@@ -153,7 +153,11 @@ export const SEGMENT_FIELDS: { [T in SegmentConfig['type']]: EditorField[] } = {
     { name: 'entity_id', selector: { entity: {} }, required: true },
     ...unitFields({ name: 'attribute', selector: { attribute: {} }, context: { filter_entity: 'entity_id' } }, () => true),
   ],
-  icon: [{ name: 'icon', selector: { icon: {} }, required: true }],
+  icon: [
+    // The rows editor's icon_source choice switches between the two by setting or removing entity_id.
+    { name: 'icon', selector: { icon: {} }, required: true, visible: d => d.entity_id === undefined },
+    { name: 'entity_id', selector: { entity: {} }, required: true, visible: d => d.entity_id !== undefined },
+  ],
   weather_icon: [{ name: 'entity_id', selector: { entity: { domain: 'weather' } } }],
   text: [{ name: 'text', selector: text, required: true }],
   template: [{ name: 'template', selector: { template: {} }, required: true }],

@@ -50,6 +50,7 @@
     "unit": "Ühik",
     "unit_attribute": "Ühiku atribuut",
     "entity_id": "Olem",
+    "icon_source": "Ikooni allikas",
     "icon": "Ikoon",
     "text": "Tekst",
     "template": "Mall"

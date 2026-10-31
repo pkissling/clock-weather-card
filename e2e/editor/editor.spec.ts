@@ -71,6 +71,47 @@ test.describe('GUI editor', () => {
       .toEqual({ alignment: 'center', segments: [{ type: 'icon', icon: 'mdi:calendar' }, { type: 'date' }, { type: 'text', text: 'Hello' }] })
   })
 
+  test('switches an icon segment from an entity\'s icon to a fixed icon', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { header: { rows: [{ segments: [{ type: icon, entity_id: weather.mock_weather }] }] } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-segment=icon]')
+      .click()
+    const panel = editor.locator('clock-weather-card-rows-editor .panel')
+    await expect(panel.getByRole('radio', { name: 'Entity' }))
+      .toBeChecked()
+    await expect(panel.locator('ha-selector-icon'))
+      .toHaveCount(0)
+    await panel.getByRole('radio', { name: 'Icon' })
+      .click()
+    await expect(panel.locator('ha-selector-entity'))
+      .toHaveCount(0)
+
+    const config = await saveEditor(page)
+    expect((config.sections as { header: { rows: unknown[] } }).header.rows[0])
+      .toEqual({ segments: [{ type: 'icon', icon: 'mdi:star-outline' }] })
+  })
+
+  test('switches an icon segment from a fixed icon to an entity\'s icon', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { header: { rows: [{ segments: [{ type: icon, icon: mdi:star }] }] } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-segment=icon]')
+      .click()
+    const panel = editor.locator('clock-weather-card-rows-editor .panel')
+    await panel.getByRole('radio', { name: 'Entity' })
+      .click()
+
+    await expect(panel.locator('ha-selector-entity'))
+      .toBeVisible()
+    await expect(panel.locator('ha-selector-icon'))
+      .toHaveCount(0)
+  })
+
   test('sets the font size of a header row', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

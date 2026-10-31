@@ -50,6 +50,7 @@
     "unit": "Birim",
     "unit_attribute": "Birim özniteliği",
     "entity_id": "Varlık",
+    "icon_source": "Simge kaynağı",
     "icon": "Simge",
     "text": "Metin",
     "template": "Şablon"

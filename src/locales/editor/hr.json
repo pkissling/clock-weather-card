@@ -50,6 +50,7 @@
     "unit": "Jedinica",
     "unit_attribute": "Atribut jedinice",
     "entity_id": "Entitet",
+    "icon_source": "Izvor ikone",
     "icon": "Ikona",
     "text": "Tekst",
     "template": "Predložak"

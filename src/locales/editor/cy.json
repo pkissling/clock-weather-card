@@ -50,6 +50,7 @@
     "unit": "Uned",
     "unit_attribute": "Priodwedd uned",
     "entity_id": "Endid",
+    "icon_source": "Ffynhonnell yr eicon",
     "icon": "Eicon",
     "text": "Testun",
     "template": "Templed"

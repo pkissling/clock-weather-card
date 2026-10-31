@@ -47,7 +47,8 @@ export interface EntitySegmentConfig {
 
 export interface IconSegmentConfig {
   type: 'icon'
-  icon: string
+  icon?: string
+  entity_id?: string
 }
 
 export interface WeatherIconSegmentConfig {

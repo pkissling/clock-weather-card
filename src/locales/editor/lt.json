@@ -50,6 +50,7 @@
     "unit": "Vienetas",
     "unit_attribute": "Vieneto atributas",
     "entity_id": "Objektas",
+    "icon_source": "Piktogramos šaltinis",
     "icon": "Piktograma",
     "text": "Tekstas",
     "template": "Šablonas"
