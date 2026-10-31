@@ -31,7 +31,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
   protected renderSkeleton(): TemplateResult {
     return html`
       <clock-weather-card-divider></clock-weather-card-divider>
-      <div class="strip" aria-busy="true">
+      <div class="strip" aria-busy="true" style=${this._stripStyle()}>
         ${Array.from({ length: this.config.forecast_strip.count }, () => html`
           <div class="skeleton-item">
             <span class="skeleton skeleton--time"></span>
@@ -109,10 +109,15 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     return html`
       <clock-weather-card-divider></clock-weather-card-divider>
-      <div class="strip">
+      <div class="strip" style=${this._stripStyle()}>
         ${items.map(({ item }) => html`<clock-weather-card-forecast-strip-item .item=${item}></clock-weather-card-forecast-strip-item>`)}
       </div>
     `
+  }
+
+  private _stripStyle(): string {
+    const { font_size } = this.config.forecast_strip
+    return font_size ? `font-size: ${font_size}; --cwc-strip-icon-size: 2.5em` : ''
   }
 }
 

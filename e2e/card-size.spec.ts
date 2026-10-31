@@ -9,6 +9,7 @@ const configs = {
   'only the header': 'sections: { forecast_strip: { hide: true }, forecast_list: { hide: true } }',
   'a long forecast list': 'sections: { forecast_list: { count: 10 } }',
   'tall forecast list rows': 'sections: { forecast_list: { row_height: 50px } }',
+  'large forecast fonts': 'sections: { forecast_strip: { font_size: 1.5rem }, forecast_list: { font_size: 1.5rem } }',
   'many header rows': `
     sections:
       header:

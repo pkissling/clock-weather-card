@@ -89,6 +89,19 @@ test.describe('GUI editor', () => {
       .toBe('2rem')
   })
 
+  test('sets the forecast font size without expanding more options', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast list')
+      .click()
+    await editor.getByRole('textbox', { name: 'Font size' })
+      .fill('1.5rem')
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_list: { font_size: '1.5rem' } } })
+  })
+
   test('picks a date format from previews', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

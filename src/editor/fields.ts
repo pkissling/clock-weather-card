@@ -109,6 +109,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
   forecast_strip: [
     ...sectionCommon('forecast_strip'),
     { name: 'hide_attribute', selector: bool },
+    { name: 'font_size', selector: text, default: '1rem' },
     { name: 'attribute_icon', selector: { icon: {} }, default: ({ config }: FormContext) => config.sections?.forecast_strip?.attribute ? undefined : 'mdi:water', advanced: true, visible: d => d.hide_attribute !== true },
     { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true, visible: d => d.hide_attribute !== true },
     {
@@ -123,6 +124,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
   ],
   forecast_list: [
     ...sectionCommon('forecast_list'),
+    { name: 'font_size', selector: text, default: '1rem' },
     { name: 'attribute_unit', selector: unitSelector, allowEmpty: true, advanced: true },
     { name: 'gradient', control: 'gradient', advanced: true },
     { name: 'row_height', selector: text, advanced: true },

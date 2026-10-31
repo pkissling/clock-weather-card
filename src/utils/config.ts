@@ -184,6 +184,8 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertCssLength('sections.header.weather_icon_size', header?.weather_icon_size)
   assertCssLength('sections.forecast_list.row_height', list?.row_height)
   assertCssLength('sections.forecast_list.bar_thickness', list?.bar_thickness)
+  assertCssLength('sections.forecast_strip.font_size', strip?.font_size)
+  assertCssLength('sections.forecast_list.font_size', list?.font_size)
 
   const gradient = list?.gradient
   if (gradient !== undefined) {
@@ -242,9 +244,10 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
       attribute_icon: strip.attribute ? null : 'mdi:water',
       attribute_color: defaultAttributeColor(strip, strip.weather_icon_type ?? inherited.weather_icon_type),
       attribute_unit: null,
+      font_size: null,
       ...strip,
       attributeRequired: strip.attribute !== undefined && strip.hide_attribute !== true,
     },
-    forecast_list: { ...D.forecast_list, ...inherited, weather_entity: config.entity, attribute_unit: null, gradient: DEFAULT_GRADIENT, ...list },
+    forecast_list: { ...D.forecast_list, ...inherited, weather_entity: config.entity, attribute_unit: null, font_size: null, gradient: DEFAULT_GRADIENT, ...list },
   }
 }

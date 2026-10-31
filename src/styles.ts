@@ -107,7 +107,10 @@ export default css`
     display: block;
   }
 
+  /* Text sizes are in em so sections.forecast_strip.font_size scales them; the icon follows only when it is set. */
   clock-weather-card-forecast-strip .strip {
+    --_icon-size: var(--cwc-strip-icon-size, 40px);
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
     overflow-x: auto;
@@ -118,7 +121,7 @@ export default css`
   clock-weather-card-forecast-strip-item,
   clock-weather-card-forecast-strip .skeleton-item {
     flex: 0 0 auto;
-    min-width: 40px;
+    min-width: var(--_icon-size);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,7 +138,7 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item .time {
-    font-size: 0.8rem;
+    font-size: 0.8em;
     opacity: 0.7;
     line-height: 1;
     max-width: 5em;
@@ -145,8 +148,8 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item clock-weather-card-icon {
-    width: 40px;
-    height: 40px;
+    width: var(--_icon-size);
+    height: var(--_icon-size);
     display: block;
   }
 
@@ -158,27 +161,27 @@ export default css`
 
   clock-weather-card-forecast-strip-item .label {
     display: inline-flex;
-    font-size: 0.9rem;
+    font-size: 1em;
     font-weight: 500;
     line-height: 1;
     --mdc-icon-size: 1em;
   }
 
   clock-weather-card-forecast-strip-item .temperature-low {
-    font-size: 0.8rem;
+    font-size: 0.8em;
     opacity: 0.6;
     line-height: 1;
     margin-top: 2px;
   }
 
   clock-weather-card-forecast-strip-item .attribute {
-    font-size: 0.72rem;
+    font-size: 0.72em;
     opacity: 0.65;
     color: var(--info-color, #4a90d9);
     line-height: 1;
-    min-height: 0.72rem;
+    min-height: 1em;
     display: flex;
-    max-width: 5rem;
+    max-width: calc(5em / 0.72);
     align-items: center;
     gap: 2px;
     margin-top: 2px;
@@ -208,11 +211,12 @@ export default css`
   /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
   clock-weather-card-forecast-list .rows {
     display: grid;
-    grid-template-columns: max-content var(--cwc-list-row-height) max-content 1fr max-content;
+    --_icon-size: var(--cwc-list-icon-size, var(--cwc-list-row-height));
+    grid-template-columns: max-content var(--_icon-size) max-content 1fr max-content;
     grid-auto-rows: minmax(var(--cwc-list-row-height), auto);
     align-items: center;
     column-gap: 8px;
-    font-size: 0.9rem;
+    font-size: var(--cwc-list-font-size, 1rem);
     font-weight: 500;
     line-height: 1;
   }
@@ -231,8 +235,8 @@ export default css`
   }
 
   clock-weather-card-forecast-list-item clock-weather-card-icon {
-    width: var(--cwc-list-row-height);
-    height: var(--cwc-list-row-height);
+    width: var(--_icon-size);
+    height: var(--_icon-size);
     display: block;
   }
 
@@ -315,31 +319,31 @@ export default css`
   }
 
   clock-weather-card-forecast-strip .skeleton--time {
-    width: 1.6rem;
-    height: 0.8rem;
+    width: 1.6em;
+    height: 0.8em;
   }
 
   clock-weather-card-forecast-strip .skeleton--icon {
-    width: 28px;
-    height: 28px;
-    margin: 6px;
+    width: calc(var(--_icon-size) * 0.7);
+    height: calc(var(--_icon-size) * 0.7);
+    margin: calc(var(--_icon-size) * 0.15);
     border-radius: 50%;
   }
 
   clock-weather-card-forecast-strip .skeleton--label {
-    width: 1.8rem;
-    height: 0.9rem;
+    width: 1.8em;
+    height: 1em;
   }
 
   clock-weather-card-forecast-strip .skeleton--attribute {
-    width: 1.6rem;
-    height: 0.72rem;
+    width: 1.6em;
+    height: 0.72em;
     margin-top: 2px;
   }
 
   clock-weather-card-forecast-list .skeleton--label {
-    width: 2.4rem;
-    height: 0.9rem;
+    width: 2.4em;
+    height: 1em;
   }
 
   clock-weather-card-forecast-list .skeleton--icon {
@@ -350,8 +354,8 @@ export default css`
   }
 
   clock-weather-card-forecast-list .skeleton--temperature {
-    width: 1.8rem;
-    height: 0.9rem;
+    width: 1.8em;
+    height: 1em;
   }
 
   clock-weather-card-forecast-list .skeleton--bar {
