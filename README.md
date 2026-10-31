@@ -321,14 +321,14 @@ Sections render top to bottom in the order `header`, `forecast_strip`, `forecast
 
 #### `header`
 
-Renders the current-weather icon next to the configurable rows of segments (clock, date, current weather, entities, icons) at the top of the card. By default the icon is as tall as the rows, but at least `9rem`; `weather_icon_size` overrides this. The icon never grows beyond half the card width.
+Renders the current-weather icon next to the configurable rows of segments (clock, date, current weather, entities, icons) at the top of the card. By default the icon is as tall as the rows, but at least `9rem`, and takes at most about 35% of the card width. `weather_icon_size` overrides this and is not capped. Spare width is spread evenly around the icon and the rows.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `hide` | boolean | no | `false` | Hide the header section. |
 | `animated_icons` | boolean | no | `true` | Whether the large weather icon should be animated. |
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the large weather icon. Falls back to the card's main `weather_icon_type` when unset. |
-| `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon, capped at half the card width. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
+| `weather_icon_size` | string | no | height of the rows, at least `9rem` | CSS length for the height of the large weather icon. It is not capped, so a large value leaves less width for the rows. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%` (relative to half the card width). |
 | `round_temperatures` | boolean | no | top-level `round_temperatures` | When `true`, the temperatures of `weather` segments (`temperature`, `apparent_temperature`, `dew_point` and values with a `°C`/`°F` `unit_attribute`) are rounded to the nearest integer. The display precision of `additional_sensors.temperature` takes precedence when set. |
 | `rows` | list | no | See [Default Header Rows](#default-header-rows) | List of rows to display. See [Row Options](#row-options). |
 

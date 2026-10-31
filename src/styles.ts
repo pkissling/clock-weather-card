@@ -18,7 +18,10 @@ export default css`
 
   clock-weather-card-header {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    /* Spare width is spread evenly around icon and text; once it runs out, the text shrinks next to the icon. */
+    grid-template-columns: auto minmax(0, max-content);
+    justify-content: space-evenly;
+    column-gap: 8px;
     align-items: center;
     container-type: inline-size;
   }
@@ -32,7 +35,8 @@ export default css`
 
   @supports (width: 1cqi) {
     clock-weather-card-header > clock-weather-card-icon {
-      width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) * 96 / 98);
+      /* By default about 35% of the card at most; a configured weather_icon_size takes whatever width it needs. */
+      width: calc(var(--cwc-header-icon-size, min(35cqi * 98 / 96, max(var(--cwc-header-rows-height, 0px), 9rem))) * 96 / 98);
     }
   }
 
@@ -91,6 +95,18 @@ export default css`
     line-height: 1;
     padding-block: 0.2em;
     margin-block: -0.2em;
+  }
+
+  /* The default clock shrinks with the card: it is ~2.5em wide and the rows get 65% of the header minus the gap. */
+  @supports (width: 1cqi) {
+    clock-weather-card-header-details-row[default-rows] > clock-weather-card-time-segment {
+      font-size: min(1em, 24cqi);
+    }
+  }
+
+  /* Values such as the temperature never truncate; the condition text gives way instead. */
+  clock-weather-card-weather-segment[attribute] {
+    flex-shrink: 0;
   }
 
   clock-weather-card-icon-segment {

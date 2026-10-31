@@ -9,6 +9,7 @@ import type { DateTime } from 'luxon'
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
 import { configContext } from '@/context'
 import type { ResolvedConfig } from '@/types'
+import { DEFAULT_ROWS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 
 @customElement('clock-weather-card-header-details')
@@ -21,6 +22,7 @@ class ClockWeatherCardHeaderDetails extends AbstractClockWeatherCardComponent {
       .map(rowConfig => html`
         <clock-weather-card-header-details-row
           style="font-size: ${rowConfig.font_size ?? ''}; justify-content: ${rowConfig.alignment ?? ''}"
+          ?default-rows=${this.config.header.rows === DEFAULT_ROWS}
           .rowConfig=${rowConfig}
           .currentDate=${this.currentDate}
         ></clock-weather-card-header-details-row>

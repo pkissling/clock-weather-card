@@ -35,6 +35,57 @@ test.describe('header section', () => {
     }
   })
 
+  test('spreads spare width evenly around the icon and the text', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+    await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 900px' })
+    try {
+      const box = async (selector: string): Promise<{ x: number, width: number }> => (await clockWeatherCard.locator(selector)
+        .boundingBox())!
+      await expect.poll(async () => {
+        const header = await box('clock-weather-card-header')
+        const icon = await box('clock-weather-card-header > clock-weather-card-icon')
+        const details = await box('clock-weather-card-header-details')
+        const left = icon.x - header.x
+        const middle = details.x - (icon.x + icon.width) - 8
+        const right = header.x + header.width - (details.x + details.width)
+        return Math.max(Math.abs(left - middle), Math.abs(left - right))
+      })
+        .toBeLessThan(2)
+    } finally {
+      await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = '' })
+    }
+  })
+
+  test('shrinks the default clock on a narrow card instead of truncating it', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({})
+    await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 220px' })
+    try {
+      const time = clockWeatherCard.locator('clock-weather-card-time-segment')
+      const rem = await clockWeatherCard.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize))
+      await expect.poll(() => time.evaluate(el => parseFloat(getComputedStyle(el).fontSize)))
+        .toBeLessThan(4 * rem)
+      await expect.poll(() => time.evaluate(el => el.scrollWidth <= el.clientWidth))
+        .toBe(true)
+    } finally {
+      await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = '' })
+    }
+  })
+
+  test('truncates the condition rather than the temperature when the row is too narrow', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ weather: { state: 'partlycloudy' } })
+    await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = 'display: block; width: 220px' })
+    try {
+      const fits = (selector: string): Promise<boolean> => clockWeatherCard.locator(selector)
+        .evaluate(el => el.scrollWidth <= el.clientWidth)
+      await expect.poll(() => fits('clock-weather-card-weather-segment[attribute="temperature"]'))
+        .toBe(true)
+      await expect.poll(() => fits('clock-weather-card-weather-segment:not([attribute])'))
+        .toBe(false)
+    } finally {
+      await clockWeatherCard.evaluate(el => { (el as HTMLElement).style.cssText = '' })
+    }
+  })
+
   test('advances the time every second when a time segment shows seconds', async ({ page, setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `

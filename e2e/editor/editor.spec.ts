@@ -121,9 +121,11 @@ test.describe('GUI editor', () => {
     await expect(editor.locator('[data-row="0"]')
       .getByRole('textbox', { name: 'Font size' }))
       .toHaveValue('1em')
-    await editor.locator('[data-row="1"]')
+    const clockFontSize = editor.locator('[data-row="1"]')
       .getByRole('textbox', { name: 'Font size' })
-      .fill('2rem')
+    await expect(clockFontSize)
+      .toHaveValue('4rem')
+    await clockFontSize.fill('2rem')
 
     const config = await saveEditor(page)
     expect((config.sections as { header: { rows: { font_size?: string }[] } }).header.rows[1].font_size)
