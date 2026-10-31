@@ -796,6 +796,43 @@ test.describe('sections.header.rows', () => {
     })
   })
 
+  test.describe('icon segment with entity_id', () => {
+    const config = (entityId: string): string => `
+      sections:
+        header:
+          rows:
+            - segments:
+                - type: icon
+                  entity_id: ${entityId}
+    `
+
+    test('renders the entity\'s current icon and follows it at runtime', async ({ setupCard, clockWeatherCard }) => {
+      const icon = clockWeatherCard.locator('clock-weather-card-icon-segment ha-state-icon ha-icon')
+      await setupCard({ entities: { 'sensor.season': { state: 'autumn', attributes: { icon: 'mdi:leaf' } } }, cardConfig: config('sensor.season') })
+      await expect(icon)
+        .toHaveJSProperty('icon', 'mdi:leaf')
+
+      await haApi.setEntityState('sensor.season', 'winter', { icon: 'mdi:snowflake' })
+
+      await expect(icon)
+        .toHaveJSProperty('icon', 'mdi:snowflake')
+    })
+
+    test('rejects an entity_id that does not exist', async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({ cardConfig: config('sensor.does_not_exist') })
+
+      await cardErrorMessage()
+        .toContain('Referenced entity "sensor.does_not_exist" does not exist')
+    })
+
+    test('rejects an icon combined with entity_id', async ({ setupCard, cardErrorMessage }) => {
+      await setupCard({ cardConfig: 'sections: { header: { rows: [{ segments: [{ type: icon, icon: mdi:star, entity_id: weather.mock_weather }] }] } }' })
+
+      await cardErrorMessage()
+        .toContain('Config option "sections.header.rows[0].segments[0].icon" has invalid value "mdi:star", expected no icon when "entity_id" is set')
+    })
+  })
+
   test.describe('weather_icon segment', () => {
     const weatherIcon = 'clock-weather-card-weather-icon-segment ha-icon'
     const configWith = (extra = ''): string => `

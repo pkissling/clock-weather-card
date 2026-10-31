@@ -50,6 +50,7 @@
     "unit": "Yksikkö",
     "unit_attribute": "Yksikön attribuutti",
     "entity_id": "Kohde",
+    "icon_source": "Kuvakkeen lähde",
     "icon": "Kuvake",
     "text": "Teksti",
     "template": "Malli"

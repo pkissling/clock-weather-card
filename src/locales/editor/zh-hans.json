@@ -50,6 +50,7 @@
     "unit": "单位",
     "unit_attribute": "单位属性",
     "entity_id": "实体",
+    "icon_source": "图标来源",
     "icon": "图标",
     "text": "文本",
     "template": "模板"

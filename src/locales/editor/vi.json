@@ -50,6 +50,7 @@
     "unit": "Đơn vị",
     "unit_attribute": "Thuộc tính đơn vị",
     "entity_id": "Thực thể",
+    "icon_source": "Nguồn biểu tượng",
     "icon": "Biểu tượng",
     "text": "Văn bản",
     "template": "Mẫu"

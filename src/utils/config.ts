@@ -147,7 +147,12 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
           throw invalidConfigValue(`${path}.attribute`, segment.attribute, `an attribute of "${segment.entity_id}"`)
         }
       }
-      if (segment.type === 'icon') assertRequiredString(`${path}.icon`, segment.icon)
+      if (segment.type === 'icon') {
+        if (segment.entity_id === undefined) assertRequiredString(`${path}.icon`, segment.icon)
+        else if (segment.icon !== undefined) throw invalidConfigValue(`${path}.icon`, String(segment.icon), 'no icon when "entity_id" is set')
+        assertNonEmptyString(`${path}.entity_id`, segment.entity_id)
+        assertEntityExists(segment.entity_id)
+      }
       if (segment.type === 'text') assertRequiredString(`${path}.text`, segment.text)
       if (segment.type === 'template') assertRequiredString(`${path}.template`, segment.template)
       if ('show_unit' in segment) assertBoolean(`${path}.show_unit`, segment.show_unit)

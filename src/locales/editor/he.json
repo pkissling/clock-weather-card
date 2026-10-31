@@ -50,6 +50,7 @@
     "unit": "יחידה",
     "unit_attribute": "מאפיין יחידה",
     "entity_id": "ישות",
+    "icon_source": "מקור הסמל",
     "icon": "סמל",
     "text": "טקסט",
     "template": "תבנית"

@@ -50,6 +50,7 @@
     "unit": "Јединица",
     "unit_attribute": "Атрибут јединице",
     "entity_id": "Ентитет",
+    "icon_source": "Извор иконе",
     "icon": "Иконица",
     "text": "Текст",
     "template": "Шаблон"

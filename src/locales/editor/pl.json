@@ -50,6 +50,7 @@
     "unit": "Jednostka",
     "unit_attribute": "Atrybut jednostki",
     "entity_id": "Encja",
+    "icon_source": "Źródło ikony",
     "icon": "Ikona",
     "text": "Tekst",
     "template": "Szablon"

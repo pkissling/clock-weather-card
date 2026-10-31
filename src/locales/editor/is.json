@@ -50,6 +50,7 @@
     "unit": "Eining",
     "unit_attribute": "Eigind einingar",
     "entity_id": "Eining",
+    "icon_source": "Uppruni tákns",
     "icon": "Tákn",
     "text": "Texti",
     "template": "Sniðmát"

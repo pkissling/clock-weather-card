@@ -50,6 +50,7 @@
     "unit": "Unitate",
     "unit_attribute": "Atribut unitate",
     "entity_id": "Entitate",
+    "icon_source": "Sursa pictogramei",
     "icon": "Pictogramă",
     "text": "Text",
     "template": "Șablon"

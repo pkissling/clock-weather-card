@@ -50,6 +50,7 @@
     "unit": "Enhet",
     "unit_attribute": "Enhetsattributt",
     "entity_id": "Entitet",
+    "icon_source": "Ikonkilde",
     "icon": "Ikon",
     "text": "Tekst",
     "template": "Mal"

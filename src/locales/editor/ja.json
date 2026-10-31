@@ -50,6 +50,7 @@
     "unit": "単位",
     "unit_attribute": "単位の属性",
     "entity_id": "エンティティ",
+    "icon_source": "アイコンのソース",
     "icon": "アイコン",
     "text": "テキスト",
     "template": "テンプレート"

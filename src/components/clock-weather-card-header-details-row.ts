@@ -56,6 +56,7 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
     case 'icon':
       return html`<clock-weather-card-icon-segment
           .icon=${segment.icon}
+          .entityId=${segment.entity_id}
         ></clock-weather-card-icon-segment>`
     case 'weather_icon':
       return html`<clock-weather-card-weather-icon-segment

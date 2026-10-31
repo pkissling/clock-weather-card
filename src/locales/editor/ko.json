@@ -50,6 +50,7 @@
     "unit": "단위",
     "unit_attribute": "단위 속성",
     "entity_id": "구성요소",
+    "icon_source": "아이콘 소스",
     "icon": "아이콘",
     "text": "텍스트",
     "template": "템플릿"

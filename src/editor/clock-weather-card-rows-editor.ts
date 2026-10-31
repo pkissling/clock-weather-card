@@ -5,7 +5,7 @@ import { property, state } from 'lit/decorators.js'
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/editor/form'
-import type { ClockWeatherCardConfig, RowConfig, SegmentConfig } from '@/types'
+import type { ClockWeatherCardConfig, IconSegmentConfig, RowConfig, SegmentConfig } from '@/types'
 import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
@@ -97,7 +97,7 @@ export class ClockWeatherCardRowsEditor extends LitElement {
   }
 
   private _renderChip(segment: SegmentConfig, row: number, index: number, selected: boolean): TemplateResult {
-    const icon = segment.type === 'icon' ? segment.icon : SEGMENT_ICONS[segment.type]
+    const icon = segment.type === 'icon' && segment.icon ? segment.icon : SEGMENT_ICONS[segment.type]
     const label = this._chipLabel(segment)
     return html`
       <button
@@ -156,6 +156,7 @@ export class ClockWeatherCardRowsEditor extends LitElement {
           ${iconButton('mdi:arrow-right', this.t('actions.move_right'), () => setSegments(move(row.segments, index, index + 1), { row: rowIndex, item: index + 1 }), index === last)}
           ${iconButton('mdi:delete-outline', this.t('actions.delete'), () => setSegments(row.segments.filter((_, i) => i !== index), undefined))}
         </div>
+        ${segment.type === 'icon' ? this._renderIconSource(segment, next => setSegments(row.segments.map((s, i) => i === index ? next : s))) : nothing}
         ${renderForm(
     { hass: this.hass, config: this.config },
     SEGMENT_FIELDS[segment.type],
@@ -165,6 +166,18 @@ export class ClockWeatherCardRowsEditor extends LitElement {
   )}
       </div>
     `
+  }
+
+  // Not a config option: picks whether the icon segment shows a fixed icon or an entity's icon.
+  private _renderIconSource(segment: IconSegmentConfig, onChange: (segment: SegmentConfig) => void): TemplateResult | typeof nothing {
+    const options = ['icon', 'entity_id'].map(value => ({ value, label: this.t(`fields.${value}`) }))
+    return renderForm(
+      { hass: this.hass, config: this.config },
+      [{ name: 'icon_source', selector: { select: { mode: 'list', options } } }],
+      { icon_source: segment.entity_id === undefined ? 'icon' : 'entity_id' },
+      {},
+      ({ icon_source }) => onChange(icon_source === 'entity_id' ? { type: 'icon', entity_id: '' } : NEW_SEGMENTS.icon),
+    )
   }
 
   static styles = [controlStyles, css`

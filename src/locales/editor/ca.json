@@ -50,6 +50,7 @@
     "unit": "Unitat",
     "unit_attribute": "Atribut d'unitat",
     "entity_id": "Entitat",
+    "icon_source": "Origen de la icona",
     "icon": "Icona",
     "text": "Text",
     "template": "Plantilla"

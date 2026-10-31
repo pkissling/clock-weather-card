@@ -459,12 +459,13 @@ Displays a Home Assistant entity's state and unit. A numeric state is rounded to
 
 #### `icon`
 
-Displays an MDI icon.
+Displays a fixed MDI icon, or the current icon of an entity.
 
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `type` | string | **yes** | - | `icon` |
-| `icon` | string | **yes** | - | MDI icon name (e.g. `mdi:thermometer`, `mdi:calendar`) |
+| `icon` | string | unless `entity_id` is set | - | MDI icon name (e.g. `mdi:thermometer`, `mdi:calendar`). Must not be combined with `entity_id`. |
+| `entity_id` | string | no | - | Entity whose current icon is shown, resolved like Home Assistant does (custom icon, state-based icons of the integration or device class), e.g. `sensor.season` for a leaf in autumn and a snowflake in winter |
 
 #### `weather_icon`
 

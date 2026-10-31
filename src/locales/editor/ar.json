@@ -50,6 +50,7 @@
     "unit": "الوحدة",
     "unit_attribute": "سمة الوحدة",
     "entity_id": "الكيان",
+    "icon_source": "مصدر الأيقونة",
     "icon": "الأيقونة",
     "text": "النص",
     "template": "قالب"

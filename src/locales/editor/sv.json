@@ -50,6 +50,7 @@
     "unit": "Enhet",
     "unit_attribute": "Enhetsattribut",
     "entity_id": "Entitet",
+    "icon_source": "Ikonkälla",
     "icon": "Ikon",
     "text": "Text",
     "template": "Mall"

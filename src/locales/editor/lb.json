@@ -50,6 +50,7 @@
     "unit": "Eenheet",
     "unit_attribute": "Eenheet-Attribut",
     "entity_id": "Entitéit",
+    "icon_source": "Quell vum Symbol",
     "icon": "Icon",
     "text": "Text",
     "template": "Template"

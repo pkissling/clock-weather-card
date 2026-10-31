@@ -50,6 +50,7 @@
     "unit": "Eenheid",
     "unit_attribute": "Eenheidsattribuut",
     "entity_id": "Entiteit",
+    "icon_source": "Pictogrambron",
     "icon": "Pictogram",
     "text": "Tekst",
     "template": "Sjabloon"
