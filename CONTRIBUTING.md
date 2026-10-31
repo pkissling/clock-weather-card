@@ -103,6 +103,10 @@ test('renders the configured title in the card header', async ({ clockWeatherCar
 
 Place the spec at `e2e/config-options/<option>.spec.ts` for a config option (`<parent>/<option>.spec.ts` for nested ones) or `e2e/sections/` for section behavior. If you add a config option, also document it in [Configuration](README.md#configuration).
 
+## Browser support
+
+Many users run the card on old wall tablets and TVs, so it has to work in every browser Home Assistant still supports: Chrome ≥ 67, Samsung Internet ≥ 9 and Safari/iOS ≥ 15.4. If you use CSS newer than that and the layout would break without it, add a plain fallback and put the modern rule in an `@supports` block. See [Browser support in `AGENTS.md`](AGENTS.md#browser-support) for the details and how to test it.
+
 ## Translations
 
 The card is available in multiple languages. Translation files are located in [`src/locales/`](src/locales/), with each language stored as a separate JSON file (e.g. `en.json`, `de.json`, `fr.json`). Strings of the visual editor live in [`src/locales/editor/`](src/locales/editor/), with the same file names.
