@@ -86,6 +86,15 @@ When writing code, consider whether a case deserves a log via `logger` (`src/ser
 
 Prefer throwing a config error in `validateConfig` over warning when the mistake is detectable from config + `hass`. The logger suppresses identical messages for 3 minutes, so it is safe on render paths; put the distinguishing details (entity id, value) into the message. Don't add tests that only assert log output.
 
+## Browser support
+
+The card must render on every browser HA's legacy frontend build serves: **Chrome/Android WebView ≥ 67, Samsung Internet ≥ 9, Safari/iOS ≥ 15.4** (the `[legacy]` section of `.browserslistrc` in home-assistant/frontend). Users run it on old wall tablets and TVs. Check new CSS against [MDN browser-compat-data](https://github.com/mdn/browser-compat-data) or caniuse; for example, `cqi`, `color-mix()`, `min()`/`max()`/`clamp()`, `:is()`/`:has()`, `aspect-ratio`, flex `gap` and `:dir()` all need newer browsers.
+
+- If an unsupported feature would break the layout (wrong size, element invisible or misplaced), write a plain fallback declaration first and repeat the rule with the modern value in an `@supports` block after it (see `src/styles.ts`). A duplicate declaration isn't enough when the value uses `var()`: an old browser treats it as invalid only once it computes the value, so the property resets to its default instead of keeping the earlier declaration.
+- Cosmetic losses (a missing margin, ellipsis or gap) need no fallback.
+- Build tools (Lightning CSS, PostCSS) can't help: they don't process Lit `css` templates, and they can't backport `var()`-dependent values anyway.
+- Cover each fallback in `e2e/legacy-browsers.spec.ts`, which simulates an old browser by deleting the card's `@supports` rules.
+
 ## Translations
 
 User-facing strings live in `src/locales/<lang>.json`; strings of the GUI editor live in `src/locales/editor/<lang>.json`, so they load only with the editor. When adding a new string, add a translation to every locale file, not just `en.json` (the fallback).

@@ -1,5 +1,7 @@
 import { css } from 'lit'
 
+// Rules using newer CSS sit in @supports with a plain fallback before them: HA's legacy build still serves Chrome 67 and
+// Safari 15.4, and a var() declaration an old browser can't parse resets the property instead of keeping the fallback.
 export default css`
 
   ha-card.clickable {
@@ -25,7 +27,13 @@ export default css`
     display: block;
     justify-self: center;
     /* The box fits the painted area of all header icons: x 16-112, y 16-114 of the 128-unit canvas (wind-alert overflows to 116.5). */
-    width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) * 96 / 98);
+    width: calc(var(--cwc-header-icon-size, 9rem) * 96 / 98);
+  }
+
+  @supports (width: 1cqi) {
+    clock-weather-card-header > clock-weather-card-icon {
+      width: min(50cqi, var(--cwc-header-icon-size, max(var(--cwc-header-rows-height, 0px), 9rem)) * 96 / 98);
+    }
   }
 
   /* Meteocons clouds are near-white and vanish on light backgrounds without an outline. */
@@ -212,7 +220,7 @@ export default css`
   /* One grid shared by all rows so text columns size to their widest cell while staying aligned. */
   clock-weather-card-forecast-list .rows {
     display: grid;
-    --_icon-size: var(--cwc-list-icon-size, var(--cwc-list-row-height));
+    --_icon-size: var(--cwc-list-row-height);
     grid-template-columns: max-content var(--_icon-size) max-content 1fr max-content;
     grid-auto-rows: minmax(var(--cwc-list-row-height), auto);
     align-items: center;
@@ -222,10 +230,23 @@ export default css`
     line-height: 1;
   }
 
+  /* --cwc-list-icon-size is a max() set by font_size. */
+  @supports (width: max(1px, 2px)) {
+    clock-weather-card-forecast-list .rows {
+      --_icon-size: var(--cwc-list-icon-size, var(--cwc-list-row-height));
+    }
+  }
+
   clock-weather-card-forecast-list-item {
     --_bar-thickness: var(--cwc-list-bar-thickness);
-    --_dot-size: max(14px, calc(var(--_bar-thickness) + 8px));
+    --_dot-size: calc(var(--_bar-thickness) + 8px);
     display: contents;
+  }
+
+  @supports (width: max(1px, 2px)) {
+    clock-weather-card-forecast-list-item {
+      --_dot-size: max(14px, calc(var(--_bar-thickness) + 8px));
+    }
   }
 
   clock-weather-card-forecast-list-item .label {
@@ -265,9 +286,15 @@ export default css`
     position: relative;
     height: var(--_bar-thickness);
     min-height: 8px;
-    background-color: var(--clock-weather-card-bar-track-color, color-mix(in srgb, var(--secondary-text-color, #727272) 10%, transparent));
+    background-color: var(--clock-weather-card-bar-track-color, rgba(114, 114, 114, 0.1));
     border-radius: 999px;
     box-shadow: 0 0 1px rgb(0 0 0 / 0.35);
+  }
+
+  @supports (color: color-mix(in srgb, red, red)) {
+    clock-weather-card-forecast-list-item .bar-track {
+      background-color: var(--clock-weather-card-bar-track-color, color-mix(in srgb, var(--secondary-text-color, #727272) 10%, transparent));
+    }
   }
 
   clock-weather-card-forecast-list-item:dir(rtl) .bar-track {
@@ -284,7 +311,7 @@ export default css`
   clock-weather-card-forecast-list-item .dot {
     position: absolute;
     top: 50%;
-    left: clamp(calc(var(--_dot-size) / 2), var(--_dot-left), calc(100% - var(--_dot-size) / 2));
+    left: var(--_dot-left);
     width: var(--_dot-size);
     height: var(--_dot-size);
     border-radius: 50%;
@@ -293,6 +320,12 @@ export default css`
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     z-index: 1;
+  }
+
+  @supports (left: clamp(1px, 2px, 3px)) {
+    clock-weather-card-forecast-list-item .dot {
+      left: clamp(calc(var(--_dot-size) / 2), var(--_dot-left), calc(100% - var(--_dot-size) / 2));
+    }
   }
 
   .skeleton {
