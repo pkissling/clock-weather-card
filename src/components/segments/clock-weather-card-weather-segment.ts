@@ -19,7 +19,7 @@ import { toDisplayTemperature } from '@/utils/temperature'
 class ClockWeatherCardWeatherSegment extends AbstractClockWeatherCardComponent {
   @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
-  @property() public attribute?: string
+  @property({ reflect: true }) public attribute?: string
   @property({ type: Boolean }) public showUnit = true
   @property() public unit?: string
   @property() public unitAttribute?: string

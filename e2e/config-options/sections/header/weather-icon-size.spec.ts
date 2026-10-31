@@ -11,7 +11,7 @@ test.describe('sections.header.weather_icon_size', () => {
         sections:
           header:
             rows:
-              - font_size: 12rem
+              - font_size: 9.5rem
                 segments:
                   - type: time
       `,
@@ -70,14 +70,33 @@ test.describe('sections.header.weather_icon_size', () => {
       .toBeLessThan(1)
   })
 
-  test('caps the icon at half the card width', async ({ setupCard, clockWeatherCard }) => {
-    await setupCard({ cardConfig: 'sections: { header: { weather_icon_size: 2000px } }' })
+  test('caps the default size at 35% of the card width', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - font_size: 12rem
+                segments:
+                  - type: time
+      `,
+    })
     const header = clockWeatherCard.locator('clock-weather-card-header')
     const headerWidth = (await header.boundingBox())!.width
 
     await expect.poll(async () => Math.abs((await header.locator('clock-weather-card-icon')
-      .boundingBox())!.width - headerWidth / 2))
+      .boundingBox())!.width - headerWidth * 0.35))
       .toBeLessThan(1)
+  })
+
+  test('does not cap a configured size', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({ cardConfig: 'sections: { header: { weather_icon_size: 245px } }' })
+    const header = clockWeatherCard.locator('clock-weather-card-header')
+    const headerWidth = (await header.boundingBox())!.width
+
+    await expect.poll(async () => (await header.locator('clock-weather-card-icon')
+      .boundingBox())!.width)
+      .toBeGreaterThan(headerWidth * 0.5)
   })
 
   test('rejects values that are not a valid CSS length', async ({ setupCard, cardErrorMessage }) => {

@@ -31,6 +31,9 @@ test.describe('legacy browser fallbacks', () => {
 
     await expect(clockWeatherCard.locator('clock-weather-card-header > clock-weather-card-icon'))
       .toHaveCSS('width', '96px')
+    const rem = await clockWeatherCard.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize))
+    await expect(clockWeatherCard.locator('clock-weather-card-time-segment'))
+      .toHaveCSS('font-size', `${4 * rem}px`)
     const item = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
     await expect(item.locator('.bar-track'))
