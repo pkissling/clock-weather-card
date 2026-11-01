@@ -5,15 +5,15 @@
     "forecast_list": "รายการพยากรณ์"
   },
   "groups": {
-    "appearance": "รูปลักษณ์",
-    "sensors": "เซ็นเซอร์เพิ่มเติม",
-    "interaction": "การโต้ตอบ",
+    "appearance": "ไอคอนและอุณหภูมิ",
     "region": "ภูมิภาคและเวลา"
   },
   "more_options": "ตัวเลือกเพิ่มเติม",
+  "overrides": "แทนที่การตั้งค่าของการ์ด",
   "hidden": "ซ่อน",
   "show_section": "แสดงส่วน",
   "no_unit": "ไม่มีหน่วย",
+  "automatic": "อัตโนมัติ",
   "entries": "รายการ",
   "fields": {
     "entity": "เอนทิตีสภาพอากาศ",
@@ -33,7 +33,6 @@
     "count": "จำนวนรายการ",
     "round_temperatures": "ปัดเศษอุณหภูมิ",
     "hide_sunrise_sunset": "ซ่อนเวลาพระอาทิตย์ขึ้นและตก",
-    "hide_attribute": "ซ่อนแอตทริบิวต์",
     "attribute": "แอตทริบิวต์",
     "attribute_icon": "ไอคอนแอตทริบิวต์",
     "attribute_unit": "หน่วยแอตทริบิวต์",
@@ -46,7 +45,6 @@
     "alignment": "การจัดแนว",
     "time_pattern": "รูปแบบเวลา",
     "date_pattern": "รูปแบบวันที่",
-    "show_unit": "แสดงหน่วย",
     "unit": "หน่วย",
     "unit_attribute": "แอตทริบิวต์หน่วย",
     "entity_id": "เอนทิตี",

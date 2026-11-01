@@ -5,15 +5,15 @@
     "forecast_list": "Rhestr rhagolygon"
   },
   "groups": {
-    "appearance": "Golwg",
-    "sensors": "Synwyryddion ychwanegol",
-    "interaction": "Rhyngweithio",
+    "appearance": "Eiconau a thymereddau",
     "region": "Rhanbarth ac amser"
   },
   "more_options": "Rhagor o opsiynau",
+  "overrides": "Diystyru gosodiadau’r cerdyn",
   "hidden": "Cudd",
   "show_section": "Dangos adran",
   "no_unit": "Dim uned",
+  "automatic": "Awtomatig",
   "entries": "cofnod",
   "fields": {
     "entity": "Endid tywydd",
@@ -33,7 +33,6 @@
     "count": "Nifer y cofnodion",
     "round_temperatures": "Talgrynnu tymereddau",
     "hide_sunrise_sunset": "Cuddio codiad a machlud haul",
-    "hide_attribute": "Cuddio’r briodwedd",
     "attribute": "Priodwedd",
     "attribute_icon": "Eicon priodwedd",
     "attribute_unit": "Uned priodwedd",
@@ -46,7 +45,6 @@
     "alignment": "Aliniad",
     "time_pattern": "Fformat amser",
     "date_pattern": "Fformat dyddiad",
-    "show_unit": "Dangos uned",
     "unit": "Uned",
     "unit_attribute": "Priodwedd uned",
     "entity_id": "Endid",

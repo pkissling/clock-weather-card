@@ -6,8 +6,9 @@ import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
 import { property, state } from 'lit/decorators.js'
 
+import { controlStyles } from '@/editor/controls'
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey, SENSOR_FIELDS } from '@/editor/fields'
-import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, setIn } from '@/editor/form'
+import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, renderSlider, setIn } from '@/editor/form'
 import type { ClockWeatherCardConfig, RowConfig } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
@@ -19,10 +20,10 @@ const SECTION_ICONS: Record<SectionKey, string> = {
   forecast_list: 'mdi:chart-gantt',
 }
 
-const GROUP_ICONS: Record<Exclude<CardGroup, 'essentials'>, string> = {
+const GROUPS = ['appearance', 'region'] as const satisfies readonly CardGroup[]
+
+const GROUP_ICONS: Record<typeof GROUPS[number], string> = {
   appearance: 'mdi:palette-outline',
-  sensors: 'mdi:gauge',
-  interaction: 'mdi:gesture-tap',
   region: 'mdi:earth',
 }
 
@@ -52,13 +53,12 @@ export class ClockWeatherCardEditor extends LitElement {
 
   protected render(): TemplateResult | typeof nothing {
     if (!this.hass || !this._config) return nothing
-    const groups = ['appearance', 'sensors', 'interaction', 'region'] as const
     return html`
       ${this._renderFields(CARD_FIELDS.filter(f => f.group === 'essentials'), [], this._config, DEFAULTS)}
       <div class="sections">
         ${(Object.keys(SECTION_FIELDS) as SectionKey[]).map(key => this._renderSection(key))}
       </div>
-      ${groups.map(group => html`
+      ${GROUPS.map(group => html`
         <ha-expansion-panel
           outlined
           class="group"
@@ -71,6 +71,7 @@ export class ClockWeatherCardEditor extends LitElement {
           ${this._openGroups.has(group) ? this._renderGroup(group) : nothing}
         </ha-expansion-panel>
       `)}
+      ${this._renderFields(CARD_FIELDS.filter(f => f.group === 'interaction'), [], this._config, DEFAULTS)}
     `
   }
 
@@ -109,7 +110,9 @@ export class ClockWeatherCardEditor extends LitElement {
             ${this._renderFields(fields.filter(f => !f.advanced), path, section, defaults)}
             <ha-expansion-panel outlined class="more">
               <div slot="header" class="panel-header"><ha-icon icon="mdi:tune-variant"></ha-icon>${this.t('more_options')}</div>
-              ${this._renderFields(fields.filter(f => f.advanced), path, section, defaults)}
+              ${this._renderFields(fields.filter(f => f.advanced && !f.override), path, section, defaults)}
+              <div class="label overrides">${this.t('overrides')}</div>
+              ${this._renderFields(fields.filter(f => f.override), path, section, defaults)}
             </ha-expansion-panel>
           </div>
         ` : nothing}
@@ -118,8 +121,10 @@ export class ClockWeatherCardEditor extends LitElement {
   }
 
   private _renderGroup(group: CardGroup): TemplateResult[] {
-    if (group === 'sensors') return this._renderFields(SENSOR_FIELDS, ['additional_sensors'], (this._config!.additional_sensors ?? {}) as Data, {})
-    return this._renderFields(CARD_FIELDS.filter(f => f.group === group), [], this._config!, DEFAULTS)
+    const fields = this._renderFields(CARD_FIELDS.filter(f => f.group === group), [], this._config!, DEFAULTS)
+    // The temperature sensor only feeds the shown temperature, so it sits with the temperature options.
+    if (group !== 'appearance') return fields
+    return [...fields, ...this._renderFields(SENSOR_FIELDS, ['additional_sensors'], (this._config!.additional_sensors ?? {}) as Data, {})]
   }
 
   private _toggleGroup(group: CardGroup, expanded: boolean): void {
@@ -153,6 +158,8 @@ export class ClockWeatherCardEditor extends LitElement {
     const chunks: EditorField[][] = []
     for (const field of fields) {
       if (field.control === 'section-toggle') continue
+      // ha-form applies the visibility of plain fields itself.
+      if (field.control && field.visible && !field.visible({ ...defaults, ...value })) continue
       const last = chunks[chunks.length - 1]
       if (last && isFormField(last[0]) && isFormField(field)) last.push(field)
       else chunks.push([field])
@@ -167,29 +174,7 @@ export class ClockWeatherCardEditor extends LitElement {
   }
 
   private _renderControl(field: EditorField, path: string[], value: Data, defaults: Data): TemplateResult {
-    if (field.control === 'percent') {
-      const current = String(value[field.name] ?? defaults[field.name])
-      // Absolute lengths (e.g. 4px) can't be shown on a percentage slider, so they keep the text field.
-      if (!/^\d+(\.\d+)?%$/.test(current.trim())) return html`${renderForm(this.ctx, [{ ...field, control: undefined }], value, defaults, changes => this._update(path, changes))}`
-      const label = this.t(`fields.${field.name}`)
-      return html`
-        <div class="percent">
-          <div class="percent-label">${label}<span>${current}</span></div>
-          <input
-            type="range"
-            min="5"
-            max="100"
-            step="5"
-            aria-label=${label}
-            .value=${String(parseFloat(current))}
-            @input=${(e: Event) => {
-    const next = `${(e.target as HTMLInputElement).value}%`
-    this._update(path, { [field.name]: next === defaults[field.name] ? undefined : next })
-  }}
-          />
-        </div>
-      `
-    }
+    if (field.control === 'slider') return html`${renderSlider(this.ctx, field, value, defaults, changes => this._update(path, changes))}`
     if (field.control === 'rows') {
       return html`
         <clock-weather-card-rows-editor
@@ -219,7 +204,7 @@ export class ClockWeatherCardEditor extends LitElement {
     `
   }
 
-  static styles = css`
+  static styles = [controlStyles, css`
     :host {
       display: flex;
       flex-direction: column;
@@ -304,28 +289,12 @@ export class ClockWeatherCardEditor extends LitElement {
       gap: 16px;
       padding: 4px 16px 16px;
     }
-    .percent {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-bottom: 12px;
-    }
-    .percent-label {
-      display: flex;
-      justify-content: space-between;
-    }
-    .percent-label span {
-      color: var(--secondary-text-color);
-      font-variant-numeric: tabular-nums;
-    }
-    .percent input {
-      width: 100%;
-      margin: 0;
-      accent-color: var(--primary-color);
+    .overrides {
+      padding: 4px 0 8px;
     }
     .more ha-form, .group ha-form, .more clock-weather-card-gradient-editor, .more clock-weather-card-color-picker {
       display: block;
       padding-bottom: 12px;
     }
-  `
+  `]
 }

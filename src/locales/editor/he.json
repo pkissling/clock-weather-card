@@ -5,15 +5,15 @@
     "forecast_list": "רשימת תחזית"
   },
   "groups": {
-    "appearance": "מראה",
-    "sensors": "חיישנים נוספים",
-    "interaction": "אינטראקציה",
+    "appearance": "סמלים וטמפרטורות",
     "region": "אזור ושעה"
   },
   "more_options": "אפשרויות נוספות",
+  "overrides": "עקיפת הגדרות הכרטיס",
   "hidden": "מוסתר",
   "show_section": "הצג מקטע",
   "no_unit": "ללא יחידה",
+  "automatic": "אוטומטי",
   "entries": "רשומות",
   "fields": {
     "entity": "ישות מזג אוויר",
@@ -33,7 +33,6 @@
     "count": "מספר רשומות",
     "round_temperatures": "עגל טמפרטורות",
     "hide_sunrise_sunset": "הסתר זריחה ושקיעה",
-    "hide_attribute": "הסתר מאפיין",
     "attribute": "מאפיין",
     "attribute_icon": "סמל מאפיין",
     "attribute_unit": "יחידת מאפיין",
@@ -46,7 +45,6 @@
     "alignment": "יישור",
     "time_pattern": "תבנית שעה",
     "date_pattern": "תבנית תאריך",
-    "show_unit": "הצג יחידה",
     "unit": "יחידה",
     "unit_attribute": "מאפיין יחידה",
     "entity_id": "ישות",

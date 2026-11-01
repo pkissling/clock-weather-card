@@ -5,15 +5,15 @@
     "forecast_list": "Prognoosiloend"
   },
   "groups": {
-    "appearance": "Välimus",
-    "sensors": "Lisaandurid",
-    "interaction": "Interaktsioon",
+    "appearance": "Ikoonid ja temperatuurid",
     "region": "Piirkond ja aeg"
   },
   "more_options": "Rohkem valikuid",
+  "overrides": "Kaardi seadete alistamine",
   "hidden": "Peidetud",
   "show_section": "Näita jaotist",
   "no_unit": "Ühikuta",
+  "automatic": "Automaatne",
   "entries": "kirjet",
   "fields": {
     "entity": "Ilmaolem",
@@ -33,7 +33,6 @@
     "count": "Kirjete arv",
     "round_temperatures": "Ümarda temperatuurid",
     "hide_sunrise_sunset": "Peida päikesetõus ja -loojang",
-    "hide_attribute": "Peida atribuut",
     "attribute": "Atribuut",
     "attribute_icon": "Atribuudi ikoon",
     "attribute_unit": "Atribuudi ühik",
@@ -46,7 +45,6 @@
     "alignment": "Joondus",
     "time_pattern": "Kellaaja vorming",
     "date_pattern": "Kuupäeva vorming",
-    "show_unit": "Näita ühikut",
     "unit": "Ühik",
     "unit_attribute": "Ühiku atribuut",
     "entity_id": "Olem",

@@ -5,15 +5,15 @@
     "forecast_list": "Списък с прогноза"
   },
   "groups": {
-    "appearance": "Външен вид",
-    "sensors": "Допълнителни сензори",
-    "interaction": "Взаимодействие",
+    "appearance": "Икони и температури",
     "region": "Регион и час"
   },
   "more_options": "Още опции",
+  "overrides": "Замени настройките на картата",
   "hidden": "Скрито",
   "show_section": "Показване на секцията",
   "no_unit": "Без мерна единица",
+  "automatic": "Автоматично",
   "entries": "записа",
   "fields": {
     "entity": "Обект за времето",
@@ -33,7 +33,6 @@
     "count": "Брой записи",
     "round_temperatures": "Закръгляне на температурите",
     "hide_sunrise_sunset": "Скриване на изгрев и залез",
-    "hide_attribute": "Скриване на атрибута",
     "attribute": "Атрибут",
     "attribute_icon": "Икона на атрибута",
     "attribute_unit": "Мерна единица на атрибута",
@@ -46,7 +45,6 @@
     "alignment": "Подравняване",
     "time_pattern": "Формат на часа",
     "date_pattern": "Формат на датата",
-    "show_unit": "Показване на мерната единица",
     "unit": "Мерна единица",
     "unit_attribute": "Атрибут за мерна единица",
     "entity_id": "Обект",

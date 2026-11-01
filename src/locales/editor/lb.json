@@ -5,15 +5,15 @@
     "forecast_list": "Previsiounslëscht"
   },
   "groups": {
-    "appearance": "Ausgesinn",
-    "sensors": "Zousätzlech Sensoren",
-    "interaction": "Interaktioun",
+    "appearance": "Symboler & Temperaturen",
     "region": "Regioun & Zäit"
   },
   "more_options": "Méi Optiounen",
+  "overrides": "Astellunge vun der Kaart iwwerschreiwen",
   "hidden": "Verstoppt",
   "show_section": "Sektioun uweisen",
   "no_unit": "Keng Eenheet",
+  "automatic": "Automatesch",
   "entries": "Entréeën",
   "fields": {
     "entity": "Wieder-Entitéit",
@@ -33,7 +33,6 @@
     "count": "Unzuel vun Entréeën",
     "round_temperatures": "Temperaturen ronnen",
     "hide_sunrise_sunset": "Sonnenopgang an -ënnergang verstoppen",
-    "hide_attribute": "Attribut verstoppen",
     "attribute": "Attribut",
     "attribute_icon": "Attribut-Icon",
     "attribute_unit": "Attribut-Eenheet",
@@ -46,7 +45,6 @@
     "alignment": "Ausriichtung",
     "time_pattern": "Zäitformat",
     "date_pattern": "Datumsformat",
-    "show_unit": "Eenheet uweisen",
     "unit": "Eenheet",
     "unit_attribute": "Eenheet-Attribut",
     "entity_id": "Entitéit",

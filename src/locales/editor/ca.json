@@ -5,15 +5,15 @@
     "forecast_list": "Llista de previsió"
   },
   "groups": {
-    "appearance": "Aparença",
-    "sensors": "Sensors addicionals",
-    "interaction": "Interacció",
+    "appearance": "Icones i temperatures",
     "region": "Regió i hora"
   },
   "more_options": "Més opcions",
+  "overrides": "Substitueix la configuració de la targeta",
   "hidden": "Amagat",
   "show_section": "Mostra la secció",
   "no_unit": "Sense unitat",
+  "automatic": "Automàtic",
   "entries": "entrades",
   "fields": {
     "entity": "Entitat meteorològica",
@@ -33,7 +33,6 @@
     "count": "Nombre d'entrades",
     "round_temperatures": "Arrodoneix les temperatures",
     "hide_sunrise_sunset": "Amaga la sortida i la posta del sol",
-    "hide_attribute": "Amaga l'atribut",
     "attribute": "Atribut",
     "attribute_icon": "Icona de l'atribut",
     "attribute_unit": "Unitat de l'atribut",
@@ -46,7 +45,6 @@
     "alignment": "Alineació",
     "time_pattern": "Format de l'hora",
     "date_pattern": "Format de la data",
-    "show_unit": "Mostra la unitat",
     "unit": "Unitat",
     "unit_attribute": "Atribut d'unitat",
     "entity_id": "Entitat",

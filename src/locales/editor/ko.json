@@ -5,15 +5,15 @@
     "forecast_list": "예보 목록"
   },
   "groups": {
-    "appearance": "모양",
-    "sensors": "추가 센서",
-    "interaction": "상호작용",
+    "appearance": "아이콘 및 기온",
     "region": "지역 및 시간"
   },
   "more_options": "추가 옵션",
+  "overrides": "카드 전체 설정 재정의",
   "hidden": "숨김",
   "show_section": "섹션 표시",
   "no_unit": "단위 없음",
+  "automatic": "자동",
   "entries": "개 항목",
   "fields": {
     "entity": "날씨 구성요소",
@@ -33,7 +33,6 @@
     "count": "항목 수",
     "round_temperatures": "온도 반올림",
     "hide_sunrise_sunset": "일출 및 일몰 숨기기",
-    "hide_attribute": "속성 숨기기",
     "attribute": "속성",
     "attribute_icon": "속성 아이콘",
     "attribute_unit": "속성 단위",
@@ -46,7 +45,6 @@
     "alignment": "정렬",
     "time_pattern": "시간 형식",
     "date_pattern": "날짜 형식",
-    "show_unit": "단위 표시",
     "unit": "단위",
     "unit_attribute": "단위 속성",
     "entity_id": "구성요소",

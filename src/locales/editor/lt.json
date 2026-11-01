@@ -5,15 +5,15 @@
     "forecast_list": "Prognozės sąrašas"
   },
   "groups": {
-    "appearance": "Išvaizda",
-    "sensors": "Papildomi jutikliai",
-    "interaction": "Sąveika",
+    "appearance": "Piktogramos ir temperatūros",
     "region": "Regionas ir laikas"
   },
   "more_options": "Daugiau parinkčių",
+  "overrides": "Nepaisyti kortelės nustatymų",
   "hidden": "Paslėpta",
   "show_section": "Rodyti skiltį",
   "no_unit": "Be vieneto",
+  "automatic": "Automatiškai",
   "entries": "įrašai",
   "fields": {
     "entity": "Orų objektas",
@@ -33,7 +33,6 @@
     "count": "Įrašų skaičius",
     "round_temperatures": "Apvalinti temperatūras",
     "hide_sunrise_sunset": "Slėpti saulėtekį ir saulėlydį",
-    "hide_attribute": "Slėpti atributą",
     "attribute": "Atributas",
     "attribute_icon": "Atributo piktograma",
     "attribute_unit": "Atributo vienetas",
@@ -46,7 +45,6 @@
     "alignment": "Lygiavimas",
     "time_pattern": "Laiko formatas",
     "date_pattern": "Datos formatas",
-    "show_unit": "Rodyti vienetą",
     "unit": "Vienetas",
     "unit_attribute": "Vieneto atributas",
     "entity_id": "Objektas",

@@ -5,15 +5,15 @@
     "forecast_list": "予報リスト"
   },
   "groups": {
-    "appearance": "外観",
-    "sensors": "追加センサー",
-    "interaction": "操作",
+    "appearance": "アイコンと気温",
     "region": "地域と時刻"
   },
   "more_options": "その他のオプション",
+  "overrides": "カード全体の設定を上書き",
   "hidden": "非表示",
   "show_section": "セクションを表示",
   "no_unit": "単位なし",
+  "automatic": "自動",
   "entries": "件",
   "fields": {
     "entity": "天気エンティティ",
@@ -33,7 +33,6 @@
     "count": "件数",
     "round_temperatures": "温度を丸める",
     "hide_sunrise_sunset": "日の出と日の入りを非表示",
-    "hide_attribute": "属性を非表示",
     "attribute": "属性",
     "attribute_icon": "属性アイコン",
     "attribute_unit": "属性の単位",
@@ -46,7 +45,6 @@
     "alignment": "配置",
     "time_pattern": "時刻の形式",
     "date_pattern": "日付の形式",
-    "show_unit": "単位を表示",
     "unit": "単位",
     "unit_attribute": "単位の属性",
     "entity_id": "エンティティ",

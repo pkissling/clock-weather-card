@@ -5,15 +5,15 @@
     "forecast_list": "Lista prognozy"
   },
   "groups": {
-    "appearance": "Wygląd",
-    "sensors": "Dodatkowe czujniki",
-    "interaction": "Interakcja",
+    "appearance": "Ikony i temperatury",
     "region": "Region i czas"
   },
   "more_options": "Więcej opcji",
+  "overrides": "Zastąp ustawienia karty",
   "hidden": "Ukryte",
   "show_section": "Pokaż sekcję",
   "no_unit": "Bez jednostki",
+  "automatic": "Automatycznie",
   "entries": "pozycji",
   "fields": {
     "entity": "Encja pogody",
@@ -33,7 +33,6 @@
     "count": "Liczba pozycji",
     "round_temperatures": "Zaokrąglaj temperatury",
     "hide_sunrise_sunset": "Ukryj wschód i zachód słońca",
-    "hide_attribute": "Ukryj atrybut",
     "attribute": "Atrybut",
     "attribute_icon": "Ikona atrybutu",
     "attribute_unit": "Jednostka atrybutu",
@@ -46,7 +45,6 @@
     "alignment": "Wyrównanie",
     "time_pattern": "Format czasu",
     "date_pattern": "Format daty",
-    "show_unit": "Pokaż jednostkę",
     "unit": "Jednostka",
     "unit_attribute": "Atrybut jednostki",
     "entity_id": "Encja",

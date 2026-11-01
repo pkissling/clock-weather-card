@@ -5,15 +5,15 @@
     "forecast_list": "Zoznam predpovede"
   },
   "groups": {
-    "appearance": "Vzhľad",
-    "sensors": "Ďalšie senzory",
-    "interaction": "Interakcia",
+    "appearance": "Ikony a teploty",
     "region": "Región a čas"
   },
   "more_options": "Ďalšie možnosti",
+  "overrides": "Prepísať nastavenia karty",
   "hidden": "Skryté",
   "show_section": "Zobraziť sekciu",
   "no_unit": "Bez jednotky",
+  "automatic": "Automaticky",
   "entries": "záznamov",
   "fields": {
     "entity": "Entita počasia",
@@ -33,7 +33,6 @@
     "count": "Počet záznamov",
     "round_temperatures": "Zaokrúhľovať teploty",
     "hide_sunrise_sunset": "Skryť východ a západ slnka",
-    "hide_attribute": "Skryť atribút",
     "attribute": "Atribút",
     "attribute_icon": "Ikona atribútu",
     "attribute_unit": "Jednotka atribútu",
@@ -46,7 +45,6 @@
     "alignment": "Zarovnanie",
     "time_pattern": "Formát času",
     "date_pattern": "Formát dátumu",
-    "show_unit": "Zobraziť jednotku",
     "unit": "Jednotka",
     "unit_attribute": "Atribút jednotky",
     "entity_id": "Entita",

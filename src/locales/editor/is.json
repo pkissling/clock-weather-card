@@ -5,15 +5,15 @@
     "forecast_list": "Spálisti"
   },
   "groups": {
-    "appearance": "Útlit",
-    "sensors": "Viðbótarskynjarar",
-    "interaction": "Gagnvirkni",
+    "appearance": "Tákn og hitastig",
     "region": "Svæði og tími"
   },
   "more_options": "Fleiri valkostir",
+  "overrides": "Hnekkja stillingum spjaldsins",
   "hidden": "Falið",
   "show_section": "Sýna hluta",
   "no_unit": "Engin eining",
+  "automatic": "Sjálfvirkt",
   "entries": "færslur",
   "fields": {
     "entity": "Veðureining",
@@ -33,7 +33,6 @@
     "count": "Fjöldi færslna",
     "round_temperatures": "Námunda hitastig",
     "hide_sunrise_sunset": "Fela sólarupprás og sólsetur",
-    "hide_attribute": "Fela eigind",
     "attribute": "Eigind",
     "attribute_icon": "Tákn eigindar",
     "attribute_unit": "Eining eigindar",
@@ -46,7 +45,6 @@
     "alignment": "Jöfnun",
     "time_pattern": "Tímasnið",
     "date_pattern": "Dagsetningarsnið",
-    "show_unit": "Sýna einingu",
     "unit": "Eining",
     "unit_attribute": "Eigind einingar",
     "entity_id": "Eining",

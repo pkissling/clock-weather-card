@@ -5,15 +5,15 @@
     "forecast_list": "Prognoseliste"
   },
   "groups": {
-    "appearance": "Utseende",
-    "sensors": "Ekstra sensorer",
-    "interaction": "Interaksjon",
+    "appearance": "Ikoner og temperaturer",
     "region": "Region og tid"
   },
   "more_options": "Flere alternativer",
+  "overrides": "Overstyr kortets innstillinger",
   "hidden": "Skjult",
   "show_section": "Vis seksjon",
   "no_unit": "Ingen enhet",
+  "automatic": "Automatisk",
   "entries": "oppføringer",
   "fields": {
     "entity": "Værentitet",
@@ -33,7 +33,6 @@
     "count": "Antall oppføringer",
     "round_temperatures": "Avrund temperaturer",
     "hide_sunrise_sunset": "Skjul soloppgang og solnedgang",
-    "hide_attribute": "Skjul attributt",
     "attribute": "Attributt",
     "attribute_icon": "Attributtikon",
     "attribute_unit": "Attributtenhet",
@@ -46,7 +45,6 @@
     "alignment": "Justering",
     "time_pattern": "Tidsformat",
     "date_pattern": "Datoformat",
-    "show_unit": "Vis enhet",
     "unit": "Enhet",
     "unit_attribute": "Enhetsattributt",
     "entity_id": "Entitet",

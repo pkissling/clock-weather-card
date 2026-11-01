@@ -5,15 +5,15 @@
     "forecast_list": "Список прогнозу"
   },
   "groups": {
-    "appearance": "Зовнішній вигляд",
-    "sensors": "Додаткові датчики",
-    "interaction": "Взаємодія",
+    "appearance": "Значки й температура",
     "region": "Регіон і час"
   },
   "more_options": "Додаткові параметри",
+  "overrides": "Перевизначити налаштування картки",
   "hidden": "Приховано",
   "show_section": "Показати розділ",
   "no_unit": "Без одиниці",
+  "automatic": "Автоматично",
   "entries": "зап.",
   "fields": {
     "entity": "Об'єкт погоди",
@@ -33,7 +33,6 @@
     "count": "Кількість записів",
     "round_temperatures": "Округлювати температуру",
     "hide_sunrise_sunset": "Приховати схід і захід сонця",
-    "hide_attribute": "Приховати атрибут",
     "attribute": "Атрибут",
     "attribute_icon": "Значок атрибута",
     "attribute_unit": "Одиниця атрибута",
@@ -46,7 +45,6 @@
     "alignment": "Вирівнювання",
     "time_pattern": "Формат часу",
     "date_pattern": "Формат дати",
-    "show_unit": "Показувати одиницю",
     "unit": "Одиниця виміру",
     "unit_attribute": "Атрибут одиниці",
     "entity_id": "Об'єкт",

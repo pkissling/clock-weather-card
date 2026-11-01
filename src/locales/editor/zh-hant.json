@@ -5,15 +5,15 @@
     "forecast_list": "預報清單"
   },
   "groups": {
-    "appearance": "外觀",
-    "sensors": "附加感測器",
-    "interaction": "互動",
+    "appearance": "圖示與溫度",
     "region": "地區與時間"
   },
   "more_options": "更多選項",
+  "overrides": "覆寫卡片層級設定",
   "hidden": "已隱藏",
   "show_section": "顯示此區塊",
   "no_unit": "無單位",
+  "automatic": "自動",
   "entries": "筆",
   "fields": {
     "entity": "天氣實體",
@@ -33,7 +33,6 @@
     "count": "項目數量",
     "round_temperatures": "溫度取整數",
     "hide_sunrise_sunset": "隱藏日出與日落",
-    "hide_attribute": "隱藏屬性",
     "attribute": "屬性",
     "attribute_icon": "屬性圖示",
     "attribute_unit": "屬性單位",
@@ -46,7 +45,6 @@
     "alignment": "對齊",
     "time_pattern": "時間格式",
     "date_pattern": "日期格式",
-    "show_unit": "顯示單位",
     "unit": "單位",
     "unit_attribute": "單位屬性",
     "entity_id": "實體",

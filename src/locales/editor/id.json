@@ -5,15 +5,15 @@
     "forecast_list": "Daftar prakiraan"
   },
   "groups": {
-    "appearance": "Tampilan",
-    "sensors": "Sensor tambahan",
-    "interaction": "Interaksi",
+    "appearance": "Ikon & suhu",
     "region": "Wilayah & waktu"
   },
   "more_options": "Opsi lainnya",
+  "overrides": "Timpa pengaturan kartu",
   "hidden": "Tersembunyi",
   "show_section": "Tampilkan bagian",
   "no_unit": "Tanpa satuan",
+  "automatic": "Otomatis",
   "entries": "entri",
   "fields": {
     "entity": "Entitas cuaca",
@@ -33,7 +33,6 @@
     "count": "Jumlah entri",
     "round_temperatures": "Bulatkan suhu",
     "hide_sunrise_sunset": "Sembunyikan matahari terbit dan terbenam",
-    "hide_attribute": "Sembunyikan atribut",
     "attribute": "Atribut",
     "attribute_icon": "Ikon atribut",
     "attribute_unit": "Satuan atribut",
@@ -46,7 +45,6 @@
     "alignment": "Perataan",
     "time_pattern": "Format waktu",
     "date_pattern": "Format tanggal",
-    "show_unit": "Tampilkan satuan",
     "unit": "Satuan",
     "unit_attribute": "Atribut satuan",
     "entity_id": "Entitas",

@@ -5,15 +5,15 @@
     "forecast_list": "Prognoslista"
   },
   "groups": {
-    "appearance": "Utseende",
-    "sensors": "Ytterligare sensorer",
-    "interaction": "Interaktion",
+    "appearance": "Ikoner och temperaturer",
     "region": "Region och tid"
   },
   "more_options": "Fler alternativ",
+  "overrides": "Åsidosätt kortets inställningar",
   "hidden": "Dold",
   "show_section": "Visa sektion",
   "no_unit": "Ingen enhet",
+  "automatic": "Automatiskt",
   "entries": "poster",
   "fields": {
     "entity": "Väderentitet",
@@ -33,7 +33,6 @@
     "count": "Antal poster",
     "round_temperatures": "Avrunda temperaturer",
     "hide_sunrise_sunset": "Dölj soluppgång och solnedgång",
-    "hide_attribute": "Dölj attribut",
     "attribute": "Attribut",
     "attribute_icon": "Attributikon",
     "attribute_unit": "Attributenhet",
@@ -46,7 +45,6 @@
     "alignment": "Justering",
     "time_pattern": "Tidsformat",
     "date_pattern": "Datumformat",
-    "show_unit": "Visa enhet",
     "unit": "Enhet",
     "unit_attribute": "Enhetsattribut",
     "entity_id": "Entitet",

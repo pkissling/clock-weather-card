@@ -5,15 +5,15 @@
     "forecast_list": "پیشگوئی کی فہرست"
   },
   "groups": {
-    "appearance": "ظاہری شکل",
-    "sensors": "اضافی سینسرز",
-    "interaction": "تعامل",
+    "appearance": "آئیکنز اور درجہ حرارت",
     "region": "علاقہ اور وقت"
   },
   "more_options": "مزید اختیارات",
+  "overrides": "کارڈ کی ترتیبات کو اوور رائیڈ کریں",
   "hidden": "پوشیدہ",
   "show_section": "حصہ دکھائیں",
   "no_unit": "کوئی اکائی نہیں",
+  "automatic": "خودکار",
   "entries": "اندراجات",
   "fields": {
     "entity": "موسم کی اینٹیٹی",
@@ -33,7 +33,6 @@
     "count": "اندراجات کی تعداد",
     "round_temperatures": "درجہ حرارت کو گول کریں",
     "hide_sunrise_sunset": "طلوع اور غروب آفتاب چھپائیں",
-    "hide_attribute": "وصف چھپائیں",
     "attribute": "وصف",
     "attribute_icon": "وصف کا آئیکن",
     "attribute_unit": "وصف کی اکائی",
@@ -46,7 +45,6 @@
     "alignment": "صف بندی",
     "time_pattern": "وقت کا فارمیٹ",
     "date_pattern": "تاریخ کا فارمیٹ",
-    "show_unit": "اکائی دکھائیں",
     "unit": "اکائی",
     "unit_attribute": "اکائی کا وصف",
     "entity_id": "اینٹیٹی",

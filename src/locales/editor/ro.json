@@ -5,15 +5,15 @@
     "forecast_list": "Listă prognoză"
   },
   "groups": {
-    "appearance": "Aspect",
-    "sensors": "Senzori suplimentari",
-    "interaction": "Interacțiune",
+    "appearance": "Pictograme și temperaturi",
     "region": "Regiune și oră"
   },
   "more_options": "Mai multe opțiuni",
+  "overrides": "Suprascrie setările cardului",
   "hidden": "Ascuns",
   "show_section": "Afișează secțiunea",
   "no_unit": "Fără unitate",
+  "automatic": "Automat",
   "entries": "intrări",
   "fields": {
     "entity": "Entitate meteo",
@@ -33,7 +33,6 @@
     "count": "Număr de intrări",
     "round_temperatures": "Rotunjește temperaturile",
     "hide_sunrise_sunset": "Ascunde răsăritul și apusul",
-    "hide_attribute": "Ascunde atributul",
     "attribute": "Atribut",
     "attribute_icon": "Pictogramă atribut",
     "attribute_unit": "Unitate atribut",
@@ -46,7 +45,6 @@
     "alignment": "Aliniere",
     "time_pattern": "Format oră",
     "date_pattern": "Format dată",
-    "show_unit": "Afișează unitatea",
     "unit": "Unitate",
     "unit_attribute": "Atribut unitate",
     "entity_id": "Entitate",
