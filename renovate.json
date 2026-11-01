@@ -14,11 +14,6 @@
       "matchPackageNames": ["mcr.microsoft.com/playwright", "@playwright/test"],
       "matchUpdateTypes": ["major"],
       "groupName": "playwright"
-    },
-    {
-      "description": "3.32 is a mistagged 3.3.2",
-      "matchPackageNames": ["aFFekopp/noctis"],
-      "allowedVersions": "!/^3\\.32$/"
     }
   ],
   "schedule": ["before 9am on tuesday"],
