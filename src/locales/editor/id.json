@@ -53,7 +53,9 @@
     "icon_source": "Sumber ikon",
     "icon": "Ikon",
     "text": "Teks",
-    "template": "Templat"
+    "template": "Templat",
+    "background_color": "Warna latar",
+    "text_color": "Warna teks"
   },
   "helpers": {
     "temperature": "Opsional. Membaca suhu saat ini dari sensor ini alih-alih entitas cuaca, mis. stasiun cuaca atau sensor luar ruangan",
@@ -104,7 +106,8 @@
     "weather_icon": "Ikon cuaca",
     "text": "Teks",
     "template": "Templat",
-    "spacer": "Pemisah"
+    "spacer": "Pemisah",
+    "badge": "Lencana"
   },
   "segment_hints": {
     "time": "Waktu saat ini",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikon cuaca saat ini",
     "text": "Teks statis",
     "template": "Templat Jinja",
-    "spacer": "Mendorong elemen di sebelahnya menjauh"
+    "spacer": "Mendorong elemen di sebelahnya menjauh",
+    "badge": "Nilai entitas di atas latar berwarna"
   },
   "actions": {
     "add_row": "Tambah baris",
@@ -130,5 +134,6 @@
   },
   "row": "Baris",
   "empty_row": "Baris kosong",
-  "default_color": "Bawaan tema"
+  "default_color": "Bawaan tema",
+  "automatic_text_color": "Otomatis (hitam atau putih)"
 }

@@ -16,8 +16,14 @@ const findInterface = (name: string): ts.InterfaceDeclaration => {
 
 const memberName = (member: ts.PropertySignature): string => (member.name as ts.Identifier).text
 
+// Includes the members of extended interfaces.
+const allMembers = (node: ts.InterfaceDeclaration): ts.PropertySignature[] => [
+  ...(node.heritageClauses ?? []).flatMap(c => c.types.flatMap(t => allMembers(findInterface(t.expression.getText(source))))),
+  ...node.members.filter(ts.isPropertySignature),
+]
+
 export function interfaceMembers(name: string): string[] {
-  return findInterface(name).members.filter(ts.isPropertySignature)
+  return allMembers(findInterface(name))
     .map(memberName)
 }
 
@@ -26,7 +32,7 @@ export function segmentMembers(): Record<string, string[]> {
   const union = source.statements.find((n): n is ts.TypeAliasDeclaration => ts.isTypeAliasDeclaration(n) && n.name.text === 'SegmentConfig')
   if (!union || !ts.isUnionTypeNode(union.type)) throw new Error('SegmentConfig union not found in src/types.ts')
   return Object.fromEntries(union.type.types.map((t) => {
-    const members = findInterface(t.getText(source)).members.filter(ts.isPropertySignature)
+    const members = allMembers(findInterface(t.getText(source)))
     const typeMember = members.find(m => memberName(m) === 'type')!
     const literal = ((typeMember.type as ts.LiteralTypeNode).literal as ts.StringLiteral).text
     return [literal, members.map(memberName)

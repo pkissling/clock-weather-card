@@ -1,3 +1,4 @@
+import '@/components/segments/clock-weather-card-badge-segment'
 import '@/components/segments/clock-weather-card-date-segment'
 import '@/components/segments/clock-weather-card-entity-segment'
 import '@/components/segments/clock-weather-card-icon-segment'
@@ -53,6 +54,16 @@ class ClockWeatherCardHeaderDetailsRow extends AbstractClockWeatherCardComponent
           .unit=${segment.unit}
           .unitAttribute=${segment.unit_attribute}
         ></clock-weather-card-entity-segment>`
+    case 'badge':
+      return html`<clock-weather-card-badge-segment
+          .entityId=${segment.entity_id}
+          .attribute=${segment.attribute}
+          .showUnit=${segment.show_unit ?? true}
+          .unit=${segment.unit}
+          .unitAttribute=${segment.unit_attribute}
+          .backgroundColor=${segment.background_color}
+          .textColor=${segment.text_color}
+        ></clock-weather-card-badge-segment>`
     case 'icon':
       return html`<clock-weather-card-icon-segment
           .icon=${segment.icon}

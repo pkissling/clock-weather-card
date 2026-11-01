@@ -53,7 +53,9 @@
     "icon_source": "Uppruni tákns",
     "icon": "Tákn",
     "text": "Texti",
-    "template": "Sniðmát"
+    "template": "Sniðmát",
+    "background_color": "Bakgrunnslitur",
+    "text_color": "Litur texta"
   },
   "helpers": {
     "temperature": "Valfrjálst. Les núverandi hitastig úr þessum skynjara í stað veðureiningarinnar, t.d. veðurstöð eða útiskynjara",
@@ -104,7 +106,8 @@
     "weather_icon": "Veðurtákn",
     "text": "Texti",
     "template": "Sniðmát",
-    "spacer": "Bil"
+    "spacer": "Bil",
+    "badge": "Merki"
   },
   "segment_hints": {
     "time": "Núverandi tími",
@@ -115,7 +118,8 @@
     "weather_icon": "Tákn núverandi veðurs",
     "text": "Fastur texti",
     "template": "Jinja-sniðmát",
-    "spacer": "Ýtir nágrönnum í sundur"
+    "spacer": "Ýtir nágrönnum í sundur",
+    "badge": "Gildi einingar á lituðum bakgrunni"
   },
   "actions": {
     "add_row": "Bæta við röð",
@@ -130,5 +134,6 @@
   },
   "row": "Röð",
   "empty_row": "Tóm röð",
-  "default_color": "Sjálfgefið þema"
+  "default_color": "Sjálfgefið þema",
+  "automatic_text_color": "Sjálfvirkt (svart eða hvítt)"
 }

@@ -53,7 +53,9 @@
     "icon_source": "Pictogrambron",
     "icon": "Pictogram",
     "text": "Tekst",
-    "template": "Sjabloon"
+    "template": "Sjabloon",
+    "background_color": "Achtergrondkleur",
+    "text_color": "Tekstkleur"
   },
   "helpers": {
     "temperature": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
@@ -104,7 +106,8 @@
     "weather_icon": "Weerpictogram",
     "text": "Tekst",
     "template": "Sjabloon",
-    "spacer": "Tussenruimte"
+    "spacer": "Tussenruimte",
+    "badge": "Badge"
   },
   "segment_hints": {
     "time": "De huidige tijd",
@@ -115,7 +118,8 @@
     "weather_icon": "Pictogram van het huidige weer",
     "text": "Vaste tekst",
     "template": "Jinja-sjabloon",
-    "spacer": "Duwt buren uit elkaar"
+    "spacer": "Duwt buren uit elkaar",
+    "badge": "Waarde van een entiteit op een gekleurde achtergrond"
   },
   "actions": {
     "add_row": "Rij toevoegen",
@@ -130,5 +134,6 @@
   },
   "row": "Rij",
   "empty_row": "Lege rij",
-  "default_color": "Themastandaard"
+  "default_color": "Themastandaard",
+  "automatic_text_color": "Automatisch (zwart of wit)"
 }

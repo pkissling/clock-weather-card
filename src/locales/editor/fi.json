@@ -53,7 +53,9 @@
     "icon_source": "Kuvakkeen lähde",
     "icon": "Kuvake",
     "text": "Teksti",
-    "template": "Malli"
+    "template": "Malli",
+    "background_color": "Taustaväri",
+    "text_color": "Tekstin väri"
   },
   "helpers": {
     "temperature": "Valinnainen. Lukee nykyisen lämpötilan tästä anturista sääentiteetin sijaan, esim. sääasemalta tai ulkoanturista",
@@ -104,7 +106,8 @@
     "weather_icon": "Sääkuvake",
     "text": "Teksti",
     "template": "Malli",
-    "spacer": "Välistys"
+    "spacer": "Välistys",
+    "badge": "Merkki"
   },
   "segment_hints": {
     "time": "Nykyinen aika",
@@ -115,7 +118,8 @@
     "weather_icon": "Nykyisen sään kuvake",
     "text": "Kiinteä teksti",
     "template": "Jinja-malli",
-    "spacer": "Työntää viereiset osat erilleen"
+    "spacer": "Työntää viereiset osat erilleen",
+    "badge": "Kohteen arvo värillisellä taustalla"
   },
   "actions": {
     "add_row": "Lisää rivi",
@@ -130,5 +134,6 @@
   },
   "row": "Rivi",
   "empty_row": "Tyhjä rivi",
-  "default_color": "Teeman oletus"
+  "default_color": "Teeman oletus",
+  "automatic_text_color": "Automaattinen (musta tai valkoinen)"
 }

@@ -53,7 +53,9 @@
     "icon_source": "Ikooni allikas",
     "icon": "Ikoon",
     "text": "Tekst",
-    "template": "Mall"
+    "template": "Mall",
+    "background_color": "Taustavärv",
+    "text_color": "Teksti värv"
   },
   "helpers": {
     "temperature": "Valikuline. Loeb praeguse temperatuuri ilmaüksuse asemel sellelt andurilt, nt ilmajaamast või välisandurilt",
@@ -104,7 +106,8 @@
     "weather_icon": "Ilmaikoon",
     "text": "Tekst",
     "template": "Mall",
-    "spacer": "Vahe"
+    "spacer": "Vahe",
+    "badge": "Märk"
   },
   "segment_hints": {
     "time": "Praegune kellaaeg",
@@ -115,7 +118,8 @@
     "weather_icon": "Praeguse ilma ikoon",
     "text": "Staatiline tekst",
     "template": "Jinja mall",
-    "spacer": "Lükkab naabrid lahku"
+    "spacer": "Lükkab naabrid lahku",
+    "badge": "Olemi väärtus värvilisel taustal"
   },
   "actions": {
     "add_row": "Lisa rida",
@@ -130,5 +134,6 @@
   },
   "row": "Rida",
   "empty_row": "Tühi rida",
-  "default_color": "Teema vaikimisi"
+  "default_color": "Teema vaikimisi",
+  "automatic_text_color": "Automaatne (must või valge)"
 }

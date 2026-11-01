@@ -88,7 +88,8 @@ export default css`
   clock-weather-card-time-segment,
   clock-weather-card-date-segment,
   clock-weather-card-weather-segment,
-  clock-weather-card-entity-segment {
+  clock-weather-card-entity-segment,
+  clock-weather-card-badge-segment {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -107,6 +108,13 @@ export default css`
   /* Values such as the temperature never truncate; the condition text gives way instead. */
   clock-weather-card-weather-segment[attribute] {
     flex-shrink: 0;
+  }
+
+  /* rem, not em: padding that grows with the font makes large badges bulky. */
+  clock-weather-card-badge-segment .badge {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.375rem;
   }
 
   clock-weather-card-icon-segment {

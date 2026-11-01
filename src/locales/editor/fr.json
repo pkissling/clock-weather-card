@@ -53,7 +53,9 @@
     "icon_source": "Source de l'icône",
     "icon": "Icône",
     "text": "Texte",
-    "template": "Modèle"
+    "template": "Modèle",
+    "background_color": "Couleur d'arrière-plan",
+    "text_color": "Couleur du texte"
   },
   "helpers": {
     "temperature": "Facultatif. Lit la température actuelle depuis ce capteur au lieu de l'entité météo, p. ex. une station météo ou un capteur extérieur",
@@ -104,7 +106,8 @@
     "weather_icon": "Icône météo",
     "text": "Texte",
     "template": "Modèle",
-    "spacer": "Espacement"
+    "spacer": "Espacement",
+    "badge": "Badge"
   },
   "segment_hints": {
     "time": "L'heure actuelle",
@@ -115,7 +118,8 @@
     "weather_icon": "Icône de la météo actuelle",
     "text": "Texte fixe",
     "template": "Modèle Jinja",
-    "spacer": "Écarte les éléments voisins"
+    "spacer": "Écarte les éléments voisins",
+    "badge": "Valeur d'une entité sur un fond coloré"
   },
   "actions": {
     "add_row": "Ajouter une ligne",
@@ -130,5 +134,6 @@
   },
   "row": "Ligne",
   "empty_row": "Ligne vide",
-  "default_color": "Couleur du thème"
+  "default_color": "Couleur du thème",
+  "automatic_text_color": "Automatique (noir ou blanc)"
 }

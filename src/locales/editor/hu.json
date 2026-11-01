@@ -53,7 +53,9 @@
     "icon_source": "Ikon forrása",
     "icon": "Ikon",
     "text": "Szöveg",
-    "template": "Sablon"
+    "template": "Sablon",
+    "background_color": "Háttérszín",
+    "text_color": "Szövegszín"
   },
   "helpers": {
     "temperature": "Opcionális. Az aktuális hőmérsékletet az időjárás-entitás helyett ebből az érzékelőből olvassa, pl. időjárás-állomásból vagy kültéri érzékelőből",
@@ -104,7 +106,8 @@
     "weather_icon": "Időjárás ikon",
     "text": "Szöveg",
     "template": "Sablon",
-    "spacer": "Térköz"
+    "spacer": "Térköz",
+    "badge": "Jelvény"
   },
   "segment_hints": {
     "time": "Az aktuális idő",
@@ -115,7 +118,8 @@
     "weather_icon": "Az aktuális időjárás ikonja",
     "text": "Statikus szöveg",
     "template": "Jinja-sablon",
-    "spacer": "Széttolja a szomszédos elemeket"
+    "spacer": "Széttolja a szomszédos elemeket",
+    "badge": "Entitás értéke színes háttéren"
   },
   "actions": {
     "add_row": "Sor hozzáadása",
@@ -130,5 +134,6 @@
   },
   "row": "Sor",
   "empty_row": "Üres sor",
-  "default_color": "Téma alapértelmezése"
+  "default_color": "Téma alapértelmezése",
+  "automatic_text_color": "Automatikus (fekete vagy fehér)"
 }

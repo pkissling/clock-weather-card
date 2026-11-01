@@ -53,7 +53,9 @@
     "icon_source": "Izvor ikone",
     "icon": "Ikona",
     "text": "Tekst",
-    "template": "Predložak"
+    "template": "Predložak",
+    "background_color": "Boja pozadine",
+    "text_color": "Boja teksta"
   },
   "helpers": {
     "temperature": "Neobavezno. Čita trenutačnu temperaturu s ovog senzora umjesto s vremenskog entiteta, npr. meteorološke stanice ili vanjskog senzora",
@@ -104,7 +106,8 @@
     "weather_icon": "Ikona vremena",
     "text": "Tekst",
     "template": "Predložak",
-    "spacer": "Razmak"
+    "spacer": "Razmak",
+    "badge": "Značka"
   },
   "segment_hints": {
     "time": "Trenutno vrijeme",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikona trenutnog vremena",
     "text": "Statični tekst",
     "template": "Jinja predložak",
-    "spacer": "Razmiče susjedne elemente"
+    "spacer": "Razmiče susjedne elemente",
+    "badge": "Vrijednost entiteta na obojenoj pozadini"
   },
   "actions": {
     "add_row": "Dodaj redak",
@@ -130,5 +134,6 @@
   },
   "row": "Redak",
   "empty_row": "Prazan redak",
-  "default_color": "Zadano iz teme"
+  "default_color": "Zadano iz teme",
+  "automatic_text_color": "Automatski (crna ili bijela)"
 }

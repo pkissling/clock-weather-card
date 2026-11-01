@@ -53,7 +53,9 @@
     "icon_source": "圖示來源",
     "icon": "圖示",
     "text": "文字",
-    "template": "範本"
+    "template": "範本",
+    "background_color": "背景顏色",
+    "text_color": "文字顏色"
   },
   "helpers": {
     "temperature": "選填。從此感測器而非天氣實體讀取目前溫度，例如氣象站或戶外感測器",
@@ -104,7 +106,8 @@
     "weather_icon": "天氣圖示",
     "text": "文字",
     "template": "範本",
-    "spacer": "間隔"
+    "spacer": "間隔",
+    "badge": "徽章"
   },
   "segment_hints": {
     "time": "目前時間",
@@ -115,7 +118,8 @@
     "weather_icon": "目前天氣的圖示",
     "text": "靜態文字",
     "template": "Jinja 範本",
-    "spacer": "將相鄰元素推開"
+    "spacer": "將相鄰元素推開",
+    "badge": "彩色背景上的實體值"
   },
   "actions": {
     "add_row": "新增列",
@@ -130,5 +134,6 @@
   },
   "row": "列",
   "empty_row": "空白列",
-  "default_color": "主題預設"
+  "default_color": "主題預設",
+  "automatic_text_color": "自動（黑色或白色）"
 }

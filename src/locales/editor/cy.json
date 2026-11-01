@@ -53,7 +53,9 @@
     "icon_source": "Ffynhonnell yr eicon",
     "icon": "Eicon",
     "text": "Testun",
-    "template": "Templed"
+    "template": "Templed",
+    "background_color": "Lliw cefndir",
+    "text_color": "Lliw testun"
   },
   "helpers": {
     "temperature": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
@@ -104,7 +106,8 @@
     "weather_icon": "Eicon tywydd",
     "text": "Testun",
     "template": "Templed",
-    "spacer": "Bwlch"
+    "spacer": "Bwlch",
+    "badge": "Bathodyn"
   },
   "segment_hints": {
     "time": "Yr amser presennol",
@@ -115,7 +118,8 @@
     "weather_icon": "Eicon y tywydd presennol",
     "text": "Testun sefydlog",
     "template": "Templed Jinja",
-    "spacer": "Yn gwthio cymdogion ar wahân"
+    "spacer": "Yn gwthio cymdogion ar wahân",
+    "badge": "Gwerth endid ar gefndir lliw"
   },
   "actions": {
     "add_row": "Ychwanegu rhes",
@@ -130,5 +134,6 @@
   },
   "row": "Rhes",
   "empty_row": "Rhes wag",
-  "default_color": "Rhagosodiad y thema"
+  "default_color": "Rhagosodiad y thema",
+  "automatic_text_color": "Awtomatig (du neu wyn)"
 }

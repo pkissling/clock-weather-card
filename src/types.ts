@@ -36,13 +36,23 @@ export interface WeatherSegmentConfig {
   unit_attribute?: string
 }
 
-export interface EntitySegmentConfig {
-  type: 'entity'
+interface EntityValueConfig {
   entity_id: string
   attribute?: string
   show_unit?: boolean
   unit?: string
   unit_attribute?: string
+}
+
+export interface EntitySegmentConfig extends EntityValueConfig {
+  type: 'entity'
+}
+
+export interface BadgeSegmentConfig extends EntityValueConfig {
+  type: 'badge'
+  // Maps the lowest value of each band to its background color.
+  background_color: Record<number, string>
+  text_color?: string
 }
 
 export interface IconSegmentConfig {
@@ -75,13 +85,14 @@ export type SegmentConfig =
   | DateSegmentConfig
   | WeatherSegmentConfig
   | EntitySegmentConfig
+  | BadgeSegmentConfig
   | IconSegmentConfig
   | WeatherIconSegmentConfig
   | TextSegmentConfig
   | TemplateSegmentConfig
   | SpacerSegmentConfig
 
-export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'icon', 'weather_icon', 'text', 'template', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
+export const SEGMENT_TYPES = ['time', 'date', 'weather', 'entity', 'badge', 'icon', 'weather_icon', 'text', 'template', 'spacer'] as const satisfies readonly SegmentConfig['type'][]
 
 export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
 

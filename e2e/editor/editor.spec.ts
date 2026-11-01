@@ -239,6 +239,35 @@ test.describe('GUI editor', () => {
       .toMatchObject({ 30: '#FF964F', 40: '#ff0000' })
   })
 
+  test('adds a badge segment and edits its thresholds and text color', async ({ page, setupCard }) => {
+    await setupCard({ entities: { 'sensor.e2e_aqi': { state: '38', attributes: { friendly_name: 'Air quality index' } } } })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-row="2"]')
+      .getByRole('button', { name: 'Add segment' })
+      .click()
+    await editor.locator('[data-add=badge]')
+      .click()
+    await editor.getByText('Select an entity')
+      .click()
+    await editor.getByText('Air quality index', { exact: true })
+      .click()
+    await expect(editor.locator('[data-segment="badge"]'))
+      .toContainText('Air quality index')
+    await editor.getByRole('textbox', { name: 'Background color 50' })
+      .fill('#ffff00')
+    const textColor = editor.getByRole('textbox', { name: 'Text color' })
+    await expect(textColor)
+      .toHaveAttribute('placeholder', 'Automatic (black or white)')
+    await textColor.fill('#111111')
+
+    const config = await saveEditor(page)
+    expect((config.sections as { header: { rows: { segments: unknown[] }[] } }).header.rows[2].segments[2])
+      .toEqual({ type: 'badge', entity_id: 'sensor.e2e_aqi', background_color: { 0: '#4caf50', 50: '#ffff00', 100: '#f44336' }, text_color: '#111111' })
+  })
+
   test('picks the weather icon style', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

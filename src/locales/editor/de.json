@@ -53,7 +53,9 @@
     "icon_source": "Symbolquelle",
     "icon": "Symbol",
     "text": "Text",
-    "template": "Template"
+    "template": "Template",
+    "background_color": "Hintergrundfarbe",
+    "text_color": "Textfarbe"
   },
   "helpers": {
     "temperature": "Optional. Liest die aktuelle Temperatur aus diesem Sensor statt aus der Wetter-Entität, z. B. einer Wetterstation oder einem Außensensor",
@@ -104,7 +106,8 @@
     "weather_icon": "Wettersymbol",
     "text": "Text",
     "template": "Template",
-    "spacer": "Abstand"
+    "spacer": "Abstand",
+    "badge": "Badge"
   },
   "segment_hints": {
     "time": "Die aktuelle Uhrzeit",
@@ -115,7 +118,8 @@
     "weather_icon": "Symbol des aktuellen Wetters",
     "text": "Statischer Text",
     "template": "Jinja-Template",
-    "spacer": "Schiebt Nachbarn auseinander"
+    "spacer": "Schiebt Nachbarn auseinander",
+    "badge": "Wert einer Entität auf farbigem Hintergrund"
   },
   "actions": {
     "add_row": "Zeile hinzufügen",
@@ -130,5 +134,6 @@
   },
   "row": "Zeile",
   "empty_row": "Leere Zeile",
-  "default_color": "Theme-Standard"
+  "default_color": "Theme-Standard",
+  "automatic_text_color": "Automatisch (schwarz oder weiß)"
 }

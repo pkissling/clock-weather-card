@@ -53,7 +53,9 @@
     "icon_source": "Zdroj ikony",
     "icon": "Ikona",
     "text": "Text",
-    "template": "Šablona"
+    "template": "Šablona",
+    "background_color": "Barva pozadí",
+    "text_color": "Barva textu"
   },
   "helpers": {
     "temperature": "Volitelné. Čte aktuální teplotu z tohoto senzoru místo z entity počasí, např. z meteostanice nebo venkovního senzoru",
@@ -104,7 +106,8 @@
     "weather_icon": "Ikona počasí",
     "text": "Text",
     "template": "Šablona",
-    "spacer": "Mezera"
+    "spacer": "Mezera",
+    "badge": "Odznak"
   },
   "segment_hints": {
     "time": "Aktuální čas",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikona aktuálního počasí",
     "text": "Statický text",
     "template": "Šablona Jinja",
-    "spacer": "Odsune sousední prvky od sebe"
+    "spacer": "Odsune sousední prvky od sebe",
+    "badge": "Hodnota entity na barevném pozadí"
   },
   "actions": {
     "add_row": "Přidat řádek",
@@ -130,5 +134,6 @@
   },
   "row": "Řádek",
   "empty_row": "Prázdný řádek",
-  "default_color": "Výchozí motivu"
+  "default_color": "Výchozí motivu",
+  "automatic_text_color": "Automaticky (černá nebo bílá)"
 }
