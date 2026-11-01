@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.1.0](https://github.com/pkissling/clock-weather-card/compare/v3.0.1...v3.1.0) (2026-11-01)
+
+
+### Features
+
+* **forecast:** add font_size to scale the forecast strip and list ([1e2acdc](https://github.com/pkissling/clock-weather-card/commit/1e2acdcf4fffac62bbe120dedb4cc4378397ef83))
+* **header:** add a badge segment colored by the value of an entity ([9ef19ed](https://github.com/pkissling/clock-weather-card/commit/9ef19ed7cf9827a0d993a86dc2a1ee629c38ade3)), closes [#848](https://github.com/pkissling/clock-weather-card/issues/848)
+* **header:** show an entity's current icon in the icon segment via entity_id ([143340b](https://github.com/pkissling/clock-weather-card/commit/143340bd0c9ca799e4003685e8bbbbcfac6d0222)), closes [#855](https://github.com/pkissling/clock-weather-card/issues/855)
+
+
+### Bug Fixes
+
+* **clock:** don't restart the clock on a card that was removed from the page ([91e6036](https://github.com/pkissling/clock-weather-card/commit/91e60369a62f29d8579aae034e19f149335aceb4))
+* **forecast:** aggregate hourly forecasts for daily sections ([a4d00ef](https://github.com/pkissling/clock-weather-card/commit/a4d00ef5730fa4848b43439b74fe3b08c226c028)), closes [#842](https://github.com/pkissling/clock-weather-card/issues/842)
+* **forecast:** keep merged twice-daily days on their date in zones west of the provider ([0c4a796](https://github.com/pkissling/clock-weather-card/commit/0c4a796d83daf2698523320f5ce339bab9836c6a))
+* **forecast:** let the hourly strip shrink inside grid layouts ([47cc3e0](https://github.com/pkissling/clock-weather-card/commit/47cc3e04b1a4e405a2b851957e141aa6bf84bd3b)), closes [#844](https://github.com/pkissling/clock-weather-card/issues/844)
+* **forecast:** name the entity when a forecast subscription fails ([8cee1bf](https://github.com/pkissling/clock-weather-card/commit/8cee1bf3e2d8719d7ecd6e2ac062a93e66d78553))
+* **header:** keep the clock and temperature readable on narrow cards ([1ae4199](https://github.com/pkissling/clock-weather-card/commit/1ae41996ce53c4586f15413d5b4045f3c2ba9bf9)), closes [#865](https://github.com/pkissling/clock-weather-card/issues/865)
+* **header:** size the weather icon box to the painted icon area ([b6ea2b0](https://github.com/pkissling/clock-weather-card/commit/b6ea2b0d1fb0f25b5ffb4e7184cb9af7b54a8f3f))
+* **styles:** fall back for CSS features missing in HA's legacy browsers ([3fde9d7](https://github.com/pkissling/clock-weather-card/commit/3fde9d763ae70d73817e0c3046cf537e61d4f55c))
+
 ## [3.0.1](https://github.com/pkissling/clock-weather-card/compare/v3.0.0...v3.0.1) (2026-10-27)
 
 
