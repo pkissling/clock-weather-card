@@ -53,7 +53,9 @@
     "icon_source": "Nguồn biểu tượng",
     "icon": "Biểu tượng",
     "text": "Văn bản",
-    "template": "Mẫu"
+    "template": "Mẫu",
+    "background_color": "Màu nền",
+    "text_color": "Màu chữ"
   },
   "helpers": {
     "temperature": "Tùy chọn. Đọc nhiệt độ hiện tại từ cảm biến này thay vì thực thể thời tiết, ví dụ trạm thời tiết hoặc cảm biến ngoài trời",
@@ -104,7 +106,8 @@
     "weather_icon": "Biểu tượng thời tiết",
     "text": "Văn bản",
     "template": "Mẫu",
-    "spacer": "Khoảng cách"
+    "spacer": "Khoảng cách",
+    "badge": "Huy hiệu"
   },
   "segment_hints": {
     "time": "Giờ hiện tại",
@@ -115,7 +118,8 @@
     "weather_icon": "Biểu tượng thời tiết hiện tại",
     "text": "Văn bản tĩnh",
     "template": "Mẫu Jinja",
-    "spacer": "Đẩy các phần tử lân cận ra xa"
+    "spacer": "Đẩy các phần tử lân cận ra xa",
+    "badge": "Giá trị thực thể trên nền màu"
   },
   "actions": {
     "add_row": "Thêm hàng",
@@ -130,5 +134,6 @@
   },
   "row": "Hàng",
   "empty_row": "Hàng trống",
-  "default_color": "Mặc định của chủ đề"
+  "default_color": "Mặc định của chủ đề",
+  "automatic_text_color": "Tự động (đen hoặc trắng)"
 }

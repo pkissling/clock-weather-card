@@ -53,7 +53,9 @@
     "icon_source": "Origine dell'icona",
     "icon": "Icona",
     "text": "Testo",
-    "template": "Template"
+    "template": "Template",
+    "background_color": "Colore di sfondo",
+    "text_color": "Colore del testo"
   },
   "helpers": {
     "temperature": "Facoltativo. Legge la temperatura attuale da questo sensore invece che dall'entità meteo, ad es. una stazione meteo o un sensore esterno",
@@ -104,7 +106,8 @@
     "weather_icon": "Icona meteo",
     "text": "Testo",
     "template": "Template",
-    "spacer": "Spaziatore"
+    "spacer": "Spaziatore",
+    "badge": "Badge"
   },
   "segment_hints": {
     "time": "L'ora attuale",
@@ -115,7 +118,8 @@
     "weather_icon": "Icona del meteo attuale",
     "text": "Testo statico",
     "template": "Template Jinja",
-    "spacer": "Allontana gli elementi vicini"
+    "spacer": "Allontana gli elementi vicini",
+    "badge": "Valore di un'entità su sfondo colorato"
   },
   "actions": {
     "add_row": "Aggiungi riga",
@@ -130,5 +134,6 @@
   },
   "row": "Riga",
   "empty_row": "Riga vuota",
-  "default_color": "Predefinito del tema"
+  "default_color": "Predefinito del tema",
+  "automatic_text_color": "Automatico (nero o bianco)"
 }

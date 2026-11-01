@@ -1,3 +1,6 @@
+import '@/editor/clock-weather-card-color-picker'
+import '@/editor/clock-weather-card-gradient-editor'
+
 import type { HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
 import { property, state } from 'lit/decorators.js'
@@ -5,7 +8,7 @@ import { property, state } from 'lit/decorators.js'
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/editor/form'
-import type { ClockWeatherCardConfig, IconSegmentConfig, RowConfig, SegmentConfig } from '@/types'
+import type { BadgeSegmentConfig, ClockWeatherCardConfig, IconSegmentConfig, RowConfig, SegmentConfig } from '@/types'
 import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
@@ -17,6 +20,7 @@ const NEW_SEGMENTS: { [T in SegmentConfig['type']]: SegmentConfig } = {
   date: { type: 'date' },
   weather: { type: 'weather' },
   entity: { type: 'entity', entity_id: '' },
+  badge: { type: 'badge', entity_id: '', background_color: { 0: '#4caf50', 50: '#ff9800', 100: '#f44336' } },
   icon: { type: 'icon', icon: 'mdi:star-outline' },
   weather_icon: { type: 'weather_icon' },
   text: { type: 'text', text: '' },
@@ -116,7 +120,8 @@ export class ClockWeatherCardRowsEditor extends LitElement {
     case 'time': return segment.time_pattern ?? this.t('segments.time')
     case 'date': return segment.date_pattern ?? this.t('segments.date')
     case 'weather': return segment.attribute ? attributeLabel(this.hass, segment.attribute) : this.t('segments.weather')
-    case 'entity': {
+    case 'entity':
+    case 'badge': {
       const name = this.hass.states[segment.entity_id]?.attributes.friendly_name ?? segment.entity_id
       return [name || this.t('segments.entity'), segment.attribute].filter(Boolean)
         .join(' · ')
@@ -164,7 +169,29 @@ export class ClockWeatherCardRowsEditor extends LitElement {
           {},
           changes => setSegments(row.segments.map((s, i) => i === index ? { ...s, ...changes } as SegmentConfig : s)),
   )}
+        ${segment.type === 'badge' ? this._renderBadgeColors(segment, next => setSegments(row.segments.map((s, i) => i === index ? next : s))) : nothing}
       </div>
+    `
+  }
+
+  private _renderBadgeColors(segment: BadgeSegmentConfig, onChange: (segment: BadgeSegmentConfig) => void): TemplateResult {
+    return html`
+      <clock-weather-card-gradient-editor
+        .hass=${this.hass}
+        .label=${this.t('fields.background_color')}
+        .gradient=${segment.background_color}
+        .defaultGradient=${undefined}
+        stepped
+        @gradient-changed=${(e: CustomEvent<Record<string, string>>) => { e.stopPropagation(); onChange({ ...segment, background_color: e.detail }) }}
+      ></clock-weather-card-gradient-editor>
+      <clock-weather-card-color-picker
+        .hass=${this.hass}
+        .label=${this.t('fields.text_color')}
+        .placeholder=${this.t('automatic_text_color')}
+        .placeholderSwatch=${'linear-gradient(135deg, #000 50%, #fff 50%)'}
+        .value=${segment.text_color}
+        @color-changed=${(e: CustomEvent<string | null>) => { e.stopPropagation(); onChange({ ...segment, text_color: e.detail ?? undefined }) }}
+      ></clock-weather-card-color-picker>
     `
   }
 

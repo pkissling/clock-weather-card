@@ -53,7 +53,9 @@
     "icon_source": "Origen de la icona",
     "icon": "Icona",
     "text": "Text",
-    "template": "Plantilla"
+    "template": "Plantilla",
+    "background_color": "Color de fons",
+    "text_color": "Color del text"
   },
   "helpers": {
     "temperature": "Opcional. Llegeix la temperatura actual d'aquest sensor en lloc de l'entitat meteorològica, p. ex. una estació meteorològica o un sensor exterior",
@@ -104,7 +106,8 @@
     "weather_icon": "Icona del temps",
     "text": "Text",
     "template": "Plantilla",
-    "spacer": "Espaiador"
+    "spacer": "Espaiador",
+    "badge": "Insígnia"
   },
   "segment_hints": {
     "time": "L'hora actual",
@@ -115,7 +118,8 @@
     "weather_icon": "Icona del temps actual",
     "text": "Text fix",
     "template": "Plantilla Jinja",
-    "spacer": "Separa els elements veïns"
+    "spacer": "Separa els elements veïns",
+    "badge": "Valor d'una entitat sobre un fons de color"
   },
   "actions": {
     "add_row": "Afegeix una fila",
@@ -130,5 +134,6 @@
   },
   "row": "Fila",
   "empty_row": "Fila buida",
-  "default_color": "Predeterminat del tema"
+  "default_color": "Predeterminat del tema",
+  "automatic_text_color": "Automàtic (negre o blanc)"
 }

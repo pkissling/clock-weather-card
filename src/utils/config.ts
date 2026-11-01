@@ -90,6 +90,14 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     }
   }
 
+  const assertColorMap = (path: string, map: unknown): void => {
+    if (typeof map !== 'object' || map === null || Array.isArray(map)) throw invalidConfigValue(path, String(map), 'a map of values to colors')
+    for (const [k, v] of Object.entries(map)) {
+      if (!Number.isFinite(Number(k))) throw invalidConfigValue(path, `key ${k}`, 'numeric keys')
+      if (typeof v !== 'string' || !isSupportedColor(v)) throw invalidConfigValue(path, `value at ${k}`, 'hex (#rgb, #rrggbb) or rgb() colors')
+    }
+  }
+
   const { header, forecast_strip: strip, forecast_list: list } = config.sections ?? {}
 
   assertEntityExists(config.entity)
@@ -140,7 +148,12 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       assertRequiredString(`${path}.type`, segment.type)
       assertEnumValue(`${path}.type`, segment.type, SEGMENT_TYPES)
       if (segment.type === 'weather_icon') assertEntityExists(segment.entity_id)
-      if (segment.type === 'entity') {
+      if (segment.type === 'badge') {
+        if (segment.background_color === undefined) throw requiredConfigMissing(`${path}.background_color`)
+        assertColorMap(`${path}.background_color`, segment.background_color)
+        assertNonEmptyString(`${path}.text_color`, segment.text_color)
+      }
+      if (segment.type === 'entity' || segment.type === 'badge') {
         assertRequiredString(`${path}.entity_id`, segment.entity_id)
         assertEntityExists(segment.entity_id)
         if (segment.attribute !== undefined && isAvailable(segment.entity_id) && hassService.getEntityAttribute(hass, segment.entity_id, segment.attribute) === undefined) {
@@ -156,11 +169,11 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
       if (segment.type === 'text') assertRequiredString(`${path}.text`, segment.text)
       if (segment.type === 'template') assertRequiredString(`${path}.template`, segment.template)
       if ('show_unit' in segment) assertBoolean(`${path}.show_unit`, segment.show_unit)
-      if (segment.type === 'weather' || segment.type === 'entity') {
+      if (segment.type === 'weather' || segment.type === 'entity' || segment.type === 'badge') {
         if ('unit' in segment && typeof segment.unit !== 'string') throw invalidConfigValue(`${path}.unit`, String(segment.unit), 'a string')
         if ('unit_attribute' in segment) {
           if (typeof segment.unit_attribute !== 'string') throw invalidConfigValue(`${path}.unit_attribute`, String(segment.unit_attribute), 'a string')
-          const entityId = segment.type === 'entity' ? segment.entity_id : config.entity
+          const entityId = segment.type === 'weather' ? config.entity : segment.entity_id
           if (isAvailable(entityId) && hassService.getEntityAttribute(hass, entityId, segment.unit_attribute) === undefined) {
             throw invalidConfigValue(`${path}.unit_attribute`, segment.unit_attribute, `an attribute of "${entityId}"`)
           }
@@ -192,16 +205,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertCssLength('sections.forecast_strip.font_size', strip?.font_size)
   assertCssLength('sections.forecast_list.font_size', list?.font_size)
 
-  const gradient = list?.gradient
-  if (gradient !== undefined) {
-    if (typeof gradient !== 'object' || gradient === null || Array.isArray(gradient)) {
-      throw invalidConfigValue('sections.forecast_list.gradient', String(gradient), 'a map of values to colors')
-    }
-    for (const [k, v] of Object.entries(gradient)) {
-      if (!Number.isFinite(Number(k))) throw invalidConfigValue('sections.forecast_list.gradient', `key ${k}`, 'numeric keys')
-      if (typeof v !== 'string' || !isSupportedColor(v)) throw invalidConfigValue('sections.forecast_list.gradient', `value at ${k}`, 'hex (#rgb, #rrggbb) or rgb() colors')
-    }
-  }
+  if (list?.gradient !== undefined) assertColorMap('sections.forecast_list.gradient', list.gradient)
 
   if (config.time_zone && !isValidTimeZone(config.time_zone)) {
     throw invalidConfigValue('time_zone', config.time_zone, 'an IANA time zone such as "Europe/Berlin"')

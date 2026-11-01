@@ -53,7 +53,9 @@
     "icon_source": "Ikonkilde",
     "icon": "Ikon",
     "text": "Tekst",
-    "template": "Mal"
+    "template": "Mal",
+    "background_color": "Bakgrunnsfarge",
+    "text_color": "Tekstfarge"
   },
   "helpers": {
     "temperature": "Valgfritt. Leser gjeldende temperatur fra denne sensoren i stedet for værentiteten, f.eks. en værstasjon eller utendørssensor",
@@ -104,7 +106,8 @@
     "weather_icon": "Værikon",
     "text": "Tekst",
     "template": "Mal",
-    "spacer": "Mellomrom"
+    "spacer": "Mellomrom",
+    "badge": "Merke"
   },
   "segment_hints": {
     "time": "Nåværende tid",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikon for nåværende vær",
     "text": "Statisk tekst",
     "template": "Jinja-mal",
-    "spacer": "Skyver naboer fra hverandre"
+    "spacer": "Skyver naboer fra hverandre",
+    "badge": "Verdien til en entitet på farget bakgrunn"
   },
   "actions": {
     "add_row": "Legg til rad",
@@ -130,5 +134,6 @@
   },
   "row": "Rad",
   "empty_row": "Tom rad",
-  "default_color": "Temastandard"
+  "default_color": "Temastandard",
+  "automatic_text_color": "Automatisk (svart eller hvit)"
 }

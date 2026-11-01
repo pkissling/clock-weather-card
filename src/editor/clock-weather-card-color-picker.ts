@@ -13,6 +13,9 @@ export class ClockWeatherCardColorPicker extends LitElement {
   @property() public label = ''
   @property({ attribute: false }) public accessibleName?: string
   @property() public value?: string
+  // What applies while no color is set; defaults to the theme's color.
+  @property() public placeholder?: string
+  @property({ attribute: false }) public placeholderSwatch?: string
 
   private _emit(value: string | undefined): void {
     fireEvent(this, 'color-changed', value)
@@ -23,7 +26,7 @@ export class ClockWeatherCardColorPicker extends LitElement {
     return html`
       ${this.label ? html`<div class="label">${this.label}</div>` : nothing}
       <div class="field">
-        <span class="preview" style=${this.value ? `background: ${this.value}` : ''}>
+        <span class="preview" style=${this.value || this.placeholderSwatch ? `background: ${this.value || this.placeholderSwatch}` : ''}>
           <input
             type="color"
             tabindex="-1"
@@ -36,7 +39,7 @@ export class ClockWeatherCardColorPicker extends LitElement {
           type="text"
           spellcheck="false"
           aria-label=${this.accessibleName ?? this.label}
-          placeholder=${editorT(this.hass, 'default_color')}
+          placeholder=${this.placeholder ?? editorT(this.hass, 'default_color')}
           .value=${this.value ?? ''}
           @input=${(e: Event) => {
     const value = (e.target as HTMLInputElement).value.trim()

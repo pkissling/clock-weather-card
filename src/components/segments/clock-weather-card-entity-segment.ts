@@ -15,8 +15,8 @@ import { formatNumber } from '@/utils/number'
 import { toDisplayTemperature } from '@/utils/temperature'
 
 @customElement('clock-weather-card-entity-segment')
-class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
-  @consume({ context: hassContext, subscribe: true }) @state() private hass!: HomeAssistant
+export class ClockWeatherCardEntitySegment extends AbstractClockWeatherCardComponent {
+  @consume({ context: hassContext, subscribe: true }) @state() protected hass!: HomeAssistant
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @property() public entityId!: string
   @property() public attribute?: string

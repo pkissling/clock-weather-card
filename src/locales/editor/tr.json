@@ -53,7 +53,9 @@
     "icon_source": "Simge kaynağı",
     "icon": "Simge",
     "text": "Metin",
-    "template": "Şablon"
+    "template": "Şablon",
+    "background_color": "Arka plan rengi",
+    "text_color": "Metin rengi"
   },
   "helpers": {
     "temperature": "İsteğe bağlı. Mevcut sıcaklığı hava durumu varlığı yerine bu sensörden okur, örn. bir hava istasyonu veya dış mekân sensörü",
@@ -104,7 +106,8 @@
     "weather_icon": "Hava durumu simgesi",
     "text": "Metin",
     "template": "Şablon",
-    "spacer": "Boşluk"
+    "spacer": "Boşluk",
+    "badge": "Rozet"
   },
   "segment_hints": {
     "time": "Geçerli saat",
@@ -115,7 +118,8 @@
     "weather_icon": "Geçerli hava durumunun simgesi",
     "text": "Sabit metin",
     "template": "Jinja şablonu",
-    "spacer": "Komşu öğeleri birbirinden uzaklaştırır"
+    "spacer": "Komşu öğeleri birbirinden uzaklaştırır",
+    "badge": "Renkli arka plan üzerinde varlık değeri"
   },
   "actions": {
     "add_row": "Satır ekle",
@@ -130,5 +134,6 @@
   },
   "row": "Satır",
   "empty_row": "Boş satır",
-  "default_color": "Tema varsayılanı"
+  "default_color": "Tema varsayılanı",
+  "automatic_text_color": "Otomatik (siyah veya beyaz)"
 }

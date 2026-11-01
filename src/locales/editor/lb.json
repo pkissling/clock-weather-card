@@ -53,7 +53,9 @@
     "icon_source": "Quell vum Symbol",
     "icon": "Icon",
     "text": "Text",
-    "template": "Template"
+    "template": "Template",
+    "background_color": "Hannergrondfaarf",
+    "text_color": "Textfaarf"
   },
   "helpers": {
     "temperature": "Optional. Liest déi aktuell Temperatur vun dësem Sensor amplaz vun der Wieder-Entitéit, z. B. enger Wiederstatioun oder engem Baussesensor",
@@ -104,7 +106,8 @@
     "weather_icon": "Wiedericon",
     "text": "Text",
     "template": "Template",
-    "spacer": "Ofstandshalter"
+    "spacer": "Ofstandshalter",
+    "badge": "Badge"
   },
   "segment_hints": {
     "time": "Déi aktuell Zäit",
@@ -115,7 +118,8 @@
     "weather_icon": "Icon vum aktuelle Wieder",
     "text": "Statesch Text",
     "template": "Jinja-Template",
-    "spacer": "Dréckt d'Noperen auserneen"
+    "spacer": "Dréckt d'Noperen auserneen",
+    "badge": "Wäert vun enger Entitéit op faarwegem Hannergrond"
   },
   "actions": {
     "add_row": "Zeil derbäisetzen",
@@ -130,5 +134,6 @@
   },
   "row": "Zeil",
   "empty_row": "Eidel Zeil",
-  "default_color": "Standard vum Theme"
+  "default_color": "Standard vum Theme",
+  "automatic_text_color": "Automatesch (schwaarz oder wäiss)"
 }

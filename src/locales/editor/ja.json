@@ -53,7 +53,9 @@
     "icon_source": "アイコンのソース",
     "icon": "アイコン",
     "text": "テキスト",
-    "template": "テンプレート"
+    "template": "テンプレート",
+    "background_color": "背景色",
+    "text_color": "文字色"
   },
   "helpers": {
     "temperature": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
@@ -104,7 +106,8 @@
     "weather_icon": "天気アイコン",
     "text": "テキスト",
     "template": "テンプレート",
-    "spacer": "スペーサー"
+    "spacer": "スペーサー",
+    "badge": "バッジ"
   },
   "segment_hints": {
     "time": "現在の時刻",
@@ -115,7 +118,8 @@
     "weather_icon": "現在の天気のアイコン",
     "text": "固定テキスト",
     "template": "Jinja テンプレート",
-    "spacer": "隣の要素を離して配置します"
+    "spacer": "隣の要素を離して配置します",
+    "badge": "色付き背景にエンティティの値"
   },
   "actions": {
     "add_row": "行を追加",
@@ -130,5 +134,6 @@
   },
   "row": "行",
   "empty_row": "空の行",
-  "default_color": "テーマの既定"
+  "default_color": "テーマの既定",
+  "automatic_text_color": "自動（黒または白）"
 }

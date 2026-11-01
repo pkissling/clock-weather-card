@@ -53,7 +53,9 @@
     "icon_source": "图标来源",
     "icon": "图标",
     "text": "文本",
-    "template": "模板"
+    "template": "模板",
+    "background_color": "背景颜色",
+    "text_color": "文字颜色"
   },
   "helpers": {
     "temperature": "可选。从此传感器而非天气实体读取当前温度，例如气象站或室外传感器",
@@ -104,7 +106,8 @@
     "weather_icon": "天气图标",
     "text": "文本",
     "template": "模板",
-    "spacer": "间隔"
+    "spacer": "间隔",
+    "badge": "徽章"
   },
   "segment_hints": {
     "time": "当前时间",
@@ -115,7 +118,8 @@
     "weather_icon": "当前天气的图标",
     "text": "静态文本",
     "template": "Jinja 模板",
-    "spacer": "将相邻元素推开"
+    "spacer": "将相邻元素推开",
+    "badge": "彩色背景上的实体值"
   },
   "actions": {
     "add_row": "添加行",
@@ -130,5 +134,6 @@
   },
   "row": "行",
   "empty_row": "空行",
-  "default_color": "主题默认"
+  "default_color": "主题默认",
+  "automatic_text_color": "自动（黑色或白色）"
 }

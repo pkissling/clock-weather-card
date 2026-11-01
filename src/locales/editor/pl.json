@@ -53,7 +53,9 @@
     "icon_source": "Źródło ikony",
     "icon": "Ikona",
     "text": "Tekst",
-    "template": "Szablon"
+    "template": "Szablon",
+    "background_color": "Kolor tła",
+    "text_color": "Kolor tekstu"
   },
   "helpers": {
     "temperature": "Opcjonalne. Odczytuje bieżącą temperaturę z tego czujnika zamiast z encji pogody, np. ze stacji pogodowej lub czujnika zewnętrznego",
@@ -104,7 +106,8 @@
     "weather_icon": "Ikona pogody",
     "text": "Tekst",
     "template": "Szablon",
-    "spacer": "Odstęp"
+    "spacer": "Odstęp",
+    "badge": "Plakietka"
   },
   "segment_hints": {
     "time": "Bieżący czas",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikona bieżącej pogody",
     "text": "Stały tekst",
     "template": "Szablon Jinja",
-    "spacer": "Rozsuwa sąsiednie elementy"
+    "spacer": "Rozsuwa sąsiednie elementy",
+    "badge": "Wartość encji na kolorowym tle"
   },
   "actions": {
     "add_row": "Dodaj wiersz",
@@ -130,5 +134,6 @@
   },
   "row": "Wiersz",
   "empty_row": "Pusty wiersz",
-  "default_color": "Domyślny motywu"
+  "default_color": "Domyślny motywu",
+  "automatic_text_color": "Automatycznie (czarny lub biały)"
 }

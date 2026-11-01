@@ -147,13 +147,20 @@ const unitFields = (attributeSelector: EditorField, hasAttribute: (d: Data) => b
   { ...attributeSelector, name: 'unit_attribute', visible: d => hasAttribute(d) && d.show_unit !== false },
 ]
 
+const entityValueFields: EditorField[] = [
+  { name: 'entity_id', selector: { entity: {} }, required: true },
+  ...unitFields({ name: 'attribute', selector: { attribute: {} }, context: { filter_entity: 'entity_id' } }, () => true),
+]
+
 export const SEGMENT_FIELDS: { [T in SegmentConfig['type']]: EditorField[] } = {
   time: [{ name: 'time_pattern', selector: patternSelector(TIME_PATTERNS), default: DEFAULT_TIME_PATTERN }],
   date: [{ name: 'date_pattern', selector: patternSelector(DATE_PATTERNS), default: DEFAULT_DATE_PATTERN }],
   weather: unitFields({ name: 'attribute', selector: ({ config }: FormContext) => ({ attribute: { entity_id: config.entity } }) }, d => !!d.attribute),
-  entity: [
-    { name: 'entity_id', selector: { entity: {} }, required: true },
-    ...unitFields({ name: 'attribute', selector: { attribute: {} }, context: { filter_entity: 'entity_id' } }, () => true),
+  entity: entityValueFields,
+  badge: [
+    ...entityValueFields,
+    { name: 'background_color', control: 'gradient' },
+    { name: 'text_color', control: 'color' },
   ],
   icon: [
     // The rows editor's icon_source choice switches between the two by setting or removing entity_id.
@@ -171,6 +178,7 @@ export const SEGMENT_ICONS: { [T in SegmentConfig['type']]: string } = {
   date: 'mdi:calendar',
   weather: 'mdi:weather-partly-cloudy',
   entity: 'mdi:shape-outline',
+  badge: 'mdi:label-outline',
   icon: 'mdi:emoticon-outline',
   weather_icon: 'mdi:weather-sunny',
   text: 'mdi:format-text',

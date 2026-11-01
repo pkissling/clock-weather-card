@@ -177,11 +177,13 @@ sections:
 </td></tr>
 <tr><td>
 
-**Air quality at a glance** - a header with just the weather icon and the current AQI, above a list that charts the AQI forecast with your own `gradient`.
+**Air quality index** - a `badge` with an AQI sensor in the color of its US AQI band, above a list charting the AQI forecast in the same colors.
 
-<!-- preview: example-aqi-gradient
+<!-- preview: example-aqi
 theme: { repo: piitaya/lovelace-mushroom-themes, version: v0.0.11, name: Mushroom Shadow }
-weather: { state: partlycloudy, extra_attributes: { aqi: 38 } }
+weather: { state: partlycloudy }
+entities:
+  sensor.air_quality_index: { state: '38', attributes: { unit_of_measurement: AQI, state_class: measurement } }
 -->
 ```yaml
 type: custom:clock-weather-card
@@ -189,28 +191,42 @@ entity: weather.home
 sections:
   header:
     rows:
-      - font_size: 3.5rem
-        alignment: center
+      - alignment: center
         segments:
           - type: icon
             icon: mdi:leaf
+          - type: text
+            text: Air quality
+      - font_size: 3rem
+        alignment: center
+        segments:
+          - type: badge
+            entity_id: sensor.air_quality_index
+            background_color:
+              0: "#00E400"
+              51: "#FFFF00"
+              101: "#FF7E00"
+              151: "#FF0000"
+              201: "#8F3F97"
+              301: "#7E0023"
+      - alignment: center
+        segments:
           - type: weather
-            attribute: aqi
-            unit: " AQI"
+          - type: weather
+            attribute: temperature
   forecast_strip:
     hide: true
   forecast_list:
     attribute: aqi
     gradient:
-      0: "#00F5D4"
-      20: "#00BBF9"
-      40: "#9B5DE5"
-      60: "#F15BB5"
+      0: "#00E400"
+      50: "#FFFF00"
+      100: "#FF7E00"
 ```
 
 </td><td>
 
-![A header with the current air quality index above a list of AQI bars in a cyan to pink gradient](docs/previews/example-aqi-gradient.png)
+![A header with an air quality index of 38 on a green badge above a list of AQI bars from green to yellow](docs/previews/example-aqi.png)
 
 *[Mushroom Shadow](https://github.com/piitaya/lovelace-mushroom-themes/tree/v0.0.11)*
 
@@ -458,6 +474,31 @@ Displays a Home Assistant entity's state and unit. A numeric state is rounded to
 | `show_unit` | boolean | no | `true` | Append the unit to the displayed value. Values with a `°C`/`°F` unit are converted to the card's `temperature_unit`. |
 | `unit` | string | no | - | Hard-coded unit appended verbatim to the value (include a leading space if wanted), overriding the resolved unit. Ignored when `show_unit` is `false`. |
 | `unit_attribute` | string | no | `unit_of_measurement` | Entity attribute the unit is read from; must exist on the entity. |
+
+#### `badge`
+
+Displays an entity's state or attribute like the `entity` segment, on a background whose color depends on that value, e.g. an air quality index in the color of its band. Takes all options of the `entity` segment, plus:
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | **yes** | - | `badge` |
+| `background_color` | map | **yes** | - | Thresholds mapping the lowest value of each band to its color (hex `#rgb`, `#rrggbb` or `rgb()`). The badge takes the color of the highest band the value reaches; colors don't blend. Below the lowest band or for a non-numeric value, the value shows without a background. |
+| `text_color` | string | no | black or white | Text color on the background. By default black or white, whichever reads better. |
+
+The value is compared as the entity reports it, without unit conversion. To color by a computed value, create a [template sensor](https://www.home-assistant.io/integrations/template/).
+
+```yaml
+# Air quality index with the colors of the US AQI bands
+- type: badge
+  entity_id: sensor.air_quality_index
+  background_color:
+    0: "#00E400"
+    51: "#FFFF00"
+    101: "#FF7E00"
+    151: "#FF0000"
+    201: "#8F3F97"
+    301: "#7E0023"
+```
 
 #### `icon`
 

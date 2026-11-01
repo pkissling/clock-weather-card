@@ -53,7 +53,9 @@
     "icon_source": "Piktogramos šaltinis",
     "icon": "Piktograma",
     "text": "Tekstas",
-    "template": "Šablonas"
+    "template": "Šablonas",
+    "background_color": "Fono spalva",
+    "text_color": "Teksto spalva"
   },
   "helpers": {
     "temperature": "Neprivaloma. Dabartinė temperatūra nuskaitoma iš šio jutiklio vietoj orų objekto, pvz., iš orų stoties ar lauko jutiklio",
@@ -104,7 +106,8 @@
     "weather_icon": "Orų piktograma",
     "text": "Tekstas",
     "template": "Šablonas",
-    "spacer": "Tarpiklis"
+    "spacer": "Tarpiklis",
+    "badge": "Ženklelis"
   },
   "segment_hints": {
     "time": "Dabartinis laikas",
@@ -115,7 +118,8 @@
     "weather_icon": "Dabartinių orų piktograma",
     "text": "Statinis tekstas",
     "template": "Jinja šablonas",
-    "spacer": "Atstumia kaimyninius elementus"
+    "spacer": "Atstumia kaimyninius elementus",
+    "badge": "Objekto reikšmė spalvotame fone"
   },
   "actions": {
     "add_row": "Pridėti eilutę",
@@ -130,5 +134,6 @@
   },
   "row": "Eilutė",
   "empty_row": "Tuščia eilutė",
-  "default_color": "Temos numatytoji"
+  "default_color": "Temos numatytoji",
+  "automatic_text_color": "Automatiškai (juoda arba balta)"
 }

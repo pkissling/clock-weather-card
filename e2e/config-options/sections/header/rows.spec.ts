@@ -96,7 +96,7 @@ test.describe('sections.header.rows', () => {
     })
 
     await cardErrorMessage()
-      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "icon", "weather_icon", "text", "template", "spacer"')
+      .toContain('Config option "sections.header.rows[1].segments[1].type" has invalid value "clock", expected one of "time", "date", "weather", "entity", "badge", "icon", "weather_icon", "text", "template", "spacer"')
     await expect(clockWeatherCard.locator('clock-weather-card-header'))
       .toHaveCount(0)
   })

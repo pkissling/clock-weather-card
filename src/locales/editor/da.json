@@ -53,7 +53,9 @@
     "icon_source": "Ikonkilde",
     "icon": "Ikon",
     "text": "Tekst",
-    "template": "Skabelon"
+    "template": "Skabelon",
+    "background_color": "Baggrundsfarve",
+    "text_color": "Tekstfarve"
   },
   "helpers": {
     "temperature": "Valgfri. Læser den aktuelle temperatur fra denne sensor i stedet for vejrentiteten, f.eks. en vejrstation eller udendørssensor",
@@ -104,7 +106,8 @@
     "weather_icon": "Vejrikon",
     "text": "Tekst",
     "template": "Skabelon",
-    "spacer": "Afstand"
+    "spacer": "Afstand",
+    "badge": "Mærke"
   },
   "segment_hints": {
     "time": "Det aktuelle klokkeslæt",
@@ -115,7 +118,8 @@
     "weather_icon": "Ikon for det aktuelle vejr",
     "text": "Statisk tekst",
     "template": "Jinja-skabelon",
-    "spacer": "Skubber naboer fra hinanden"
+    "spacer": "Skubber naboer fra hinanden",
+    "badge": "Værdien af en enhed på farvet baggrund"
   },
   "actions": {
     "add_row": "Tilføj række",
@@ -130,5 +134,6 @@
   },
   "row": "Række",
   "empty_row": "Tom række",
-  "default_color": "Temastandard"
+  "default_color": "Temastandard",
+  "automatic_text_color": "Automatisk (sort eller hvid)"
 }

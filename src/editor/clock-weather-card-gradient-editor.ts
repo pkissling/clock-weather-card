@@ -13,6 +13,11 @@ import { type ColorStop, DEFAULT_GRADIENT, normalizeGradient } from '@/utils/gra
 export class ClockWeatherCardGradientEditor extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   @property({ attribute: false }) public gradient: Record<string, string> = DEFAULT_GRADIENT
+  // Without a default there is nothing to reset to.
+  @property({ attribute: false }) public defaultGradient?: Record<string, string> = DEFAULT_GRADIENT
+  @property() public label?: string
+  // Each color holds until the next stop instead of blending into it, as for badge thresholds.
+  @property({ type: Boolean }) public stepped = false
 
   private _emit(stops: ColorStop[]): void {
     fireEvent(this, 'gradient-changed', Object.fromEntries(stops.map(s => [String(s.temp), s.color])))
@@ -24,12 +29,13 @@ export class ClockWeatherCardGradientEditor extends LitElement {
     const span = (stops[stops.length - 1]?.temp ?? 0) - min || 1
     const pct = (t: number): number => (t - min) / span * 100
     const t = (key: string): string => editorT(this.hass, key)
+    const label = this.label ?? t('fields.gradient')
+    const preview = stops.map((s, i) => this.stepped ? `${s.color} ${pct(s.temp)}% ${i < stops.length - 1 ? pct(stops[i + 1].temp) : 100}%` : `${s.color} ${pct(s.temp)}%`)
     const replace = (i: number, stop: ColorStop): void => this._emit(stops.map((s, j) => j === i ? stop : s))
     return html`
-      <div class="label">${t('fields.gradient')}</div>
+      <div class="label">${label}</div>
       <div class="preview">
-        <div class="bar" style="background: linear-gradient(to right, ${stops.map(s => `${s.color} ${pct(s.temp)}%`)
-    .join(', ')})"></div>
+        <div class="bar" style="background: linear-gradient(to right, ${preview.join(', ')})"></div>
         ${stops.map(s => html`<span class="tick" style="left: ${pct(s.temp)}%">${s.temp}</span>`)}
       </div>
       <div class="stops">
@@ -39,7 +45,7 @@ export class ClockWeatherCardGradientEditor extends LitElement {
               class="value"
               type="number"
               step="any"
-              aria-label=${t('fields.gradient')}
+              aria-label=${label}
               .value=${String(stop.temp)}
               @change=${(e: Event) => {
     const value = (e.target as HTMLInputElement).valueAsNumber
@@ -48,7 +54,7 @@ export class ClockWeatherCardGradientEditor extends LitElement {
             />
             <clock-weather-card-color-picker
               .hass=${this.hass}
-              .accessibleName=${`${t('fields.gradient')} ${stop.temp}`}
+              .accessibleName=${`${label} ${stop.temp}`}
               .value=${stop.color}
               @color-changed=${(e: CustomEvent<string | null>) => { e.stopPropagation(); if (e.detail) replace(i, { ...stop, color: e.detail }) }}
             ></clock-weather-card-color-picker>
@@ -61,7 +67,7 @@ export class ClockWeatherCardGradientEditor extends LitElement {
     const last = stops[stops.length - 1]
     this._emit([...stops, { temp: (last?.temp ?? 0) + 10, color: last?.color ?? '#ffffff' }])
   })}
-        ${this.gradient === DEFAULT_GRADIENT ? nothing : textButton('mdi:restore', t('actions.reset'), () => this._emit(normalizeGradient(DEFAULT_GRADIENT)), true)}
+        ${!this.defaultGradient || this.gradient === this.defaultGradient ? nothing : textButton('mdi:restore', t('actions.reset'), () => this._emit(normalizeGradient(this.defaultGradient!)), true)}
       </div>
     `
   }

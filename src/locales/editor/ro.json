@@ -53,7 +53,9 @@
     "icon_source": "Sursa pictogramei",
     "icon": "Pictogramă",
     "text": "Text",
-    "template": "Șablon"
+    "template": "Șablon",
+    "background_color": "Culoarea fundalului",
+    "text_color": "Culoarea textului"
   },
   "helpers": {
     "temperature": "Opțional. Citește temperatura curentă de la acest senzor în locul entității meteo, de ex. o stație meteo sau un senzor exterior",
@@ -104,7 +106,8 @@
     "weather_icon": "Pictogramă meteo",
     "text": "Text",
     "template": "Șablon",
-    "spacer": "Distanțier"
+    "spacer": "Distanțier",
+    "badge": "Insignă"
   },
   "segment_hints": {
     "time": "Ora curentă",
@@ -115,7 +118,8 @@
     "weather_icon": "Pictograma vremii curente",
     "text": "Text static",
     "template": "Șablon Jinja",
-    "spacer": "Îndepărtează elementele vecine"
+    "spacer": "Îndepărtează elementele vecine",
+    "badge": "Valoarea unei entități pe fundal colorat"
   },
   "actions": {
     "add_row": "Adaugă rând",
@@ -130,5 +134,6 @@
   },
   "row": "Rând",
   "empty_row": "Rând gol",
-  "default_color": "Implicit temă"
+  "default_color": "Implicit temă",
+  "automatic_text_color": "Automat (negru sau alb)"
 }
