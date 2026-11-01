@@ -5,15 +5,15 @@
     "forecast_list": "Danh sách dự báo"
   },
   "groups": {
-    "appearance": "Giao diện",
-    "sensors": "Cảm biến bổ sung",
-    "interaction": "Tương tác",
+    "appearance": "Biểu tượng & nhiệt độ",
     "region": "Khu vực và thời gian"
   },
   "more_options": "Thêm tùy chọn",
+  "overrides": "Ghi đè cài đặt của thẻ",
   "hidden": "Ẩn",
   "show_section": "Hiển thị phần",
   "no_unit": "Không có đơn vị",
+  "automatic": "Tự động",
   "entries": "mục",
   "fields": {
     "entity": "Thực thể thời tiết",
@@ -33,7 +33,6 @@
     "count": "Số mục",
     "round_temperatures": "Làm tròn nhiệt độ",
     "hide_sunrise_sunset": "Ẩn bình minh và hoàng hôn",
-    "hide_attribute": "Ẩn thuộc tính",
     "attribute": "Thuộc tính",
     "attribute_icon": "Biểu tượng thuộc tính",
     "attribute_unit": "Đơn vị thuộc tính",
@@ -46,7 +45,6 @@
     "alignment": "Căn chỉnh",
     "time_pattern": "Định dạng giờ",
     "date_pattern": "Định dạng ngày",
-    "show_unit": "Hiển thị đơn vị",
     "unit": "Đơn vị",
     "unit_attribute": "Thuộc tính đơn vị",
     "entity_id": "Thực thể",

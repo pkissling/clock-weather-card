@@ -5,15 +5,15 @@
     "forecast_list": "Előrejelzés lista"
   },
   "groups": {
-    "appearance": "Megjelenés",
-    "sensors": "További érzékelők",
-    "interaction": "Interakció",
+    "appearance": "Ikonok és hőmérsékletek",
     "region": "Régió és idő"
   },
   "more_options": "További beállítások",
+  "overrides": "A kártya beállításainak felülírása",
   "hidden": "Rejtett",
   "show_section": "Szakasz megjelenítése",
   "no_unit": "Nincs mértékegység",
+  "automatic": "Automatikus",
   "entries": "elem",
   "fields": {
     "entity": "Időjárás entitás",
@@ -33,7 +33,6 @@
     "count": "Elemek száma",
     "round_temperatures": "Hőmérsékletek kerekítése",
     "hide_sunrise_sunset": "Napkelte és napnyugta elrejtése",
-    "hide_attribute": "Attribútum elrejtése",
     "attribute": "Attribútum",
     "attribute_icon": "Attribútum ikon",
     "attribute_unit": "Attribútum mértékegysége",
@@ -46,7 +45,6 @@
     "alignment": "Igazítás",
     "time_pattern": "Időformátum",
     "date_pattern": "Dátumformátum",
-    "show_unit": "Mértékegység megjelenítése",
     "unit": "Mértékegység",
     "unit_attribute": "Mértékegység attribútum",
     "entity_id": "Entitás",

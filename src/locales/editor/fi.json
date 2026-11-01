@@ -5,15 +5,15 @@
     "forecast_list": "Ennusteluettelo"
   },
   "groups": {
-    "appearance": "Ulkoasu",
-    "sensors": "Lisäanturit",
-    "interaction": "Vuorovaikutus",
+    "appearance": "Kuvakkeet ja lämpötilat",
     "region": "Alue ja aika"
   },
   "more_options": "Lisää asetuksia",
+  "overrides": "Ohita kortin asetukset",
   "hidden": "Piilotettu",
   "show_section": "Näytä osio",
   "no_unit": "Ei yksikköä",
+  "automatic": "Automaattinen",
   "entries": "merkintää",
   "fields": {
     "entity": "Sääkohde",
@@ -33,7 +33,6 @@
     "count": "Merkintöjen määrä",
     "round_temperatures": "Pyöristä lämpötilat",
     "hide_sunrise_sunset": "Piilota auringonnousu ja -lasku",
-    "hide_attribute": "Piilota attribuutti",
     "attribute": "Attribuutti",
     "attribute_icon": "Attribuutin kuvake",
     "attribute_unit": "Attribuutin yksikkö",
@@ -46,7 +45,6 @@
     "alignment": "Tasaus",
     "time_pattern": "Ajan muoto",
     "date_pattern": "Päivämäärän muoto",
-    "show_unit": "Näytä yksikkö",
     "unit": "Yksikkö",
     "unit_attribute": "Yksikön attribuutti",
     "entity_id": "Kohde",

@@ -5,15 +5,15 @@
     "forecast_list": "Листа прогнозе"
   },
   "groups": {
-    "appearance": "Изглед",
-    "sensors": "Додатни сензори",
-    "interaction": "Интеракција",
+    "appearance": "Иконе и температуре",
     "region": "Регион и време"
   },
   "more_options": "Још опција",
+  "overrides": "Замени подешавања картице",
   "hidden": "Сакривено",
   "show_section": "Прикажи одељак",
   "no_unit": "Без јединице",
+  "automatic": "Аутоматски",
   "entries": "уноса",
   "fields": {
     "entity": "Ентитет времена",
@@ -33,7 +33,6 @@
     "count": "Број уноса",
     "round_temperatures": "Заокружи температуре",
     "hide_sunrise_sunset": "Сакриј излазак и залазак сунца",
-    "hide_attribute": "Сакриј атрибут",
     "attribute": "Атрибут",
     "attribute_icon": "Иконица атрибута",
     "attribute_unit": "Јединица атрибута",
@@ -46,7 +45,6 @@
     "alignment": "Поравнање",
     "time_pattern": "Формат времена",
     "date_pattern": "Формат датума",
-    "show_unit": "Прикажи јединицу",
     "unit": "Јединица",
     "unit_attribute": "Атрибут јединице",
     "entity_id": "Ентитет",

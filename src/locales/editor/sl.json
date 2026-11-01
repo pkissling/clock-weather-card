@@ -5,15 +5,15 @@
     "forecast_list": "Seznam napovedi"
   },
   "groups": {
-    "appearance": "Videz",
-    "sensors": "Dodatni senzorji",
-    "interaction": "Interakcija",
+    "appearance": "Ikone in temperature",
     "region": "Regija in čas"
   },
   "more_options": "Več možnosti",
+  "overrides": "Preglasi nastavitve kartice",
   "hidden": "Skrito",
   "show_section": "Prikaži razdelek",
   "no_unit": "Brez enote",
+  "automatic": "Samodejno",
   "entries": "vnosov",
   "fields": {
     "entity": "Vremenska entiteta",
@@ -33,7 +33,6 @@
     "count": "Število vnosov",
     "round_temperatures": "Zaokroži temperature",
     "hide_sunrise_sunset": "Skrij sončni vzhod in zahod",
-    "hide_attribute": "Skrij atribut",
     "attribute": "Atribut",
     "attribute_icon": "Ikona atributa",
     "attribute_unit": "Enota atributa",
@@ -46,7 +45,6 @@
     "alignment": "Poravnava",
     "time_pattern": "Oblika časa",
     "date_pattern": "Oblika datuma",
-    "show_unit": "Prikaži enoto",
     "unit": "Enota",
     "unit_attribute": "Atribut enote",
     "entity_id": "Entiteta",

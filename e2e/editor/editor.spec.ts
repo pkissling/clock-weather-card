@@ -118,18 +118,17 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Header')
       .click()
-    await expect(editor.locator('[data-row="0"]')
-      .getByRole('textbox', { name: 'Font size' }))
-      .toHaveValue('1em')
-    const clockFontSize = editor.locator('[data-row="1"]')
-      .getByRole('textbox', { name: 'Font size' })
-    await expect(clockFontSize)
-      .toHaveValue('4rem')
-    await clockFontSize.fill('2rem')
+    await expect(editor.locator('[data-row="0"] [data-field=font_size]'))
+      .toContainText('Automatic')
+    await expect(editor.locator('[data-row="1"] [data-field=font_size]'))
+      .toContainText('4rem')
+    await editor.locator('[data-row="1"]')
+      .getByRole('slider', { name: 'Font size' })
+      .press('ArrowLeft')
 
     const config = await saveEditor(page)
     expect((config.sections as { header: { rows: { font_size?: string }[] } }).header.rows[1].font_size)
-      .toBe('2rem')
+      .toBe('3.75rem')
   })
 
   test('sets the forecast font size without expanding more options', async ({ page, setupCard }) => {
@@ -138,11 +137,11 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await editor.getByRole('textbox', { name: 'Font size' })
-      .fill('1.5rem')
+    await editor.getByRole('slider', { name: 'Font size' })
+      .press('ArrowRight')
 
     expect(await saveEditor(page))
-      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_list: { font_size: '1.5rem' } } })
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_list: { font_size: '1.25rem' } } })
   })
 
   test('picks a date format from previews', async ({ page, setupCard }) => {
@@ -272,7 +271,7 @@ test.describe('GUI editor', () => {
     await setupCard()
     const editor = await openEditor(page)
 
-    await expandPanel(editor, 'Appearance')
+    await expandPanel(editor, 'Icons & temperatures')
     await editor.getByRole('radio', { name: 'Fill' })
       .click()
 
@@ -328,7 +327,7 @@ test.describe('GUI editor', () => {
     await setupCard({ unitSystem: 'us_customary' })
     const editor = await openEditor(page)
 
-    await expandPanel(editor, 'Appearance')
+    await expandPanel(editor, 'Icons & temperatures')
 
     await expect(editor.getByRole('radio', { name: 'Fahrenheit' }))
       .toBeChecked()
@@ -342,19 +341,18 @@ test.describe('GUI editor', () => {
 
     await editor.getByText('Forecast list')
       .click()
-    await expandPanel(editor, 'More options')
-    await editor.getByRole('slider')
+    await editor.getByRole('slider', { name: 'Bar thickness' })
       .press('ArrowLeft')
 
     expect(await saveEditor(page))
       .toEqual({ entity: 'weather.mock_weather', sections: { forecast_list: { bar_thickness: '55%' } } })
   })
 
-  test('sets the temperature sensor under additional sensors', async ({ page, setupCard }) => {
+  test('sets the temperature sensor with the temperature options', async ({ page, setupCard }) => {
     await setupCard({ entities: { 'sensor.e2e_outdoor_temperature': { state: '18', attributes: { unit_of_measurement: '°C', device_class: 'temperature', friendly_name: 'Outdoor temperature' } } } })
     const editor = await openEditor(page)
 
-    await expandPanel(editor, 'Additional sensors')
+    await expandPanel(editor, 'Icons & temperatures')
     await editor.getByText('Select an entity')
       .click()
     await editor.getByText('Outdoor temperature', { exact: true })
@@ -362,6 +360,116 @@ test.describe('GUI editor', () => {
 
     expect(await saveEditor(page))
       .toEqual({ entity: 'weather.mock_weather', additional_sensors: { temperature: 'sensor.e2e_outdoor_temperature' } })
+  })
+
+  test('sets the header icon size with a slider and resets it to automatic', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    const size = editor.locator('[data-field=weather_icon_size]')
+    await expect(size)
+      .toContainText('Automatic')
+    await size.getByRole('slider')
+      .press('ArrowRight')
+    await expect(size)
+      .toContainText('12.5rem')
+    await size.getByRole('button', { name: 'Reset to default' })
+      .click()
+    await expect(size)
+      .toContainText('Automatic')
+    await size.getByRole('slider')
+      .press('ArrowLeft')
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { header: { weather_icon_size: '11.5rem' } } })
+  })
+
+  test('keeps a text field for sizes the slider cannot show', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { forecast_list: { row_height: 2rem } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast list')
+      .click()
+    await expect(editor.getByRole('textbox', { name: 'Row height' }))
+      .toHaveValue('2rem')
+    await expect(editor.getByRole('slider', { name: 'Row height' }))
+      .toHaveCount(0)
+  })
+
+  test('hides the forecast strip attribute from the attribute picker', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast strip')
+      .click()
+    await editor.getByLabel('Attribute', { exact: true })
+      .click()
+    await editor.getByText('Hidden', { exact: true })
+      .click()
+    await expandPanel(editor, 'More options')
+    await expect(editor.getByRole('textbox', { name: 'Attribute color' }))
+      .toHaveCount(0)
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { hide_attribute: true } } })
+  })
+
+  test('shows a hidden forecast strip attribute again', async ({ page, setupCard }) => {
+    await setupCard({ cardConfig: 'sections: { forecast_strip: { hide_attribute: true } }' })
+    const editor = await openEditor(page)
+
+    await editor.getByText('Forecast strip')
+      .click()
+    await editor.getByLabel('Attribute', { exact: true })
+      .click()
+    await editor.getByText('Humidity', { exact: true })
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', sections: { forecast_strip: { attribute: 'humidity' } } })
+  })
+
+  test('hides the unit of a weather segment', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-row="0"] [data-segment=weather]')
+      .first()
+      .click()
+    const panel = editor.locator('clock-weather-card-rows-editor .panel')
+    await expect(panel.getByLabel('Unit attribute'))
+      .toBeVisible()
+    await panel.getByLabel('Unit', { exact: true })
+      .click()
+    await panel.getByText('No unit', { exact: true })
+      .click()
+    await expect(panel.getByLabel('Unit attribute'))
+      .toHaveCount(0)
+
+    const config = await saveEditor(page)
+    expect((config.sections as { header: { rows: { segments: unknown[] }[] } }).header.rows[0].segments[1])
+      .toEqual({ type: 'weather', attribute: 'temperature', show_unit: false })
+  })
+
+  test('lists section overrides of card-wide settings last and shows the tap action without a panel', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await expect(editor.getByText('Tap action'))
+      .toBeVisible()
+    await editor.getByText('Forecast list')
+      .click()
+    await expandPanel(editor, 'More options')
+    await expect(editor.locator('.overrides'))
+      .toHaveText('Override card-wide settings')
+    await expect(editor.locator('.overrides + ha-form')
+      .getByText('Round temperatures')
+      .first())
+      .toBeVisible()
   })
 
   test('keeps options it did not touch', async ({ page, setupCard }) => {

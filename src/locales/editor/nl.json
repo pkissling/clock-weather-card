@@ -5,15 +5,15 @@
     "forecast_list": "Verwachtingslijst"
   },
   "groups": {
-    "appearance": "Uiterlijk",
-    "sensors": "Extra sensoren",
-    "interaction": "Interactie",
+    "appearance": "Pictogrammen & temperaturen",
     "region": "Regio & tijd"
   },
   "more_options": "Meer opties",
+  "overrides": "Kaartinstellingen overschrijven",
   "hidden": "Verborgen",
   "show_section": "Sectie tonen",
   "no_unit": "Geen eenheid",
+  "automatic": "Automatisch",
   "entries": "items",
   "fields": {
     "entity": "Weerentiteit",
@@ -33,7 +33,6 @@
     "count": "Aantal items",
     "round_temperatures": "Temperaturen afronden",
     "hide_sunrise_sunset": "Zonsopkomst en zonsondergang verbergen",
-    "hide_attribute": "Attribuut verbergen",
     "attribute": "Attribuut",
     "attribute_icon": "Attribuutpictogram",
     "attribute_unit": "Attribuuteenheid",
@@ -46,7 +45,6 @@
     "alignment": "Uitlijning",
     "time_pattern": "Tijdnotatie",
     "date_pattern": "Datumnotatie",
-    "show_unit": "Eenheid tonen",
     "unit": "Eenheid",
     "unit_attribute": "Eenheidsattribuut",
     "entity_id": "Entiteit",

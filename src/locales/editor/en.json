@@ -5,15 +5,15 @@
     "forecast_list": "Forecast list"
   },
   "groups": {
-    "appearance": "Appearance",
-    "sensors": "Additional sensors",
-    "interaction": "Interaction",
+    "appearance": "Icons & temperatures",
     "region": "Region & time"
   },
   "more_options": "More options",
+  "overrides": "Override card-wide settings",
   "hidden": "Hidden",
   "show_section": "Show section",
   "no_unit": "No unit",
+  "automatic": "Automatic",
   "entries": "entries",
   "fields": {
     "entity": "Weather entity",
@@ -33,7 +33,6 @@
     "count": "Number of entries",
     "round_temperatures": "Round temperatures",
     "hide_sunrise_sunset": "Hide sunrise and sunset",
-    "hide_attribute": "Hide attribute",
     "attribute": "Attribute",
     "attribute_icon": "Attribute icon",
     "attribute_unit": "Attribute unit",
@@ -46,7 +45,6 @@
     "alignment": "Alignment",
     "time_pattern": "Time format",
     "date_pattern": "Date format",
-    "show_unit": "Show unit",
     "unit": "Unit",
     "unit_attribute": "Unit attribute",
     "entity_id": "Entity",

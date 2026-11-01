@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { editorPaths, ROW_FIELDS, SEGMENT_FIELDS } from '@/editor/fields'
+import { editorPaths, fieldNames, ROW_FIELDS, SEGMENT_FIELDS } from '@/editor/fields'
 
 import { collectConfigPaths, interfaceMembers, segmentMembers } from './config-paths'
 
-const names = (fields: { name: string }[]): string[] => fields.map(f => f.name)
+const names = (fields: Parameters<typeof fieldNames>[0]): string[] => fieldNames(fields)
   .sort()
 
 describe('the GUI editor covers every YAML option', () => {

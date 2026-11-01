@@ -1,6 +1,7 @@
 import type { HomeAssistant } from 'custom-card-helpers'
 import { html, nothing, type TemplateResult } from 'lit'
 
+import { iconButton } from '@/editor/controls'
 import type { EditorField } from '@/editor/fields'
 import hassService from '@/service/hass-service'
 import iconsService from '@/service/icons-service'
@@ -18,6 +19,8 @@ translationsService.register('editor', import.meta.glob('../locales/editor/*.jso
 
 // ha-form can't represent "unset" or an empty string as a choice, so this stands in for it.
 export const NO_UNIT = '__no_unit__'
+// Stands for the choice of a field's `none` option.
+const NONE = '__none__'
 
 export const editorT = (hass: HomeAssistant, key: string): string => translationsService.t(hassService.getLocale(hass), `editor.${key}`)
 
@@ -53,6 +56,7 @@ function selectorFor(field: EditorField, ctx: FormContext, current: unknown): ob
   const select = (selector as { select?: { options: readonly (string | object)[] } }).select
   if (!select) return selector
   const options = select.options.map(o => typeof o === 'string' ? { value: o, label: optionLabel(ctx.hass, o) } : o)
+  if (field.none) options.unshift({ value: NONE, label: editorT(ctx.hass, field.none.label) })
   // A custom value typed by the user must still show up as the selected option.
   if (typeof current === 'string' && current !== '' && !options.some(o => (o as { value: string }).value === current)) options.push({ value: current, label: current })
   return { select: { ...select, options } }
@@ -75,7 +79,7 @@ export const isFormField = (field: EditorField): boolean => !field.control
 // Renders the plain fields via ha-form and reports the changed keys, with undefined meaning "remove".
 export function renderForm(ctx: FormContext, fields: EditorField[], value: Data, defaults: Data, onChange: (changes: Data) => void): TemplateResult | typeof nothing {
   const defaultOf = (f: EditorField): unknown => (typeof f.default === 'function' ? f.default(ctx) : f.default) ?? defaults[f.name]
-  const data: Data = Object.fromEntries(fields.map(f => [f.name, toFormValue(f, value[f.name] ?? defaultOf(f))]))
+  const data: Data = Object.fromEntries(fields.map(f => [f.name, f.none && value[f.none.name] === f.none.value ? NONE : toFormValue(f, value[f.name] ?? defaultOf(f))]))
   // Conditions may depend on options rendered in another chunk (e.g. forecast_type for advanced options).
   const visibilityData = { ...defaults, ...value, ...data }
   const visible = fields.filter(f => isFormField(f) && (!f.visible || f.visible(visibilityData)))
@@ -98,7 +102,12 @@ export function renderForm(ctx: FormContext, fields: EditorField[], value: Data,
     const next = e.detail.value
     const changes = Object.fromEntries(visible
       .filter(f => next[f.name] !== data[f.name])
-      .map(f => [f.name, fromFormValue(f, next[f.name], defaultOf(f))]))
+      .flatMap(f => {
+        if (!f.none) return [[f.name, fromFormValue(f, next[f.name], defaultOf(f))]]
+        // Picking "none" sets the other option and drops this one; any other choice drops the other option again.
+        if (next[f.name] === NONE) return [[f.name, undefined], [f.none.name, f.none.value]]
+        return [[f.name, fromFormValue(f, next[f.name], defaultOf(f))], [f.none.name, undefined]]
+      }))
     if (Object.keys(changes).length) onChange(changes)
   }}
     ></ha-form>
@@ -118,4 +127,35 @@ export function setIn(obj: Data, path: string[], changes: Data): Data {
 
 export const fireEvent = (el: HTMLElement, type: string, detail: unknown): void => {
   el.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true }))
+}
+
+// Renders a slider writing `${number}${unit}`; values it can't show (other units, out of range) keep a text field.
+export function renderSlider(ctx: FormContext, field: EditorField, value: Data, defaults: Data, onChange: (changes: Data) => void): TemplateResult | typeof nothing {
+  const { min, max, step, unit } = field.slider!
+  const defaultValue = (typeof field.default === 'function' ? field.default(ctx) : field.default) ?? defaults[field.name]
+  const current = (value[field.name] ?? defaultValue) as string | undefined
+  const number = current === undefined ? undefined : parseFloat(current)
+  const fits = current === undefined || (current.trim() === `${number}${unit}` && number! >= min && number! <= max)
+  if (!fits) return renderForm(ctx, [{ ...field, control: undefined, selector: { text: {} } }], value, defaults, onChange)
+  const label = editorT(ctx.hass, `fields.${field.name}`)
+  return html`
+    <div class="slider" data-field=${field.name}>
+      <div class="slider-label">
+        ${label}<span>${current ?? editorT(ctx.hass, 'automatic')}</span>
+        ${value[field.name] === undefined ? nothing : iconButton('mdi:restore', editorT(ctx.hass, 'actions.reset'), () => onChange({ [field.name]: undefined }))}
+      </div>
+      <input
+        type="range"
+        min=${min}
+        max=${max}
+        step=${step}
+        aria-label=${label}
+        .value=${number === undefined ? '' : String(number)}
+        @input=${(e: Event) => {
+    const next = `${(e.target as HTMLInputElement).value}${unit}`
+    onChange({ [field.name]: next === defaultValue ? undefined : next })
+  }}
+      />
+    </div>
+  `
 }

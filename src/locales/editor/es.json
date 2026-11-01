@@ -5,15 +5,15 @@
     "forecast_list": "Lista de previsión"
   },
   "groups": {
-    "appearance": "Apariencia",
-    "sensors": "Sensores adicionales",
-    "interaction": "Interacción",
+    "appearance": "Iconos y temperaturas",
     "region": "Región y hora"
   },
   "more_options": "Más opciones",
+  "overrides": "Sobrescribir los ajustes de la tarjeta",
   "hidden": "Oculto",
   "show_section": "Mostrar sección",
   "no_unit": "Sin unidad",
+  "automatic": "Automático",
   "entries": "entradas",
   "fields": {
     "entity": "Entidad meteorológica",
@@ -33,7 +33,6 @@
     "count": "Número de entradas",
     "round_temperatures": "Redondear temperaturas",
     "hide_sunrise_sunset": "Ocultar amanecer y atardecer",
-    "hide_attribute": "Ocultar atributo",
     "attribute": "Atributo",
     "attribute_icon": "Icono del atributo",
     "attribute_unit": "Unidad del atributo",
@@ -46,7 +45,6 @@
     "alignment": "Alineación",
     "time_pattern": "Formato de hora",
     "date_pattern": "Formato de fecha",
-    "show_unit": "Mostrar unidad",
     "unit": "Unidad",
     "unit_attribute": "Atributo de unidad",
     "entity_id": "Entidad",

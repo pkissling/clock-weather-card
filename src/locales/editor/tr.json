@@ -5,15 +5,15 @@
     "forecast_list": "Tahmin listesi"
   },
   "groups": {
-    "appearance": "Görünüm",
-    "sensors": "Ek sensörler",
-    "interaction": "Etkileşim",
+    "appearance": "Simgeler ve sıcaklıklar",
     "region": "Bölge ve saat"
   },
   "more_options": "Daha fazla seçenek",
+  "overrides": "Kart ayarlarını geçersiz kıl",
   "hidden": "Gizli",
   "show_section": "Bölümü göster",
   "no_unit": "Birim yok",
+  "automatic": "Otomatik",
   "entries": "kayıt",
   "fields": {
     "entity": "Hava durumu varlığı",
@@ -33,7 +33,6 @@
     "count": "Kayıt sayısı",
     "round_temperatures": "Sıcaklıkları yuvarla",
     "hide_sunrise_sunset": "Gün doğumunu ve batımını gizle",
-    "hide_attribute": "Özniteliği gizle",
     "attribute": "Öznitelik",
     "attribute_icon": "Öznitelik simgesi",
     "attribute_unit": "Öznitelik birimi",
@@ -46,7 +45,6 @@
     "alignment": "Hizalama",
     "time_pattern": "Saat biçimi",
     "date_pattern": "Tarih biçimi",
-    "show_unit": "Birimi göster",
     "unit": "Birim",
     "unit_attribute": "Birim özniteliği",
     "entity_id": "Varlık",

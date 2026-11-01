@@ -5,15 +5,15 @@
     "forecast_list": "Список прогноза"
   },
   "groups": {
-    "appearance": "Внешний вид",
-    "sensors": "Дополнительные датчики",
-    "interaction": "Взаимодействие",
+    "appearance": "Значки и температура",
     "region": "Регион и время"
   },
   "more_options": "Дополнительные параметры",
+  "overrides": "Переопределить настройки карточки",
   "hidden": "Скрыто",
   "show_section": "Показать раздел",
   "no_unit": "Без единицы",
+  "automatic": "Автоматически",
   "entries": "зап.",
   "fields": {
     "entity": "Объект погоды",
@@ -33,7 +33,6 @@
     "count": "Количество записей",
     "round_temperatures": "Округлять температуру",
     "hide_sunrise_sunset": "Скрыть восход и закат",
-    "hide_attribute": "Скрыть атрибут",
     "attribute": "Атрибут",
     "attribute_icon": "Значок атрибута",
     "attribute_unit": "Единица атрибута",
@@ -46,7 +45,6 @@
     "alignment": "Выравнивание",
     "time_pattern": "Формат времени",
     "date_pattern": "Формат даты",
-    "show_unit": "Показывать единицу",
     "unit": "Единица измерения",
     "unit_attribute": "Атрибут единицы",
     "entity_id": "Объект",

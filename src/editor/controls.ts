@@ -71,4 +71,27 @@ export const controlStyles = css`
   .text-button:hover {
     filter: brightness(1.1);
   }
+  .slider {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 12px;
+  }
+  .slider-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+  }
+  .slider-label span {
+    flex: 1;
+    text-align: end;
+    color: var(--secondary-text-color);
+    font-variant-numeric: tabular-nums;
+  }
+  .slider input {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--primary-color);
+  }
 `

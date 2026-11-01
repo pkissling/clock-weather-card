@@ -5,15 +5,15 @@
     "forecast_list": "قائمة التوقعات"
   },
   "groups": {
-    "appearance": "المظهر",
-    "sensors": "مستشعرات إضافية",
-    "interaction": "التفاعل",
+    "appearance": "الأيقونات ودرجات الحرارة",
     "region": "المنطقة والوقت"
   },
   "more_options": "مزيد من الخيارات",
+  "overrides": "تجاوز إعدادات البطاقة",
   "hidden": "مخفي",
   "show_section": "إظهار القسم",
   "no_unit": "بدون وحدة",
+  "automatic": "تلقائي",
   "entries": "عناصر",
   "fields": {
     "entity": "كيان الطقس",
@@ -33,7 +33,6 @@
     "count": "عدد العناصر",
     "round_temperatures": "تقريب درجات الحرارة",
     "hide_sunrise_sunset": "إخفاء الشروق والغروب",
-    "hide_attribute": "إخفاء السمة",
     "attribute": "السمة",
     "attribute_icon": "أيقونة السمة",
     "attribute_unit": "وحدة السمة",
@@ -46,7 +45,6 @@
     "alignment": "المحاذاة",
     "time_pattern": "تنسيق الوقت",
     "date_pattern": "تنسيق التاريخ",
-    "show_unit": "إظهار الوحدة",
     "unit": "الوحدة",
     "unit_attribute": "سمة الوحدة",
     "entity_id": "الكيان",

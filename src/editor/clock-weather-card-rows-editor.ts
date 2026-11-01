@@ -7,7 +7,7 @@ import { property, state } from 'lit/decorators.js'
 
 import { controlStyles, iconButton, textButton } from '@/editor/controls'
 import { ROW_FIELDS, SEGMENT_FIELDS, SEGMENT_ICONS } from '@/editor/fields'
-import { attributeLabel, type Data, editorT, fireEvent, renderForm } from '@/editor/form'
+import { attributeLabel, type Data, editorT, fireEvent, isFormField, renderForm, renderSlider } from '@/editor/form'
 import type { BadgeSegmentConfig, ClockWeatherCardConfig, IconSegmentConfig, RowConfig, SegmentConfig } from '@/types'
 import { SEGMENT_TYPES } from '@/types'
 import { DEFAULT_ROWS } from '@/utils/config'
@@ -93,11 +93,18 @@ export class ClockWeatherCardRowsEditor extends LitElement {
         </div>
         ${focus?.item === 'adding' ? this._renderTray(row, index) : nothing}
         <div class="row-settings">
-          ${renderForm({ hass: this.hass, config: this.config }, ROW_FIELDS, row as unknown as Data, {}, changes => this._updateRow(index, { ...row, ...changes } as RowConfig))}
+          ${this._renderRowSettings(row, index)}
         </div>
         ${typeof focus?.item === 'number' && row.segments[focus.item] ? this._renderSegmentPanel(row, index, focus.item) : nothing}
       </div>
     `
+  }
+
+  private _renderRowSettings(row: RowConfig, index: number): (TemplateResult | typeof nothing)[] {
+    const ctx = { hass: this.hass, config: this.config }
+    const onChange = (changes: Data): void => this._updateRow(index, { ...row, ...changes } as RowConfig)
+    return ROW_FIELDS.filter(f => f.control !== 'segments')
+      .map(f => isFormField(f) ? renderForm(ctx, [f], row as unknown as Data, {}, onChange) : renderSlider(ctx, f, row as unknown as Data, {}, onChange))
   }
 
   private _renderChip(segment: SegmentConfig, row: number, index: number, selected: boolean): TemplateResult {

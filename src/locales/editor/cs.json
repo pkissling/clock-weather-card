@@ -5,15 +5,15 @@
     "forecast_list": "Seznam předpovědi"
   },
   "groups": {
-    "appearance": "Vzhled",
-    "sensors": "Další senzory",
-    "interaction": "Interakce",
+    "appearance": "Ikony a teploty",
     "region": "Oblast a čas"
   },
   "more_options": "Další možnosti",
+  "overrides": "Přepsat nastavení karty",
   "hidden": "Skryto",
   "show_section": "Zobrazit sekci",
   "no_unit": "Bez jednotky",
+  "automatic": "Automaticky",
   "entries": "položek",
   "fields": {
     "entity": "Entita počasí",
@@ -33,7 +33,6 @@
     "count": "Počet položek",
     "round_temperatures": "Zaokrouhlit teploty",
     "hide_sunrise_sunset": "Skrýt východ a západ slunce",
-    "hide_attribute": "Skrýt atribut",
     "attribute": "Atribut",
     "attribute_icon": "Ikona atributu",
     "attribute_unit": "Jednotka atributu",
@@ -46,7 +45,6 @@
     "alignment": "Zarovnání",
     "time_pattern": "Formát času",
     "date_pattern": "Formát data",
-    "show_unit": "Zobrazit jednotku",
     "unit": "Jednotka",
     "unit_attribute": "Atribut jednotky",
     "entity_id": "Entita",

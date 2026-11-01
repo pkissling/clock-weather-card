@@ -5,15 +5,15 @@
     "forecast_list": "预报列表"
   },
   "groups": {
-    "appearance": "外观",
-    "sensors": "附加传感器",
-    "interaction": "交互",
+    "appearance": "图标和温度",
     "region": "地区和时间"
   },
   "more_options": "更多选项",
+  "overrides": "覆盖卡片级设置",
   "hidden": "已隐藏",
   "show_section": "显示此部分",
   "no_unit": "无单位",
+  "automatic": "自动",
   "entries": "条",
   "fields": {
     "entity": "天气实体",
@@ -33,7 +33,6 @@
     "count": "条目数",
     "round_temperatures": "温度取整",
     "hide_sunrise_sunset": "隐藏日出和日落",
-    "hide_attribute": "隐藏属性",
     "attribute": "属性",
     "attribute_icon": "属性图标",
     "attribute_unit": "属性单位",
@@ -46,7 +45,6 @@
     "alignment": "对齐",
     "time_pattern": "时间格式",
     "date_pattern": "日期格式",
-    "show_unit": "显示单位",
     "unit": "单位",
     "unit_attribute": "单位属性",
     "entity_id": "实体",
