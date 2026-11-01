@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/pkissling/clock-weather-card/compare/v3.1.0...v3.2.0) (2026-11-01)
+
+
+### Features
+
+* **editor:** reorganize the config editor and set sizes with sliders ([48505b3](https://github.com/pkissling/clock-weather-card/commit/48505b3395285b06f043841e349e05f1371dfe87))
+
 ## [3.1.0](https://github.com/pkissling/clock-weather-card/compare/v3.0.1...v3.1.0) (2026-11-01)
 
 
