@@ -104,3 +104,5 @@ User-facing strings live in `src/locales/<lang>.json`; strings of the GUI editor
 Always use semantic commit messages ([Conventional Commits](https://www.conventionalcommits.org/)): `<type>(<optional scope>): <summary>`, e.g. `feat: add a visual card editor` or `fix(forecast): keep the bar track visible on light backgrounds`. Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Mark breaking changes with `!` after the type/scope.
 
 When creating a PR, squash its changes into a single commit so it can be rebase-merged cleanly, unless there is a strict reason for more than one.
+
+When a PR changes anything visual - even behind a non-default option - embed a screenshot of the change in the PR body. Prefer an image the change already commits (a docs preview or Playwright snapshot), linked by its raw URL at the commit SHA (`https://raw.githubusercontent.com/<owner>/<repo>/<sha>/<path>`) so it keeps rendering after the branch is gone.
