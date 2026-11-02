@@ -13,6 +13,7 @@ const size = async (locator: Locator): Promise<{ width: number, height: number }
 for (const [name, cardConfig] of [
   ['default config', undefined],
   ['hidden strip attribute', 'sections:\n  forecast_strip:\n    hide_attribute: true\n'],
+  ['strip graph', 'sections:\n  forecast_strip:\n    show_graph: true\n'],
 ] as const) {
   test(`the skeleton takes the same space as the loaded forecast (${name})`, async ({ setupCard, clockWeatherCard }) => {
     let release!: () => void

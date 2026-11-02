@@ -135,6 +135,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       weather_icon_type?: WeatherIconType
       hide_sunrise_sunset?: boolean
       hide_attribute?: boolean
+      show_graph?: boolean
       time_pattern?: string
       attribute?: string
       attribute_icon?: string
@@ -213,6 +214,7 @@ export type ForecastStripItem = {
   animatedIcon: boolean
   weatherIconType: WeatherIconType
   attribute: { icon: string | null, color: string | null, value: string | null } | null
+  graph?: { id: string, path: string, stops: GradientStop[] }
 } & (
   | { temperature: string | null, temperatureLow: string | null, temperatureUnit: TemperatureUnit, sunEvent?: never }
   | { sunEvent: { kind: 'sunrise' | 'sunset', label: string }, temperature?: never, temperatureLow?: never, temperatureUnit?: never }

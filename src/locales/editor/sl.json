@@ -33,6 +33,7 @@
     "count": "Število vnosov",
     "round_temperatures": "Zaokroži temperature",
     "hide_sunrise_sunset": "Skrij sončni vzhod in zahod",
+    "show_graph": "Prikaži temperaturno krivuljo",
     "attribute": "Atribut",
     "attribute_icon": "Ikona atributa",
     "attribute_unit": "Enota atributa",

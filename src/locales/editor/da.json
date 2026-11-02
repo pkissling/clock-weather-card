@@ -33,6 +33,7 @@
     "count": "Antal poster",
     "round_temperatures": "Afrund temperaturer",
     "hide_sunrise_sunset": "Skjul solopgang og solnedgang",
+    "show_graph": "Vis temperaturkurve",
     "attribute": "Attribut",
     "attribute_icon": "Attributikon",
     "attribute_unit": "Attributenhed",

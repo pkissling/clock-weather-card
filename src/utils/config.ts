@@ -41,7 +41,7 @@ export const DEFAULTS = {
   round_temperatures: true,
   sections: {
     header: { hide: false, animated_icons: true },
-    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
+    forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, show_graph: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
     forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
@@ -191,6 +191,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertBoolean('sections.forecast_strip.round_temperatures', strip?.round_temperatures)
   assertBoolean('sections.forecast_strip.hide_sunrise_sunset', strip?.hide_sunrise_sunset)
   assertBoolean('sections.forecast_strip.hide_attribute', strip?.hide_attribute)
+  assertBoolean('sections.forecast_strip.show_graph', strip?.show_graph)
   assertBoolean('sections.forecast_list.hide', list?.hide)
   assertBoolean('sections.forecast_list.hide_current_temp_indicator', list?.hide_current_temp_indicator)
   assertBoolean('sections.forecast_list.animated_icons', list?.animated_icons)

@@ -11,7 +11,10 @@ import translationsService from '@/service/translations-service'
 import type { ForecastStripItem, SectionForecastType } from '@/types'
 import { customElement } from '@/utils/custom-element'
 import { forecastAttributeValue, formatWithUnit } from '@/utils/forecast-attributes'
+import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { formatNumber } from '@/utils/number'
+import { stripGraphPaths } from '@/utils/strip-graph'
+import { toCelsius } from '@/utils/temperature'
 
 @customElement('clock-weather-card-forecast-strip')
 class ClockWeatherCardForecastStrip extends AbstractForecastSection {
@@ -31,11 +34,12 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
   protected renderSkeleton(): TemplateResult {
     return html`
       <clock-weather-card-divider></clock-weather-card-divider>
-      <div class="strip" aria-busy="true" style=${this._stripStyle()}>
+      <div class=${this._stripClass()} aria-busy="true" style=${this._stripStyle()}>
         ${Array.from({ length: this.config.forecast_strip.count }, () => html`
           <div class="skeleton-item">
             <span class="skeleton skeleton--time"></span>
             <span class="skeleton skeleton--icon"></span>
+            ${this.config.forecast_strip.show_graph ? html`<span class="graph"></span>` : nothing}
             <span class="skeleton skeleton--label"></span>
             ${this.config.forecast_strip.hide_attribute ? nothing : html`<span class="skeleton skeleton--attribute"></span>`}
           </div>
@@ -46,7 +50,7 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
   protected renderForecast(_entityId: string, forecastType: SectionForecastType): TemplateResult {
     const { sun_entity, timeZone, locale, temperatureUnit, temperatureSensor } = this.config
-    const { count, animated_icons, weather_icon_type, round_temperatures, hide_sunrise_sunset, time_pattern, attribute, hide_attribute, attribute_icon, attribute_color, attribute_unit } = this.config.forecast_strip
+    const { count, animated_icons, weather_icon_type, round_temperatures, hide_sunrise_sunset, time_pattern, attribute, hide_attribute, attribute_icon, attribute_color, attribute_unit, show_graph } = this.config.forecast_strip
     const now = this.currentDate
 
     const visible = this.visibleRows(count, time_pattern)
@@ -65,11 +69,13 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
 
     const sensorTemperature = forecastType === 'hourly' ? hassService.getSensorTemperature(this.hass, temperatureSensor, temperatureUnit) : null
 
-    const forecastItems = visible.map(({ forecast, at, label, isNight, isCurrent }, i): { at: DateTime, item: ForecastStripItem } => {
+    const forecastItems = visible.map(({ forecast, at, label, isNight, isCurrent }, i): { at: DateTime, value: number | null, item: ForecastStripItem } => {
       const templow = forecastType === 'daily' ? forecast.templow ?? null : null
       const temperature = isCurrent && sensorTemperature !== null ? sensorTemperature : forecast.temperature ?? null
       return {
         at,
+        // The graph follows the high temperature; a daily strip draws no line for the lows.
+        value: templow === null || temperature === null ? temperature ?? templow : Math.max(temperature, templow),
         item: {
           label,
           condition: forecast.condition ?? '',
@@ -90,8 +96,9 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
       : hassService.getNextSunEvents(this.hass, sun_entity, timeZone)
     const sunItems = ([['sunrise', sunrise], ['sunset', sunset]] as const)
       .flatMap(([kind, at]) => at && at.startOf('minute') >= now.startOf('minute') && at <= lastAt ? [{ kind, at }] : [])
-      .map(({ kind, at }): { at: DateTime, item: ForecastStripItem } => ({
+      .map(({ kind, at }): { at: DateTime, value: number | null, item: ForecastStripItem } => ({
         at,
+        value: null,
         item: {
           label: at.setLocale(locale)
             .toFormat(time_pattern),
@@ -107,12 +114,22 @@ class ClockWeatherCardForecastStrip extends AbstractForecastSection {
     const items = [...forecastItems, ...sunItems].sort((x, y) => x.at.toMillis() - y.at.toMillis())
       .slice(0, count)
 
+    const graph = show_graph ? stripGraphPaths(items.map(({ value }) => value)) : null
+    if (graph) {
+      const stops = gradientStopsForRange(normalizeGradient(this.config.forecast_list.gradient), toCelsius(graph.min, temperatureUnit), toCelsius(graph.max, temperatureUnit))
+      items.forEach(({ item }, i) => { item.graph = { id: `cwc-strip-graph-${i}`, path: graph.paths[i], stops } })
+    }
+
     return html`
       <clock-weather-card-divider></clock-weather-card-divider>
-      <div class="strip" style=${this._stripStyle()}>
+      <div class=${this._stripClass()} style=${this._stripStyle()}>
         ${items.map(({ item }) => html`<clock-weather-card-forecast-strip-item .item=${item}></clock-weather-card-forecast-strip-item>`)}
       </div>
     `
+  }
+
+  private _stripClass(): string {
+    return this.config.forecast_strip.show_graph ? 'strip strip--graph' : 'strip'
   }
 
   private _stripStyle(): string {

@@ -67,6 +67,7 @@ describe('resolveConfig', () => {
           weather_icon_type: 'line',
           hide_sunrise_sunset: false,
           hide_attribute: false,
+          show_graph: false,
           time_pattern: 't',
           attribute: 'precipitation_probability',
           attributeRequired: false,

@@ -107,7 +107,7 @@ sections:
 </td></tr>
 <tr><td>
 
-**Wall tablet** - large header rows, and `font_size` scales the forecast strip and list for reading across the room; the strip labels show only the hour and drop the precipitation row.
+**Wall tablet** - large header rows, and `font_size` scales the forecast strip and list for reading across the room; the strip labels show only the hour, drop the precipitation row and draw the temperature curve (`show_graph`).
 
 <!-- preview: example-wall-tablet
 theme: { repo: coltondick/nordic-theme-main, version: v2.3.9, name: nordic }
@@ -139,6 +139,7 @@ sections:
     count: 6
     time_pattern: H
     hide_attribute: true
+    show_graph: true
     font_size: 1.3rem
   forecast_list:
     count: 3
@@ -147,7 +148,7 @@ sections:
 
 </td><td>
 
-![The default header above a forecast strip and list in large type](docs/previews/example-wall-tablet.png)
+![The default header above a forecast strip with a temperature curve and a list in large type](docs/previews/example-wall-tablet.png)
 
 *[Nordic](https://github.com/coltondick/nordic-theme-main/tree/v2.3.9)*
 
@@ -438,6 +439,7 @@ When the configured columns do not fit the card width, the strip scrolls horizon
 | `weather_icon_type` | `fill` \| `flat` \| `line` \| `monochrome` | no | top-level `weather_icon_type` | Visual style for the icons in the forecast strip. Falls back to the card's main `weather_icon_type` when unset. |
 | `hide_sunrise_sunset` | boolean | no | `false` | Hide the sunrise/sunset columns. Only supported with `forecast_type: hourly`. |
 | `font_size` | string | no | `1rem` | CSS length scaling the strip's text and weather icons together, e.g. `1.5rem`. Accepts `px`, `rem`, `em`, `vh`, `vw`, `%`. |
+| `show_graph` | boolean | no | `false` | Draw a smooth curve through the temperatures between the icons and the temperature labels, scaled to the lowest and highest visible temperature and coloured with `forecast_list.gradient`. Sunrise/sunset columns and missing temperatures are bridged by the curve. A `daily` strip draws the high temperatures. |
 | `hide_attribute` | boolean | no | `false` | Hide the attribute row, including the space it reserves. `attribute`, `attribute_icon`, `attribute_unit` and `attribute_color` are ignored while it is `true`. |
 | `time_pattern` | string | no | `t` | [Luxon](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) format pattern for the hourly and sunrise/sunset column labels. The default `t` is the localized short time, e.g. `15:00` or `3:00 PM` depending on the locale and the time format in your Home Assistant profile; `H` shows only the hour. |
 | `attribute` | string | no | `precipitation_probability` | Any numeric forecast attribute provided by the weather entity (e.g. `wind_speed`, `humidity`, `uv_index`), shown in the row below the temperature. See [Forecast attributes](#forecast-attributes). |

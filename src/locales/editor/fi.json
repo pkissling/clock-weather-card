@@ -33,6 +33,7 @@
     "count": "Merkintöjen määrä",
     "round_temperatures": "Pyöristä lämpötilat",
     "hide_sunrise_sunset": "Piilota auringonnousu ja -lasku",
+    "show_graph": "Näytä lämpötilakäyrä",
     "attribute": "Attribuutti",
     "attribute_icon": "Attribuutin kuvake",
     "attribute_unit": "Attribuutin yksikkö",

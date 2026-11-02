@@ -192,6 +192,39 @@ export default css`
     display: block;
   }
 
+  /* Items fill the strip, so no gap breaks the temperature line. */
+  clock-weather-card-forecast-strip .strip--graph > * {
+    flex-grow: 1;
+  }
+
+  /* The graph spans the item's padding (7px) so the segments of adjacent items join. */
+  clock-weather-card-forecast-strip .graph {
+    display: block;
+    align-self: stretch;
+    height: 2em;
+    margin: 2px -7px;
+  }
+
+  /* The first item's overflow is clipped by the strip; the last one's would widen the scroll area, so it is cut here. */
+  clock-weather-card-forecast-strip-item:last-of-type .graph {
+    margin-inline-end: 0;
+    overflow: hidden;
+  }
+
+  clock-weather-card-forecast-strip .graph svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  clock-weather-card-forecast-strip-item:last-of-type .graph svg {
+    width: calc(100% + 7px);
+  }
+
+  clock-weather-card-forecast-strip-item:dir(rtl) .graph svg {
+    transform: scaleX(-1);
+  }
+
   clock-weather-card-forecast-strip-item .label {
     display: inline-flex;
     font-size: 1em;

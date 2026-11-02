@@ -6,6 +6,8 @@ const TITLE_PX = 24
 const HEADER_MIN_PX = 126
 const HEADER_ROW_PX = 17
 const FORECAST_STRIP_PX = 88
+// 2em graph plus its 4px margin at the 1rem default.
+const FORECAST_STRIP_GRAPH_PX = 32
 
 const FORECAST_LIST_ROW_PX = 28
 
@@ -29,7 +31,7 @@ export const estimateCardSize = ({ title, header, forecast_strip, forecast_list 
   const px = PADDING_PX
     + (title ? TITLE_PX : 0)
     + (header.hide ? 0 : Math.max(HEADER_MIN_PX, rowsPx))
-    + (forecast_strip.hide ? 0 : FORECAST_STRIP_PX * (cssLengthToPx(forecast_strip.font_size ?? undefined) ?? REM_PX) / REM_PX)
+    + (forecast_strip.hide ? 0 : (FORECAST_STRIP_PX + (forecast_strip.show_graph ? FORECAST_STRIP_GRAPH_PX : 0)) * (cssLengthToPx(forecast_strip.font_size ?? undefined) ?? REM_PX) / REM_PX)
     + (forecast_list.hide ? 0 : forecast_list.count * listRowPx(forecast_list))
   return Math.round(px / CARD_SIZE_UNIT_PX)
 }

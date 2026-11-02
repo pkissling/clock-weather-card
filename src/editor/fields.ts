@@ -120,6 +120,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
     forecastFontSize,
     { name: 'animated_icons', selector: bool },
     { name: 'hide_sunrise_sunset', selector: bool, visible: d => d.forecast_type === 'hourly' },
+    { name: 'show_graph', selector: bool },
     { name: 'attribute_icon', selector: { icon: {} }, default: ({ config }: FormContext) => config.sections?.forecast_strip?.attribute ? undefined : 'mdi:water', advanced: true, visible: d => d.hide_attribute !== true },
     {
       name: 'attribute_color',

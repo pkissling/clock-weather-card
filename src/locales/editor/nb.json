@@ -33,6 +33,7 @@
     "count": "Antall oppføringer",
     "round_temperatures": "Avrund temperaturer",
     "hide_sunrise_sunset": "Skjul soloppgang og solnedgang",
+    "show_graph": "Vis temperaturkurve",
     "attribute": "Attributt",
     "attribute_icon": "Attributtikon",
     "attribute_unit": "Attributtenhet",

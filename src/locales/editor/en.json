@@ -33,6 +33,7 @@
     "count": "Number of entries",
     "round_temperatures": "Round temperatures",
     "hide_sunrise_sunset": "Hide sunrise and sunset",
+    "show_graph": "Show temperature graph",
     "attribute": "Attribute",
     "attribute_icon": "Attribute icon",
     "attribute_unit": "Attribute unit",
