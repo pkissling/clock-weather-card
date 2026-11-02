@@ -133,5 +133,16 @@
   "row": "行",
   "empty_row": "空の行",
   "default_color": "テーマの既定",
-  "automatic_text_color": "自動（黒または白）"
+  "automatic_text_color": "自動（黒または白）",
+  "presets": {
+    "label": "レイアウトから始める",
+    "confirm": "ヘッダーの行とすべてのセクションのオプションが置き換えられます。",
+    "apply": "置き換え",
+    "cancel": "キャンセル",
+    "default": "デフォルト",
+    "classic": "クラシック",
+    "wall_tablet": "壁掛けタブレット",
+    "minimal_clock": "シンプルな時計",
+    "compact": "コンパクト"
+  }
 }

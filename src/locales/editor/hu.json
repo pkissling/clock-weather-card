@@ -133,5 +133,16 @@
   "row": "Sor",
   "empty_row": "Üres sor",
   "default_color": "Téma alapértelmezése",
-  "automatic_text_color": "Automatikus (fekete vagy fehér)"
+  "automatic_text_color": "Automatikus (fekete vagy fehér)",
+  "presets": {
+    "label": "Kezdés egy elrendezésből",
+    "confirm": "Ez lecseréli a fejléc sorait és a szakaszok összes beállítását.",
+    "apply": "Csere",
+    "cancel": "Mégse",
+    "default": "Alapértelmezett",
+    "classic": "Klasszikus",
+    "wall_tablet": "Fali tablet",
+    "minimal_clock": "Minimális óra",
+    "compact": "Kompakt"
+  }
 }

@@ -133,5 +133,16 @@
   "row": "列",
   "empty_row": "空白列",
   "default_color": "主題預設",
-  "automatic_text_color": "自動（黑色或白色）"
+  "automatic_text_color": "自動（黑色或白色）",
+  "presets": {
+    "label": "從版面配置開始",
+    "confirm": "這將取代標題列和所有區塊選項。",
+    "apply": "取代",
+    "cancel": "取消",
+    "default": "預設",
+    "classic": "經典",
+    "wall_tablet": "壁掛平板",
+    "minimal_clock": "極簡時鐘",
+    "compact": "精簡"
+  }
 }

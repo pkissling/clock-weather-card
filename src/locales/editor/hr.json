@@ -133,5 +133,16 @@
   "row": "Redak",
   "empty_row": "Prazan redak",
   "default_color": "Zadano iz teme",
-  "automatic_text_color": "Automatski (crna ili bijela)"
+  "automatic_text_color": "Automatski (crna ili bijela)",
+  "presets": {
+    "label": "Započni od rasporeda",
+    "confirm": "Ovo zamjenjuje retke zaglavlja i sve opcije odjeljaka.",
+    "apply": "Zamijeni",
+    "cancel": "Odustani",
+    "default": "Zadano",
+    "classic": "Klasično",
+    "wall_tablet": "Zidni tablet",
+    "minimal_clock": "Minimalni sat",
+    "compact": "Kompaktno"
+  }
 }

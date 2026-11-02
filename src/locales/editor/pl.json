@@ -133,5 +133,16 @@
   "row": "Wiersz",
   "empty_row": "Pusty wiersz",
   "default_color": "Domyślny motywu",
-  "automatic_text_color": "Automatycznie (czarny lub biały)"
+  "automatic_text_color": "Automatycznie (czarny lub biały)",
+  "presets": {
+    "label": "Zacznij od układu",
+    "confirm": "To zastąpi wiersze nagłówka i wszystkie opcje sekcji.",
+    "apply": "Zastąp",
+    "cancel": "Anuluj",
+    "default": "Domyślny",
+    "classic": "Klasyczny",
+    "wall_tablet": "Tablet ścienny",
+    "minimal_clock": "Minimalny zegar",
+    "compact": "Kompaktowy"
+  }
 }

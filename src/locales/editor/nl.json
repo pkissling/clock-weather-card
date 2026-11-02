@@ -133,5 +133,16 @@
   "row": "Rij",
   "empty_row": "Lege rij",
   "default_color": "Themastandaard",
-  "automatic_text_color": "Automatisch (zwart of wit)"
+  "automatic_text_color": "Automatisch (zwart of wit)",
+  "presets": {
+    "label": "Begin met een indeling",
+    "confirm": "Dit vervangt de koprijen en alle sectie-opties.",
+    "apply": "Vervangen",
+    "cancel": "Annuleren",
+    "default": "Standaard",
+    "classic": "Klassiek",
+    "wall_tablet": "Wandtablet",
+    "minimal_clock": "Minimale klok",
+    "compact": "Compact"
+  }
 }

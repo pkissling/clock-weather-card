@@ -6,9 +6,10 @@ import { deepEqual, type HomeAssistant } from 'custom-card-helpers'
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit'
 import { property, state } from 'lit/decorators.js'
 
-import { controlStyles } from '@/editor/controls'
+import { controlStyles, textButton } from '@/editor/controls'
 import { CARD_FIELDS, type CardGroup, type EditorField, SECTION_FIELDS, type SectionKey, SENSOR_FIELDS } from '@/editor/fields'
 import { attributeLabel, type Data, editorT, fireEvent, type FormContext, isFormField, renderForm, renderSlider, setIn } from '@/editor/form'
+import { type PresetKey, PRESETS } from '@/editor/presets'
 import type { ClockWeatherCardConfig, RowConfig } from '@/types'
 import { DEFAULT_ROWS, DEFAULTS } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
@@ -33,6 +34,8 @@ export class ClockWeatherCardEditor extends LitElement {
   @state() private _config?: ClockWeatherCardConfig
   @state() private _openSection?: SectionKey
   @state() private _openGroups = new Set<CardGroup>()
+  // A picked layout waiting for confirmation, since it would replace customized sections.
+  @state() private _pendingPreset?: PresetKey
 
   public setConfig(config: ClockWeatherCardConfig): void {
     this._config = config
@@ -54,6 +57,7 @@ export class ClockWeatherCardEditor extends LitElement {
   protected render(): TemplateResult | typeof nothing {
     if (!this.hass || !this._config) return nothing
     return html`
+      ${this._renderPresets()}
       ${this._renderFields(CARD_FIELDS.filter(f => f.group === 'essentials'), [], this._config, DEFAULTS)}
       <div class="sections">
         ${(Object.keys(SECTION_FIELDS) as SectionKey[]).map(key => this._renderSection(key))}
@@ -73,6 +77,43 @@ export class ClockWeatherCardEditor extends LitElement {
       `)}
       ${this._renderFields(CARD_FIELDS.filter(f => f.group === 'interaction'), [], this._config, DEFAULTS)}
     `
+  }
+
+  private _renderPresets(): TemplateResult {
+    const options = (Object.keys(PRESETS) as PresetKey[]).map(value => ({ value, label: this.t(`presets.${value}`) }))
+    return html`
+      <div class="presets">
+        <ha-form
+          .hass=${this.hass}
+          .data=${{ preset: this._pendingPreset }}
+          .schema=${[{ name: 'preset', selector: { select: { mode: 'dropdown', options } } }]}
+          .computeLabel=${() => this.t('presets.label')}
+          @value-changed=${(e: CustomEvent<{ value: { preset?: PresetKey } }>) => {
+    e.stopPropagation()
+    const preset = e.detail.value.preset
+    if (!preset) return
+    if (this._config!.sections) this._pendingPreset = preset
+    else this._applyPreset(preset)
+  }}
+        ></ha-form>
+        ${this._pendingPreset ? html`
+          <div class="preset-confirm" role="alert">
+            <span class="label">${this.t('presets.confirm')}</span>
+            <div class="footer">
+              ${textButton('mdi:check', this.t('presets.apply'), () => this._applyPreset(this._pendingPreset!))}
+              ${textButton('mdi:close', this.t('presets.cancel'), () => { this._pendingPreset = undefined }, true)}
+            </div>
+          </div>
+        ` : nothing}
+      </div>
+    `
+  }
+
+  private _applyPreset(preset: PresetKey): void {
+    this._pendingPreset = undefined
+    this._openSection = undefined
+    // A copy, so later edits never touch the preset; the default layout drops `sections` entirely.
+    this._update([], { sections: preset === 'default' ? undefined : JSON.parse(JSON.stringify(PRESETS[preset])) as ClockWeatherCardConfig['sections'] })
   }
 
   private _renderSection(key: SectionKey): TemplateResult {
@@ -288,6 +329,11 @@ export class ClockWeatherCardEditor extends LitElement {
       flex-direction: column;
       gap: 16px;
       padding: 4px 16px 16px;
+    }
+    .presets, .preset-confirm {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     .overrides {
       padding: 4px 0 8px;

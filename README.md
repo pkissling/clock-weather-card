@@ -371,6 +371,141 @@ sections:
 </td></tr>
 </table>
 
+### Starter layouts
+
+The visual editor's **Start from a layout** dropdown replaces the header rows and all section options with one of these layouts, a quick way to get close to a look before fine-tuning it. **Default** restores the default layout. Card-wide options such as the entity, title or icon style stay as they are.
+
+<table>
+<tr><th>Configuration</th><th>Card</th></tr>
+<tr><td>
+
+**Classic** - close to the v2 card: the weather icon on the left, the condition and temperature, a large time and the date on the right, and only the forecast list.
+
+<!-- preview: layout-classic -->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - alignment: right
+        segments:
+          - type: weather
+          - type: weather
+            attribute: temperature
+      - font_size: 4rem
+        alignment: right
+        segments:
+          - type: time
+      - alignment: right
+        segments:
+          - type: date
+  forecast_strip:
+    hide: true
+```
+
+</td><td>
+
+![The weather icon on the left, the condition, temperature, time and date right-aligned next to it, above a daily forecast list](docs/previews/layout-classic.png)
+
+</td></tr>
+<tr><td>
+
+**Wall tablet** - a very large time and larger forecast fonts for reading across the room.
+
+<!-- preview: layout-wall-tablet -->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 1.5rem
+        segments:
+          - type: weather
+            attribute: temperature
+          - type: spacer
+          - type: weather
+      - font_size: 7rem
+        alignment: center
+        segments:
+          - type: time
+      - font_size: 1.5rem
+        alignment: center
+        segments:
+          - type: date
+  forecast_strip:
+    count: 8
+    font_size: 1.5rem
+  forecast_list:
+    font_size: 1.5rem
+    row_height: 40px
+```
+
+</td><td>
+
+![The header with a very large time above a forecast strip and list in large type](docs/previews/layout-wall-tablet.png)
+
+</td></tr>
+<tr><td>
+
+**Minimal clock** - just the time and date next to the weather icon, without forecasts.
+
+<!-- preview: layout-minimal-clock -->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 5rem
+        alignment: center
+        segments:
+          - type: time
+      - alignment: center
+        segments:
+          - type: date
+  forecast_strip:
+    hide: true
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![The weather icon next to a large time and the date](docs/previews/layout-minimal-clock.png)
+
+</td></tr>
+<tr><td>
+
+**Compact** - a small icon with time, date and temperature on one line above the forecast strip.
+
+<!-- preview: layout-compact -->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    weather_icon_size: 4rem
+    rows:
+      - font_size: 1.5rem
+        segments:
+          - type: time
+          - type: date
+          - type: spacer
+          - type: weather
+            attribute: temperature
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![A small weather icon next to time, date and temperature on one line, above the forecast strip](docs/previews/layout-compact.png)
+
+</td></tr>
+</table>
+
 ### Card Options
 
 | Name | Type | Required | Default | Description |

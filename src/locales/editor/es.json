@@ -133,5 +133,16 @@
   "row": "Fila",
   "empty_row": "Fila vacía",
   "default_color": "Predeterminado del tema",
-  "automatic_text_color": "Automático (negro o blanco)"
+  "automatic_text_color": "Automático (negro o blanco)",
+  "presets": {
+    "label": "Empezar con un diseño",
+    "confirm": "Esto reemplaza las filas del encabezado y todas las opciones de las secciones.",
+    "apply": "Reemplazar",
+    "cancel": "Cancelar",
+    "default": "Predeterminado",
+    "classic": "Clásico",
+    "wall_tablet": "Tableta de pared",
+    "minimal_clock": "Reloj mínimo",
+    "compact": "Compacto"
+  }
 }

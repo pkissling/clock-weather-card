@@ -133,5 +133,16 @@
   "row": "행",
   "empty_row": "빈 행",
   "default_color": "테마 기본값",
-  "automatic_text_color": "자동 (검정 또는 흰색)"
+  "automatic_text_color": "자동 (검정 또는 흰색)",
+  "presets": {
+    "label": "레이아웃으로 시작",
+    "confirm": "헤더 행과 모든 섹션 옵션이 대체됩니다.",
+    "apply": "바꾸기",
+    "cancel": "취소",
+    "default": "기본값",
+    "classic": "클래식",
+    "wall_tablet": "벽걸이 태블릿",
+    "minimal_clock": "미니멀 시계",
+    "compact": "컴팩트"
+  }
 }

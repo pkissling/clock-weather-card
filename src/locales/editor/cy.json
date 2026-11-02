@@ -133,5 +133,16 @@
   "row": "Rhes",
   "empty_row": "Rhes wag",
   "default_color": "Rhagosodiad y thema",
-  "automatic_text_color": "Awtomatig (du neu wyn)"
+  "automatic_text_color": "Awtomatig (du neu wyn)",
+  "presets": {
+    "label": "Dechrau o gynllun",
+    "confirm": "Mae hyn yn disodli rhesi'r pennawd a holl opsiynau'r adrannau.",
+    "apply": "Disodli",
+    "cancel": "Canslo",
+    "default": "Diofyn",
+    "classic": "Clasurol",
+    "wall_tablet": "Tabled wal",
+    "minimal_clock": "Cloc lleiaf",
+    "compact": "Cryno"
+  }
 }

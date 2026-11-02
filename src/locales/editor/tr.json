@@ -133,5 +133,16 @@
   "row": "Satır",
   "empty_row": "Boş satır",
   "default_color": "Tema varsayılanı",
-  "automatic_text_color": "Otomatik (siyah veya beyaz)"
+  "automatic_text_color": "Otomatik (siyah veya beyaz)",
+  "presets": {
+    "label": "Bir düzenle başla",
+    "confirm": "Bu, başlık satırlarını ve tüm bölüm seçeneklerini değiştirir.",
+    "apply": "Değiştir",
+    "cancel": "İptal",
+    "default": "Varsayılan",
+    "classic": "Klasik",
+    "wall_tablet": "Duvar tableti",
+    "minimal_clock": "Minimal saat",
+    "compact": "Kompakt"
+  }
 }

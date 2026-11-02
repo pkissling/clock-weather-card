@@ -133,5 +133,16 @@
   "row": "صف",
   "empty_row": "صف فارغ",
   "default_color": "افتراضي السمة",
-  "automatic_text_color": "تلقائي (أسود أو أبيض)"
+  "automatic_text_color": "تلقائي (أسود أو أبيض)",
+  "presets": {
+    "label": "البدء من تخطيط",
+    "confirm": "سيؤدي هذا إلى استبدال صفوف الترويسة وجميع خيارات الأقسام.",
+    "apply": "استبدال",
+    "cancel": "إلغاء",
+    "default": "افتراضي",
+    "classic": "كلاسيكي",
+    "wall_tablet": "جهاز لوحي جداري",
+    "minimal_clock": "ساعة بسيطة",
+    "compact": "مضغوط"
+  }
 }

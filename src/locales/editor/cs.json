@@ -133,5 +133,16 @@
   "row": "Řádek",
   "empty_row": "Prázdný řádek",
   "default_color": "Výchozí motivu",
-  "automatic_text_color": "Automaticky (černá nebo bílá)"
+  "automatic_text_color": "Automaticky (černá nebo bílá)",
+  "presets": {
+    "label": "Začít z rozvržení",
+    "confirm": "Tím se nahradí řádky záhlaví a všechny možnosti sekcí.",
+    "apply": "Nahradit",
+    "cancel": "Zrušit",
+    "default": "Výchozí",
+    "classic": "Klasické",
+    "wall_tablet": "Nástěnný tablet",
+    "minimal_clock": "Minimální hodiny",
+    "compact": "Kompaktní"
+  }
 }

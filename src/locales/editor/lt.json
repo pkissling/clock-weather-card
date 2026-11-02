@@ -133,5 +133,16 @@
   "row": "Eilutė",
   "empty_row": "Tuščia eilutė",
   "default_color": "Temos numatytoji",
-  "automatic_text_color": "Automatiškai (juoda arba balta)"
+  "automatic_text_color": "Automatiškai (juoda arba balta)",
+  "presets": {
+    "label": "Pradėti nuo išdėstymo",
+    "confirm": "Tai pakeis antraštės eilutes ir visas skilčių parinktis.",
+    "apply": "Pakeisti",
+    "cancel": "Atšaukti",
+    "default": "Numatytasis",
+    "classic": "Klasikinis",
+    "wall_tablet": "Sieninė planšetė",
+    "minimal_clock": "Minimalus laikrodis",
+    "compact": "Kompaktiškas"
+  }
 }

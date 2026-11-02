@@ -133,5 +133,16 @@
   "row": "Riadok",
   "empty_row": "Prázdny riadok",
   "default_color": "Predvolené témou",
-  "automatic_text_color": "Automaticky (čierna alebo biela)"
+  "automatic_text_color": "Automaticky (čierna alebo biela)",
+  "presets": {
+    "label": "Začať z rozloženia",
+    "confirm": "Tým sa nahradia riadky hlavičky a všetky možnosti sekcií.",
+    "apply": "Nahradiť",
+    "cancel": "Zrušiť",
+    "default": "Predvolené",
+    "classic": "Klasické",
+    "wall_tablet": "Nástenný tablet",
+    "minimal_clock": "Minimálne hodiny",
+    "compact": "Kompaktné"
+  }
 }

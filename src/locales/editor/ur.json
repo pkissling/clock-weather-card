@@ -133,5 +133,16 @@
   "row": "قطار",
   "empty_row": "خالی قطار",
   "default_color": "تھیم کا طے شدہ",
-  "automatic_text_color": "خودکار (سیاہ یا سفید)"
+  "automatic_text_color": "خودکار (سیاہ یا سفید)",
+  "presets": {
+    "label": "کسی لے آؤٹ سے شروع کریں",
+    "confirm": "یہ ہیڈر کی قطاروں اور حصوں کے تمام اختیارات کو بدل دے گا۔",
+    "apply": "بدلیں",
+    "cancel": "منسوخ کریں",
+    "default": "طے شدہ",
+    "classic": "کلاسک",
+    "wall_tablet": "دیواری ٹیبلٹ",
+    "minimal_clock": "سادہ گھڑی",
+    "compact": "مختصر"
+  }
 }

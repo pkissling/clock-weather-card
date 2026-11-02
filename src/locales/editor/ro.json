@@ -133,5 +133,16 @@
   "row": "Rând",
   "empty_row": "Rând gol",
   "default_color": "Implicit temă",
-  "automatic_text_color": "Automat (negru sau alb)"
+  "automatic_text_color": "Automat (negru sau alb)",
+  "presets": {
+    "label": "Pornește de la un aspect",
+    "confirm": "Aceasta înlocuiește rândurile antetului și toate opțiunile secțiunilor.",
+    "apply": "Înlocuiește",
+    "cancel": "Anulează",
+    "default": "Implicit",
+    "classic": "Clasic",
+    "wall_tablet": "Tabletă de perete",
+    "minimal_clock": "Ceas minimal",
+    "compact": "Compact"
+  }
 }

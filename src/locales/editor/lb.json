@@ -133,5 +133,16 @@
   "row": "Zeil",
   "empty_row": "Eidel Zeil",
   "default_color": "Standard vum Theme",
-  "automatic_text_color": "Automatesch (schwaarz oder wäiss)"
+  "automatic_text_color": "Automatesch (schwaarz oder wäiss)",
+  "presets": {
+    "label": "Mat engem Layout ufänken",
+    "confirm": "Dëst ersetzt d'Kappzeilen an all Sektiounsoptiounen.",
+    "apply": "Ersetzen",
+    "cancel": "Ofbriechen",
+    "default": "Standard",
+    "classic": "Klassesch",
+    "wall_tablet": "Mauertablet",
+    "minimal_clock": "Minimal Auer",
+    "compact": "Kompakt"
+  }
 }

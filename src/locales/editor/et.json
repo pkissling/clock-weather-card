@@ -133,5 +133,16 @@
   "row": "Rida",
   "empty_row": "Tühi rida",
   "default_color": "Teema vaikimisi",
-  "automatic_text_color": "Automaatne (must või valge)"
+  "automatic_text_color": "Automaatne (must või valge)",
+  "presets": {
+    "label": "Alusta paigutusest",
+    "confirm": "See asendab päise read ja kõik jaotiste valikud.",
+    "apply": "Asenda",
+    "cancel": "Tühista",
+    "default": "Vaikimisi",
+    "classic": "Klassikaline",
+    "wall_tablet": "Seinatahvel",
+    "minimal_clock": "Minimaalne kell",
+    "compact": "Kompaktne"
+  }
 }

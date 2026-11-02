@@ -133,5 +133,16 @@
   "row": "Vrstica",
   "empty_row": "Prazna vrstica",
   "default_color": "Privzeto iz teme",
-  "automatic_text_color": "Samodejno (črna ali bela)"
+  "automatic_text_color": "Samodejno (črna ali bela)",
+  "presets": {
+    "label": "Začni iz postavitve",
+    "confirm": "To zamenja vrstice glave in vse možnosti razdelkov.",
+    "apply": "Zamenjaj",
+    "cancel": "Prekliči",
+    "default": "Privzeto",
+    "classic": "Klasično",
+    "wall_tablet": "Stenski tablični računalnik",
+    "minimal_clock": "Minimalna ura",
+    "compact": "Kompaktno"
+  }
 }

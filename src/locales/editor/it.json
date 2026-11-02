@@ -133,5 +133,16 @@
   "row": "Riga",
   "empty_row": "Riga vuota",
   "default_color": "Predefinito del tema",
-  "automatic_text_color": "Automatico (nero o bianco)"
+  "automatic_text_color": "Automatico (nero o bianco)",
+  "presets": {
+    "label": "Parti da un layout",
+    "confirm": "Questo sostituisce le righe dell'intestazione e tutte le opzioni delle sezioni.",
+    "apply": "Sostituisci",
+    "cancel": "Annulla",
+    "default": "Predefinito",
+    "classic": "Classico",
+    "wall_tablet": "Tablet a parete",
+    "minimal_clock": "Orologio minimale",
+    "compact": "Compatto"
+  }
 }

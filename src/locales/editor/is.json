@@ -133,5 +133,16 @@
   "row": "Röð",
   "empty_row": "Tóm röð",
   "default_color": "Sjálfgefið þema",
-  "automatic_text_color": "Sjálfvirkt (svart eða hvítt)"
+  "automatic_text_color": "Sjálfvirkt (svart eða hvítt)",
+  "presets": {
+    "label": "Byrja frá útliti",
+    "confirm": "Þetta kemur í stað hausraðanna og allra stillinga hluta.",
+    "apply": "Skipta út",
+    "cancel": "Hætta við",
+    "default": "Sjálfgefið",
+    "classic": "Klassískt",
+    "wall_tablet": "Veggspjaldtölva",
+    "minimal_clock": "Lágmarksklukka",
+    "compact": "Þjappað"
+  }
 }

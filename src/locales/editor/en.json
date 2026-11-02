@@ -133,5 +133,16 @@
   "row": "Row",
   "empty_row": "Empty row",
   "default_color": "Theme default",
-  "automatic_text_color": "Automatic (black or white)"
+  "automatic_text_color": "Automatic (black or white)",
+  "presets": {
+    "label": "Start from a layout",
+    "confirm": "This replaces the header rows and all section options.",
+    "apply": "Replace",
+    "cancel": "Cancel",
+    "default": "Default",
+    "classic": "Classic",
+    "wall_tablet": "Wall tablet",
+    "minimal_clock": "Minimal clock",
+    "compact": "Compact"
+  }
 }

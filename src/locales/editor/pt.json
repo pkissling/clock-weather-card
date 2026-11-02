@@ -133,5 +133,16 @@
   "row": "Linha",
   "empty_row": "Linha vazia",
   "default_color": "Predefinição do tema",
-  "automatic_text_color": "Automático (preto ou branco)"
+  "automatic_text_color": "Automático (preto ou branco)",
+  "presets": {
+    "label": "Começar a partir de um esquema",
+    "confirm": "Isto substitui as linhas do cabeçalho e todas as opções das secções.",
+    "apply": "Substituir",
+    "cancel": "Cancelar",
+    "default": "Predefinido",
+    "classic": "Clássico",
+    "wall_tablet": "Tablet de parede",
+    "minimal_clock": "Relógio mínimo",
+    "compact": "Compacto"
+  }
 }

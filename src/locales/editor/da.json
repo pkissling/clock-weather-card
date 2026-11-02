@@ -133,5 +133,16 @@
   "row": "Række",
   "empty_row": "Tom række",
   "default_color": "Temastandard",
-  "automatic_text_color": "Automatisk (sort eller hvid)"
+  "automatic_text_color": "Automatisk (sort eller hvid)",
+  "presets": {
+    "label": "Start fra et layout",
+    "confirm": "Dette erstatter overskriftsrækkerne og alle sektionsindstillinger.",
+    "apply": "Erstat",
+    "cancel": "Annuller",
+    "default": "Standard",
+    "classic": "Klassisk",
+    "wall_tablet": "Vægtablet",
+    "minimal_clock": "Minimalt ur",
+    "compact": "Kompakt"
+  }
 }

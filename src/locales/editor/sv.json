@@ -133,5 +133,16 @@
   "row": "Rad",
   "empty_row": "Tom rad",
   "default_color": "Temats standard",
-  "automatic_text_color": "Automatisk (svart eller vit)"
+  "automatic_text_color": "Automatisk (svart eller vit)",
+  "presets": {
+    "label": "Börja från en layout",
+    "confirm": "Detta ersätter rubrikraderna och alla sektionsalternativ.",
+    "apply": "Ersätt",
+    "cancel": "Avbryt",
+    "default": "Standard",
+    "classic": "Klassisk",
+    "wall_tablet": "Väggsurfplatta",
+    "minimal_clock": "Minimal klocka",
+    "compact": "Kompakt"
+  }
 }

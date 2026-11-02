@@ -133,5 +133,16 @@
   "row": "Baris",
   "empty_row": "Baris kosong",
   "default_color": "Bawaan tema",
-  "automatic_text_color": "Otomatis (hitam atau putih)"
+  "automatic_text_color": "Otomatis (hitam atau putih)",
+  "presets": {
+    "label": "Mulai dari tata letak",
+    "confirm": "Ini menggantikan baris header dan semua opsi bagian.",
+    "apply": "Ganti",
+    "cancel": "Batal",
+    "default": "Bawaan",
+    "classic": "Klasik",
+    "wall_tablet": "Tablet dinding",
+    "minimal_clock": "Jam minimal",
+    "compact": "Ringkas"
+  }
 }

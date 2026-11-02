@@ -133,5 +133,16 @@
   "row": "שורה",
   "empty_row": "שורה ריקה",
   "default_color": "ברירת המחדל של ערכת הנושא",
-  "automatic_text_color": "אוטומטי (שחור או לבן)"
+  "automatic_text_color": "אוטומטי (שחור או לבן)",
+  "presets": {
+    "label": "התחל מפריסה",
+    "confirm": "פעולה זו מחליפה את שורות הכותרת ואת כל אפשרויות המקטעים.",
+    "apply": "החלף",
+    "cancel": "ביטול",
+    "default": "ברירת מחדל",
+    "classic": "קלאסי",
+    "wall_tablet": "טאבלט קיר",
+    "minimal_clock": "שעון מינימלי",
+    "compact": "דחוס"
+  }
 }

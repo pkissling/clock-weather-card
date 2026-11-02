@@ -133,5 +133,16 @@
   "row": "Fila",
   "empty_row": "Fila buida",
   "default_color": "Predeterminat del tema",
-  "automatic_text_color": "Automàtic (negre o blanc)"
+  "automatic_text_color": "Automàtic (negre o blanc)",
+  "presets": {
+    "label": "Comença amb un disseny",
+    "confirm": "Això substitueix les files de la capçalera i totes les opcions de les seccions.",
+    "apply": "Substitueix",
+    "cancel": "Cancel·la",
+    "default": "Per defecte",
+    "classic": "Clàssic",
+    "wall_tablet": "Tauleta de paret",
+    "minimal_clock": "Rellotge mínim",
+    "compact": "Compacte"
+  }
 }

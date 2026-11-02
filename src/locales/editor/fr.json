@@ -133,5 +133,16 @@
   "row": "Ligne",
   "empty_row": "Ligne vide",
   "default_color": "Couleur du thème",
-  "automatic_text_color": "Automatique (noir ou blanc)"
+  "automatic_text_color": "Automatique (noir ou blanc)",
+  "presets": {
+    "label": "Partir d'une disposition",
+    "confirm": "Cela remplace les lignes de l'en-tête et toutes les options des sections.",
+    "apply": "Remplacer",
+    "cancel": "Annuler",
+    "default": "Par défaut",
+    "classic": "Classique",
+    "wall_tablet": "Tablette murale",
+    "minimal_clock": "Horloge minimale",
+    "compact": "Compact"
+  }
 }

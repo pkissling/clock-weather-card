@@ -133,5 +133,16 @@
   "row": "Rad",
   "empty_row": "Tom rad",
   "default_color": "Temastandard",
-  "automatic_text_color": "Automatisk (svart eller hvit)"
+  "automatic_text_color": "Automatisk (svart eller hvit)",
+  "presets": {
+    "label": "Start fra et oppsett",
+    "confirm": "Dette erstatter toppteksradene og alle seksjonsinnstillinger.",
+    "apply": "Erstatt",
+    "cancel": "Avbryt",
+    "default": "Standard",
+    "classic": "Klassisk",
+    "wall_tablet": "Veggnettbrett",
+    "minimal_clock": "Minimal klokke",
+    "compact": "Kompakt"
+  }
 }

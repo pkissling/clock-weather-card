@@ -133,5 +133,16 @@
   "row": "Hàng",
   "empty_row": "Hàng trống",
   "default_color": "Mặc định của chủ đề",
-  "automatic_text_color": "Tự động (đen hoặc trắng)"
+  "automatic_text_color": "Tự động (đen hoặc trắng)",
+  "presets": {
+    "label": "Bắt đầu từ một bố cục",
+    "confirm": "Thao tác này thay thế các hàng tiêu đề và mọi tùy chọn của các phần.",
+    "apply": "Thay thế",
+    "cancel": "Hủy",
+    "default": "Mặc định",
+    "classic": "Cổ điển",
+    "wall_tablet": "Máy tính bảng treo tường",
+    "minimal_clock": "Đồng hồ tối giản",
+    "compact": "Gọn"
+  }
 }

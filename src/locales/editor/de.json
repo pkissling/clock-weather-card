@@ -133,5 +133,16 @@
   "row": "Zeile",
   "empty_row": "Leere Zeile",
   "default_color": "Theme-Standard",
-  "automatic_text_color": "Automatisch (schwarz oder weiß)"
+  "automatic_text_color": "Automatisch (schwarz oder weiß)",
+  "presets": {
+    "label": "Mit einem Layout beginnen",
+    "confirm": "Dies ersetzt die Kopfzeilen und alle Abschnittsoptionen.",
+    "apply": "Ersetzen",
+    "cancel": "Abbrechen",
+    "default": "Standard",
+    "classic": "Klassisch",
+    "wall_tablet": "Wandtablet",
+    "minimal_clock": "Minimale Uhr",
+    "compact": "Kompakt"
+  }
 }

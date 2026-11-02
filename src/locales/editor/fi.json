@@ -133,5 +133,16 @@
   "row": "Rivi",
   "empty_row": "Tyhjä rivi",
   "default_color": "Teeman oletus",
-  "automatic_text_color": "Automaattinen (musta tai valkoinen)"
+  "automatic_text_color": "Automaattinen (musta tai valkoinen)",
+  "presets": {
+    "label": "Aloita asettelusta",
+    "confirm": "Tämä korvaa otsikkorivit ja kaikki osioiden asetukset.",
+    "apply": "Korvaa",
+    "cancel": "Peruuta",
+    "default": "Oletus",
+    "classic": "Klassinen",
+    "wall_tablet": "Seinätabletti",
+    "minimal_clock": "Minimaalinen kello",
+    "compact": "Kompakti"
+  }
 }

@@ -133,5 +133,16 @@
   "row": "Red",
   "empty_row": "Prazan red",
   "default_color": "Podrazumevano iz teme",
-  "automatic_text_color": "Automatski (crna ili bela)"
+  "automatic_text_color": "Automatski (crna ili bela)",
+  "presets": {
+    "label": "Počni od rasporeda",
+    "confirm": "Ovo zamenjuje redove zaglavlja i sve opcije odeljaka.",
+    "apply": "Zameni",
+    "cancel": "Otkaži",
+    "default": "Podrazumevano",
+    "classic": "Klasično",
+    "wall_tablet": "Zidni tablet",
+    "minimal_clock": "Minimalan sat",
+    "compact": "Kompaktno"
+  }
 }

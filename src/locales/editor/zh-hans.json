@@ -133,5 +133,16 @@
   "row": "行",
   "empty_row": "空行",
   "default_color": "主题默认",
-  "automatic_text_color": "自动（黑色或白色）"
+  "automatic_text_color": "自动（黑色或白色）",
+  "presets": {
+    "label": "从布局开始",
+    "confirm": "这将替换标题行和所有区块选项。",
+    "apply": "替换",
+    "cancel": "取消",
+    "default": "默认",
+    "classic": "经典",
+    "wall_tablet": "壁挂平板",
+    "minimal_clock": "极简时钟",
+    "compact": "紧凑"
+  }
 }
