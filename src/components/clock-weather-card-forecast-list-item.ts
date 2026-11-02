@@ -17,7 +17,7 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
       label, condition, isNight, animatedIcon, weatherIconType,
       lowLabel, highLabel,
       barLowPercent, barHighPercent, gradientStops,
-      showCurrentIndicator, currentTempPercent,
+      showCurrentIndicator, currentTempPercent, secondary,
     } = this.item
 
     const gradient = gradientStops
@@ -28,12 +28,15 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
 
     return html`
       <span class="label" title=${label}>${label}</span>
-      <clock-weather-card-icon
-        .weatherState=${condition}
-        .isNight=${isNight}
-        .animatedIcon=${animatedIcon}
-        .weatherIconType=${weatherIconType}
-      ></clock-weather-card-icon>
+      <span class="icon">
+        <clock-weather-card-icon
+          .weatherState=${condition}
+          .isNight=${isNight}
+          .animatedIcon=${animatedIcon}
+          .weatherIconType=${weatherIconType}
+        ></clock-weather-card-icon>
+        ${secondary ? html`<span class=${weatherIconType === 'monochrome' ? 'secondary secondary--monochrome' : 'secondary'} style=${secondary.color ? `color: ${secondary.color}` : nothing}>${secondary.value}</span>` : nothing}
+      </span>
       <span class="temperature-low">${lowLabel ?? nothing}</span>
       <div class="bar-track">
         <div class="bar-fill" style=${fillStyle}></div>

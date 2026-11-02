@@ -37,6 +37,7 @@
     "attribute_icon": "Значок атрибута",
     "attribute_unit": "Единица атрибута",
     "attribute_color": "Цвет атрибута",
+    "secondary_attribute": "Дополнительный атрибут",
     "row_height": "Высота строки",
     "bar_thickness": "Толщина полосы",
     "hide_current_temp_indicator": "Скрыть точку текущей температуры",
@@ -80,7 +81,8 @@
     "fill": "Заливка",
     "flat": "Плоский",
     "line": "Контурный",
-    "monochrome": "Монохромный"
+    "monochrome": "Монохромный",
+    "none": "Скрыто"
   },
   "attributes": {
     "temperature": "Температура",

@@ -135,6 +135,7 @@ export const SECTION_FIELDS: Record<SectionKey, EditorField[]> = {
   forecast_list: [
     ...forecastBasics,
     { name: 'attribute', selector: attributeSelector(['temperature']) },
+    { name: 'secondary_attribute', selector: attributeSelector(['none']) },
     forecastFontSize,
     { name: 'row_height', ...slider(16, 80, 2, 'px') },
     { name: 'bar_thickness', ...slider(5, 100, 5, '%') },

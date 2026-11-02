@@ -37,6 +37,7 @@
     "attribute_icon": "وصف کا آئیکن",
     "attribute_unit": "وصف کی اکائی",
     "attribute_color": "وصف کا رنگ",
+    "secondary_attribute": "ثانوی وصف",
     "row_height": "قطار کی اونچائی",
     "bar_thickness": "پٹی کی موٹائی",
     "hide_current_temp_indicator": "موجودہ درجہ حرارت کا نقطہ چھپائیں",
@@ -80,7 +81,8 @@
     "fill": "بھرا ہوا",
     "flat": "سادہ",
     "line": "لکیری",
-    "monochrome": "یک رنگی"
+    "monochrome": "یک رنگی",
+    "none": "پوشیدہ"
   },
   "attributes": {
     "temperature": "درجہ حرارت",

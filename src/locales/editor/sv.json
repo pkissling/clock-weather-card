@@ -37,6 +37,7 @@
     "attribute_icon": "Attributikon",
     "attribute_unit": "Attributenhet",
     "attribute_color": "Attributfärg",
+    "secondary_attribute": "Sekundärt attribut",
     "row_height": "Radhöjd",
     "bar_thickness": "Stapeltjocklek",
     "hide_current_temp_indicator": "Dölj punkt för aktuell temperatur",
@@ -80,7 +81,8 @@
     "fill": "Fylld",
     "flat": "Platt",
     "line": "Linje",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "none": "Dold"
   },
   "attributes": {
     "temperature": "Temperatur",

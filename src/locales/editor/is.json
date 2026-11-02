@@ -37,6 +37,7 @@
     "attribute_icon": "Tákn eigindar",
     "attribute_unit": "Eining eigindar",
     "attribute_color": "Litur eigindar",
+    "secondary_attribute": "Aukaeigind",
     "row_height": "Hæð raðar",
     "bar_thickness": "Þykkt stiku",
     "hide_current_temp_indicator": "Fela punkt núverandi hitastigs",
@@ -80,7 +81,8 @@
     "fill": "Fyllt",
     "flat": "Flatt",
     "line": "Lína",
-    "monochrome": "Einlitt"
+    "monochrome": "Einlitt",
+    "none": "Falið"
   },
   "attributes": {
     "temperature": "Hitastig",

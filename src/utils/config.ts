@@ -42,7 +42,7 @@ export const DEFAULTS = {
   sections: {
     header: { hide: false, animated_icons: true },
     forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
-    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature' },
+    forecast_list: { hide: false, forecast_type: 'daily', count: 5, row_height: '28px', bar_thickness: '60%', hide_current_temp_indicator: false, animated_icons: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'temperature', secondary_attribute: 'precipitation_probability' },
   },
 } as const satisfies Partial<ClockWeatherCardConfig>
 
@@ -137,6 +137,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertNonEmptyString('sections.forecast_strip.attribute_icon', strip?.attribute_icon)
   assertNonEmptyString('sections.forecast_strip.attribute_color', strip?.attribute_color)
   assertNonEmptyString('sections.forecast_list.attribute', list?.attribute)
+  assertNonEmptyString('sections.forecast_list.secondary_attribute', list?.secondary_attribute)
   assertString('sections.forecast_strip.attribute_unit', strip?.attribute_unit)
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
   header?.rows?.forEach((row, i) => {

@@ -37,6 +37,7 @@
     "attribute_icon": "Attributsymbol",
     "attribute_unit": "Attributeinheit",
     "attribute_color": "Attributfarbe",
+    "secondary_attribute": "Zweites Attribut",
     "row_height": "Zeilenhöhe",
     "bar_thickness": "Balkenstärke",
     "hide_current_temp_indicator": "Punkt der aktuellen Temperatur ausblenden",
@@ -80,7 +81,8 @@
     "fill": "Gefüllt",
     "flat": "Flach",
     "line": "Linie",
-    "monochrome": "Monochrom"
+    "monochrome": "Monochrom",
+    "none": "Ausgeblendet"
   },
   "attributes": {
     "temperature": "Temperatur",

@@ -37,6 +37,7 @@
     "attribute_icon": "Ikona atributa",
     "attribute_unit": "Enota atributa",
     "attribute_color": "Barva atributa",
+    "secondary_attribute": "Sekundarni atribut",
     "row_height": "Višina vrstice",
     "bar_thickness": "Debelina traku",
     "hide_current_temp_indicator": "Skrij piko trenutne temperature",
@@ -80,7 +81,8 @@
     "fill": "Polnilo",
     "flat": "Ploske",
     "line": "Obrisne",
-    "monochrome": "Enobarvne"
+    "monochrome": "Enobarvne",
+    "none": "Skrito"
   },
   "attributes": {
     "temperature": "Temperatura",

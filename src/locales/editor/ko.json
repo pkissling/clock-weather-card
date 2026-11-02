@@ -37,6 +37,7 @@
     "attribute_icon": "속성 아이콘",
     "attribute_unit": "속성 단위",
     "attribute_color": "속성 색상",
+    "secondary_attribute": "보조 속성",
     "row_height": "행 높이",
     "bar_thickness": "막대 두께",
     "hide_current_temp_indicator": "현재 온도 점 숨기기",
@@ -80,7 +81,8 @@
     "fill": "채우기",
     "flat": "플랫",
     "line": "선",
-    "monochrome": "단색"
+    "monochrome": "단색",
+    "none": "숨김"
   },
   "attributes": {
     "temperature": "온도",

@@ -37,6 +37,7 @@
     "attribute_icon": "Eicon priodwedd",
     "attribute_unit": "Uned priodwedd",
     "attribute_color": "Lliw priodwedd",
+    "secondary_attribute": "Priodwedd eilaidd",
     "row_height": "Uchder rhes",
     "bar_thickness": "Trwch bar",
     "hide_current_temp_indicator": "Cuddio dot y tymheredd presennol",
@@ -80,7 +81,8 @@
     "fill": "Llenwi",
     "flat": "Gwastad",
     "line": "Llinell",
-    "monochrome": "Unlliw"
+    "monochrome": "Unlliw",
+    "none": "Cudd"
   },
   "attributes": {
     "temperature": "Tymheredd",

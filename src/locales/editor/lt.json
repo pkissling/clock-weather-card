@@ -37,6 +37,7 @@
     "attribute_icon": "Atributo piktograma",
     "attribute_unit": "Atributo vienetas",
     "attribute_color": "Atributo spalva",
+    "secondary_attribute": "Antrinis atributas",
     "row_height": "Eilutės aukštis",
     "bar_thickness": "Juostos storis",
     "hide_current_temp_indicator": "Slėpti dabartinės temperatūros tašką",
@@ -80,7 +81,8 @@
     "fill": "Užpildytas",
     "flat": "Plokščias",
     "line": "Linija",
-    "monochrome": "Vienspalvis"
+    "monochrome": "Vienspalvis",
+    "none": "Paslėpta"
   },
   "attributes": {
     "temperature": "Temperatūra",

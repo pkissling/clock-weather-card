@@ -157,6 +157,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
       weather_icon_type?: WeatherIconType
       attribute?: string
       attribute_unit?: string
+      secondary_attribute?: string
       gradient?: Record<number, string>
     }
   }
@@ -235,6 +236,7 @@ export interface ForecastListItem {
   barHighPercent: number
   gradientStops: GradientStop[]
   showCurrentIndicator: boolean
+  secondary: { color: string | null, value: string } | null
   currentTempPercent: number
 }
 

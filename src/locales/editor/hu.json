@@ -37,6 +37,7 @@
     "attribute_icon": "Attribútum ikon",
     "attribute_unit": "Attribútum mértékegysége",
     "attribute_color": "Attribútum színe",
+    "secondary_attribute": "Másodlagos attribútum",
     "row_height": "Sormagasság",
     "bar_thickness": "Sáv vastagsága",
     "hide_current_temp_indicator": "Aktuális hőmérséklet pont elrejtése",
@@ -80,7 +81,8 @@
     "fill": "Kitöltött",
     "flat": "Lapos",
     "line": "Vonalas",
-    "monochrome": "Egyszínű"
+    "monochrome": "Egyszínű",
+    "none": "Rejtett"
   },
   "attributes": {
     "temperature": "Hőmérséklet",

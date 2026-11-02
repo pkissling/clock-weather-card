@@ -37,6 +37,7 @@
     "attribute_icon": "Attribuutpictogram",
     "attribute_unit": "Attribuuteenheid",
     "attribute_color": "Attribuutkleur",
+    "secondary_attribute": "Secundair attribuut",
     "row_height": "Rijhoogte",
     "bar_thickness": "Balkdikte",
     "hide_current_temp_indicator": "Punt huidige temperatuur verbergen",
@@ -80,7 +81,8 @@
     "fill": "Gevuld",
     "flat": "Plat",
     "line": "Lijn",
-    "monochrome": "Monochroom"
+    "monochrome": "Monochroom",
+    "none": "Verborgen"
   },
   "attributes": {
     "temperature": "Temperatuur",

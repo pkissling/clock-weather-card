@@ -37,6 +37,7 @@
     "attribute_icon": "Attribut-Icon",
     "attribute_unit": "Attribut-Eenheet",
     "attribute_color": "Attribut-Faarf",
+    "secondary_attribute": "Zweet Attribut",
     "row_height": "Zeilenhéicht",
     "bar_thickness": "Balkendécht",
     "hide_current_temp_indicator": "Punkt vun der aktueller Temperatur verstoppen",
@@ -80,7 +81,8 @@
     "fill": "Gefëllt",
     "flat": "Flaach",
     "line": "Linn",
-    "monochrome": "Monochrom"
+    "monochrome": "Monochrom",
+    "none": "Verstoppt"
   },
   "attributes": {
     "temperature": "Temperatur",

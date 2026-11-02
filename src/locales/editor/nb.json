@@ -37,6 +37,7 @@
     "attribute_icon": "Attributtikon",
     "attribute_unit": "Attributtenhet",
     "attribute_color": "Attributtfarge",
+    "secondary_attribute": "Sekundært attributt",
     "row_height": "Radhøyde",
     "bar_thickness": "Stolpetykkelse",
     "hide_current_temp_indicator": "Skjul punkt for nåværende temperatur",
@@ -80,7 +81,8 @@
     "fill": "Fylt",
     "flat": "Flat",
     "line": "Linje",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "none": "Skjult"
   },
   "attributes": {
     "temperature": "Temperatur",

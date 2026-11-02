@@ -37,6 +37,7 @@
     "attribute_icon": "Ikon atribut",
     "attribute_unit": "Satuan atribut",
     "attribute_color": "Warna atribut",
+    "secondary_attribute": "Atribut sekunder",
     "row_height": "Tinggi baris",
     "bar_thickness": "Ketebalan batang",
     "hide_current_temp_indicator": "Sembunyikan titik suhu saat ini",
@@ -80,7 +81,8 @@
     "fill": "Isi",
     "flat": "Datar",
     "line": "Garis",
-    "monochrome": "Monokrom"
+    "monochrome": "Monokrom",
+    "none": "Tersembunyi"
   },
   "attributes": {
     "temperature": "Suhu",

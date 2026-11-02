@@ -88,6 +88,7 @@ describe('resolveConfig', () => {
           time_pattern: 't',
           weather_icon_type: 'line',
           attribute: 'temperature',
+          secondary_attribute: 'precipitation_probability',
           attribute_unit: null,
           font_size: null,
           gradient: DEFAULT_GRADIENT,

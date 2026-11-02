@@ -37,6 +37,7 @@
     "attribute_icon": "Atribuudi ikoon",
     "attribute_unit": "Atribuudi ühik",
     "attribute_color": "Atribuudi värv",
+    "secondary_attribute": "Teisene atribuut",
     "row_height": "Rea kõrgus",
     "bar_thickness": "Riba paksus",
     "hide_current_temp_indicator": "Peida praeguse temperatuuri punkt",
@@ -80,7 +81,8 @@
     "fill": "Täidetud",
     "flat": "Lame",
     "line": "Joon",
-    "monochrome": "Ühevärviline"
+    "monochrome": "Ühevärviline",
+    "none": "Peidetud"
   },
   "attributes": {
     "temperature": "Temperatuur",

@@ -37,6 +37,7 @@
     "attribute_icon": "Εικονίδιο χαρακτηριστικού",
     "attribute_unit": "Μονάδα χαρακτηριστικού",
     "attribute_color": "Χρώμα χαρακτηριστικού",
+    "secondary_attribute": "Δευτερεύον χαρακτηριστικό",
     "row_height": "Ύψος γραμμής",
     "bar_thickness": "Πάχος μπάρας",
     "hide_current_temp_indicator": "Απόκρυψη κουκκίδας τρέχουσας θερμοκρασίας",
@@ -80,7 +81,8 @@
     "fill": "Γεμάτο",
     "flat": "Επίπεδο",
     "line": "Γραμμή",
-    "monochrome": "Μονόχρωμο"
+    "monochrome": "Μονόχρωμο",
+    "none": "Κρυφό"
   },
   "attributes": {
     "temperature": "Θερμοκρασία",

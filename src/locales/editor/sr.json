@@ -37,6 +37,7 @@
     "attribute_icon": "Иконица атрибута",
     "attribute_unit": "Јединица атрибута",
     "attribute_color": "Боја атрибута",
+    "secondary_attribute": "Секундарни атрибут",
     "row_height": "Висина реда",
     "bar_thickness": "Дебљина траке",
     "hide_current_temp_indicator": "Сакриј тачку тренутне температуре",
@@ -80,7 +81,8 @@
     "fill": "Попуњене",
     "flat": "Равне",
     "line": "Линијске",
-    "monochrome": "Монохроматске"
+    "monochrome": "Монохроматске",
+    "none": "Сакривено"
   },
   "attributes": {
     "temperature": "Температура",

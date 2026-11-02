@@ -37,6 +37,7 @@
     "attribute_icon": "Öznitelik simgesi",
     "attribute_unit": "Öznitelik birimi",
     "attribute_color": "Öznitelik rengi",
+    "secondary_attribute": "İkincil öznitelik",
     "row_height": "Satır yüksekliği",
     "bar_thickness": "Çubuk kalınlığı",
     "hide_current_temp_indicator": "Güncel sıcaklık noktasını gizle",
@@ -80,7 +81,8 @@
     "fill": "Dolgulu",
     "flat": "Düz",
     "line": "Çizgi",
-    "monochrome": "Tek renkli"
+    "monochrome": "Tek renkli",
+    "none": "Gizli"
   },
   "attributes": {
     "temperature": "Sıcaklık",

@@ -37,6 +37,7 @@
     "attribute_icon": "أيقونة السمة",
     "attribute_unit": "وحدة السمة",
     "attribute_color": "لون السمة",
+    "secondary_attribute": "سمة ثانوية",
     "row_height": "ارتفاع الصف",
     "bar_thickness": "سماكة الشريط",
     "hide_current_temp_indicator": "إخفاء نقطة درجة الحرارة الحالية",
@@ -80,7 +81,8 @@
     "fill": "مملوء",
     "flat": "مسطح",
     "line": "خطي",
-    "monochrome": "أحادي اللون"
+    "monochrome": "أحادي اللون",
+    "none": "مخفي"
   },
   "attributes": {
     "temperature": "درجة الحرارة",

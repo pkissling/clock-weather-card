@@ -37,6 +37,7 @@
     "attribute_icon": "Ikona atribútu",
     "attribute_unit": "Jednotka atribútu",
     "attribute_color": "Farba atribútu",
+    "secondary_attribute": "Vedľajší atribút",
     "row_height": "Výška riadka",
     "bar_thickness": "Hrúbka pruhu",
     "hide_current_temp_indicator": "Skryť bod aktuálnej teploty",
@@ -80,7 +81,8 @@
     "fill": "Výplň",
     "flat": "Ploché",
     "line": "Obrysové",
-    "monochrome": "Jednofarebné"
+    "monochrome": "Jednofarebné",
+    "none": "Skryté"
   },
   "attributes": {
     "temperature": "Teplota",

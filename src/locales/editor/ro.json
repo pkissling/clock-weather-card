@@ -37,6 +37,7 @@
     "attribute_icon": "Pictogramă atribut",
     "attribute_unit": "Unitate atribut",
     "attribute_color": "Culoare atribut",
+    "secondary_attribute": "Atribut secundar",
     "row_height": "Înălțime rând",
     "bar_thickness": "Grosime bară",
     "hide_current_temp_indicator": "Ascunde punctul temperaturii curente",
@@ -80,7 +81,8 @@
     "fill": "Umplut",
     "flat": "Plat",
     "line": "Linie",
-    "monochrome": "Monocrom"
+    "monochrome": "Monocrom",
+    "none": "Ascuns"
   },
   "attributes": {
     "temperature": "Temperatură",

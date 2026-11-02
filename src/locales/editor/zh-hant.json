@@ -37,6 +37,7 @@
     "attribute_icon": "屬性圖示",
     "attribute_unit": "屬性單位",
     "attribute_color": "屬性顏色",
+    "secondary_attribute": "次要屬性",
     "row_height": "列高",
     "bar_thickness": "長條粗細",
     "hide_current_temp_indicator": "隱藏目前溫度圓點",
@@ -80,7 +81,8 @@
     "fill": "填滿",
     "flat": "扁平",
     "line": "線條",
-    "monochrome": "單色"
+    "monochrome": "單色",
+    "none": "已隱藏"
   },
   "attributes": {
     "temperature": "溫度",

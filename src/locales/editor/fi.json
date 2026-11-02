@@ -37,6 +37,7 @@
     "attribute_icon": "Attribuutin kuvake",
     "attribute_unit": "Attribuutin yksikkö",
     "attribute_color": "Attribuutin väri",
+    "secondary_attribute": "Toissijainen attribuutti",
     "row_height": "Rivin korkeus",
     "bar_thickness": "Palkin paksuus",
     "hide_current_temp_indicator": "Piilota nykyisen lämpötilan piste",
@@ -80,7 +81,8 @@
     "fill": "Täytetty",
     "flat": "Litteä",
     "line": "Viiva",
-    "monochrome": "Yksivärinen"
+    "monochrome": "Yksivärinen",
+    "none": "Piilotettu"
   },
   "attributes": {
     "temperature": "Lämpötila",

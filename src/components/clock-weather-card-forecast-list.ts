@@ -8,8 +8,9 @@ import AbstractForecastSection, { type ForecastRow } from '@/components/abstract
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import type { ForecastListItem, SectionForecastType } from '@/types'
+import { defaultAttributeColor } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
-import { forecastAttributeValue, formatWithUnit, MISSING_VALUE } from '@/utils/forecast-attributes'
+import { displayedAttributeValue, forecastAttributeValue, formatWithUnit, MISSING_VALUE } from '@/utils/forecast-attributes'
 import { gradientStopsForRange, normalizeGradient } from '@/utils/gradient'
 import { formatNumber } from '@/utils/number'
 import { toCelsius } from '@/utils/temperature'
@@ -52,12 +53,15 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
   }
 
   protected renderForecast(entityId: string, forecastType: SectionForecastType): TemplateResult {
-    const { gradient, animated_icons, weather_icon_type, attribute } = this.config.forecast_list
+    const { gradient, animated_icons, weather_icon_type, attribute, secondary_attribute } = this.config.forecast_list
     const bars = attribute === 'temperature'
       ? this._temperatureBars(entityId, forecastType)
       : this._attributeBars(attribute)
     if (bars.length === 0) return html``
 
+    const secondary = this._secondaryLabels(secondary_attribute, bars)
+    // Same color rule as the strip's attribute row: only the default precipitation probability gets its own color.
+    const secondaryColor = defaultAttributeColor(secondary_attribute === 'precipitation_probability' ? {} : { attribute: secondary_attribute }, weather_icon_type)
     const stops = normalizeGradient(gradient)
     const extent = bars.flatMap(b => b.span ? [b.span.from, b.span.to] : [])
     const globalLow = Math.min(...extent)
@@ -69,7 +73,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     return html`
       <clock-weather-card-divider></clock-weather-card-divider>
       <div class="rows" style=${this._rowsStyle()}>
-        ${bars.map(({ row, lowLabel, highLabel, span, current }) => {
+        ${bars.map(({ row, lowLabel, highLabel, span, current }, i) => {
     const item: ForecastListItem = {
       label: row.label,
       condition: row.forecast.condition ?? '',
@@ -83,11 +87,21 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
       gradientStops: span ? gradientStopsForRange(stops, span.from, span.to) : [],
       showCurrentIndicator: current !== null,
       currentTempPercent: current === null ? 0 : percentFor(current),
+      secondary: secondary[i] === null ? null : { color: secondaryColor, value: secondary[i] },
     }
     return html`<clock-weather-card-forecast-list-item .item=${item}></clock-weather-card-forecast-list-item>`
   })}
       </div>
     `
+  }
+
+  private _secondaryLabels(attribute: string, bars: ListBar[]): (string | null)[] {
+    if (attribute === 'none') return bars.map(() => null)
+    const unit = this.forecastAttributeUnit(attribute)
+    return bars.map(({ row }) => {
+      const value = displayedAttributeValue(row.forecast, attribute)
+      return value === null ? null : formatWithUnit(formatNumber(value, this.config), unit)
+    })
   }
 
   private _rowsStyle(): string {

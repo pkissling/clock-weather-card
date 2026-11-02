@@ -286,6 +286,30 @@ export default css`
     display: block;
   }
 
+  /* The secondary value overlays the icon's lower edge so it costs neither a column nor row height. */
+  clock-weather-card-forecast-list-item .icon {
+    position: relative;
+    display: block;
+  }
+
+  clock-weather-card-forecast-list-item .secondary {
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0;
+    text-align: center;
+    font-size: 0.6em;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--info-color, #4a90d9);
+    pointer-events: none;
+  }
+
+  clock-weather-card-forecast-list-item .secondary--monochrome {
+    color: inherit;
+  }
+
   clock-weather-card-forecast-list-item clock-weather-card-icon img {
     width: 100%;
     height: 100%;

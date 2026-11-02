@@ -37,6 +37,7 @@
     "attribute_icon": "Icono del atributo",
     "attribute_unit": "Unidad del atributo",
     "attribute_color": "Color del atributo",
+    "secondary_attribute": "Atributo secundario",
     "row_height": "Altura de fila",
     "bar_thickness": "Grosor de la barra",
     "hide_current_temp_indicator": "Ocultar punto de temperatura actual",
@@ -80,7 +81,8 @@
     "fill": "Relleno",
     "flat": "Plano",
     "line": "Línea",
-    "monochrome": "Monocromo"
+    "monochrome": "Monocromo",
+    "none": "Oculto"
   },
   "attributes": {
     "temperature": "Temperatura",

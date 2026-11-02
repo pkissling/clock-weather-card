@@ -37,6 +37,7 @@
     "attribute_icon": "Icona de l'atribut",
     "attribute_unit": "Unitat de l'atribut",
     "attribute_color": "Color de l'atribut",
+    "secondary_attribute": "Atribut secundari",
     "row_height": "Alçada de fila",
     "bar_thickness": "Gruix de la barra",
     "hide_current_temp_indicator": "Amaga el punt de temperatura actual",
@@ -80,7 +81,8 @@
     "fill": "Ple",
     "flat": "Pla",
     "line": "Línia",
-    "monochrome": "Monocrom"
+    "monochrome": "Monocrom",
+    "none": "Amagat"
   },
   "attributes": {
     "temperature": "Temperatura",

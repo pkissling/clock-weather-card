@@ -37,6 +37,7 @@
     "attribute_icon": "Biểu tượng thuộc tính",
     "attribute_unit": "Đơn vị thuộc tính",
     "attribute_color": "Màu thuộc tính",
+    "secondary_attribute": "Thuộc tính phụ",
     "row_height": "Chiều cao hàng",
     "bar_thickness": "Độ dày thanh",
     "hide_current_temp_indicator": "Ẩn chấm nhiệt độ hiện tại",
@@ -80,7 +81,8 @@
     "fill": "Tô đầy",
     "flat": "Phẳng",
     "line": "Đường nét",
-    "monochrome": "Đơn sắc"
+    "monochrome": "Đơn sắc",
+    "none": "Ẩn"
   },
   "attributes": {
     "temperature": "Nhiệt độ",

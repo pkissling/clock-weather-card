@@ -37,6 +37,7 @@
     "attribute_icon": "סמל מאפיין",
     "attribute_unit": "יחידת מאפיין",
     "attribute_color": "צבע מאפיין",
+    "secondary_attribute": "מאפיין משני",
     "row_height": "גובה שורה",
     "bar_thickness": "עובי פס",
     "hide_current_temp_indicator": "הסתר נקודת טמפרטורה נוכחית",
@@ -80,7 +81,8 @@
     "fill": "מלא",
     "flat": "שטוח",
     "line": "קווי",
-    "monochrome": "מונוכרום"
+    "monochrome": "מונוכרום",
+    "none": "מוסתר"
   },
   "attributes": {
     "temperature": "טמפרטורה",

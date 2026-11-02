@@ -37,6 +37,7 @@
     "attribute_icon": "属性图标",
     "attribute_unit": "属性单位",
     "attribute_color": "属性颜色",
+    "secondary_attribute": "次要属性",
     "row_height": "行高",
     "bar_thickness": "条形粗细",
     "hide_current_temp_indicator": "隐藏当前温度圆点",
@@ -80,7 +81,8 @@
     "fill": "填充",
     "flat": "扁平",
     "line": "线条",
-    "monochrome": "单色"
+    "monochrome": "单色",
+    "none": "已隐藏"
   },
   "attributes": {
     "temperature": "温度",

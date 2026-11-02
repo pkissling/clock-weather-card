@@ -37,6 +37,7 @@
     "attribute_icon": "属性アイコン",
     "attribute_unit": "属性の単位",
     "attribute_color": "属性の色",
+    "secondary_attribute": "サブ属性",
     "row_height": "行の高さ",
     "bar_thickness": "バーの太さ",
     "hide_current_temp_indicator": "現在の温度の点を非表示",
@@ -80,7 +81,8 @@
     "fill": "塗りつぶし",
     "flat": "フラット",
     "line": "線",
-    "monochrome": "モノクロ"
+    "monochrome": "モノクロ",
+    "none": "非表示"
   },
   "attributes": {
     "temperature": "温度",
