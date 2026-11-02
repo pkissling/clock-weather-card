@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "현재 온도 점 숨기기",
     "gradient": "색상 그라데이션",
     "font_size": "글꼴 크기",
+    "color": "색상",
     "alignment": "정렬",
     "time_pattern": "시간 형식",
     "date_pattern": "날짜 형식",

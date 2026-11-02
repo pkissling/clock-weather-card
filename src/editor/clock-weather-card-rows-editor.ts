@@ -104,7 +104,19 @@ export class ClockWeatherCardRowsEditor extends LitElement {
     const ctx = { hass: this.hass, config: this.config }
     const onChange = (changes: Data): void => this._updateRow(index, { ...row, ...changes } as RowConfig)
     return ROW_FIELDS.filter(f => f.control !== 'segments')
-      .map(f => isFormField(f) ? renderForm(ctx, [f], row as unknown as Data, {}, onChange) : renderSlider(ctx, f, row as unknown as Data, {}, onChange))
+      .map(f => {
+        if (isFormField(f)) return renderForm(ctx, [f], row as unknown as Data, {}, onChange)
+        if (f.control === 'color') return html`
+          <clock-weather-card-color-picker
+            data-field=${f.name}
+            .hass=${this.hass}
+            .label=${this.t(`fields.${f.name}`)}
+            .value=${row.color}
+            @color-changed=${(e: CustomEvent<string | null>) => { e.stopPropagation(); onChange({ color: e.detail ?? undefined }) }}
+          ></clock-weather-card-color-picker>
+        `
+        return renderSlider(ctx, f, row as unknown as Data, {}, onChange)
+      })
   }
 
   private _renderChip(segment: SegmentConfig, row: number, index: number, selected: boolean): TemplateResult {

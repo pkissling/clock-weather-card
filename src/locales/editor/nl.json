@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Punt huidige temperatuur verbergen",
     "gradient": "Kleurverloop",
     "font_size": "Lettergrootte",
+    "color": "Kleur",
     "alignment": "Uitlijning",
     "time_pattern": "Tijdnotatie",
     "date_pattern": "Datumnotatie",

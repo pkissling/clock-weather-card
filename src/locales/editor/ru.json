@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Скрыть точку текущей температуры",
     "gradient": "Цветовой градиент",
     "font_size": "Размер шрифта",
+    "color": "Цвет",
     "alignment": "Выравнивание",
     "time_pattern": "Формат времени",
     "date_pattern": "Формат даты",

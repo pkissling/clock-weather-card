@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Скриване на точката за текущата температура",
     "gradient": "Цветови преход",
     "font_size": "Размер на шрифта",
+    "color": "Цвят",
     "alignment": "Подравняване",
     "time_pattern": "Формат на часа",
     "date_pattern": "Формат на датата",

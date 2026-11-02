@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Dölj punkt för aktuell temperatur",
     "gradient": "Färggradient",
     "font_size": "Teckenstorlek",
+    "color": "Färg",
     "alignment": "Justering",
     "time_pattern": "Tidsformat",
     "date_pattern": "Datumformat",

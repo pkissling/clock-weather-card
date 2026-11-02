@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "ซ่อนจุดอุณหภูมิปัจจุบัน",
     "gradient": "การไล่สี",
     "font_size": "ขนาดตัวอักษร",
+    "color": "สี",
     "alignment": "การจัดแนว",
     "time_pattern": "รูปแบบเวลา",
     "date_pattern": "รูปแบบวันที่",

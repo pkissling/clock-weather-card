@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Skrij piko trenutne temperature",
     "gradient": "Barvni preliv",
     "font_size": "Velikost pisave",
+    "color": "Barva",
     "alignment": "Poravnava",
     "time_pattern": "Oblika časa",
     "date_pattern": "Oblika datuma",

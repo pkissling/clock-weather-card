@@ -99,6 +99,7 @@ export const ROW_ALIGNMENTS = ['left', 'center', 'right'] as const
 export interface RowConfig {
   segments: SegmentConfig[]
   font_size?: string
+  color?: string
   alignment?: typeof ROW_ALIGNMENTS[number]
 }
 

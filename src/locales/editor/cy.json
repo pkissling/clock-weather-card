@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Cuddio dot y tymheredd presennol",
     "gradient": "Graddiant lliw",
     "font_size": "Maint ffont",
+    "color": "Lliw",
     "alignment": "Aliniad",
     "time_pattern": "Fformat amser",
     "date_pattern": "Fformat dyddiad",

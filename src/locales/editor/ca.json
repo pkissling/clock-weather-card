@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Amaga el punt de temperatura actual",
     "gradient": "Degradat de color",
     "font_size": "Mida de la lletra",
+    "color": "Color",
     "alignment": "Alineació",
     "time_pattern": "Format de l'hora",
     "date_pattern": "Format de la data",

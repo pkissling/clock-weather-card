@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Приховати точку поточної температури",
     "gradient": "Колірний градієнт",
     "font_size": "Розмір шрифту",
+    "color": "Колір",
     "alignment": "Вирівнювання",
     "time_pattern": "Формат часу",
     "date_pattern": "Формат дати",

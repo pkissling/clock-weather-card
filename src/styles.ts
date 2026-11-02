@@ -4,6 +4,12 @@ import { css } from 'lit'
 // Safari 15.4, and a var() declaration an old browser can't parse resets the property instead of keeping the fallback.
 export default css`
 
+  /* Public theme variables. Without a fallback, an unset variable makes the property inherit, as before. */
+  ha-card {
+    font-family: var(--clock-weather-card-font-family);
+    color: var(--clock-weather-card-text-color, var(--primary-text-color));
+  }
+
   ha-card.clickable {
     cursor: pointer;
   }
@@ -125,7 +131,7 @@ export default css`
 
   clock-weather-card-divider {
     display: block;
-    background-color: var(--divider-color, rgba(127, 127, 127, 0.2));
+    background-color: var(--clock-weather-card-divider-color, var(--divider-color, rgba(127, 127, 127, 0.2)));
     height: 1px;
     margin: 2px 0;
   }
@@ -171,6 +177,7 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item .time {
+    color: var(--clock-weather-card-secondary-text-color);
     font-size: 0.8em;
     opacity: 0.7;
     line-height: 1;
@@ -201,6 +208,7 @@ export default css`
   }
 
   clock-weather-card-forecast-strip-item .temperature-low {
+    color: var(--clock-weather-card-secondary-text-color);
     font-size: 0.8em;
     opacity: 0.6;
     line-height: 1;
@@ -210,7 +218,7 @@ export default css`
   clock-weather-card-forecast-strip-item .attribute {
     font-size: 0.72em;
     opacity: 0.65;
-    color: var(--info-color, #4a90d9);
+    color: var(--clock-weather-card-accent-color, var(--info-color, #4a90d9));
     line-height: 1;
     min-height: 1em;
     display: flex;
@@ -317,7 +325,7 @@ export default css`
 
   @supports (color: color-mix(in srgb, red, red)) {
     clock-weather-card-forecast-list-item .bar-track {
-      background-color: var(--clock-weather-card-bar-track-color, color-mix(in srgb, var(--secondary-text-color, #727272) 10%, transparent));
+      background-color: var(--clock-weather-card-bar-track-color, color-mix(in srgb, var(--clock-weather-card-secondary-text-color, var(--secondary-text-color, #727272)) 10%, transparent));
     }
   }
 
@@ -340,7 +348,7 @@ export default css`
     height: var(--_dot-size);
     border-radius: 50%;
     background: var(--card-background-color, var(--ha-card-background, #fff));
-    border: 2px solid var(--primary-text-color, currentColor);
+    border: 2px solid currentColor;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     z-index: 1;

@@ -131,6 +131,21 @@ test.describe('GUI editor', () => {
       .toBe('3.75rem')
   })
 
+  test('sets the color of a header row', async ({ page, setupCard }) => {
+    await setupCard()
+    const editor = await openEditor(page)
+
+    await editor.getByText('Header')
+      .click()
+    await editor.locator('[data-row="1"]')
+      .getByRole('textbox', { name: 'Color' })
+      .fill('#ff0000')
+
+    const config = await saveEditor(page)
+    expect((config.sections as { header: { rows: { color?: string }[] } }).header.rows[1].color)
+      .toBe('#ff0000')
+  })
+
   test('sets the forecast font size without expanding more options', async ({ page, setupCard }) => {
     await setupCard()
     const editor = await openEditor(page)

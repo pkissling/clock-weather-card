@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Ẩn chấm nhiệt độ hiện tại",
     "gradient": "Dải màu chuyển",
     "font_size": "Cỡ chữ",
+    "color": "Màu",
     "alignment": "Căn chỉnh",
     "time_pattern": "Định dạng giờ",
     "date_pattern": "Định dạng ngày",

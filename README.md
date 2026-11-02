@@ -495,6 +495,7 @@ Each header row is a horizontal line of segments.
 |--------|------|----------|---------|-------------|
 | `segments` | list | **yes** | - | List of segments in this row |
 | `font_size` | string | no | inherited | CSS font-size (e.g. `14px`, `3rem`) |
+| `color` | string | no | inherited | CSS text color of the row, e.g. `"#ff9800"` or `var(--accent-color)`. Icons follow it unless they have their own color. |
 | `alignment` | `left` \| `center` \| `right` | no | start of the row | Horizontal position of the row's segments. Always refers to the physical side, also in right-to-left languages. Has no effect when the row contains a `spacer`. |
 
 ### Segment Types
@@ -644,6 +645,53 @@ rows:
         icon: mdi:calendar
       - type: date
 ```
+
+### Theme variables
+
+Fonts and colors follow your Home Assistant theme. To style the card differently, set these CSS variables in a [theme](https://www.home-assistant.io/integrations/frontend/#defining-themes) (or with card-mod); each falls back to the theme variable in brackets:
+
+| Variable | Default | Styles |
+|----------|---------|--------|
+| `clock-weather-card-font-family` | inherited | Font of the whole card |
+| `clock-weather-card-text-color` | `primary-text-color` | Text and icons, and the ring of the current temperature dot |
+| `clock-weather-card-secondary-text-color` | inherited text color (bar track: `secondary-text-color`) | Times and low temperatures of the forecast strip, and the track of the forecast list bars |
+| `clock-weather-card-divider-color` | `divider-color` | Line between the sections |
+| `clock-weather-card-accent-color` | `info-color` | Attribute row of the forecast strip when `attribute` is set and `attribute_color` is not |
+| `clock-weather-card-bar-track-color` | 10% of `secondary-text-color` | Track of the forecast list bars |
+
+```yaml
+# configuration.yaml: frontend: themes: !include_dir_merge_named themes
+my-theme:
+  clock-weather-card-font-family: "'Roboto Mono', monospace"
+  clock-weather-card-text-color: "#e0e0e0"
+  clock-weather-card-secondary-text-color: "#9e9e9e"
+  clock-weather-card-divider-color: transparent
+  clock-weather-card-accent-color: "#ff9800"
+```
+
+To color a single header row instead, use the row's `color` option:
+
+<!-- preview: row-color
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+sections:
+  header:
+    rows:
+      - font_size: 4rem
+        color: "#ff9800"
+        segments:
+          - type: time
+      - segments:
+          - type: date
+  forecast_strip:
+    hide: true
+  forecast_list:
+    hide: true
+```
+
+![Header with an orange clock row](docs/previews/row-color.png)
 
 ## FAQ
 

@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "隱藏目前溫度圓點",
     "gradient": "顏色漸層",
     "font_size": "字型大小",
+    "color": "顏色",
     "alignment": "對齊",
     "time_pattern": "時間格式",
     "date_pattern": "日期格式",

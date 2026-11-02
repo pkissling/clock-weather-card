@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "現在の温度の点を非表示",
     "gradient": "カラーグラデーション",
     "font_size": "フォントサイズ",
+    "color": "色",
     "alignment": "配置",
     "time_pattern": "時刻の形式",
     "date_pattern": "日付の形式",

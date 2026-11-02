@@ -141,6 +141,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   assertString('sections.forecast_list.attribute_unit', list?.attribute_unit)
   header?.rows?.forEach((row, i) => {
     assertEnumValue(`sections.header.rows[${i}].alignment`, row.alignment, ROW_ALIGNMENTS)
+    assertNonEmptyString(`sections.header.rows[${i}].color`, row.color)
     if (row.segments == null) throw requiredConfigMissing(`sections.header.rows[${i}].segments`)
     if (!Array.isArray(row.segments)) throw invalidConfigValue(`sections.header.rows[${i}].segments`, String(row.segments), 'a list of segments')
     row.segments.forEach((segment, j) => {

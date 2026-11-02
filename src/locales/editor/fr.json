@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Masquer le point de température actuelle",
     "gradient": "Dégradé de couleurs",
     "font_size": "Taille de police",
+    "color": "Couleur",
     "alignment": "Alignement",
     "time_pattern": "Format de l'heure",
     "date_pattern": "Format de la date",

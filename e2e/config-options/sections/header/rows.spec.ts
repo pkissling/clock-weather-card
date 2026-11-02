@@ -191,6 +191,45 @@ test.describe('sections.header.rows', () => {
       .toContain('Config option "sections.header.rows[0].segments" is required')
   })
 
+  test('color sets the text color of the row', async ({ setupCard, clockWeatherCard }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - color: rgb(255, 0, 0)
+                segments:
+                  - type: text
+                    text: Red
+              - segments:
+                  - type: text
+                    text: Default
+      `,
+    })
+
+    const texts = clockWeatherCard.locator('clock-weather-card-text-segment')
+    await expect(texts.first())
+      .toHaveCSS('color', 'rgb(255, 0, 0)')
+    await expect(texts.last())
+      .not.toHaveCSS('color', 'rgb(255, 0, 0)')
+  })
+
+  test('rejects an empty row color', async ({ setupCard, cardErrorMessage }) => {
+    await setupCard({
+      cardConfig: `
+        sections:
+          header:
+            rows:
+              - color: ''
+                segments:
+                  - type: time
+      `,
+    })
+
+    await cardErrorMessage()
+      .toContain('Config option "sections.header.rows[0].color" has invalid value "", expected a non-empty string')
+  })
+
   test('renders a text segment with its static text', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       cardConfig: `

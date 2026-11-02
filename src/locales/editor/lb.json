@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Punkt vun der aktueller Temperatur verstoppen",
     "gradient": "Faarfverlaf",
     "font_size": "Schrëftgréisst",
+    "color": "Faarf",
     "alignment": "Ausriichtung",
     "time_pattern": "Zäitformat",
     "date_pattern": "Datumsformat",

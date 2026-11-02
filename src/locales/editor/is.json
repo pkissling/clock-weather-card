@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Fela punkt núverandi hitastigs",
     "gradient": "Litastigull",
     "font_size": "Leturstærð",
+    "color": "Litur",
     "alignment": "Jöfnun",
     "time_pattern": "Tímasnið",
     "date_pattern": "Dagsetningarsnið",

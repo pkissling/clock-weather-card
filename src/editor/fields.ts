@@ -151,6 +151,7 @@ export const ROW_FIELDS: EditorField[] = [
   { name: 'segments', control: 'segments' },
   { name: 'alignment', selector: { select: { mode: 'box', options: ROW_ALIGNMENTS } }, default: () => document.dir === 'rtl' ? 'right' : 'left' },
   { name: 'font_size', ...slider(0.5, 8, 0.25, 'rem') },
+  { name: 'color', control: 'color' },
 ]
 
 // Empty means the automatic unit; "No unit" sets show_unit: false.

@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Skjul prik for aktuel temperatur",
     "gradient": "Farveforløb",
     "font_size": "Skriftstørrelse",
+    "color": "Farve",
     "alignment": "Justering",
     "time_pattern": "Tidsformat",
     "date_pattern": "Datoformat",

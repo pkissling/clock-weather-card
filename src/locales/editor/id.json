@@ -42,6 +42,7 @@
     "hide_current_temp_indicator": "Sembunyikan titik suhu saat ini",
     "gradient": "Gradien warna",
     "font_size": "Ukuran font",
+    "color": "Warna",
     "alignment": "Perataan",
     "time_pattern": "Format waktu",
     "date_pattern": "Format tanggal",
