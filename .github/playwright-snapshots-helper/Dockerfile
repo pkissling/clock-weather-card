@@ -11,7 +11,7 @@ ENV E2E_IN_DOCKER=1 PLAYWRIGHT_HTML_OPEN=never
 WORKDIR /work
 
 # Ensure Yarn (via Corepack) is available
-RUN corepack enable
+RUN npm install -g --force corepack && corepack enable
 
 # Copy package manager files first to leverage Docker layer caching
 COPY package.json yarn.lock .yarnrc.yml ./
