@@ -1,5 +1,5 @@
 # Digest-pinned: the tag is mutable, and a republished image renders fonts differently and breaks snapshots.
-FROM mcr.microsoft.com/playwright:v1.64.1-jammy@sha256:6075bd984554db82aee96bcdde53197f091dfe8c4b89322c61da77b86308b810
+FROM mcr.microsoft.com/playwright:v1.64.1-jammy@sha256:a3966b653e8d48a30901889081b616307fca73e0d843a117fadf6609397dac38
 
 # The host's docker binary can't be mounted in from macOS (Mach-O), so ship a Linux CLI.
 COPY --from=docker:29-cli /usr/local/bin/docker /usr/local/bin/docker
@@ -11,7 +11,7 @@ ENV E2E_IN_DOCKER=1 PLAYWRIGHT_HTML_OPEN=never
 WORKDIR /work
 
 # Ensure Yarn (via Corepack) is available
-RUN corepack enable
+RUN npm install -g --force corepack && corepack enable
 
 # Copy package manager files first to leverage Docker layer caching
 COPY package.json yarn.lock .yarnrc.yml ./
