@@ -24,6 +24,7 @@
     "locale": "Språk",
     "temperature_unit": "Temperaturenhet",
     "temperature": "Temperatursensor",
+    "date_time_utc": "Tidssensor",
     "tap_action": "Tryckåtgärd",
     "rows": "Rader",
     "animated_icons": "Animerade ikoner",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Valfritt. Läser aktuell temperatur från denna sensor i stället för väderentiteten, t.ex. en väderstation eller utomhussensor",
+    "date_time_utc": "Valfritt. Synkroniserar klockan med Home Assistants tid via sensor.date_time_utc",
     "sun_entity": "Avgör om dag- eller nattikoner används",
     "time_zone": "Standard är Home Assistants tidszon",
     "locale": "Standard är Home Assistants språk",

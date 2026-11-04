@@ -353,13 +353,29 @@ test.describe('GUI editor', () => {
     const editor = await openEditor(page)
 
     await expandPanel(editor, 'Icons & temperatures')
-    await editor.getByText('Select an entity')
+    await editor.getByLabel('Temperature sensor')
+      .getByText('Select an entity')
       .click()
     await editor.getByText('Outdoor temperature', { exact: true })
       .click()
 
     expect(await saveEditor(page))
       .toEqual({ entity: 'weather.mock_weather', additional_sensors: { temperature: 'sensor.e2e_outdoor_temperature' } })
+  })
+
+  test('sets the date time sensor to any sensor, not only one of the Time & Date integration', async ({ page, setupCard }) => {
+    await setupCard({ entities: { 'sensor.e2e_server_time': { state: '2025-09-14, 08:20', attributes: { friendly_name: 'Server time' } } } })
+    const editor = await openEditor(page)
+
+    await expandPanel(editor, 'Icons & temperatures')
+    await editor.getByLabel('Time sensor')
+      .getByText('Select an entity')
+      .click()
+    await editor.getByText('Server time', { exact: true })
+      .click()
+
+    expect(await saveEditor(page))
+      .toEqual({ entity: 'weather.mock_weather', additional_sensors: { date_time_utc: 'sensor.e2e_server_time' } })
   })
 
   test('sets the header icon size with a slider and resets it to automatic', async ({ page, setupCard }) => {

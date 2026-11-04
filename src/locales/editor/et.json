@@ -24,6 +24,7 @@
     "locale": "Keel",
     "temperature_unit": "Temperatuuriühik",
     "temperature": "Temperatuuriandur",
+    "date_time_utc": "Ajaandur",
     "tap_action": "Puudutuse toiming",
     "rows": "Read",
     "animated_icons": "Animeeritud ikoonid",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Valikuline. Loeb praeguse temperatuuri ilmaüksuse asemel sellelt andurilt, nt ilmajaamast või välisandurilt",
+    "date_time_utc": "Valikuline. Sünkroonib kella Home Assistanti ajaga sensor.date_time_utc kaudu",
     "sun_entity": "Määrab päeva- või ööikoonid",
     "time_zone": "Vaikimisi Home Assistanti ajavöönd",
     "locale": "Vaikimisi Home Assistanti keel",

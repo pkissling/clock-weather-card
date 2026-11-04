@@ -24,6 +24,7 @@
     "locale": "Sprog",
     "temperature_unit": "Temperaturenhed",
     "temperature": "Temperatursensor",
+    "date_time_utc": "Tidssensor",
     "tap_action": "Tryk-handling",
     "rows": "Rækker",
     "animated_icons": "Animerede ikoner",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Valgfri. Læser den aktuelle temperatur fra denne sensor i stedet for vejrentiteten, f.eks. en vejrstation eller udendørssensor",
+    "date_time_utc": "Valgfri. Synkroniserer uret med Home Assistants tid via sensor.date_time_utc",
     "sun_entity": "Afgør valget mellem dag- og natikoner",
     "time_zone": "Standard er Home Assistants tidszone",
     "locale": "Standard er Home Assistants sprog",

@@ -67,6 +67,7 @@ describe('ClockWeatherCard timer behavior', () => {
     const card = Object.create(CardClass.prototype)
     card.currentDate = DateTime.now()
     card._clock = null
+    card._clockOffset = 0
     card.isConnected = true
 
     card.hass = {

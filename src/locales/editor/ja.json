@@ -24,6 +24,7 @@
     "locale": "言語",
     "temperature_unit": "温度単位",
     "temperature": "温度センサー",
+    "date_time_utc": "時刻センサー",
     "tap_action": "タップアクション",
     "rows": "行",
     "animated_icons": "アニメーションアイコン",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "任意。現在の気温を天気エンティティではなくこのセンサーから読み取ります（例: 気象ステーションや屋外センサー）",
+    "date_time_utc": "任意。sensor.date_time_utc を使って時計を Home Assistant の時刻に同期します",
     "sun_entity": "昼と夜のアイコンを切り替えます",
     "time_zone": "デフォルトは Home Assistant のタイムゾーン",
     "locale": "デフォルトは Home Assistant の言語",

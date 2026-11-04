@@ -24,6 +24,7 @@
     "locale": "Limbă",
     "temperature_unit": "Unitate de temperatură",
     "temperature": "Senzor de temperatură",
+    "date_time_utc": "Senzor de oră",
     "tap_action": "Acțiune la atingere",
     "rows": "Rânduri",
     "animated_icons": "Pictograme animate",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Opțional. Citește temperatura curentă de la acest senzor în locul entității meteo, de ex. o stație meteo sau un senzor exterior",
+    "date_time_utc": "Opțional. Sincronizează ceasul cu ora Home Assistant prin sensor.date_time_utc",
     "sun_entity": "Decide între pictogramele de zi și de noapte",
     "time_zone": "Implicit, fusul orar al Home Assistant",
     "locale": "Implicit, limba Home Assistant",

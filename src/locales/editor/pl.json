@@ -24,6 +24,7 @@
     "locale": "Język",
     "temperature_unit": "Jednostka temperatury",
     "temperature": "Czujnik temperatury",
+    "date_time_utc": "Czujnik czasu",
     "tap_action": "Akcja dotknięcia",
     "rows": "Wiersze",
     "animated_icons": "Animowane ikony",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Opcjonalne. Odczytuje bieżącą temperaturę z tego czujnika zamiast z encji pogody, np. ze stacji pogodowej lub czujnika zewnętrznego",
+    "date_time_utc": "Opcjonalnie. Synchronizuje zegar z czasem Home Assistanta za pomocą sensor.date_time_utc",
     "sun_entity": "Decyduje o wyborze ikon dziennych lub nocnych",
     "time_zone": "Domyślnie strefa czasowa Home Assistant",
     "locale": "Domyślnie język Home Assistant",

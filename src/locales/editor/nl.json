@@ -24,6 +24,7 @@
     "locale": "Taal",
     "temperature_unit": "Temperatuureenheid",
     "temperature": "Temperatuursensor",
+    "date_time_utc": "Tijdsensor",
     "tap_action": "Tikactie",
     "rows": "Rijen",
     "animated_icons": "Geanimeerde pictogrammen",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Optioneel. Leest de huidige temperatuur van deze sensor in plaats van de weerentiteit, bijv. een weerstation of buitensensor",
+    "date_time_utc": "Optioneel. Synchroniseert de klok via sensor.date_time_utc met de tijd van Home Assistant",
     "sun_entity": "Bepaalt de keuze tussen dag- en nachtpictogrammen",
     "time_zone": "Standaard de tijdzone van Home Assistant",
     "locale": "Standaard de taal van Home Assistant",

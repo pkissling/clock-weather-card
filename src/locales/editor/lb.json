@@ -24,6 +24,7 @@
     "locale": "Sprooch",
     "temperature_unit": "Temperatureenheet",
     "temperature": "Temperatursensor",
+    "date_time_utc": "Zäitsensor",
     "tap_action": "Tipp-Aktioun",
     "rows": "Zeilen",
     "animated_icons": "Animéiert Iconen",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Optional. Liest déi aktuell Temperatur vun dësem Sensor amplaz vun der Wieder-Entitéit, z. B. enger Wiederstatioun oder engem Baussesensor",
+    "date_time_utc": "Optional. Synchroniséiert d'Auer iwwer sensor.date_time_utc mat der Zäit vum Home Assistant",
     "sun_entity": "Entscheet tëscht Dag- an Nuechticonen",
     "time_zone": "Standard ass d'Zäitzon vun Home Assistant",
     "locale": "Standard ass d'Sprooch vun Home Assistant",

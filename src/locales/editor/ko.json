@@ -24,6 +24,7 @@
     "locale": "언어",
     "temperature_unit": "온도 단위",
     "temperature": "온도 센서",
+    "date_time_utc": "시간 센서",
     "tap_action": "탭 동작",
     "rows": "행",
     "animated_icons": "애니메이션 아이콘",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "선택 사항. 현재 온도를 날씨 엔터티 대신 이 센서에서 읽습니다(예: 기상 관측소 또는 실외 센서)",
+    "date_time_utc": "선택 사항. sensor.date_time_utc를 통해 시계를 Home Assistant 시간과 동기화합니다",
     "sun_entity": "낮 아이콘과 밤 아이콘을 결정합니다",
     "time_zone": "기본값은 Home Assistant의 시간대입니다",
     "locale": "기본값은 Home Assistant의 언어입니다",

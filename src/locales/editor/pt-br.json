@@ -24,6 +24,7 @@
     "locale": "Idioma",
     "temperature_unit": "Unidade de temperatura",
     "temperature": "Sensor de temperatura",
+    "date_time_utc": "Sensor de hora",
     "tap_action": "Ação de toque",
     "rows": "Linhas",
     "animated_icons": "Ícones animados",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Opcional. Lê a temperatura atual deste sensor em vez da entidade de clima, por ex. uma estação meteorológica ou um sensor externo",
+    "date_time_utc": "Opcional. Sincroniza o relógio com a hora do Home Assistant via sensor.date_time_utc",
     "sun_entity": "Decide entre ícones de dia e de noite",
     "time_zone": "Padrão: o fuso horário do Home Assistant",
     "locale": "Padrão: o idioma do Home Assistant",

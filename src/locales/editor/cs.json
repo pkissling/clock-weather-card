@@ -24,6 +24,7 @@
     "locale": "Jazyk",
     "temperature_unit": "Jednotka teploty",
     "temperature": "Teplotní senzor",
+    "date_time_utc": "Senzor času",
     "tap_action": "Akce při klepnutí",
     "rows": "Řádky",
     "animated_icons": "Animované ikony",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Volitelné. Čte aktuální teplotu z tohoto senzoru místo z entity počasí, např. z meteostanice nebo venkovního senzoru",
+    "date_time_utc": "Volitelné. Synchronizuje hodiny s časem Home Assistantu pomocí sensor.date_time_utc",
     "sun_entity": "Rozhoduje mezi denními a nočními ikonami",
     "time_zone": "Ve výchozím nastavení časové pásmo Home Assistant",
     "locale": "Ve výchozím nastavení jazyk Home Assistant",

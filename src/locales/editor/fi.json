@@ -24,6 +24,7 @@
     "locale": "Kieli",
     "temperature_unit": "Lämpötilayksikkö",
     "temperature": "Lämpötila-anturi",
+    "date_time_utc": "Aika-anturi",
     "tap_action": "Napautustoiminto",
     "rows": "Rivit",
     "animated_icons": "Animoidut kuvakkeet",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Valinnainen. Lukee nykyisen lämpötilan tästä anturista sääentiteetin sijaan, esim. sääasemalta tai ulkoanturista",
+    "date_time_utc": "Valinnainen. Synkronoi kellon Home Assistantin aikaan sensor.date_time_utc-anturin avulla",
     "sun_entity": "Valitsee päivä- tai yökuvakkeet",
     "time_zone": "Oletuksena Home Assistantin aikavyöhyke",
     "locale": "Oletuksena Home Assistantin kieli",

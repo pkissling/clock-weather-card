@@ -24,6 +24,7 @@
     "locale": "Idioma",
     "temperature_unit": "Unitat de temperatura",
     "temperature": "Sensor de temperatura",
+    "date_time_utc": "Sensor d'hora",
     "tap_action": "Acció en tocar",
     "rows": "Files",
     "animated_icons": "Icones animades",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Opcional. Llegeix la temperatura actual d'aquest sensor en lloc de l'entitat meteorològica, p. ex. una estació meteorològica o un sensor exterior",
+    "date_time_utc": "Opcional. Sincronitza el rellotge amb l'hora de Home Assistant mitjançant sensor.date_time_utc",
     "sun_entity": "Decideix entre icones de dia i de nit",
     "time_zone": "Per defecte, la zona horària de Home Assistant",
     "locale": "Per defecte, l'idioma de Home Assistant",

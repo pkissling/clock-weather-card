@@ -24,6 +24,7 @@
     "locale": "Jezik",
     "temperature_unit": "Enota temperature",
     "temperature": "Temperaturni senzor",
+    "date_time_utc": "Senzor časa",
     "tap_action": "Dejanje ob dotiku",
     "rows": "Vrstice",
     "animated_icons": "Animirane ikone",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Neobvezno. Trenutno temperaturo bere s tega senzorja namesto iz vremenske entitete, npr. z vremenske postaje ali zunanjega senzorja",
+    "date_time_utc": "Izbirno. Uskladi uro s časom Home Assistanta prek sensor.date_time_utc",
     "sun_entity": "Določa izbiro med dnevnimi in nočnimi ikonami",
     "time_zone": "Privzeto časovni pas Home Assistanta",
     "locale": "Privzeto jezik Home Assistanta",
