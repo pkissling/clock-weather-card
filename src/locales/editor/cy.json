@@ -24,6 +24,7 @@
     "locale": "Iaith",
     "temperature_unit": "Uned tymheredd",
     "temperature": "Synhwyrydd tymheredd",
+    "date_time_utc": "Synhwyrydd amser",
     "tap_action": "Gweithred tapio",
     "rows": "Rhesi",
     "animated_icons": "Eiconau wedi'u hanimeiddio",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Dewisol. Yn darllen y tymheredd presennol o'r synhwyrydd hwn yn lle'r endid tywydd, e.e. gorsaf dywydd neu synhwyrydd awyr agored",
+    "date_time_utc": "Dewisol. Yn cysoni'r cloc ag amser Home Assistant drwy sensor.date_time_utc",
     "sun_entity": "Yn penderfynu rhwng eiconau dydd a nos",
     "time_zone": "Cylchfa amser Home Assistant yn ddiofyn",
     "locale": "Iaith Home Assistant yn ddiofyn",

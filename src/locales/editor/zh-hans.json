@@ -24,6 +24,7 @@
     "locale": "语言",
     "temperature_unit": "温度单位",
     "temperature": "温度传感器",
+    "date_time_utc": "时间传感器",
     "tap_action": "点击动作",
     "rows": "行",
     "animated_icons": "动画图标",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "可选。从此传感器而非天气实体读取当前温度，例如气象站或室外传感器",
+    "date_time_utc": "可选。通过 sensor.date_time_utc 将时钟与 Home Assistant 的时间同步",
     "sun_entity": "用于决定显示白天或夜间图标",
     "time_zone": "默认为 Home Assistant 的时区",
     "locale": "默认为 Home Assistant 的语言",

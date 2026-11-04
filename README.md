@@ -392,10 +392,12 @@ sections:
 | Name | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `temperature` | string | no | - | Entity ID of a temperature sensor (unit `°C` or `°F`) that replaces the weather entity's current temperature everywhere the card shows it: the `temperature` weather segment, the forecast list's current temperature dot and the "Now" entry of the hourly forecast strip. Values are converted to `temperature_unit`, shown in the header with the sensor's display precision when one is set in Home Assistant (regardless of `round_temperatures`), and otherwise rounded per section by `round_temperatures` (at most one decimal when not rounded). While the sensor is `unavailable` or `unknown`, the current temperature is hidden and the strip shows the forecast value. |
+| `date_time_utc` | string | no | - | Entity ID of a sensor whose state is the current UTC date and time as `yyyy-MM-dd, HH:mm` (e.g. `2026-11-04, 10:15`), changing at every full minute, such as `sensor.date_time_utc` of Home Assistant's [Time & Date](https://www.home-assistant.io/integrations/time_date/) integration or a template sensor. Syncs the clock (and everything that depends on the current time) with Home Assistant's server time instead of the device's, e.g. for wall tablets whose clock drifts. The first sync happens when the sensor changes at the next full minute after loading; until then the device time is shown. Accurate to the network delay. |
 
 ```yaml
 additional_sensors:
   temperature: sensor.outdoor_temperature
+  date_time_utc: sensor.date_time_utc
 ```
 
 ### Sections Options

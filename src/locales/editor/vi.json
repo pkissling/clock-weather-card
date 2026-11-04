@@ -24,6 +24,7 @@
     "locale": "Ngôn ngữ",
     "temperature_unit": "Đơn vị nhiệt độ",
     "temperature": "Cảm biến nhiệt độ",
+    "date_time_utc": "Cảm biến thời gian",
     "tap_action": "Hành động khi nhấn",
     "rows": "Hàng",
     "animated_icons": "Biểu tượng động",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Tùy chọn. Đọc nhiệt độ hiện tại từ cảm biến này thay vì thực thể thời tiết, ví dụ trạm thời tiết hoặc cảm biến ngoài trời",
+    "date_time_utc": "Tùy chọn. Đồng bộ đồng hồ với thời gian của Home Assistant qua sensor.date_time_utc",
     "sun_entity": "Quyết định dùng biểu tượng ngày hay đêm",
     "time_zone": "Mặc định là múi giờ của Home Assistant",
     "locale": "Mặc định là ngôn ngữ của Home Assistant",

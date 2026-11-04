@@ -5,7 +5,7 @@ import type { ClockWeatherCardConfig, ResolvedConfig, RowConfig } from '@/types'
 import { ROW_ALIGNMENTS, SECTION_FORECAST_TYPES, SEGMENT_TYPES, TEMPERATURE_UNIT_SYMBOLS, WEATHER_ICON_TYPES } from '@/types'
 import { entityNotFound, invalidConfigValue, optionRequiresValue, requiredConfigMissing } from '@/utils/errors'
 import { DEFAULT_GRADIENT, isSupportedColor } from '@/utils/gradient'
-import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone } from '@/utils/luxon'
+import { DEFAULT_TIME_PATTERN, isValidLocale, isValidTimeZone, parseDateTimeUtc } from '@/utils/luxon'
 import { isTemperatureUnit } from '@/utils/temperature'
 
 export const DEFAULT_ROWS: RowConfig[] = [
@@ -116,6 +116,15 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
     const unit = hassService.getEntityUnitOfMeasurement(hass, sensor)
     if (!isTemperatureUnit(unit)) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with unit °C or °F, got "${unit}"`)
     if (!Number.isFinite(Number(sensorState))) throw invalidConfigValue('additional_sensors.temperature', sensor, `a sensor with a numeric state, got "${sensorState}"`)
+  }
+  assertNonEmptyString('additional_sensors.date_time_utc', sensors?.date_time_utc)
+  assertEntityExists(sensors?.date_time_utc)
+  const dateTimeSensor = sensors?.date_time_utc
+  if (dateTimeSensor && isAvailable(dateTimeSensor)) {
+    const dateTimeState = hassService.getEntityState(hass, dateTimeSensor)
+    if (!parseDateTimeUtc(dateTimeState).isValid) {
+      throw invalidConfigValue('additional_sensors.date_time_utc', dateTimeSensor, `a sensor with a "yyyy-MM-dd, HH:mm" state like sensor.date_time_utc, got "${dateTimeState}"`)
+    }
   }
   assertEntityExists(strip?.weather_entity)
   assertEntityExists(list?.weather_entity)

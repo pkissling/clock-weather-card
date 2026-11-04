@@ -24,6 +24,7 @@
     "locale": "Tungumál",
     "temperature_unit": "Hitastigseining",
     "temperature": "Hitaskynjari",
+    "date_time_utc": "Tímaskynjari",
     "tap_action": "Aðgerð við snertingu",
     "rows": "Raðir",
     "animated_icons": "Hreyfimyndatákn",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Valfrjálst. Les núverandi hitastig úr þessum skynjara í stað veðureiningarinnar, t.d. veðurstöð eða útiskynjara",
+    "date_time_utc": "Valfrjálst. Samstillir klukkuna við tíma Home Assistant með sensor.date_time_utc",
     "sun_entity": "Ræður hvort dag- eða næturtákn eru notuð",
     "time_zone": "Sjálfgefið er tímabelti Home Assistant",
     "locale": "Sjálfgefið er tungumál Home Assistant",

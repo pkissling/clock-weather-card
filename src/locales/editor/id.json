@@ -24,6 +24,7 @@
     "locale": "Bahasa",
     "temperature_unit": "Satuan suhu",
     "temperature": "Sensor suhu",
+    "date_time_utc": "Sensor waktu",
     "tap_action": "Aksi ketuk",
     "rows": "Baris",
     "animated_icons": "Ikon animasi",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Opsional. Membaca suhu saat ini dari sensor ini alih-alih entitas cuaca, mis. stasiun cuaca atau sensor luar ruangan",
+    "date_time_utc": "Opsional. Menyinkronkan jam dengan waktu Home Assistant melalui sensor.date_time_utc",
     "sun_entity": "Menentukan ikon siang atau malam",
     "time_zone": "Bawaannya zona waktu Home Assistant",
     "locale": "Bawaannya bahasa Home Assistant",

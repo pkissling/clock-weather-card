@@ -93,6 +93,7 @@ export const CARD_FIELDS: EditorField[] = [
 
 export const SENSOR_FIELDS: EditorField[] = [
   { name: 'temperature', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
+  { name: 'date_time_utc', selector: { entity: { domain: 'sensor' } } },
 ]
 
 const forecastBasics: EditorField[] = [

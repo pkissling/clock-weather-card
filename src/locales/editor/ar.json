@@ -24,6 +24,7 @@
     "locale": "اللغة",
     "temperature_unit": "وحدة درجة الحرارة",
     "temperature": "مستشعر درجة الحرارة",
+    "date_time_utc": "مستشعر الوقت",
     "tap_action": "إجراء النقر",
     "rows": "الصفوف",
     "animated_icons": "أيقونات متحركة",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "اختياري. يقرأ درجة الحرارة الحالية من هذا المستشعر بدلاً من كيان الطقس، مثل محطة طقس أو مستشعر خارجي",
+    "date_time_utc": "اختياري. يزامن الساعة مع وقت Home Assistant عبر sensor.date_time_utc",
     "sun_entity": "يحدد أيقونات النهار أو الليل",
     "time_zone": "افتراضيًا المنطقة الزمنية لـ Home Assistant",
     "locale": "افتراضيًا لغة Home Assistant",

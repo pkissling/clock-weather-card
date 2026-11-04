@@ -24,6 +24,7 @@
     "locale": "Sprache",
     "temperature_unit": "Temperatureinheit",
     "temperature": "Temperatursensor",
+    "date_time_utc": "Zeitsensor",
     "tap_action": "Tippen-Aktion",
     "rows": "Zeilen",
     "animated_icons": "Animierte Symbole",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Optional. Liest die aktuelle Temperatur aus diesem Sensor statt aus der Wetter-Entität, z. B. einer Wetterstation oder einem Außensensor",
+    "date_time_utc": "Optional. Synchronisiert die Uhr über sensor.date_time_utc mit der Zeit von Home Assistant",
     "sun_entity": "Entscheidet zwischen Tag- und Nachtsymbolen",
     "time_zone": "Standardmäßig die Zeitzone von Home Assistant",
     "locale": "Standardmäßig die Sprache von Home Assistant",

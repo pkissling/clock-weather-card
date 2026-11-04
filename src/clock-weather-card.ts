@@ -21,7 +21,7 @@ import { DEFAULT_TAP_ACTION, resolveConfig } from '@/utils/config'
 import { customElement } from '@/utils/custom-element'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
-import { configNeedsSeconds, startClock } from '@/utils/luxon'
+import { configNeedsSeconds, dateTimeUtcOffset, parseDateTimeUtc, startClock } from '@/utils/luxon'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
@@ -58,6 +58,9 @@ export class ClockWeatherCard extends LitElement {
   @state() private error?: string
   @state() private currentDate: DateTime = DateTime.now()
   private _clock: ClockHandle | null = null
+  // Server time minus device time, learned from additional_sensors.date_time_utc.
+  private _clockOffset = 0
+  private _dateTimeSensorState?: string
 
   protected render(): TemplateResult {
     if (!this.hass || !this.config) return html`<ha-card></ha-card>`
@@ -145,6 +148,7 @@ export class ClockWeatherCard extends LitElement {
 
   public willUpdate(changed: PropertyValues): void {
     if (!changed.has('config') && !changed.has('hass')) return
+    this._syncClock()
     if (!changed.has('config') && this.resolved && !this._relevantHassChanged()) return
     const previous = this.resolved
     this._resolveConfig()
@@ -190,6 +194,25 @@ export class ClockWeatherCard extends LitElement {
     return watched.some(id => stateChanged(id) || precisionChanged(id))
   }
 
+  private _syncClock(): void {
+    const sensor = this.isConnected ? this.config?.additional_sensors?.date_time_utc : undefined
+    const previous = this._dateTimeSensorState
+    this._dateTimeSensorState = (sensor && hassService.getEntityState(this.hass, sensor)) || undefined
+    const state = this._dateTimeSensorState
+    // Only a flip between two minutes marks the exact full minute: the state seen at load (or after a gap) may be up to a minute old.
+    if (!sensor || !previous || !parseDateTimeUtc(previous).isValid || state === previous) return
+    const offset = dateTimeUtcOffset(state, Date.now())
+    if (offset === null) {
+      logger.warn(`Sensor ${sensor} has state "${state}", expected "yyyy-MM-dd, HH:mm" - keeping the last clock offset`)
+      return
+    }
+    logger.debug(`Clock offset to Home Assistant: ${offset} ms`)
+    this._clockOffset = offset
+    // Restart to render the corrected time now and align ticks to the server's second boundaries.
+    this._stopClock()
+    this._tryStart()
+  }
+
   // Idempotent - safe to call from any lifecycle hook. An update queued before disconnect still runs afterwards, so it must not start a clock.
   private _tryStart(): void {
     if (!this.resolved || !this.isConnected) return
@@ -197,11 +220,12 @@ export class ClockWeatherCard extends LitElement {
       const { header, locale, timeZone } = this.resolved
       const needsSeconds = configNeedsSeconds(header)
       logger.debug(`Starting clock with ${needsSeconds ? 'per-second' : 'per-minute'} ticks`)
+      const now = (): number => Date.now() + this._clockOffset
       this._clock = startClock(needsSeconds, () => {
-        this.currentDate = DateTime.now()
+        this.currentDate = DateTime.fromMillis(now())
           .setLocale(locale)
           .setZone(timeZone)
-      })
+      }, now)
     }
   }
 

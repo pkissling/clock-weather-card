@@ -20,7 +20,8 @@ function patternNeedsSeconds(pattern: string | undefined): boolean {
   return SECOND_0.toFormat(pattern) !== SECOND_30.toFormat(pattern)
 }
 
-export function startClock(needsSeconds: boolean, onTick: () => void): ClockHandle {
+// `now` is the clock's time source, so ticks align to its second/minute boundaries.
+export function startClock(needsSeconds: boolean, onTick: () => void, now: () => number = Date.now): ClockHandle {
   const periodMs = needsSeconds ? 1000 : 60_000
   let timeoutId: number
   // Recomputes the delay on every tick, so a late tick (sleep, background throttling) realigns to the next boundary.
@@ -28,7 +29,7 @@ export function startClock(needsSeconds: boolean, onTick: () => void): ClockHand
     timeoutId = window.setTimeout(() => {
       onTick()
       schedule()
-    }, periodMs - (Date.now() % periodMs))
+    }, periodMs - (now() % periodMs))
   }
 
   onTick()
@@ -53,4 +54,15 @@ export const isValidLocale = (locale: string): boolean => {
   } catch {
     return false
   }
+}
+
+// Parses the state of the Time & Date integration's sensor.date_time_utc, e.g. "2026-11-04, 10:15".
+export const parseDateTimeUtc = (state: string | undefined | null): DateTime =>
+  DateTime.fromFormat(state ?? '', 'yyyy-MM-dd, HH:mm', { zone: 'utc' })
+
+// sensor.date_time_utc flips exactly at a full UTC minute, so at the flip the server time is its state at :00.
+// Returns the offset to add to the device time, or null if the state doesn't parse.
+export function dateTimeUtcOffset(state: string | undefined | null, deviceMs: number): number | null {
+  const instant = parseDateTimeUtc(state)
+  return instant.isValid ? instant.toMillis() - deviceMs : null
 }

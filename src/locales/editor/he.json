@@ -24,6 +24,7 @@
     "locale": "שפה",
     "temperature_unit": "יחידת טמפרטורה",
     "temperature": "חיישן טמפרטורה",
+    "date_time_utc": "חיישן זמן",
     "tap_action": "פעולת הקשה",
     "rows": "שורות",
     "animated_icons": "סמלים מונפשים",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "אופציונלי. קורא את הטמפרטורה הנוכחית מחיישן זה במקום מישות מזג האוויר, למשל תחנת מזג אוויר או חיישן חיצוני",
+    "date_time_utc": "אופציונלי. מסנכרן את השעון עם השעה של Home Assistant באמצעות sensor.date_time_utc",
     "sun_entity": "קובע בין סמלי יום ולילה",
     "time_zone": "ברירת המחדל היא אזור הזמן של Home Assistant",
     "locale": "ברירת המחדל היא השפה של Home Assistant",

@@ -115,6 +115,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   tap_action?: ActionConfig
   additional_sensors?: {
     temperature?: string
+    date_time_utc?: string
   }
   sections?: {
     header?: {

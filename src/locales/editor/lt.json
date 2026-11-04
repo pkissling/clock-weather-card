@@ -24,6 +24,7 @@
     "locale": "Kalba",
     "temperature_unit": "Temperatūros vienetas",
     "temperature": "Temperatūros jutiklis",
+    "date_time_utc": "Laiko jutiklis",
     "tap_action": "Bakstelėjimo veiksmas",
     "rows": "Eilutės",
     "animated_icons": "Animuotos piktogramos",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Neprivaloma. Dabartinė temperatūra nuskaitoma iš šio jutiklio vietoj orų objekto, pvz., iš orų stoties ar lauko jutiklio",
+    "date_time_utc": "Neprivaloma. Sinchronizuoja laikrodį su Home Assistant laiku per sensor.date_time_utc",
     "sun_entity": "Nusprendžia tarp dienos ir nakties piktogramų",
     "time_zone": "Pagal numatytuosius nustatymus Home Assistant laiko juosta",
     "locale": "Pagal numatytuosius nustatymus Home Assistant kalba",

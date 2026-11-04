@@ -24,6 +24,7 @@
     "locale": "Jezik",
     "temperature_unit": "Jedinica temperature",
     "temperature": "Senzor temperature",
+    "date_time_utc": "Senzor vremena",
     "tap_action": "Radnja dodira",
     "rows": "Retci",
     "animated_icons": "Animirane ikone",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "Neobavezno. Čita trenutačnu temperaturu s ovog senzora umjesto s vremenskog entiteta, npr. meteorološke stanice ili vanjskog senzora",
+    "date_time_utc": "Neobavezno. Sinkronizira sat s vremenom Home Assistanta putem sensor.date_time_utc",
     "sun_entity": "Odlučuje između dnevnih i noćnih ikona",
     "time_zone": "Zadano je vremenska zona Home Assistanta",
     "locale": "Zadano je jezik Home Assistanta",

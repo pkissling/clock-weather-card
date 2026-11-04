@@ -24,6 +24,7 @@
     "locale": "Dil",
     "temperature_unit": "Sıcaklık birimi",
     "temperature": "Sıcaklık sensörü",
+    "date_time_utc": "Zaman sensörü",
     "tap_action": "Dokunma eylemi",
     "rows": "Satırlar",
     "animated_icons": "Hareketli simgeler",
@@ -57,6 +58,7 @@
   },
   "helpers": {
     "temperature": "İsteğe bağlı. Mevcut sıcaklığı hava durumu varlığı yerine bu sensörden okur, örn. bir hava istasyonu veya dış mekân sensörü",
+    "date_time_utc": "İsteğe bağlı. Saati sensor.date_time_utc aracılığıyla Home Assistant saatiyle eşitler",
     "sun_entity": "Gündüz ve gece simgeleri arasında seçim yapar",
     "time_zone": "Varsayılan olarak Home Assistant saat dilimi",
     "locale": "Varsayılan olarak Home Assistant dili",
