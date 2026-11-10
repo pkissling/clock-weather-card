@@ -21,11 +21,8 @@ jobs:
         id: release
         with:
           release-type: node
-      - name: Trigger release asset build
-        if: ${{ steps.release.outputs.release_created }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run release.yml -R ${{ github.repository }} --ref ${{ steps.release.outputs.tag_name }}
+          # A PAT instead of GITHUB_TOKEN, so the release PR runs CI without approval and the release triggers release.yml.
+          token: ${{ secrets.GH_PAT }}
       # Needs "Auto-close issues with merged linked pull requests" off in the repo settings, so `Closes #123` waits for the release.
       - name: Close issues shipped in this release
         if: ${{ steps.release.outputs.release_created }}
