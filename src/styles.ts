@@ -8,6 +8,38 @@ export default css`
     cursor: pointer;
   }
 
+  /* weather_animation: the canvas sits behind the content, clipped to the card. */
+  ha-card {
+    position: relative;
+  }
+
+  clock-weather-card-weather-animation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  clock-weather-card-weather-animation ~ * {
+    position: relative;
+  }
+
+  clock-weather-card-weather-animation canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    clock-weather-card-weather-animation {
+      display: none;
+    }
+  }
+
   h1.card-header {
     padding-bottom: 0px;
   }

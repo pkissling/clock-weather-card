@@ -31,6 +31,7 @@ describe('resolveConfig', () => {
         numberFormat: 'language',
         temperatureUnit: '°C',
         temperatureSensor: null,
+        weather_animation: false,
         header: {
           hide: false,
           animated_icons: true,

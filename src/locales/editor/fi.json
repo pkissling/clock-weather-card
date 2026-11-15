@@ -32,6 +32,7 @@
     "forecast_type": "Ennuste",
     "count": "Merkintöjen määrä",
     "round_temperatures": "Pyöristä lämpötilat",
+    "weather_animation": "Sääanimaatio",
     "hide_sunrise_sunset": "Piilota auringonnousu ja -lasku",
     "attribute": "Attribuutti",
     "attribute_icon": "Attribuutin kuvake",

@@ -32,6 +32,7 @@
     "forecast_type": "Forecast",
     "count": "Number of entries",
     "round_temperatures": "Round temperatures",
+    "weather_animation": "Weather animation",
     "hide_sunrise_sunset": "Hide sunrise and sunset",
     "attribute": "Attribute",
     "attribute_icon": "Attribute icon",

@@ -39,6 +39,7 @@ export const DEFAULTS = {
   weather_icon_type: 'line',
   sun_entity: 'sun.sun',
   round_temperatures: true,
+  weather_animation: false,
   sections: {
     header: { hide: false, animated_icons: true },
     forecast_strip: { hide: false, forecast_type: 'hourly', count: 24, animated_icons: false, hide_sunrise_sunset: false, hide_attribute: false, time_pattern: DEFAULT_TIME_PATTERN, attribute: 'precipitation_probability' },
@@ -183,6 +184,7 @@ function validateConfig(config: ClockWeatherCardConfig, hass: HomeAssistant): vo
   })
 
   assertBoolean('round_temperatures', config.round_temperatures)
+  assertBoolean('weather_animation', config.weather_animation)
   assertBoolean('sections.header.hide', header?.hide)
   assertBoolean('sections.header.animated_icons', header?.animated_icons)
   assertBoolean('sections.header.round_temperatures', header?.round_temperatures)
@@ -245,6 +247,7 @@ export function resolveConfig(config: ClockWeatherCardConfig, hass: HomeAssistan
     numberFormat: hassService.getNumberFormat(hass),
     temperatureUnit: config.temperature_unit ? TEMPERATURE_UNIT_SYMBOLS[config.temperature_unit] : hassService.getTemperatureUnit(hass),
     temperatureSensor: config.additional_sensors?.temperature ?? null,
+    weather_animation: config.weather_animation ?? DEFAULTS.weather_animation,
     header: { ...D.header, ...inherited, rows: DEFAULT_ROWS, weather_icon_size: null, ...header },
     forecast_strip: {
       ...D.forecast_strip,

@@ -112,6 +112,7 @@ export interface ClockWeatherCardConfig extends LovelaceCardConfig {
   locale?: string
   temperature_unit?: TemperatureUnitOption
   round_temperatures?: boolean
+  weather_animation?: boolean
   tap_action?: ActionConfig
   additional_sensors?: {
     temperature?: string
@@ -178,6 +179,7 @@ export interface ResolvedConfig {
   numberFormat: string
   temperatureUnit: TemperatureUnit
   temperatureSensor: string | null
+  weather_animation: boolean
   header: ResolvedHeaderConfig
   forecast_strip: ResolvedForecastStripConfig
   forecast_list: ResolvedForecastListConfig

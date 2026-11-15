@@ -32,6 +32,7 @@
     "forecast_type": "予報",
     "count": "件数",
     "round_temperatures": "温度を丸める",
+    "weather_animation": "天気アニメーション",
     "hide_sunrise_sunset": "日の出と日の入りを非表示",
     "attribute": "属性",
     "attribute_icon": "属性アイコン",

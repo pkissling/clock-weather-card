@@ -1,8 +1,11 @@
+import { existsSync, readFileSync } from 'node:fs'
+import path from 'node:path'
+
 import type { Page } from '@playwright/test'
 
 import { expect, test } from '../utils/fixtures'
-import { captureAnimation, type Clip } from './animation'
-import { collectPreviews, previewFile } from './previews'
+import { captureAnimation, type Clip, sameAnimation } from './animation'
+import { collectPreviews, previewFile, previewImage, PROJECT_DIR } from './previews'
 import { installThemes } from './themes'
 
 const previews = collectPreviews()
@@ -35,7 +38,10 @@ for (const preview of previews) {
       return
     }
     const gif = await captureAnimation(page, measureClip, !testInfo.project.ignoreSnapshots)
-    if (gif) expect(gif)
+    if (!gif) return
+    const stored = path.join(PROJECT_DIR, previewImage(preview))
+    if (existsSync(stored) && sameAnimation(readFileSync(stored), gif)) return
+    expect(gif)
       .toMatchSnapshot(previewFile(preview))
   })
 }

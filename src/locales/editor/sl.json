@@ -32,6 +32,7 @@
     "forecast_type": "Napoved",
     "count": "Število vnosov",
     "round_temperatures": "Zaokroži temperature",
+    "weather_animation": "Vremenska animacija",
     "hide_sunrise_sunset": "Skrij sončni vzhod in zahod",
     "attribute": "Atribut",
     "attribute_icon": "Ikona atributa",
