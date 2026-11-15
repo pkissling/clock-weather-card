@@ -50,6 +50,13 @@ Edit your dashboard, click **Add card** and pick **Clock Weather Card**. Every o
 
 ### Minimal configuration
 
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+```
+
+The animation at the top of this page shows this configuration, with a lighter precipitation color for its green theme:
+
 <!-- preview: hero
 theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-green }
 dark: true
@@ -59,9 +66,10 @@ animated: true
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
+sections:
+  forecast_strip:
+    attribute_color: "#BBDEFB"
 ```
-
-The animation at the top of this page shows this configuration.
 
 ### Examples
 
