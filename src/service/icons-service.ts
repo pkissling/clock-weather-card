@@ -4,7 +4,7 @@ import type { WeatherIconType } from '@/types'
 const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
 
 // Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
-const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,extreme-rain,not-available,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
+const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,extreme-rain,not-available,thunderstorms,thunderstorms-rain,rain,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
   query: '?url&no-inline',
   import: 'default',
   eager: true
@@ -47,10 +47,11 @@ class IconsService {
       return `fog-${dn}`
     case 'hail':
       return 'hail'
+    // A thunderstorm means an overcast sky, so no sun or moon peeks out.
     case 'lightning':
-      return `thunderstorms-${dn}`
+      return 'thunderstorms'
     case 'lightning-rainy':
-      return `thunderstorms-${dn}-rain`
+      return 'thunderstorms-rain'
     case 'pouring':
       return 'extreme-rain'
     case 'rainy':
