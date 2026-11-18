@@ -209,7 +209,7 @@ export default css`
 
   clock-weather-card-forecast-strip-item .attribute {
     font-size: 0.72em;
-    opacity: 0.65;
+    opacity: 0.85;
     color: var(--info-color, #4a90d9);
     line-height: 1;
     min-height: 1em;
