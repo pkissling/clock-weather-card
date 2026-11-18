@@ -4,15 +4,15 @@ import type { WeatherIconType } from '@/types'
 const MDI_WEATHER_STATES = new Set(['cloudy', 'fog', 'hail', 'lightning', 'lightning-rainy', 'pouring', 'rainy', 'snowy', 'snowy-rainy', 'windy', 'windy-variant'])
 
 // Only icons mapWeatherStateToIconFileName can return; each ships as a plain .svg file so the browser fetches it on demand.
-const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,extreme-rain,not-available,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
+const iconUrls = import.meta.glob('/node_modules/@meteocons/{svg,svg-static}/{fill,flat,line,monochrome}/{clear-day,clear-night,partly-cloudy-day,partly-cloudy-night,cloudy,fog-day,fog-night,hail,not-available,thunderstorms-day,thunderstorms-night,thunderstorms-day-rain,thunderstorms-night-rain,rain,extreme-rain,raindrop,raindrops,snow,sleet,wind,wind-alert,weather-alert,sunrise,sunset}.svg', {
   query: '?url&no-inline',
   import: 'default',
   eager: true
 }) as Record<string, string>
 
 class IconsService {
-  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean): string | undefined {
-    const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight)
+  public getWeatherIcon(type: WeatherIconType, animated: boolean, weatherState: string, isNight: boolean, compact = false): string | undefined {
+    const iconFileName = this.mapWeatherStateToIconFileName(weatherState, isNight, compact)
     const lookup = (pkg: string): string | undefined => iconUrls[`/node_modules/@meteocons/${pkg}/${type}/${iconFileName}.svg`]
     const url = (animated && lookup('svg')) || lookup('svg-static')
     // Dev mode yields a root-relative path that must resolve against the dev server, not the Home Assistant page.
@@ -30,7 +30,7 @@ class IconsService {
     return 'mdi:weather-cloudy-alert'
   }
 
-  private mapWeatherStateToIconFileName(state: string, isNight: boolean): string {
+  private mapWeatherStateToIconFileName(state: string, isNight: boolean, compact: boolean): string {
     const s = state.toLowerCase()
     const dn = isNight ? 'night' : 'day'
 
@@ -52,9 +52,9 @@ class IconsService {
     case 'lightning-rainy':
       return `thunderstorms-${dn}-rain`
     case 'pouring':
-      return 'extreme-rain'
+      return compact ? 'raindrops' : 'extreme-rain'
     case 'rainy':
-      return 'rain'
+      return compact ? 'raindrop' : 'rain'
     case 'snowy':
       return 'snow'
     case 'snowy-rainy':

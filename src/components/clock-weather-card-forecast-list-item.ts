@@ -33,6 +33,7 @@ class ClockWeatherCardForecastListItem extends AbstractClockWeatherCardComponent
         .isNight=${isNight}
         .animatedIcon=${animatedIcon}
         .weatherIconType=${weatherIconType}
+        compact
       ></clock-weather-card-icon>
       <span class="temperature-low">${lowLabel ?? nothing}</span>
       <div class="bar-track">

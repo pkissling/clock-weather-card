@@ -50,6 +50,13 @@ Edit your dashboard, click **Add card** and pick **Clock Weather Card**. Every o
 
 ### Minimal configuration
 
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+```
+
+The animation at the top of this page shows this configuration with `fill` icons:
+
 <!-- preview: hero
 theme: { repo: basnijholt/lovelace-ios-themes, version: v3.0.3, name: ios-dark-mode-dark-green }
 dark: true
@@ -59,9 +66,8 @@ animated: true
 ```yaml
 type: custom:clock-weather-card
 entity: weather.home
+weather_icon_type: fill
 ```
-
-The animation at the top of this page shows this configuration.
 
 ### Examples
 

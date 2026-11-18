@@ -24,6 +24,7 @@ class ClockWeatherCardForecastStripItem extends AbstractClockWeatherCardComponen
         .isNight=${isNight}
         .animatedIcon=${animatedIcon}
         .weatherIconType=${weatherIconType}
+        compact
       ></clock-weather-card-icon>
       ${sunEvent
     ? html`<span class="label"><ha-icon icon=${sunEvent.kind === 'sunrise' ? 'mdi:arrow-up' : 'mdi:arrow-down'} title=${sunEvent.label} aria-label=${sunEvent.label}></ha-icon></span>`

@@ -17,6 +17,8 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
   @property() public isNight!: boolean
   @property() public animatedIcon!: boolean
   @property() public weatherIconType!: WeatherIconType
+  // Small forecast icons swap cloud-with-rain for raindrops, which stay recognizable at that size.
+  @property({ type: Boolean }) public compact = false
   @consume({ context: configContext, subscribe: true }) @state() private config!: ResolvedConfig
   @state() private _src?: string
   // Reflected so e2e tests can wait until the current icon has actually loaded.
@@ -33,11 +35,12 @@ class ClockWeatherCardIcon extends AbstractClockWeatherCardComponent {
       !changed.has('weatherState') &&
       !changed.has('isNight') &&
       !changed.has('animatedIcon') &&
-      !changed.has('weatherIconType')
+      !changed.has('weatherIconType') &&
+      !changed.has('compact')
     ) return
 
-    const { weatherIconType, weatherState, isNight, animatedIcon } = this
-    const src = iconsService.getWeatherIcon(weatherIconType, animatedIcon, weatherState, isNight)
+    const { weatherIconType, weatherState, isNight, animatedIcon, compact } = this
+    const src = iconsService.getWeatherIcon(weatherIconType, animatedIcon, weatherState, isNight, compact)
     if (!src) {
       logger.warn(`No "${weatherIconType}" icon for weather state "${weatherState}", keeping the previous icon`)
       this._settled = true
