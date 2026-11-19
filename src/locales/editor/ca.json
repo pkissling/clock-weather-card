@@ -32,6 +32,7 @@
     "forecast_type": "Previsió",
     "count": "Nombre d'entrades",
     "round_temperatures": "Arrodoneix les temperatures",
+    "weather_animation": "Animació del temps",
     "hide_sunrise_sunset": "Amaga la sortida i la posta del sol",
     "attribute": "Atribut",
     "attribute_icon": "Icona de l'atribut",

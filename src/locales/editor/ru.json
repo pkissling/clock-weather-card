@@ -32,6 +32,7 @@
     "forecast_type": "Прогноз",
     "count": "Количество записей",
     "round_temperatures": "Округлять температуру",
+    "weather_animation": "Анимация погоды",
     "hide_sunrise_sunset": "Скрыть восход и закат",
     "attribute": "Атрибут",
     "attribute_icon": "Значок атрибута",

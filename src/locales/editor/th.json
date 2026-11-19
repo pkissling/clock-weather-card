@@ -32,6 +32,7 @@
     "forecast_type": "พยากรณ์",
     "count": "จำนวนรายการ",
     "round_temperatures": "ปัดเศษอุณหภูมิ",
+    "weather_animation": "แอนิเมชันสภาพอากาศ",
     "hide_sunrise_sunset": "ซ่อนเวลาพระอาทิตย์ขึ้นและตก",
     "attribute": "แอตทริบิวต์",
     "attribute_icon": "ไอคอนแอตทริบิวต์",

@@ -2,6 +2,7 @@ import '@/components/clock-weather-card-error'
 import '@/components/clock-weather-card-header'
 import '@/components/clock-weather-card-forecast-strip'
 import '@/components/clock-weather-card-forecast-list'
+import '@/components/clock-weather-card-weather-animation'
 
 import { provide } from '@lit/context'
 import { type ActionConfig, deepEqual, type HomeAssistant } from 'custom-card-helpers'
@@ -22,6 +23,7 @@ import { customElement } from '@/utils/custom-element'
 import { isDev } from '@/utils/development'
 import { requiredConfigMissing } from '@/utils/errors'
 import { configNeedsSeconds, startClock } from '@/utils/luxon'
+import { effectsFor, windDrift } from '@/utils/weather-scene'
 
 // eslint-disable-next-line no-restricted-imports
 import { version } from '../package.json'
@@ -71,8 +73,9 @@ export class ClockWeatherCard extends LitElement {
       `
     }
 
-    const { title, header, forecast_strip, forecast_list } = this.resolved
+    const { title, header, forecast_strip, forecast_list, entity, sun_entity, weather_animation } = this.resolved
     const clickable = this.tapAction.action !== 'none'
+    const effects = weather_animation ? effectsFor(hassService.getEntityState(this.hass, entity), hassService.isNight(this.hass, sun_entity)) : undefined
     return html`
       <ha-card
         class=${clickable ? 'clickable' : ''}
@@ -81,6 +84,12 @@ export class ClockWeatherCard extends LitElement {
         @click=${clickable ? this.handleTap : nothing}
         @keydown=${clickable ? (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.handleTap() } } : nothing}
       >
+        ${effects ? html`
+          <clock-weather-card-weather-animation
+            .effects=${effects}
+            .wind=${windDrift(hassService.getEntityAttribute(this.hass, entity, 'wind_speed'), hassService.getEntityAttribute(this.hass, entity, 'wind_speed_unit'))}
+          ></clock-weather-card-weather-animation>
+        ` : ''}
         ${title ? html`<h1 class="card-header">${title}</h1>` : ''}
         <div class="card-content">
           ${header.hide ? '' : html`

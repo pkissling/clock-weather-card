@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -23,6 +23,7 @@ export async function captureAnimation(
   const durations = await scrubIcons(page, 0)
   // Measured after the icon swap, which can shift the layout.
   const clip = await measureClip()
+  await restartWeatherAnimation(page)
   const frameCount = Math.round(loopDuration(durations) * FPS / 1000)
   const dir = mkdtempSync(path.join(os.tmpdir(), 'preview-frames-'))
   try {
@@ -79,4 +80,43 @@ export function loopDuration(durations: number[]): number {
   const lcm = durations.reduce((a, b) => a / gcd(a, b) * b)
   if (lcm > MAX_LOOP_MS) throw new Error(`Icons only loop after ${lcm}ms`)
   return lcm
+}
+
+// weather_animation ran on real time until now; remounting restarts its seeded scene on the virtual timeline. The fake clock
+// fires animation frames on a 16ms grid of absolute time, so the restart is aligned to it, otherwise the physics would step
+// at a different phase relative to the GIF frames on every run.
+async function restartWeatherAnimation(page: Page): Promise<void> {
+  const animations = page.locator('clock-weather-card-weather-animation')
+  if (!await animations.count()) return
+  const phase = await page.evaluate(() => performance.now() % 16)
+  if (phase) await page.clock.runFor(16 - phase)
+  await animations.evaluateAll(els => els.forEach(el => el.parentNode!.insertBefore(el, el.nextSibling)))
+}
+
+// Minimum average PSNR between two renders of a preview to count as the same animation. Rendering the weather
+// animation twice gives ~44 dB (tiny rasterization noise that the GIF palette spreads across the whole image);
+// a genuinely different animation scores ~30 dB.
+const SAME_ANIMATION_DB = 38
+
+export function sameAnimation(a: Buffer, b: Buffer): boolean {
+  if (a.equals(b)) return true
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'preview-compare-'))
+  try {
+    const [fileA, fileB] = [a, b].map((gif, i) => {
+      const file = path.join(dir, `${i}.gif`)
+      writeFileSync(file, gif)
+      return file
+    })
+    // psnr prints its summary to stderr. Different frame counts or sizes print no average: not the same animation.
+    const { stderr } = spawnSync('ffmpeg', ['-v', 'info', '-hide_banner', '-i', fileA, '-i', fileB, '-lavfi', '[0][1]psnr', '-f', 'null', '-'], { encoding: 'utf-8' })
+    return psnrAverage(stderr) >= SAME_ANIMATION_DB
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+}
+
+const psnrAverage = (ffmpegOutput: string): number => {
+  const match = /average:(inf|[\d.]+)/.exec(ffmpegOutput)
+  if (!match) return 0
+  return match[1] === 'inf' ? Infinity : Number(match[1])
 }

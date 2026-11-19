@@ -32,6 +32,7 @@
     "forecast_type": "Prognoza",
     "count": "Broj unosa",
     "round_temperatures": "Zaokruži temperature",
+    "weather_animation": "Animacija vremena",
     "hide_sunrise_sunset": "Sakrij izlazak i zalazak sunca",
     "attribute": "Atribut",
     "attribute_icon": "Ikona atributa",

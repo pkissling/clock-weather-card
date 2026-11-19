@@ -32,6 +32,7 @@
     "forecast_type": "预报",
     "count": "条目数",
     "round_temperatures": "温度取整",
+    "weather_animation": "天气动画",
     "hide_sunrise_sunset": "隐藏日出和日落",
     "attribute": "属性",
     "attribute_icon": "属性图标",

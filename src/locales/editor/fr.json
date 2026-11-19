@@ -32,6 +32,7 @@
     "forecast_type": "Prévisions",
     "count": "Nombre d'entrées",
     "round_temperatures": "Arrondir les températures",
+    "weather_animation": "Animation météo",
     "hide_sunrise_sunset": "Masquer le lever et le coucher du soleil",
     "attribute": "Attribut",
     "attribute_icon": "Icône de l'attribut",

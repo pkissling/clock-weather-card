@@ -32,6 +32,7 @@
     "forecast_type": "예보",
     "count": "항목 수",
     "round_temperatures": "온도 반올림",
+    "weather_animation": "날씨 애니메이션",
     "hide_sunrise_sunset": "일출 및 일몰 숨기기",
     "attribute": "속성",
     "attribute_icon": "속성 아이콘",

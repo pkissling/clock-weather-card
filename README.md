@@ -377,6 +377,32 @@ sections:
 *[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 </td></tr>
+<tr><td>
+
+**Rainy day** - `weather_animation` animates the current weather behind the card, here rain splashing off its bottom edge.
+
+<!-- preview: example-weather-animation
+theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
+dark: true
+weather: { state: pouring, temperature: 14 }
+animated: true
+-->
+```yaml
+type: custom:clock-weather-card
+entity: weather.home
+weather_animation: true
+sections:
+  forecast_list:
+    hide: true
+```
+
+</td><td>
+
+![Rain falling behind the card and splashing at its bottom edge](docs/previews/example-weather-animation.gif)
+
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
+
+</td></tr>
 </table>
 
 ### Card Options
@@ -391,6 +417,7 @@ sections:
 | `locale` | string | no | Home Assistant language | Language tag (e.g. `en-GB`, `de`, `pt-BR`) used for date/time formatting and translated text. When unset, falls back to the language configured in Home Assistant. Numbers follow the number format of your Home Assistant profile; its "Auto" setting uses this locale. |
 | `temperature_unit` | `celsius` \| `fahrenheit` | no | Home Assistant unit system | Unit all temperatures are shown in (header, forecast strip, forecast list). Values from the weather entity and from `entity` segments with a `°C`/`°F` unit are converted. When unset, falls back to the temperature unit of the Home Assistant unit system. |
 | `round_temperatures` | boolean | no | `true` | When `true`, temperatures are rounded to the nearest integer in every section. Set to `false` to show fractional values (if the weather provider has fractionals). Each section can override it with its own `round_temperatures`. |
+| `weather_animation` | boolean | no | `false` | When `true`, a physics animation of the current weather of `entity` plays behind the card's content: the sun's glow and rays (`sunny`, by day) or twinkling stars (at night), drifting clouds (`partlycloudy`, `cloudy`), fog banks (`fog`), rain that splashes off the card's bottom edge (`rainy`, heavier when `pouring`), lightning strikes (`lightning`, with rain for `lightning-rainy`), bouncing hailstones (`hail`), drifting snow (`snowy`, mixed with rain for `snowy-rainy`) and gusts (`windy`, `windy-variant`, `windy-exceptional`). `exceptional` has no animation. The entity's `wind_speed` slants the rain and pushes snow, clouds and gusts. Drawn on a canvas in the theme's text color; hidden when the device asks for reduced motion. |
 | `tap_action` | object | no | `more-info` | [Action](https://www.home-assistant.io/dashboards/actions/) to run when the card is tapped, e.g. `navigate`, `url`, `more-info` (of `entity`) or `perform-action`. Set `action: none` to make the card not clickable. |
 | `additional_sensors` | object | no | - | Sensors that replace values of the weather entity. See [Additional Sensors Options](#additional-sensors-options). |
 | `sections` | object | no | - | Per-section configuration. See [Sections Options](#sections-options). |

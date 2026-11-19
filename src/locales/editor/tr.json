@@ -32,6 +32,7 @@
     "forecast_type": "Tahmin",
     "count": "Kayıt sayısı",
     "round_temperatures": "Sıcaklıkları yuvarla",
+    "weather_animation": "Hava durumu animasyonu",
     "hide_sunrise_sunset": "Gün doğumunu ve batımını gizle",
     "attribute": "Öznitelik",
     "attribute_icon": "Öznitelik simgesi",
