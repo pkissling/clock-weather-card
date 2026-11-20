@@ -69,17 +69,15 @@ test.describe('forecast_list section', () => {
       .toHaveText('19°C')
   })
 
-  test('labels today\'s row with the localized "Today" string and uses weekday names for the rest', async ({ setupCard, clockWeatherCard }) => {
+  test('labels every row, today included, with its weekday abbreviation', async ({ setupCard, clockWeatherCard }) => {
     await setupCard({
       weather: { forecast_daily: DAILY },
     })
 
     const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
-    // 2025-09-14 is a Sunday, but the first row is "today" regardless of weekday.
     await expect(items.nth(0)
       .locator('.label'))
-      .toHaveText('Today')
-    // Subsequent rows show weekday abbreviations from the locale.
+      .toHaveText('Sun')
     await expect(items.nth(1)
       .locator('.label'))
       .toHaveText('Mon')
@@ -249,7 +247,7 @@ test.describe('forecast_list section', () => {
 
       const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       await expect(items.locator('.label'))
-        .toHaveText(['Today', 'Mon'])
+        .toHaveText(['Sun', 'Mon'])
       await expect(items.locator('.temperature-low'))
         .toHaveText(['10°C', '8°C'])
       await expect(items.locator('.temperature-high'))
@@ -273,7 +271,7 @@ test.describe('forecast_list section', () => {
 
     const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.locator('.label'))
-      .toHaveText(['Today', 'Mon'])
+      .toHaveText(['Sun', 'Mon'])
     await expect(items.locator('.temperature-low'))
       .toHaveText(['14°C', '11°C'])
     await expect(items.locator('.temperature-high'))
@@ -295,7 +293,7 @@ test.describe('forecast_list section', () => {
     await expect(clockWeatherCard.locator('clock-weather-card-forecast-list-item')
       .first()
       .locator('.label'))
-      .toHaveText('Today')
+      .toHaveText('Sun')
   })
 
   test('uses the night icon only on today\'s row, driven by the live sun entity state', async ({ setupCard, clockWeatherCard }) => {
