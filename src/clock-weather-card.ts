@@ -11,7 +11,7 @@ import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
 import { DateTime } from 'luxon'
 
-import { configContext, errorMessageContext, hassContext } from '@/context'
+import { configContext, hassContext } from '@/context'
 import hassService from '@/service/hass-service'
 import logger from '@/service/logger'
 import styles from '@/styles'
@@ -50,7 +50,6 @@ export class ClockWeatherCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant
   // HA replaces `hass` on every state change in the instance; consumers only get it when something they read changed.
   @provide({ context: hassContext }) private providedHass?: HomeAssistant
-  @provide({ context: errorMessageContext }) @property({ type: Boolean }) public preview = false
   @state() private config?: ClockWeatherCardConfig
   @state() private resolved?: ResolvedConfig
   // Never cleared on error: consumers still mounted would re-render with an undefined config and throw.
