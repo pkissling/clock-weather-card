@@ -75,11 +75,13 @@ sections:
 
 From a single temperature to a wall tablet, an air quality chart or a world clock: each example highlights a few options, shown in a different community theme. See the tables after them for every option.
 
-<table>
-<tr><th>Configuration</th><th>Card</th></tr>
-<tr><td>
+#### Just the weather
 
-**Just the weather** - a larger header icon with `fill` icons and only the temperature in large letters.
+A larger header icon with `fill` icons and only the temperature in large letters.
+
+<img src="docs/previews/example-temperature-only.gif" alt="A large animated thunderstorm icon next to the temperature in large letters" width="500">
+
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 <!-- preview: example-temperature-only
 theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
@@ -106,16 +108,13 @@ sections:
     hide: true
 ```
 
-</td><td>
+#### Wall tablet
 
-![A large animated thunderstorm icon next to the temperature in large letters](docs/previews/example-temperature-only.gif)
+Large header rows, and `font_size` scales the forecast strip and list for reading across the room; the strip labels show only the hour and drop the precipitation row.
 
-*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
+<img src="docs/previews/example-wall-tablet.png" alt="The default header above a forecast strip and list in large type" width="500">
 
-</td></tr>
-<tr><td>
-
-**Wall tablet** - large header rows, and `font_size` scales the forecast strip and list for reading across the room; the strip labels show only the hour and drop the precipitation row.
+*[Nordic](https://github.com/coltondick/nordic-theme-main/tree/v2.3.9)*
 
 <!-- preview: example-wall-tablet
 theme: { repo: coltondick/nordic-theme-main, version: v2.3.9, name: nordic }
@@ -153,16 +152,13 @@ sections:
     font_size: 1.3rem
 ```
 
-</td><td>
+#### Hour by hour
 
-![The default header above a forecast strip and list in large type](docs/previews/example-wall-tablet.png)
+A custom header above an hourly forecast list with taller rows, slim bars and temperatures to the decimal (`round_temperatures: false`).
 
-*[Nordic](https://github.com/coltondick/nordic-theme-main/tree/v2.3.9)*
+<img src="docs/previews/example-hourly-list.png" alt="A custom header with time, date, humidity and a decimal temperature above an hourly forecast list" width="500">
 
-</td></tr>
-<tr><td>
-
-**Hour by hour** - a custom header above an hourly forecast list with taller rows, slim bars and temperatures to the decimal (`round_temperatures: false`).
+*[Metro Blue](https://github.com/Madelena/Metrology-for-Hass/tree/v.1.9.1)*
 
 <!-- preview: example-hourly-list
 theme: { repo: Madelena/Metrology-for-Hass, version: v.1.9.1, name: Metro Blue }
@@ -201,16 +197,13 @@ sections:
     bar_thickness: 6px
 ```
 
-</td><td>
+#### Air quality index
 
-![A custom header with time, date, humidity and a decimal temperature above an hourly forecast list](docs/previews/example-hourly-list.png)
+A `badge` with an AQI sensor in the color of its US AQI band, above a list charting the AQI forecast in the same colors.
 
-*[Metro Blue](https://github.com/Madelena/Metrology-for-Hass/tree/v.1.9.1)*
+<img src="docs/previews/example-aqi.png" alt="A header with an air quality index of 38 on a green badge above a list of AQI bars from green to yellow" width="500">
 
-</td></tr>
-<tr><td>
-
-**Air quality index** - a `badge` with an AQI sensor in the color of its US AQI band, above a list charting the AQI forecast in the same colors.
+*[Mushroom Shadow](https://github.com/piitaya/lovelace-mushroom-themes/tree/v0.0.11)*
 
 <!-- preview: example-aqi
 theme: { repo: piitaya/lovelace-mushroom-themes, version: v0.0.11, name: Mushroom Shadow }
@@ -257,16 +250,13 @@ sections:
       100: "#FF7E00"
 ```
 
-</td><td>
+#### Wind forecast
 
-![A header with an air quality index of 38 on a green badge above a list of AQI bars from green to yellow](docs/previews/example-aqi.png)
+The strip shows any forecast attribute, here the wind speed with your own icon and color next to `monochrome` icons.
 
-*[Mushroom Shadow](https://github.com/piitaya/lovelace-mushroom-themes/tree/v0.0.11)*
+<img src="docs/previews/example-wind.png" alt="A daily forecast strip showing the wind speed in blue" width="500">
 
-</td></tr>
-<tr><td>
-
-**Wind forecast** - the strip shows any forecast attribute, here the wind speed with your own icon and color next to `monochrome` icons.
+*[Graphite Light](https://github.com/TilmanGriesel/graphite/tree/2.7.6)*
 
 <!-- preview: example-wind
 theme: { repo: TilmanGriesel/graphite, version: 2.7.6, name: Graphite Light }
@@ -287,16 +277,13 @@ sections:
     hide: true
 ```
 
-</td><td>
+#### Your smart home at a glance
 
-![A daily forecast strip showing the wind speed in blue](docs/previews/example-wind.png)
+The balcony sensor replaces the provider's temperature (`additional_sensors`), an `icon` follows the state of the front door, a `template` describes it and an `entity` shows the next calendar event.
 
-*[Graphite Light](https://github.com/TilmanGriesel/graphite/tree/2.7.6)*
+<img src="docs/previews/example-smart-home.png" alt="A header with the time, the balcony temperature, an open door and the next calendar appointment" width="500">
 
-</td></tr>
-<tr><td>
-
-**Your smart home at a glance** - the balcony sensor replaces the provider's temperature (`additional_sensors`), an `icon` follows the state of the front door, a `template` describes it and an `entity` shows the next calendar event.
+*[Catppuccin Latte](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 <!-- preview: example-smart-home
 theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Latte }
@@ -340,16 +327,13 @@ sections:
     hide: true
 ```
 
-</td><td>
+#### World clock
 
-![A header with the time, the balcony temperature, an open door and the next calendar appointment](docs/previews/example-smart-home.png)
+A `title`, another `time_zone` and `locale` turn the card into the weather back home or at your next destination.
 
-*[Catppuccin Latte](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
+<img src="docs/previews/example-world-clock.png" alt="The card titled Tokyo with time, date and forecast in Japanese" width="500">
 
-</td></tr>
-<tr><td>
-
-**World clock** - a `title`, another `time_zone` and `locale` turn the card into the weather back home or at your next destination.
+*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
 
 <!-- preview: example-world-clock
 theme: { repo: catppuccin/home-assistant, version: v2.1.3, name: Catppuccin Mocha }
@@ -369,15 +353,6 @@ sections:
   forecast_list:
     hide: true
 ```
-
-</td><td>
-
-![The card titled Tokyo with time, date and forecast in Japanese](docs/previews/example-world-clock.png)
-
-*[Catppuccin Mocha](https://github.com/catppuccin/home-assistant/tree/v2.1.3)*
-
-</td></tr>
-</table>
 
 ### Card Options
 
