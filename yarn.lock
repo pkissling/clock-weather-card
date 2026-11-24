@@ -145,10 +145,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/fast-memoize@npm:3.1.7":
-  version: 3.1.7
-  resolution: "@formatjs/fast-memoize@npm:3.1.7"
-  checksum: 10c0/dee801f82eda1f6fdc166b0c907e8750c15e409e20b2006c215d9247fe0db720d84d53fcb2fb7559cec21a24932b69dda326c81ee2885aad2cde31bc25449fd0
+"@formatjs/fast-memoize@npm:3.1.8":
+  version: 3.1.8
+  resolution: "@formatjs/fast-memoize@npm:3.1.8"
+  checksum: 10c0/817b0b6541401bffb5d42da4bffbacd465083711aab294eee0af8da9aa8aff7ce3938e39a8267f73afb72c08c0eee8eceb74e0d35df9065edc8ec7fb3f8bbc08
   languageName: node
   linkType: hard
 
@@ -1336,12 +1336,12 @@ __metadata:
   linkType: hard
 
 "intl-messageformat@npm:^12.1.5":
-  version: 12.2.0
-  resolution: "intl-messageformat@npm:12.2.0"
+  version: 12.2.1
+  resolution: "intl-messageformat@npm:12.2.1"
   dependencies:
-    "@formatjs/fast-memoize": "npm:3.1.7"
+    "@formatjs/fast-memoize": "npm:3.1.8"
     "@formatjs/icu-messageformat-parser": "npm:3.5.23"
-  checksum: 10c0/ef7fd5e281e79f019a54592a5b15bd1cae2d8614af2744aa3f787cf727432018ef038fae13beedfe66be7e073a93a03ac2f1dbe5c0e2cd1c5536ceba5d0e02b8
+  checksum: 10c0/c326552ddcf219d6a0da763bfc049dcb1c64d40532dc9f6bbaf331c5ec011cf18f04c6e6210cf6cdfb7d9afa8fe5fa90b42321e61b3465c5ed54112ffbdfcb6c
   languageName: node
   linkType: hard
 
