@@ -20,7 +20,7 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "schedule": ["before 9am on tuesday"]
+    "groupName": "minor-dependencies"
   },
   "customManagers": [
     {
