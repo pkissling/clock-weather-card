@@ -94,7 +94,7 @@ describe('docs previews of this repository', () => {
 
   it.each(previews.map(p => [p.name, p] as const))('%s is embedded in the README and rendered', (_, preview) => {
     expect(markdown)
-      .toContain(`](${previewImage(preview)})`)
+      .toMatch(new RegExp(`(\\]\\(|<img src=")${previewImage(preview)}[)"]`))
     if (preview.theme) expect(markdown, 'link the theme next to its preview')
       .toContain(`](https://github.com/${preview.theme.repo}/tree/${preview.theme.version})`)
     expect(existsSync(path.join(PROJECT_DIR, previewImage(preview))), `run yarn test:e2e:update-snapshots to render ${previewImage(preview)}`)
