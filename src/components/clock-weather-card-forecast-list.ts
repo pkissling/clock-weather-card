@@ -108,7 +108,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
     const hourly = forecastType === 'hourly'
     const format = (t: number): string => formatWithUnit(formatNumber(round_temperatures ? Math.round(t) : t, this.config), attribute_unit ?? temperatureUnit)
 
-    return this.visibleRows(count, time_pattern)
+    return this.visibleRows(count, time_pattern, false)
       .map((row, i, rows) => {
         const tempValues = (hourly
           ? [row.forecast.temperature, i === 0 ? currentTempRaw ?? row.forecast.temperature : rows[i - 1].forecast.temperature]
@@ -132,7 +132,7 @@ class ClockWeatherCardForecastList extends AbstractForecastSection {
   private _attributeBars(attribute: string): ListBar[] {
     const { attribute_unit, count, time_pattern } = this.config.forecast_list
     const unit = attribute_unit ?? this.forecastAttributeUnit(attribute)
-    return this.visibleRows(count, time_pattern)
+    return this.visibleRows(count, time_pattern, false)
       .map((row) => {
         const value = forecastAttributeValue(row.forecast, attribute)
         return {

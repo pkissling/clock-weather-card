@@ -66,7 +66,7 @@ test.describe('sections.forecast_list.forecast_type', () => {
     const items = clockWeatherCard.locator('clock-weather-card-forecast-list-item')
     await expect(items.nth(0)
       .locator('.label'))
-      .toHaveText('Today')
+      .toHaveText('Sun')
 
     await setupCard({
       date: NOW,
