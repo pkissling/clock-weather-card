@@ -1,17 +1,13 @@
 import { expect, test } from './utils/fixtures'
 
 test.describe('error card', () => {
-  test('shows a generic title and the wrapped, code-formatted error message in the card editor preview', async ({ page, setupCard, clockWeatherCard }) => {
+  test('shows a generic title and the wrapped, code-formatted error message outside edit mode', async ({ page, setupCard }) => {
     await setupCard({
       cardConfig: `
         sections:
           forecast_strip:
             forecast_type: ${'hour'.repeat(50)}
       `,
-    })
-
-    await clockWeatherCard.evaluate((el) => {
-      (el as HTMLElement & { preview: boolean }).preview = true
     })
 
     const errorCard = page.locator('hui-error-card')

@@ -5,7 +5,7 @@ import { html } from 'lit'
 import { property, state } from 'lit/decorators.js'
 
 import AbstractClockWeatherCardComponent from '@/components/abstract-clock-weather-card-components'
-import { errorMessageContext, hassContext } from '@/context'
+import { hassContext } from '@/context'
 import type { ClockWeatherCardConfig } from '@/types'
 import { customElement } from '@/utils/custom-element'
 
@@ -26,7 +26,6 @@ const formatMessage = (message: string): TemplateResult =>
 class ClockWeatherCardError extends AbstractClockWeatherCardComponent {
   @property({ attribute: false }) public message!: string
   @consume({ context: hassContext, subscribe: true }) @state() private hass?: HomeAssistant
-  @consume({ context: errorMessageContext, subscribe: true }) @state() private errorMessage = false
   @property({ attribute: false }) public config?: ClockWeatherCardConfig
   @property() public severity: ClockWeatherCardErrorSeverity = 'error'
 
@@ -44,7 +43,8 @@ class ClockWeatherCardError extends AbstractClockWeatherCardComponent {
       origConfig: this.config,
     })
     this._errorCard.hass = this.hass
-    this._errorCard.preview = this.errorMessage
+    // hui-error-card hides the message outside edit mode, where a device without a console could never read it.
+    this._errorCard.preview = true
     this._errorCard.severity = this.severity
     return html`${this._errorCard}`
   }
