@@ -17,9 +17,9 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.1
 
-    - uses: actions/setup-node@v7
+    - uses: actions/setup-node@v7.1.0
       with:
         node-version: 26
 
@@ -37,3 +37,17 @@ jobs:
 
     - name: Unit tests
       run: yarn test:unit
+
+  lockfile:
+    name: Verify actions.lock
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
+
+    - uses: github/gh-actions-lock@verify/v0.5.1

@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: 26
 
@@ -33,6 +33,6 @@ jobs:
         run: gh release upload "${{ github.ref_name }}" dist/*.js dist/*.svg --clobber
 
       - name: Verify HACS compliance
-        uses: hacs/action@1ebf01c408f29afcb6406bd431bc98fd8cbb15aa # main
+        uses: hacs/action@main
         with:
           category: plugin
