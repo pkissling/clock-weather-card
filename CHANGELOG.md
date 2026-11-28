@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.0](https://github.com/pkissling/clock-weather-card/compare/v3.1.0...v3.2.0) (2026-11-28)
+
+
+### Features
+
+* **editor:** reorganize the config editor and set sizes with sliders ([48505b3](https://github.com/pkissling/clock-weather-card/commit/48505b3395285b06f043841e349e05f1371dfe87))
+
+
+### Bug Fixes
+
+* **deps:** update minor-dependencies ([#920](https://github.com/pkissling/clock-weather-card/issues/920)) ([8de1ab5](https://github.com/pkissling/clock-weather-card/commit/8de1ab5cd3e632927a85efac5c7f984512f74aa6))
+* **forecast-strip:** make the attribute row easier to read ([29f5473](https://github.com/pkissling/clock-weather-card/commit/29f5473e2df17de605a1b2eac90976204a7795cf))
+* **icons:** show thunderstorms without a sun or moon ([f48963b](https://github.com/pkissling/clock-weather-card/commit/f48963b5617ac2f7db771282e44ea743c3901a50))
+* **pl:** improve Polish weather labels ([19c0b9b](https://github.com/pkissling/clock-weather-card/commit/19c0b9b476e4703b39b27cc3db3b2e12c060ff49))
+
 ## [3.1.0](https://github.com/pkissling/clock-weather-card/compare/v3.0.1...v3.1.0) (2026-11-01)
 
 
