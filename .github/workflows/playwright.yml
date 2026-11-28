@@ -23,7 +23,7 @@ jobs:
         ha_version: [stable, beta, dev]
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.1
 
     - name: Pull HA Docker image
       run: docker pull ghcr.io/home-assistant/home-assistant:${{ matrix.ha_version }}
@@ -34,7 +34,7 @@ jobs:
         HA_VERSION: ${{ matrix.ha_version }}
       run: .github/playwright-snapshots-helper/run-in-docker.sh
 
-    - uses: actions/upload-artifact@v7
+    - uses: actions/upload-artifact@v7.0.2
       if: failure()
       with:
         name: playwright-report-${{ matrix.ha_version }}

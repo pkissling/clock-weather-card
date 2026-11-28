@@ -14,6 +14,10 @@
       "matchPackageNames": ["mcr.microsoft.com/playwright", "@playwright/test"],
       "matchUpdateTypes": ["major"],
       "groupName": "playwright"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "minimumReleaseAge": "7 days"
     }
   ],
   "schedule": ["before 9am on tuesday"],
